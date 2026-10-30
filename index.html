@@ -37,8 +37,9 @@
 
 <main>
 <section id="discover" class="view discover-view">
-  <div class="discover-copy"><div class="kicker">01 / DESCOBRIR · RIZOMA</div><h2>Não há raiz. Mova a mão.</h2><p>O spray revela projetos onde você passa; as linhas crescem entre eles por ano, mecanismo, edital, escala ou regional. Clique num nó para abrir a prévia. Roda do mouse ou pinça aproximam; shift + arrastar desloca.</p><p id="lineHint" class="line-hint">Os projetos aparecem soltos. Ligue uma linha de fuga, ali em cima, para ver as relações crescerem.</p></div>
+  <div class="discover-copy"><div class="kicker">01 / DESCOBRIR · RIZOMA</div><h2>Não há raiz. Mova a mão.</h2><p>O spray revela projetos onde você passa. Você escolhe quando ligar relações por ano, mecanismo, edital, escala, regional ou curadoria. Clique num nó para abrir a prévia ou use a busca como outra porta de entrada. Roda do mouse ou pinça aproximam; shift + arrastar desloca.</p><p id="lineHint" class="line-hint">Os projetos aparecem soltos. Escolha uma linha de fuga para revelar um tipo de relação. O sistema sugere caminhos, mas nunca liga uma relação por você.</p></div>
   <div class="discover-tools">
+    <div class="project-search"><input id="projectSearch" type="search" autocomplete="off" placeholder="Buscar projeto, ano ou mecanismo…" aria-label="Buscar no corpus"><div id="searchResults" class="search-results" hidden></div></div>
     <div class="line-chips" id="lineChips" aria-label="Linhas de fuga"></div>
     <div class="tools-secondary">
       <button id="modeTree" title="Tecla A">Árvore / decalque</button>

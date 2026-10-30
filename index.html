@@ -129,6 +129,20 @@
 <div id="tooltip" class="tooltip hidden"></div>
 </div>
 </div>
+<script id="cartografia-intro-guard">
+(() => {
+  const btn=document.getElementById("enterBtn");
+  const intro=document.getElementById("intro");
+  if(!btn||!intro)return;
+  const dismiss=()=>{
+    document.body.classList.remove("intro-active");
+    intro.classList.add("leaving");
+    window.setTimeout(()=>intro.classList.add("hidden"),420);
+  };
+  btn.addEventListener("click",dismiss,{passive:true});
+  btn.addEventListener("pointerup",e=>{ if(e.pointerType==="touch") dismiss(); },{passive:true});
+})();
+</script>
 <script src="js/data.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
 <script src="js/rizoma.js"></script>

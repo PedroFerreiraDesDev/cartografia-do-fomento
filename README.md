@@ -77,3 +77,15 @@ Para abrir o protótipo p5 fora do Drive, mantenha a estrutura de pastas (ele bu
 - permite alternar entre modo papel/asfalto, pausar, gerar nova composição e exportar PNG.
 
 O laboratório é exploratório: suas decisões visuais não devem ser tratadas como identidade final até serem validadas no projeto.
+
+
+## Lab 02 — Outras Cartografias
+
+- `lab-outras-cartografias.html` — explora quatro sistemas para além de pontos e linhas:
+  - Campo de pressão — valor e intensidade deformam uma superfície contínua;
+  - Palimpsesto — anos e projetos aparecem como camadas que podem ser desgastadas;
+  - Mirante — uma lente móvel evidencia a disputa entre visibilidade e invisibilidade;
+  - Trama — projetos tornam-se fios que atravessam mecanismo, tempo e escala.
+- usa a mesma base `js/data.js`;
+- foi pensado para toque e uso em celular;
+- não substitui o Rizoma atual: serve para comparar linguagens cartográficas antes da decisão final.

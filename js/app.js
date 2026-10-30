@@ -27,7 +27,7 @@ function showPage(name){
   if(R)syncDiscover(R.state()); // tema da prévia e lista lateral acompanham a página
 }
 /* a capa é uma camada sobre o campo: o rizoma já vive atrás dela, em 3D, desde o primeiro quadro (montagem no fim do arquivo) */
-document.body.classList.add("intro-active");
+if(!window.__cartografiaEntered)document.body.classList.add("intro-active");
 const onboarding=$("#interactionOnboarding");
 const ONBOARD_KEY="cartografia:onboarding-v4";
 let onboardingHandled=false;
@@ -48,6 +48,9 @@ function closeOnboarding(){
 function handleEntered(){
   if(onboardingHandled)return;
   onboardingHandled=true;
+  document.body.classList.remove("intro-active");
+  $("#intro")?.classList.add("leaving");
+  $("#intro")?.classList.add("hidden");
   if(R)R.setIntro(false);
   window.setTimeout(showOnboarding,120);
 }

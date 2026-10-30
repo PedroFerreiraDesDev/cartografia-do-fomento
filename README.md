@@ -66,3 +66,14 @@ A pasta `rizoma/` acrescenta a fundamentação em Deleuze & Guattari (rizoma) e 
 - `rizoma/prototipo-p5/index.html` — protótipo em p5.js que lê o mesmo `js/data.js`: nós revelados pelo gesto, linhas de fuga por atributo, corte com rebrota, modo árvore/decalque × rizoma, exportação do mapa do visitante.
 
 Para abrir o protótipo p5 fora do Drive, mantenha a estrutura de pastas (ele busca `../../js/data.js`).
+
+
+## Laboratório de identidade visual
+
+- `lab-identidade.html` — laboratório generativo separado do protótipo principal.
+- usa a mesma base `js/data.js` e p5.js;
+- testa grade urbana, horizonte, manchas-nó, linhas de fuga, escala financeira, famílias cromáticas e tipografia em tensão;
+- possui controles de ruído, densidade, peso das linhas e escala dos nós;
+- permite alternar entre modo papel/asfalto, pausar, gerar nova composição e exportar PNG.
+
+O laboratório é exploratório: suas decisões visuais não devem ser tratadas como identidade final até serem validadas no projeto.

@@ -70,7 +70,7 @@ function ensureRizoma(){
     return false;
   }
   try{
-  R=Rizoma.mount({container:"#rizomaStage",paper:true,reduced,depth:!matchMedia("(pointer: coarse)").matches,intro:document.body.classList.contains("intro-active"),panelWidth:400,treeTop:()=>innerWidth<=780?(document.querySelector(".discover-copy").offsetHeight||70)+14:185,treeBottom:()=>innerWidth<=780?(document.querySelector(".discover-tools").offsetHeight||100)+16:50,
+  R=Rizoma.mount({container:"#rizomaStage",paper:true,reduced,depth:true, // 3D nasce ligado também no celular (decisão do autor, 30/10)intro:document.body.classList.contains("intro-active"),panelWidth:400,treeTop:()=>innerWidth<=780?(document.querySelector(".discover-copy").offsetHeight||70)+14:185,treeBottom:()=>innerWidth<=780?(document.querySelector(".discover-tools").offsetHeight||100)+16:50,
     onStarted:()=>{$("#blankMessage").style.opacity="0"},
     onChange:syncDiscover,
     onHover:showHoverCard,

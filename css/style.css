@@ -334,3 +334,14 @@ html,body{min-height:100%;min-height:100dvh}
   body.preview-open .discover-copy{opacity:.18}
   .guide{bottom:calc(var(--mobile-tools-space) + 8px)!important}
 }
+
+
+/* ---------- mobile stacking: ferramentas acima da prévia ---------- */
+@media(max-width:780px){
+  .discover-tools{z-index:45!important}
+  .project-search,.line-chips,.tools-secondary{position:relative;z-index:46}
+  .more-menu{z-index:60!important}
+  .more-panel{z-index:65!important}
+  .search-results{z-index:70!important}
+  .preview{z-index:30!important}
+}

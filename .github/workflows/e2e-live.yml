@@ -65,7 +65,7 @@ jobs:
             await page.waitForTimeout(150);
             if(!(await page.locator('#editais').isVisible())) throw new Error(name+': editais did not open');
 
-            await page.locator('[data-nav="discover"]').click();
+            await page.locator('header nav [data-nav="discover"]').click();
             await page.waitForTimeout(300);
             if(!(await page.locator('#discover').isVisible())) throw new Error(name+': discover did not open');
 
@@ -93,6 +93,64 @@ jobs:
             await more.click();
             await page.waitForTimeout(100);
             if(await page.locator('#moreMenu').getAttribute('hidden')!==null) throw new Error(name+': more menu did not open');
+            await more.click();
+
+            // Engine and generated controls.
+            const engineReady=await page.evaluate(()=>!!window.CartografiaRizoma);
+            if(!engineReady) throw new Error(name+': Rizoma engine did not initialize');
+            const chipCount=await page.locator('#lineChips .chip').count();
+            if(chipCount!==6) throw new Error(name+': expected 6 line chips, got '+chipCount);
+
+            // Search -> preview -> full project -> back.
+            await search.fill('CURA');
+            await page.waitForTimeout(150);
+            await page.locator('[data-search-id]').first().click();
+            await page.waitForTimeout(180);
+            if(!(await preview.evaluate(el=>el.classList.contains('open')))) throw new Error(name+': preview did not reopen');
+            await page.locator('#pvOpen').click();
+            await page.waitForTimeout(180);
+            if(!(await page.locator('#projectPage').isVisible())) throw new Error(name+': project page did not open');
+            await page.locator('#projectBack').click();
+            await page.waitForTimeout(180);
+            if(!(await page.locator('#discover').isVisible())) throw new Error(name+': project back did not return');
+
+            // Other content pages.
+            await page.locator('[data-nav="research"]').click();
+            await page.waitForTimeout(100);
+            if(!(await page.locator('#research').isVisible())) throw new Error(name+': research did not open');
+            await page.locator('[data-nav="about"]').click();
+            await page.waitForTimeout(100);
+            if(!(await page.locator('#about').isVisible())) throw new Error(name+': about did not open');
+            await page.locator('header nav [data-nav="discover"]').click();
+            await page.waitForTimeout(120);
+
+            // Mobile viewport integrity / desktop basic integrity.
+            const dims=await page.evaluate(()=>({
+              iw:innerWidth,
+              scroll:document.documentElement.scrollWidth,
+              tools:document.querySelector('.discover-tools')?.getBoundingClientRect(),
+              topbar:document.querySelector('.topbar')?.getBoundingClientRect()
+            }));
+            if(dims.scroll>dims.iw+2) throw new Error(name+': horizontal overflow '+dims.scroll+' > '+dims.iw);
+            if(name==='mobile' && dims.tools && (dims.tools.bottom>contextOptions.viewport.height+3 || dims.tools.top<0)) throw new Error(name+': mobile tools outside viewport');
+
+            // Indicators interactions.
+            await page.locator('[data-nav="indicators"]').click();
+            await page.waitForTimeout(100);
+            await page.locator('[data-metric="value"]').click();
+            if(!(await page.locator('[data-metric="value"]').evaluate(el=>el.classList.contains('active')))) throw new Error(name+': value metric did not activate');
+            const firstYear=page.locator('.year-col').first();
+            await firstYear.click();
+            await page.waitForTimeout(100);
+            if(await page.locator('#fsClear').getAttribute('hidden')!==null) throw new Error(name+': indicator selection did not fix filter');
+            await page.locator('#fsClear').click();
+
+            // Edital deep link to indicators.
+            await page.locator('[data-nav="editais"]').click();
+            await page.waitForTimeout(100);
+            await page.locator('[data-mech]').first().click();
+            await page.waitForTimeout(120);
+            if(!(await page.locator('#indicators').isVisible())) throw new Error(name+': edital mechanism did not open indicators');
 
             results.push({name,errors});
             await context.close();

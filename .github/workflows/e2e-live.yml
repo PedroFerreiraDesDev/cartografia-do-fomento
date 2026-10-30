@@ -1,0 +1,114 @@
+name: E2E live site smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'css/**'
+      - 'js/**'
+      - '.github/workflows/e2e-live.yml'
+
+jobs:
+  test-live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright
+          npx playwright install --with-deps chromium
+      - name: Wait for Pages deploy
+        run: sleep 35
+      - name: Test mobile and desktop live site
+        env:
+          SITE: https://pedroferreiradesdev.github.io/cartografia-do-fomento/
+        run: |
+          cat > e2e.mjs <<'EOF'
+          import { chromium, devices } from 'playwright';
+
+          const site=process.env.SITE;
+          const browser=await chromium.launch({headless:true});
+          const results=[];
+
+          async function run(name,contextOptions){
+            const context=await browser.newContext(contextOptions);
+            const page=await context.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push('pageerror: '+e.message));
+            page.on('console',m=>{if(m.type()==='error')errors.push('console: '+m.text())});
+
+            await page.goto(site+'?e2e='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+            await page.locator('#enterBtn').click({timeout:10000});
+            await page.waitForTimeout(300);
+
+            const introHidden=await page.locator('#intro').evaluate(el=>el.classList.contains('hidden'));
+            if(!introHidden) throw new Error(name+': intro did not hide');
+
+            const onboard=page.locator('#interactionOnboarding');
+            if(await onboard.isVisible()){
+              await page.locator('#onboardingStart').click({timeout:5000});
+              await page.waitForTimeout(100);
+              if(await onboard.isVisible()) throw new Error(name+': onboarding did not close');
+            }
+
+            await page.locator('[data-nav="indicators"]').click();
+            await page.waitForTimeout(150);
+            if(!(await page.locator('#indicators').isVisible())) throw new Error(name+': indicators did not open');
+
+            await page.locator('[data-nav="editais"]').click();
+            await page.waitForTimeout(150);
+            if(!(await page.locator('#editais').isVisible())) throw new Error(name+': editais did not open');
+
+            await page.locator('[data-nav="discover"]').click();
+            await page.waitForTimeout(300);
+            if(!(await page.locator('#discover').isVisible())) throw new Error(name+': discover did not open');
+
+            const search=page.locator('#projectSearch');
+            await search.fill('CURA');
+            await page.waitForTimeout(200);
+            const resultCount=await page.locator('[data-search-id]').count();
+            if(resultCount<1) throw new Error(name+': search returned no CURA results');
+            await page.locator('[data-search-id]').first().click();
+            await page.waitForTimeout(250);
+
+            const preview=page.locator('#preview');
+            if(!(await preview.evaluate(el=>el.classList.contains('open')))) throw new Error(name+': preview did not open from search');
+
+            await page.locator('#pvClose').click();
+            await page.waitForTimeout(120);
+
+            const tree=page.locator('#modeTree');
+            await tree.click();
+            await page.waitForTimeout(200);
+            if(!((await tree.textContent())||'').includes('Voltar ao rizoma')) throw new Error(name+': tree mode did not activate');
+            await tree.click();
+
+            const more=page.locator('#moreBtn');
+            await more.click();
+            await page.waitForTimeout(100);
+            if(await page.locator('#moreMenu').getAttribute('hidden')!==null) throw new Error(name+': more menu did not open');
+
+            results.push({name,errors});
+            await context.close();
+          }
+
+          await run('mobile',{
+            ...devices['Pixel 7'],
+            locale:'pt-BR'
+          });
+          await run('desktop',{
+            viewport:{width:1440,height:900},
+            locale:'pt-BR'
+          });
+
+          await browser.close();
+          console.log(JSON.stringify(results,null,2));
+          const fatal=results.flatMap(r=>r.errors.filter(e=>!e.includes('favicon')));
+          if(fatal.length){console.error(fatal.join('\n'));process.exit(1)}
+          EOF
+          node e2e.mjs

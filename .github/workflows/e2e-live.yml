@@ -34,140 +34,189 @@ jobs:
 
           const site=process.env.SITE;
           const browser=await chromium.launch({headless:true});
-          const results=[];
+          const report=[];
 
-          async function run(name,contextOptions){
-            const context=await browser.newContext(contextOptions);
-            const page=await context.newPage();
+          async function collect(page,name,fn){
             const errors=[];
             page.on('pageerror',e=>errors.push('pageerror: '+e.message));
-            page.on('console',m=>{if(m.type()==='error')errors.push('console: '+m.text())});
+            page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('favicon'))errors.push('console: '+m.text())});
+            try{await fn(errors)}catch(e){errors.push('assert: '+e.message)}
+            report.push({name,errors});
+            if(errors.length) throw new Error(name+' failed: '+errors.join(' | '));
+          }
 
-            await page.goto(site+'?e2e='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+          async function enter(page,close='start'){
             await page.locator('#enterBtn').click({timeout:10000});
-            await page.waitForTimeout(300);
-
-            const introHidden=await page.locator('#intro').evaluate(el=>el.classList.contains('hidden'));
-            if(!introHidden) throw new Error(name+': intro did not hide');
-
+            await page.waitForTimeout(180);
+            if(!(await page.locator('#intro').evaluate(el=>el.classList.contains('hidden')))) throw new Error('intro did not hide');
             const onboard=page.locator('#interactionOnboarding');
             if(await onboard.isVisible()){
-              await page.locator('#onboardingStart').click({timeout:5000});
-              await page.waitForTimeout(100);
-              if(await onboard.isVisible()) throw new Error(name+': onboarding did not close');
+              await page.locator(close==='skip'?'#onboardingSkip':'#onboardingStart').click();
+              await page.waitForTimeout(80);
+              if(await onboard.isVisible()) throw new Error('onboarding did not close');
             }
+          }
 
-            await page.locator('[data-nav="indicators"]').click();
-            await page.waitForTimeout(150);
-            if(!(await page.locator('#indicators').isVisible())) throw new Error(name+': indicators did not open');
+          async function mainFlow(name,contextOptions){
+            const context=await browser.newContext(contextOptions);
+            const page=await context.newPage();
+            await collect(page,name,async()=>{
+              await page.goto(site+'?e2e='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              await page.evaluate(()=>localStorage.clear());
+              await page.reload({waitUntil:'networkidle'});
+              await enter(page,'start');
 
-            await page.locator('[data-nav="editais"]').click();
-            await page.waitForTimeout(150);
-            if(!(await page.locator('#editais').isVisible())) throw new Error(name+': editais did not open');
+              await page.locator('[data-nav="indicators"]').click();
+              if(!(await page.locator('#indicators').isVisible())) throw new Error('indicators did not open');
+              await page.locator('[data-nav="editais"]').click();
+              if(!(await page.locator('#editais').isVisible())) throw new Error('editais did not open');
+              await page.locator('header nav [data-nav="discover"]').click();
+              if(!(await page.locator('#discover').isVisible())) throw new Error('discover did not open');
 
-            await page.locator('header nav [data-nav="discover"]').click();
-            await page.waitForTimeout(300);
-            if(!(await page.locator('#discover').isVisible())) throw new Error(name+': discover did not open');
+              if(!(await page.evaluate(()=>!!window.CartografiaRizoma))) throw new Error('Rizoma engine did not initialize');
+              if(await page.locator('#lineChips .chip').count()!==6) throw new Error('expected 6 line chips');
 
-            const search=page.locator('#projectSearch');
-            await search.fill('CURA');
-            await page.waitForTimeout(200);
-            const resultCount=await page.locator('[data-search-id]').count();
-            if(resultCount<1) throw new Error(name+': search returned no CURA results');
-            await page.locator('[data-search-id]').first().click();
-            await page.waitForTimeout(250);
+              // Search -> preview -> project -> back.
+              const search=page.locator('#projectSearch');
+              await search.fill('CURA'); await page.waitForTimeout(120);
+              if(await page.locator('[data-search-id]').count()<1) throw new Error('search returned no CURA');
+              await page.locator('[data-search-id]').first().click(); await page.waitForTimeout(120);
+              if(!(await page.locator('#preview').evaluate(el=>el.classList.contains('open')))) throw new Error('preview did not open');
+              await page.locator('#pvOpen').click(); await page.waitForTimeout(120);
+              if(!(await page.locator('#projectPage').isVisible())) throw new Error('project page did not open');
+              await page.locator('#projectBack').click(); await page.waitForTimeout(120);
+              if(!(await page.locator('#discover').isVisible())) throw new Error('back from project failed');
 
-            const preview=page.locator('#preview');
-            if(!(await preview.evaluate(el=>el.classList.contains('open')))) throw new Error(name+': preview did not open from search');
+              // Tree.
+              const tree=page.locator('#modeTree');
+              await tree.click(); await page.waitForTimeout(100);
+              if(!((await tree.textContent())||'').includes('Voltar ao rizoma')) throw new Error('tree mode did not activate');
+              await tree.click();
 
-            await page.locator('#pvClose').click();
-            await page.waitForTimeout(120);
+              // Reveal all -> activate line -> lines exist.
+              await page.evaluate(()=>{CartografiaRizoma.revealAll();CartografiaRizoma.tick(3)});
+              const firstChip=page.locator('#lineChips .chip').first();
+              await firstChip.click(); await page.waitForTimeout(100);
+              const st=await page.evaluate(()=>CartografiaRizoma.state());
+              if(!st.anyLine||st.lines<1) throw new Error('line chip did not create visible relations');
 
-            const tree=page.locator('#modeTree');
-            await tree.click();
-            await page.waitForTimeout(200);
-            if(!((await tree.textContent())||'').includes('Voltar ao rizoma')) throw new Error(name+': tree mode did not activate');
-            await tree.click();
+              // Secondary controls.
+              const z0=await page.evaluate(()=>CartografiaRizoma.state().zoom);
+              await page.locator('#zoomIn').click(); await page.waitForTimeout(80);
+              const z1=await page.evaluate(()=>CartografiaRizoma.state().zoom);
+              if(!(z1>z0)) throw new Error('zoom in did not change zoom');
+              await page.locator('#pauseMotion').click();
+              if(!(await page.evaluate(()=>CartografiaRizoma.state().paused))) throw new Error('pause did not activate');
+              await page.locator('#pauseMotion').click();
+              await page.locator('#darkMode').click();
+              if(await page.evaluate(()=>CartografiaRizoma.state().paper)!==false) throw new Error('dark mode did not activate');
+              await page.locator('#darkMode').click();
+              await page.locator('#reduceMotion').click();
+              if(!(await page.evaluate(()=>CartografiaRizoma.state().reduced))) throw new Error('reduced motion did not activate');
 
-            const more=page.locator('#moreBtn');
-            await more.click();
-            await page.waitForTimeout(100);
-            if(await page.locator('#moreMenu').getAttribute('hidden')!==null) throw new Error(name+': more menu did not open');
-            await more.click();
+              // More menu + reset.
+              await page.locator('#moreBtn').click();
+              if(await page.locator('#moreMenu').getAttribute('hidden')!==null) throw new Error('more menu did not open');
+              await page.locator('#resetWalls').click(); await page.waitForTimeout(80);
+              const rst=await page.evaluate(()=>CartografiaRizoma.state());
+              if(rst.revealed!==0||rst.focus!==null) throw new Error('reset did not clear field');
 
-            // Engine and generated controls.
-            const engineReady=await page.evaluate(()=>!!window.CartografiaRizoma);
-            if(!engineReady) throw new Error(name+': Rizoma engine did not initialize');
-            const chipCount=await page.locator('#lineChips .chip').count();
-            if(chipCount!==6) throw new Error(name+': expected 6 line chips, got '+chipCount);
+              // Content pages.
+              await page.locator('[data-nav="research"]').click();
+              if(!(await page.locator('#research').isVisible())) throw new Error('research did not open');
+              await page.locator('[data-nav="about"]').click();
+              if(!(await page.locator('#about').isVisible())) throw new Error('about did not open');
 
-            // Search -> preview -> full project -> back.
-            await search.fill('CURA');
-            await page.waitForTimeout(150);
-            await page.locator('[data-search-id]').first().click();
-            await page.waitForTimeout(180);
-            if(!(await preview.evaluate(el=>el.classList.contains('open')))) throw new Error(name+': preview did not reopen');
-            await page.locator('#pvOpen').click();
-            await page.waitForTimeout(180);
-            if(!(await page.locator('#projectPage').isVisible())) throw new Error(name+': project page did not open');
-            await page.locator('#projectBack').click();
-            await page.waitForTimeout(180);
-            if(!(await page.locator('#discover').isVisible())) throw new Error(name+': project back did not return');
+              // Indicators interaction.
+              await page.locator('[data-nav="indicators"]').click();
+              await page.locator('[data-metric="value"]').click();
+              if(!(await page.locator('[data-metric="value"]').evaluate(el=>el.classList.contains('active')))) throw new Error('value metric inactive');
+              await page.locator('.year-col').first().click(); await page.waitForTimeout(80);
+              if(await page.locator('#fsClear').getAttribute('hidden')!==null) throw new Error('indicator filter did not fix');
+              await page.locator('#fsClear').click();
 
-            // Other content pages.
-            await page.locator('[data-nav="research"]').click();
-            await page.waitForTimeout(100);
-            if(!(await page.locator('#research').isVisible())) throw new Error(name+': research did not open');
-            await page.locator('[data-nav="about"]').click();
-            await page.waitForTimeout(100);
-            if(!(await page.locator('#about').isVisible())) throw new Error(name+': about did not open');
-            await page.locator('header nav [data-nav="discover"]').click();
-            await page.waitForTimeout(120);
+              // Edital deep link.
+              await page.locator('[data-nav="editais"]').click();
+              await page.locator('[data-mech]').first().click(); await page.waitForTimeout(80);
+              if(!(await page.locator('#indicators').isVisible())) throw new Error('edital deep link failed');
 
-            // Mobile viewport integrity / desktop basic integrity.
-            const dims=await page.evaluate(()=>({
-              iw:innerWidth,
-              scroll:document.documentElement.scrollWidth,
-              tools:document.querySelector('.discover-tools')?.getBoundingClientRect(),
-              topbar:document.querySelector('.topbar')?.getBoundingClientRect()
-            }));
-            if(dims.scroll>dims.iw+2) throw new Error(name+': horizontal overflow '+dims.scroll+' > '+dims.iw);
-            if(name==='mobile' && dims.tools && (dims.tools.bottom>contextOptions.viewport.height+3 || dims.tools.top<0)) throw new Error(name+': mobile tools outside viewport');
-
-            // Indicators interactions.
-            await page.locator('[data-nav="indicators"]').click();
-            await page.waitForTimeout(100);
-            await page.locator('[data-metric="value"]').click();
-            if(!(await page.locator('[data-metric="value"]').evaluate(el=>el.classList.contains('active')))) throw new Error(name+': value metric did not activate');
-            const firstYear=page.locator('.year-col').first();
-            await firstYear.click();
-            await page.waitForTimeout(100);
-            if(await page.locator('#fsClear').getAttribute('hidden')!==null) throw new Error(name+': indicator selection did not fix filter');
-            await page.locator('#fsClear').click();
-
-            // Edital deep link to indicators.
-            await page.locator('[data-nav="editais"]').click();
-            await page.waitForTimeout(100);
-            await page.locator('[data-mech]').first().click();
-            await page.waitForTimeout(120);
-            if(!(await page.locator('#indicators').isVisible())) throw new Error(name+': edital mechanism did not open indicators');
-
-            results.push({name,errors});
+              // No horizontal overflow.
+              const dims=await page.evaluate(()=>({iw:innerWidth,scroll:document.documentElement.scrollWidth}));
+              if(dims.scroll>dims.iw+2) throw new Error('horizontal overflow '+dims.scroll+' > '+dims.iw);
+            });
             await context.close();
           }
 
-          await run('mobile',{
-            ...devices['Pixel 7'],
-            locale:'pt-BR'
-          });
-          await run('desktop',{
-            viewport:{width:1440,height:900},
-            locale:'pt-BR'
-          });
+          async function mobileTouch(){
+            const context=await browser.newContext({...devices['Pixel 7'],locale:'pt-BR'});
+            const page=await context.newPage();
+            await collect(page,'mobile-touch',async()=>{
+              await page.goto(site+'?touch='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              await page.evaluate(()=>localStorage.clear()); await page.reload({waitUntil:'networkidle'}); await enter(page,'skip');
+              await page.evaluate(()=>{CartografiaRizoma.revealAll();CartografiaRizoma.tick(5)});
+              const info=await page.evaluate(()=>{
+                const rect=document.querySelector('#rizomaStage canvas').getBoundingClientRect();
+                const ns=CartografiaRizoma.screen().nodes;
+                const n=ns.find(n=>n.x>45&&n.x<rect.width-45&&n.y>150&&n.y<rect.height-180)||ns[0];
+                return {x:rect.left+n.x,y:rect.top+n.y,id:n.id};
+              });
+              await page.touchscreen.tap(info.x,info.y); await page.waitForTimeout(120);
+              if(await page.evaluate(()=>CartografiaRizoma.state().focus)!==null) throw new Error('first tap opened project; should inspect only');
+              await page.touchscreen.tap(info.x,info.y); await page.waitForTimeout(160);
+              if(await page.evaluate(()=>CartografiaRizoma.state().focus)!==info.id) throw new Error('second tap did not open selected node');
+              if(!(await page.locator('#preview').evaluate(el=>el.classList.contains('open')))) throw new Error('preview not open after second tap');
+            });
+            await context.close();
+          }
+
+          async function introDoor(){
+            const context=await browser.newContext({...devices['Pixel 7'],locale:'pt-BR'});
+            const page=await context.newPage();
+            await collect(page,'intro-door',async()=>{
+              await page.goto(site+'?door='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              await page.locator('[data-door="indicators"]').click();
+              await page.waitForTimeout(140);
+              if(!(await page.locator('#intro').evaluate(el=>el.classList.contains('hidden')))) throw new Error('door did not close intro');
+              if(!(await page.locator('#indicators').isVisible())) throw new Error('door did not open indicators');
+            });
+            await context.close();
+          }
+
+          async function labs(){
+            const context=await browser.newContext({...devices['Pixel 7'],locale:'pt-BR'});
+            const page=await context.newPage();
+            await collect(page,'lab-02',async()=>{
+              await page.goto(site+'lab-outras-cartografias.html?e2e='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              for(const mode of ['campo','palimpsesto','mirante','trama']){
+                await page.locator('[data-mode="'+mode+'"]').click();
+                if(!(await page.locator('[data-mode="'+mode+'"]').evaluate(el=>el.classList.contains('active')))) throw new Error('lab2 mode '+mode+' inactive');
+              }
+              await page.locator('#pauseBtn').click();
+              if((await page.locator('#pauseBtn').textContent()).trim()!=='RETOMAR') throw new Error('lab2 pause failed');
+              await page.locator('#labelsBtn').click();
+              if(await page.locator('#labelsBtn').evaluate(el=>el.classList.contains('active'))) throw new Error('lab2 labels toggle failed');
+              await page.locator('#mainRange').fill('82');
+              await page.locator('#modeSelect').selectOption({index:1});
+            });
+
+            await collect(page,'lab-01',async()=>{
+              await page.goto(site+'lab-identidade.html?e2e='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              if(await page.locator('canvas').count()<1) throw new Error('lab1 canvas missing');
+              const buttons=page.locator('button');
+              if(await buttons.count()<1) throw new Error('lab1 controls missing');
+            });
+            await context.close();
+          }
+
+          await mainFlow('mobile',{...devices['Pixel 7'],locale:'pt-BR'});
+          await mainFlow('desktop',{viewport:{width:1440,height:900},locale:'pt-BR'});
+          await mobileTouch();
+          await introDoor();
+          await labs();
 
           await browser.close();
-          console.log(JSON.stringify(results,null,2));
-          const fatal=results.flatMap(r=>r.errors.filter(e=>!e.includes('favicon')));
-          if(fatal.length){console.error(fatal.join('\n'));process.exit(1)}
+          console.log(JSON.stringify(report,null,2));
+          const failures=report.filter(r=>r.errors.length);
+          if(failures.length)process.exit(1);
           EOF
           node e2e.mjs

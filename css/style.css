@@ -378,3 +378,29 @@ html,body{min-height:100%;min-height:100dvh}
     z-index:1001!important;
   }
 }
+
+
+/* ---------- mobile v20: sem submenu Mais; ferramentas em uma única faixa rolável ---------- */
+@media(max-width:780px){
+  .tools-secondary{overflow-x:auto!important;overflow-y:visible!important;align-items:center!important}
+  .more-menu{display:contents!important}
+  #moreBtn{display:none!important}
+  #moreMenu,
+  #moreMenu[hidden]{
+    position:static!important;
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    gap:5px!important;
+    min-width:max-content!important;
+    padding:0!important;
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+  #moreMenu button{
+    flex:none!important;
+    min-height:38px!important;
+    text-align:center!important;
+  }
+}

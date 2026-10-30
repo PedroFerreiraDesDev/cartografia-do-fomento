@@ -57,7 +57,7 @@ body.asphalt{--paper:#111318;--concrete:#252832;--ink:#f2f0e8;--muted:#9da0a7;--
   </div>
   <aside class="control-panel" aria-label="Parâmetros visuais">
     <div class="panel-title"><span>PARÂMETROS</span><b id="seedLabel">SEED 01</b></div>
-    <label>RUÍDO / IRREGULARIDADE <output id="noiseOut">48</output><input id="noiseControl" type="range" min="0" max="100" value="48"></label>
+    <label>RUÍDO / IRREGULARIDADE <output id="noiseOut">48</output><input id="noiseControl" type="range" min="0" max="100" value="68"></label>
     <label>DENSIDADE URBANA <output id="densityOut">64</output><input id="densityControl" type="range" min="20" max="100" value="64"></label>
     <label>PESO DAS LINHAS <output id="lineOut">52</output><input id="lineControl" type="range" min="10" max="100" value="52"></label>
     <label>ESCALA DOS NÓS <output id="nodeOut">56</output><input id="nodeControl" type="range" min="25" max="100" value="56"></label>
@@ -150,7 +150,7 @@ const REL = {
   scale:[255,138,61], region:[101,231,125], curation:[255,79,154]
 };
 const MECH = {IF:[255,79,154], Fundo:[49,168,255], Descentra:[101,231,125]};
-const state = {seed:1, paused:false, asphalt:false, grid:true, horizon:true, links:true, noise:48, density:64, line:52, node:56};
+const state = {seed:1, paused:false, asphalt:false, grid:true, horizon:true, links:true, noise:68, density:64, line:52, node:56};
 const $ = s => document.querySelector(s);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const moneyMax = Math.max(1,...PROJECTS.map(p=>Number(p.value)||0));
@@ -203,7 +203,7 @@ function mainSketch(p){
       nodes.push({p:proj,x:p.random(.08,.94),y:p.random(.17,.88),phase:p.random(1000),drift:p.random(.4,1.4),idx:i});
     }
   }
-  p.setup=()=>{canvas=p.createCanvas(p.windowWidth,p.windowHeight);canvas.parent("identityStage");p.pixelDensity(Math.min(window.devicePixelRatio||1,2));makeNodes()};
+  p.setup=()=>{canvas=p.createCanvas(p.windowWidth,p.windowHeight);canvas.parent("identityStage");p.pixelDensity(Math.min(window.devicePixelRatio||1,2));p.noiseDetail(5,.58);makeNodes()};
   p.windowResized=()=>p.resizeCanvas(p.windowWidth,p.windowHeight);
   p.mousePressed=()=>{if(p.mouseY>62&&p.mouseX<p.width-330){state.seed++;makeNodes();syncUI()}};
   p.draw=()=>{
@@ -213,7 +213,7 @@ function mainSketch(p){
     if(state.grid) drawGrid(p,t);
     if(state.horizon) drawHorizon(p,t);
     const pts=nodes.map(n=>{
-      const wob=(state.noise/100)*26;
+      const wob=(state.noise/100)*42;
       const nx=p.noise(n.phase+t*n.drift),ny=p.noise(n.phase+77+t*n.drift);
       let x=n.x*p.width+(nx-.5)*wob,y=n.y*p.height+(ny-.5)*wob;
       const dx=p.mouseX-x,dy=p.mouseY-y,d=Math.sqrt(dx*dx+dy*dy);
@@ -227,7 +227,7 @@ function mainSketch(p){
   function drawGrid(p,t){
     const ink=state.asphalt?[92,97,108,38]:[50,50,46,28];p.stroke(...ink);p.strokeWeight(1);p.noFill();
     const step=p.map(state.density,20,100,110,44);
-    const shift=(state.noise/100)*11;
+    const shift=(state.noise/100)*18;
     for(let x=-step;x<p.width+step;x+=step){p.beginShape();for(let y=62;y<p.height+step;y+=step/2){const off=(p.noise(x*.01,y*.01,t)-.5)*shift;p.vertex(x+off,y)}p.endShape()}
     for(let y=62;y<p.height+step;y+=step){p.line(0,y,p.width,y)}
     p.strokeWeight(1.2);p.stroke(state.asphalt?120:70,30);
@@ -248,9 +248,9 @@ function mainSketch(p){
     }
   }
   function drawNode(p,n){
-    const c=MECH[mechanismKey(n.p)]||MECH.IF;const r=scaleRadius(n.p.value)*p.map(state.node,25,100,.65,1.55);const amp=4+state.noise*.055;
+    const c=MECH[mechanismKey(n.p)]||MECH.IF;const r=scaleRadius(n.p.value)*p.map(state.node,25,100,.65,1.55);const amp=6+state.noise*.09;
     p.push();p.translate(n.x,n.y);p.noStroke();p.fill(...c,state.asphalt?190:160);p.beginShape();
-    for(let a=0;a<p.TWO_PI;a+=p.TWO_PI/18){const rr=r+(p.noise(n.phase+Math.cos(a)*.7,Math.sin(a)*.7)-.5)*amp;p.vertex(Math.cos(a)*rr,Math.sin(a)*rr)}p.endShape(p.CLOSE);
+    for(let a=0;a<p.TWO_PI;a+=p.TWO_PI/26){const low=p.noise(n.phase+Math.cos(a)*.52,Math.sin(a)*.52);const fine=p.noise(n.phase*1.7+Math.cos(a)*1.6,Math.sin(a)*1.6);const rr=r+(low-.5)*amp+(fine-.5)*amp*.34;p.vertex(Math.cos(a)*rr,Math.sin(a)*rr)}p.endShape(p.CLOSE);
     p.fill(state.asphalt?245:20,220);p.circle(0,0,3.2);p.pop();
   }
   function drawSpray(p){

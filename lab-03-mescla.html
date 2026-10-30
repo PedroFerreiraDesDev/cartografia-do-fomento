@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lab 03 — Mescla: rizoma, mancha, palimpsesto e mirante</title>
+<style>
+:root{--paper:#f7f6f1;--ink:#161616;--muted:#747474;--line:#d4d1c8;--if:#ff4f9a;--fundo:#31a8ff;--descentra:#65e77d}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rgba(247,246,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 20px}
+.brand{font-size:11px;font-weight:900;line-height:1;letter-spacing:-.04em;color:inherit;text-decoration:none}.topbar nav{margin-left:auto;display:flex;gap:4px}.topbar nav a{font-size:9px;font-weight:800;text-transform:uppercase;padding:9px;border-bottom:2px solid transparent;color:inherit;text-decoration:none}.topbar nav a:hover{border-color:var(--ink)}.status{font-size:9px;color:#888;border:1px solid var(--line);padding:6px 8px;white-space:nowrap}
+/* camadas do campo: cidade desfocada → manchas → rizoma (transparente) → carimbos → lupa */
+.stage{position:absolute;inset:62px 0 0;overflow:hidden;cursor:crosshair}
+.layer{position:absolute;inset:0}.layer canvas{display:block}
+#cityStage{filter:blur(7px) saturate(.6);opacity:.85;transform:scale(1.04)}
+#stainStage{mix-blend-mode:multiply;opacity:.85;pointer-events:none}
+#rizomaStage canvas{touch-action:none;-webkit-user-select:none;user-select:none}
+#stamps{pointer-events:none;z-index:5;overflow:hidden}
+.stamp{position:absolute;transform:translate(-50%,-50%) rotate(var(--rot));font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;font-stretch:condensed;font-weight:900;font-size:clamp(22px,4vw,54px);letter-spacing:-.06em;line-height:.9;color:var(--c);mix-blend-mode:multiply;opacity:var(--op,.85);white-space:nowrap;pointer-events:auto;cursor:pointer;transition:opacity .6s;user-select:none}
+.stamp small{display:block;font-family:Arial,Helvetica,sans-serif;font-stretch:normal;font-weight:800;font-size:9px;letter-spacing:.12em;color:var(--ink);opacity:.8;margin-top:4px}
+#lens{position:absolute;z-index:8;width:var(--d);height:var(--d);border-radius:50%;border:1.5px solid var(--ink);box-shadow:0 0 0 9999px rgba(247,246,241,.42),0 18px 40px rgba(0,0,0,.18);transform:translate(-50%,-50%);pointer-events:none;overflow:hidden;background:rgba(255,255,255,.35);backdrop-filter:saturate(1.3) contrast(1.08);display:none}
+#lens canvas{display:block}.lens-on #lens{display:block}.lens-on .stage{cursor:none}
+body.touch.lens-on #lens{pointer-events:auto;cursor:grab;touch-action:none}
+.lens-tag{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font-size:8px;font-weight:900;letter-spacing:.14em;color:var(--ink);background:rgba(247,246,241,.85);padding:3px 6px;white-space:nowrap}
+/* texto e ferramentas */
+.copy{position:absolute;z-index:20;left:22px;top:84px;width:min(320px,46vw);pointer-events:none}.copy .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.copy h1{margin:6px 0 8px;font-size:26px;letter-spacing:-.06em;line-height:1}.copy p{margin:0;font-size:11px;line-height:1.55;color:#666;background:rgba(247,246,241,.7)}
+.tools{position:absolute;z-index:22;right:18px;top:78px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;max-width:60vw}
+.chips,.row{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
+.tools button{border:1px solid #ccc;background:rgba(255,255,255,.92);padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.03em}.tools button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px}.chip i{width:7px;height:7px;border-radius:50%;background:var(--sw);opacity:.4}.chip.active{background:#fff!important;color:var(--ink)!important;border-color:var(--sw)!important}.chip.active i{opacity:1}.chip small{color:#888;font-size:8px}
+.foot{position:absolute;z-index:20;left:20px;right:20px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;pointer-events:none}.foot p{margin:0;max-width:420px;font-size:9px;line-height:1.5;color:#888}.foot span{font-size:9px;font-weight:800;background:rgba(255,255,255,.9);border:1px solid #ddd;padding:6px 8px}
+.guide{position:absolute;z-index:23;left:50%;bottom:80px;transform:translateX(-50%);max-width:min(520px,calc(100% - 40px));background:#161616;color:#fff;padding:9px 13px;font-size:10.5px;line-height:1.5;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s}.guide.show{opacity:1}
+/* ficha do nó aberto */
+.card{position:absolute;z-index:30;top:62px;right:0;bottom:0;width:min(380px,100%);background:rgba(247,246,241,.97);border-left:1px solid var(--line);padding:18px 20px 30px;overflow:auto;transform:translateX(104%);transition:transform .35s cubic-bezier(.2,.7,.2,1)}.card.open{transform:none}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}.card .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.card h2{margin:8px 0;font-size:24px;letter-spacing:-.05em;line-height:1.05}.card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
+.fact{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #e3e1da;padding:8px 0;font-size:11px}.fact span{color:#888}.fact b{text-align:right}
+.ghost{border:1px solid #bbb;background:#fff;padding:8px 10px;font-size:9px;font-weight:900}.primary{display:block;width:100%;margin:12px 0;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:11px;font-size:9px;font-weight:900;letter-spacing:.05em;text-align:center;text-decoration:none}
+.links{display:flex;flex-direction:column;gap:4px;margin:6px 0 14px}.links button{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid #e3e1da;background:#fff;padding:8px 10px;font-size:11px;text-align:left}.links button i{width:8px;height:8px;border-radius:50%;background:var(--sw);flex:none}.links button small{color:#888;font-size:9px;white-space:nowrap}.links .empty{font-size:11px;color:#888;border:1px dashed #ccc;padding:10px}
+.sub{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777;margin-top:12px}
+body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{opacity:.35}
+@media(max-width:780px){
+  .topbar{height:auto;min-height:84px;flex-wrap:wrap;gap:6px;padding:8px 10px 0}.brand{width:100%;padding:4px 0}.topbar nav{width:100%;margin:0 -10px;padding:0 10px;overflow-x:auto;scrollbar-width:none}.topbar nav::-webkit-scrollbar{display:none}.topbar nav a{flex:none}.status{display:none}
+  .stage{inset:84px 0 0}.card{top:auto;bottom:0;height:70vh;width:100%;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(104%)}
+  .copy{left:0;right:0;top:0;width:auto;padding:9px 118px 9px 14px;background:rgba(247,246,241,.9);border-bottom:1px solid #e6e4dc}.copy h1{font-size:16px;margin:3px 0 2px}.copy p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:9.5px;background:none}
+  .foot{top:8px;bottom:auto;left:auto;right:10px;display:block}.foot p{display:none}.foot span{display:inline-block;font-size:8.5px;max-width:104px;text-align:right}
+  .tools{top:auto;bottom:0;left:0;right:0;max-width:none;align-items:stretch;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(247,246,241,.95);border-top:1px solid #e6e4dc}
+  .chips,.row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;margin:0 -10px;padding:0 10px}.chips::-webkit-scrollbar,.row::-webkit-scrollbar{display:none}.tools button{flex:none;padding:9px 10px;font-size:9.5px;white-space:nowrap}
+  .guide{bottom:112px}body.card-open .tools{display:none}body.card-open .copy{opacity:.3}
+  .stamp{font-size:clamp(18px,6vw,30px)}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">CARTOGRAFIA<br>DO FOMENTO</a>
+  <nav aria-label="Laboratórios"><a href="lab-identidade.html">Lab 01 · Identidade</a><a href="lab-outras-cartografias.html">Lab 02 · Outras cartografias</a><a href="lab-03-mescla.html" style="border-color:#161616">Lab 03 · Mescla</a><a href="index.html">Protótipo ↗</a></nav>
+  <span class="status">LAB 03 · RIZOMA + MANCHA + PALIMPSESTO + MIRANTE</span>
+</header>
+
+<div class="stage" id="stage">
+  <div id="cityStage" class="layer" aria-hidden="true"></div>
+  <div id="stainStage" class="layer" aria-hidden="true"></div>
+  <div id="rizomaStage" class="layer"></div>
+  <div id="stamps" class="layer" aria-hidden="true"></div>
+  <div id="lens" style="--d:220px"><div id="lensCanvas"></div><span class="lens-tag" id="lensTag">MIRANTE · 0 À VISTA</span></div>
+
+  <div class="copy"><div class="kicker">LAB 03 / MESCLA DE INTERAÇÕES</div><h1>Rizoma sobre a cidade.</h1><p>O campo rizomático continua o principal: nós, ligações por linhas de fuga e giro em 3D. Por baixo, a cidade desfocada; por cima, a mancha que segue o seu gesto, o palimpsesto que carimba o que você abre e o mirante, uma lupa que mostra o que ainda está escondido.</p></div>
+
+  <div class="tools">
+    <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
+    <div class="row">
+      <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
+      <button id="lensBtn" title="Tecla L">Mirante (lupa)</button>
+      <button id="stainBtn" class="active">Mancha</button>
+      <button id="stampBtn" class="active">Palimpsesto</button>
+      <button id="clearBtn" title="Limpa manchas e carimbos">Limpar camadas</button>
+      <button id="resetBtn" title="Tecla R">Recomeçar</button>
+    </div>
+  </div>
+  <div class="foot"><p>Cidade, manchas e carimbos são camadas cenográficas: não representam a localização real das obras. Os dados vêm de <code>js/data.js</code>; as ligações e o 3D vêm do mesmo motor do protótipo (<code>js/rizoma.js</code>).</p><span id="counter">0 / 20 NÓS</span></div>
+  <div class="guide" id="guide"></div>
+
+  <aside class="card" id="card" aria-live="polite">
+    <div class="top"><div class="kicker" id="cKicker">NÓ ABERTO</div><button class="ghost" id="cClose">FECHAR</button></div>
+    <h2 id="cTitle"></h2><p id="cTrans"></p>
+    <div id="cFacts"></div>
+    <a class="primary" id="cOpen" href="index.html">VER NO PROTÓTIPO ↗</a>
+    <div class="sub">LINHAS LIGADAS</div><div class="links" id="cLinks"></div>
+    <div class="sub">LIGAÇÕES POSSÍVEIS</div><div class="links" id="cPot"></div>
+  </aside>
+</div>
+
+<script src="js/data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<script src="js/rizoma.js"></script>
+<script>
+(() => {
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const MECH = { "Incentivo Fiscal": [255, 79, 154], "Fundo Municipal": [49, 168, 255], "Descentra": [101, 231, 125] };
+const mechColor = m => MECH[m] || [120, 120, 120];
+const touch = matchMedia("(pointer:coarse)").matches; if (touch) document.body.classList.add("touch");
+const stage = $("#stage");
+const flags = { lens: false, stain: true, stamp: true };
+let R = null;
+
+/* ---------- camada 1: cidade desfocada (grade + horizonte, como no Lab 01) ---------- */
+new p5(p => {
+  p.setup = () => { const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("cityStage"); p.frameRate(18); p.noiseDetail(4, .55); };
+  p.windowResized = () => p.resizeCanvas(stage.clientWidth, stage.clientHeight);
+  p.draw = () => {
+    p.clear(); const t = p.frameCount * .002, step = 64;
+    p.stroke(50, 50, 46, 34); p.strokeWeight(1); p.noFill();
+    for (let x = -step; x < p.width + step; x += step) { p.beginShape(); for (let y = 0; y < p.height + step; y += step / 2) p.vertex(x + (p.noise(x * .01, y * .01, t) - .5) * 16, y); p.endShape(); }
+    for (let y = 0; y < p.height + step; y += step) p.line(0, y, p.width, y);
+    p.strokeWeight(1.3); p.stroke(70, 26); for (let x = -p.height; x < p.width + p.height; x += step * 4) p.line(x, 0, x + p.height, p.height);
+    const base = p.height * .78; p.stroke(32, 80); p.strokeWeight(1.6); p.beginShape();
+    for (let x = 0; x <= p.width + 20; x += 18) p.vertex(x, base - (p.noise(x * .003, t * .2) - .45) * 120 - Math.sin(x * .008) * 18); p.endShape();
+    // blocos da massa construída: proporções, não ilustração
+    p.noStroke(); p.fill(50, 50, 46, 14); for (let i = 0; i < 9; i++) { const w = 40 + (i * 37) % 90, h = 60 + (i * 53) % 170, x = (i * 173 + Math.sin(t + i) * 10) % (p.width + 100) - 50; p.rect(x, base - h, w, h); }
+  };
+});
+
+/* ---------- camada 2: manchas que seguem o gesto e tomam a cor do nó mais próximo ---------- */
+let stainP = null;
+const stains = [];
+new p5(p => {
+  stainP = p;
+  p.setup = () => { const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("stainStage"); p.noiseDetail(3, .5); p.clear(); };
+  p.windowResized = () => p.resizeCanvas(stage.clientWidth, stage.clientHeight);
+  p.draw = () => { // desenha as manchas pendentes e deixa tudo esmaecer bem devagar (palimpsesto de tinta)
+    while (stains.length) { const s = stains.shift(); blob(p, s.x, s.y, s.r, s.c, s.a); }
+    if (p.frameCount % 6 === 0) { p.noStroke(); p.fill(247, 246, 241, 2); p.rect(0, 0, p.width, p.height); }
+  };
+  p.stainClear = () => p.clear();
+});
+function blob(p, x, y, r, c, a) {
+  const ph = Math.random() * 1000; p.noStroke(); p.fill(c[0], c[1], c[2], a); p.beginShape();
+  for (let an = 0; an < p.TWO_PI; an += p.TWO_PI / 22) { const n = p.noise(ph + Math.cos(an) * .9, Math.sin(an) * .9); const rr = r * (.7 + n * .6); p.vertex(x + Math.cos(an) * rr, y + Math.sin(an) * rr); }
+  p.endShape(p.CLOSE);
+  for (let i = 0; i < 4; i++) { const an = Math.random() * p.TWO_PI, d = r * (1 + Math.random()); p.circle(x + Math.cos(an) * d, y + Math.sin(an) * d, 1 + Math.random() * 3); }
+}
+function nearestNode(x, y, maxD) { if (!R) return null; let best = null, bd = maxD; for (const n of R.screen().nodes) { const d = Math.hypot(n.x - x, n.y - y); if (d < bd) { bd = d; best = n; } } return best; }
+let lastStain = { x: -99, y: -99, t: 0 };
+function stainAt(x, y, big) {
+  if (!flags.stain || !R) return;
+  const n = nearestNode(x, y, 130), c = n ? mechColor(R.info(n.id).mechanism) : [110, 110, 110];
+  stains.push({ x, y, r: big ? 26 + Math.random() * 14 : 5 + Math.random() * 9, c, a: big ? 70 : (n ? 34 : 16) });
+}
+
+/* ---------- camada 3: o rizoma (motor do protótipo, fundo transparente) ---------- */
+const chips = {};
+function mountField() {
+  R = Rizoma.mount({
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, panelWidth: 380,
+    treeTop: () => innerWidth <= 780 ? 100 : 170, treeBottom: () => innerWidth <= 780 ? 120 : 50,
+    onChange: sync, onOpen: openCard, onHover: h => { if (h && h.kind === "node") stainAt(h.x, h.y, false); }
+  });
+  window.Lab3Rizoma = R;
+  for (const t in Rizoma.LINES) {
+    const L = Rizoma.LINES[t], b = document.createElement("button"); b.className = "chip"; b.style.setProperty("--sw", `rgb(${L.color.join(",")})`);
+    b.innerHTML = `<i></i><span>${L.label}</span><small>0</small>`; b.onclick = () => { R.toggleLine(t); if (R.state().focus) R.refresh(); }; $("#chips").appendChild(b); chips[t] = b;
+  }
+  sync(R.state());
+}
+function sync(s) {
+  for (const t in chips) { chips[t].classList.toggle("active", !!s.active[t]); chips[t].querySelector("small").textContent = s.linesByType ? s.linesByType[t] : 0; }
+  $("#depthBtn").classList.toggle("active", s.depth);
+  $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS`;
+  document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
+  if (s.revealed >= 3 && !s.anyLine) guide("Ligue uma linha de fuga: ano, mecanismo, edital, escala, regional ou curadoria."); else if (s.revealed < 3) guide(touch ? "Toque no campo para revelar; ligue o mirante para ver o que está escondido." : "Mova a mão para revelar; ligue o mirante para ver o que está escondido.");
+  else guide("");
+}
+let guideT = 0; function guide(t) { const g = $("#guide"); clearTimeout(guideT); if (!t) { g.classList.remove("show"); return; } g.textContent = t; g.classList.add("show"); guideT = setTimeout(() => g.classList.remove("show"), 5200); }
+
+/* ---------- camada 4: palimpsesto — o que você abre fica carimbado; cada novo carimbo apaga um pouco os anteriores ---------- */
+let lastStamp = null;
+function stamp(i) {
+  if (!flags.stamp || lastStamp === i.id) return; lastStamp = i.id;
+  const layer = $("#stamps"); const olds = $$(".stamp"); for (const o of olds) o.style.setProperty("--op", Math.max(.12, parseFloat(o.style.getPropertyValue("--op") || .85) * .72)); while (olds.length > 12) olds.shift().remove();
+  const el = document.createElement("div"); el.className = "stamp"; const c = mechColor(i.mechanism);
+  el.style.cssText = `left:${i.x}px;top:${i.y + 34}px;--rot:${(Math.random() * 10 - 5).toFixed(1)}deg;--c:rgba(${c.join(",")},.9);--op:.85`;
+  el.innerHTML = `${Rizoma.shortTitle(i.title)}<small>${i.year} · ${i.mechanism.toUpperCase()}</small>`; el.onclick = () => R.open(i.id); layer.appendChild(el);
+  stainAt(i.x, i.y, true);
+}
+
+/* ---------- camada 5: mirante — a lupa mostra os nós ainda escondidos e os revela ao toque ---------- */
+const lens = $("#lens"); let lensPos = { x: 0, y: 0 }, lensR = 110;
+new p5(p => {
+  p.setup = () => { const c = p.createCanvas(lensR * 2, lensR * 2); c.parent("lensCanvas"); p.frameRate(30); };
+  p.draw = () => {
+    p.clear(); if (!flags.lens || !R) return;
+    const gs = R.ghosts().filter(g => Math.hypot(g.x - lensPos.x, g.y - lensPos.y) < lensR - 6);
+    p.textSize(10); p.textAlign(p.LEFT, p.CENTER);
+    for (const g of gs) { const x = g.x - lensPos.x + lensR, y = g.y - lensPos.y + lensR, c = mechColor(g.mechanism); p.noFill(); p.stroke(c[0], c[1], c[2], 230); p.strokeWeight(1.5); p.circle(x, y, g.circuit === "Monumental" ? 16 : 10); p.noStroke(); p.fill(22); p.text(Rizoma.shortTitle(g.title), x + 12, y); }
+    $("#lensTag").textContent = gs.length ? `MIRANTE · ${gs.length} ESCONDIDO${gs.length > 1 ? "S" : ""} · ${touch ? "TOQUE" : "CLIQUE"} PARA REVELAR` : "MIRANTE · NADA ESCONDIDO AQUI";
+  };
+});
+function moveLens(x, y) { lensPos = { x, y }; lens.style.left = x + "px"; lens.style.top = y + "px"; }
+function setLens(on) { flags.lens = on; document.body.classList.toggle("lens-on", on); $("#lensBtn").classList.toggle("active", on); if (on && touch) moveLens(stage.clientWidth / 2, stage.clientHeight * .45); if (on) guide(touch ? "Arraste a lupa; toque nela para revelar o que ela mostra." : "Passe a lupa pelo campo; clique para revelar o que ela mostra."); }
+stage.addEventListener("pointermove", e => { const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top; if (!touch) { if (flags.lens) moveLens(x, y); if (Math.hypot(x - lastStain.x, y - lastStain.y) > 22) { lastStain = { x, y }; stainAt(x, y, false); } } });
+stage.addEventListener("pointerdown", e => { if (!flags.lens || !R || touch) return; const r = stage.getBoundingClientRect(); const n = R.revealAt(e.clientX - r.left, e.clientY - r.top, lensR, 8); if (n) guide(`${n} nó(s) revelado(s) pelo mirante.`); });
+// no toque, a lupa é um objeto: arrasta-se com o dedo; um toque curto revela
+let lensDrag = null;
+lens.addEventListener("pointerdown", e => { if (!touch) return; lensDrag = { x: e.clientX, y: e.clientY, moved: 0 }; lens.setPointerCapture(e.pointerId); });
+lens.addEventListener("pointermove", e => { if (!lensDrag) return; const dx = e.clientX - lensDrag.x, dy = e.clientY - lensDrag.y; lensDrag.x = e.clientX; lensDrag.y = e.clientY; lensDrag.moved += Math.abs(dx) + Math.abs(dy); moveLens(lensPos.x + dx, lensPos.y + dy); });
+lens.addEventListener("pointerup", () => { if (lensDrag && lensDrag.moved < 8 && R) { const n = R.revealAt(lensPos.x, lensPos.y, lensR, 8); guide(`${n} nó(s) revelado(s) pelo mirante.`); } lensDrag = null; });
+stage.addEventListener("touchmove", e => { if (!R) return; for (const t of e.touches) { const r = stage.getBoundingClientRect(); stainAt(t.clientX - r.left, t.clientY - r.top, false); } }, { passive: true });
+
+/* ---------- ficha ---------- */
+function openCard(i) {
+  stamp(i);
+  $("#cKicker").textContent = ((i.trailIndex > 1 ? `NÓ ${i.trailIndex} DA TRILHA · ` : "NÓ ABERTO · ") + i.circuit).toUpperCase();
+  $("#cTitle").textContent = i.title; $("#cTrans").textContent = i.translation;
+  $("#cFacts").innerHTML = [["Ano", i.year], ["Mecanismo", i.mechanism], ["Edital", i.edital], ["Valor registrado", i.valueText || Rizoma.money(i.value)], ["Escala", i.scale]].map(([k, v]) => `<div class="fact"><span>${k}</span><b>${v == null || v === "" ? "A verificar" : v}</b></div>`).join("");
+  $("#cOpen").href = `index.html#${i.id}`;
+  const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${Rizoma.shortTitle(c.title)}</span><small>${c.why} →</small></button>`).join("") : `<div class="empty">Nenhuma linha ligada chega aqui. Ligue uma linha de fuga nas ferramentas.</div>`;
+  const P = {}; for (const q of (i.potentials || [])) (P[q.type] = P[q.type] || []).push(q);
+  $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button data-line="${t}" style="--sw:rgb(${Rizoma.LINES[t].color.join(",")})"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} nó(s)</small></button>`).join("") : `<div class="empty">Revele mais nós para ver ligações possíveis.</div>`;
+  $$("[data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("[data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
+  $("#card").classList.add("open");
+}
+$("#cClose").onclick = () => R.close();
+
+/* ---------- ferramentas ---------- */
+$("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
+$("#lensBtn").onclick = () => setLens(!flags.lens);
+$("#stainBtn").onclick = () => { flags.stain = !flags.stain; $("#stainBtn").classList.toggle("active", flags.stain); };
+$("#stampBtn").onclick = () => { flags.stamp = !flags.stamp; $("#stampBtn").classList.toggle("active", flags.stamp); };
+$("#clearBtn").onclick = () => { stainP.stainClear(); $("#stamps").innerHTML = ""; };
+$("#resetBtn").onclick = () => { R.reset(); stainP.stainClear(); $("#stamps").innerHTML = ""; };
+document.addEventListener("keydown", e => { if (e.key.toLowerCase() === "l") setLens(!flags.lens); });
+window.addEventListener("resize", () => R && R.resize());
+
+mountField();
+if (touch) setTimeout(() => { for (let i = 0; i < 4; i++) R.revealOne(); }, 600);
+})();
+</script>
+</body>
+</html>

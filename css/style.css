@@ -404,3 +404,6 @@ html,body{min-height:100%;min-height:100dvh}
     text-align:center!important;
   }
 }
+
+/* toque: o canvas do campo não rola nem amplia a página; o gesto é do campo */
+.rizoma-stage canvas{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}

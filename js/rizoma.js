@@ -178,6 +178,12 @@
     }
 
     /* ---------- revelação pelo gesto ---------- */
+    function revealAt(x, y, r, max = 3) { // revela os nós ocultos mais próximos de (x,y), dentro do raio r (toque no vazio, lupa do Lab 03)
+      const near = nodes.filter(n => !n.revealed).map(n => ({ n, d: p.dist(x, y, n.scr.x, n.scr.y) })).filter(o => o.d < r).sort((a, b) => a.d - b.d).slice(0, max);
+      for (const o of near) reveal(o.n, o.n.scr.x, o.n.scr.y);
+      if (!near.length) { const left = nodes.filter(n => !n.revealed); if (left.length) reveal(p.random(left), x + p.random(-60, 60), y + p.random(-60, 60)); return 1; }
+      return near.length;
+    }
     function reveal(n, x, y) {
       if (!n || n.revealed) return;
       n.revealed = true; n.born = p.millis();
@@ -348,7 +354,7 @@
     /* ---------- desenho ---------- */
     function drawAll() {
       const dt = Math.min(2, p.deltaTime / 16.7);
-      if (S.paper) p.background(255); else p.background(11, 14, 20);
+      if (opts.transparent) p.clear(); else if (S.paper) p.background(255); else p.background(11, 14, 20); // transparente: o Lab 03 desenha a cidade por baixo
       if (spray) p.image(spray, 0, 0);
       // câmera: aproxima ao sair da capa
       if (Math.abs(view.zoom - view.zoomTarget) > 0.0005) view.zoom += (view.zoomTarget - view.zoom) * (S.reduced ? 1 : 0.06 * dt); else view.zoom = view.zoomTarget;
@@ -629,7 +635,7 @@
       const n = byId(id); if (!n) return null;
       const d = n.p;
       return {
-        id, index: n.i, title: d.title, circuit: d.circuit, year: d.year, mechanism: d.mechanism, translation: TRANSLATE[d.mechanism] || d.mechanism,
+        id, index: n.i, title: d.title, circuit: d.circuit, x: n.scr.x, y: n.scr.y, year: d.year, mechanism: d.mechanism, translation: TRANSLATE[d.mechanism] || d.mechanism,
         edital: d.edital, value: d.value, valueText: d.value == null ? null : money(d.value), scale: scaleOf(d.value), region: d.region, proponent: d.proponent,
         verification: d.verification, issue: d.issue, trailIndex: S.trail.indexOf(n) + 1, trail: S.trail.map(t => shortTitle(t.p.title)),
         connections: connections(id), potentials: potentials(id)
@@ -741,7 +747,7 @@
           else{touchInspect=n;touchInspectAt=p.millis();S.hover=n;lastHoverKey="";cb.change(state());}
         }else{
           touchInspect=null;S.hover=null;lastHoverKey="";
-          if(S.mode==="rizoma"){pointerDist=999;lastReveal=0;pointerMove(g.x,g.y);}
+          if(S.mode==="rizoma"){pointerDist=999;lastReveal=0;pointerMove(g.x,g.y);revealAt(g.x,g.y,160,2);} // toque no vazio: revela por perto
         }
         return false;
       };
@@ -787,6 +793,8 @@
       close() { S.focus = null; touchInspect=null; cb.change(state()); },
       refresh() { if (S.focus) cb.open(info(S.focus.p.id)); },
       revealAll() { for (const n of nodes) reveal(n); },
+      revealAt(x, y, r, max) { return revealAt(x, y, r, max); },
+      ghosts() { return nodes.filter(n => !n.revealed).map(n => ({ id: n.p.id, title: n.p.title, mechanism: n.p.mechanism, year: n.p.year, circuit: n.p.circuit, x: n.scr.x, y: n.scr.y, s: n.scr.s })); },
       zoomBy(f) { zoomAt(f, p.width / 2, p.height / 2); },
       zoomReset,
       zoom() { return view.zoomTarget; },

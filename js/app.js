@@ -50,6 +50,7 @@ function handleEntered(){
   document.body.classList.remove("intro-active");
   $("#intro")?.classList.add("hidden");
   if(R)R.setIntro(false);
+  if(R&&matchMedia("(pointer: coarse)").matches&&!R.state().started)setTimeout(()=>{for(let i=0;i<5;i++)R.revealOne()},500); // tela de toque: não há "mover a mão", o campo já mostra alguns nós
   setTimeout(showOnboarding,80);
 }
 $("#onboardingStart")?.addEventListener("click",closeOnboarding);

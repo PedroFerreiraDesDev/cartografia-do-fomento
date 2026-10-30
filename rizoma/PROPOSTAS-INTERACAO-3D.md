@@ -205,6 +205,19 @@ Verificado no navegador do app: sequência ociosa (ritmo calmo, escolhido pelo a
 
 Nota de processo: uma substituição automática mal escrita duplicou todas as linhas de `js/app.js`; o arquivo foi reconstruído a partir das linhas pares e conferido no navegador (sem erros no console).
 
+## 9.4 Laboratórios (30/10/2026, noite): Lab 01 recebido, Lab 03 criado
+
+- **Lab 01 · Identidade generativa** (`lab-identidade.html`): chegou pronto na pasta, feito fora desta sessão (grade institucional, horizonte, nós orgânicos por mecanismo, tipografia em tensão, paleta por natureza de relação). Foi mantido como está, só ganhou o link para o Lab 03 no menu.
+- **Lab 02** (Campo / Palimpsesto / Mirante): o autor descreve três campos — fundo desfocado com mancha que reage ao que é colocado; rastro e clique que se acumulam como palimpsesto; descoberta pela lupa (mirante). Estava no repositório GitHub (`lab-outras-cartografias.html`, quatro modos: Campo, Palimpsesto, Mirante e Trama) e passou a existir aqui quando a pasta virou clone do repositório (ver `AVALIACAO-GITHUB-E-PHYSARUM.md`). O erro citado pelo autor (`index.js:102 … reading 'map'`) não vem de nenhum arquivo do projeto; junto com `Unchecked runtime.lastError…`, é assinatura de extensão do navegador.
+- **Lab 03 · Mescla** (`lab-03-mescla.html`): mantém o rizoma como principal (mesmo motor `js/rizoma.js`: nós, linhas de fuga, puxão, 3D, prévia) e mescla, em camadas sobrepostas no mesmo palco:
+  1. *Cidade desfocada* por baixo (grade, horizonte e massa construída do Lab 01, com `filter: blur`);
+  2. *Mancha*: cada gesto deixa manchas de tinta que tomam a cor do mecanismo do nó mais próximo (rosa IF, azul Fundo, verde Descentra); abrir um nó deixa uma mancha grande; a camada esmaece devagar (tinta sobre tinta);
+  3. *Rizoma* transparente por cima (opção nova `transparent:true` do motor);
+  4. *Palimpsesto*: cada nó aberto é carimbado em tipografia condensada na cor do mecanismo; cada carimbo novo apaga um pouco os anteriores (opacidade ×0,72, mínimo 0,12, até 12 camadas); tocar num carimbo reabre o nó;
+  5. *Mirante*: uma lupa que mostra os nós ainda escondidos (círculos e nomes) dentro do seu raio; clicar (ou tocar na lupa, no celular, onde ela é arrastável) revela o que ela mostra (`R.revealAt`, novo no motor, junto com `R.ghosts()`).
+  Ferramentas: chips das seis linhas, 3D, Mirante, Mancha, Palimpsesto, Limpar camadas, Recomeçar; ficha lateral (folha inferior no celular) com linhas ligadas e ligações possíveis; tecla L liga a lupa. Verificado no navegador do app em desktop e 375px, sem erros no console.
+- **Toque (pedido "quando reduzo a tela não dá para clicar")**: no app o canvas do campo tinha `touch-action: auto`, então num celular real o dedo rolava a página em vez de revelar; agora `touch-action: none`. Em tela de toque não existe "mover a mão": ao entrar, cinco nós já aparecem; um toque no vazio revela até três nós perto do dedo (`revealAt`); a mensagem do campo vazio passou a "toque ou arraste para revelar". No emulador do app os toques nos chips, no campo e nos botões respondem; em aparelho real ainda não foi testado.
+
 ## 10. O que precisa ser decidido antes de implementar
 
 1. A prévia é painel lateral (desktop) + folha inferior (celular), ou folha inferior sempre?

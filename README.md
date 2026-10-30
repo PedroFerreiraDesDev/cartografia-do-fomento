@@ -89,3 +89,9 @@ O laboratório é exploratório: suas decisões visuais não devem ser tratadas 
 - usa a mesma base `js/data.js`;
 - foi pensado para toque e uso em celular;
 - não substitui o Rizoma atual: serve para comparar linguagens cartográficas antes da decisão final.
+
+## Lab 03 — Mescla
+
+- `lab-03-mescla.html` — o rizoma 3D do protótipo (mesmo `js/rizoma.js`) sobre a cidade desfocada do Lab 01, com três camadas do Lab 02 recombinadas: mancha (tinta que segue o gesto e toma a cor do mecanismo do nó mais próximo), palimpsesto (cada nó aberto é carimbado; carimbos novos apagam um pouco os antigos) e mirante (lupa que mostra os nós ainda escondidos e os revela ao clique/toque; tecla L).
+- O motor ganhou `transparent`, `ghosts()` e `revealAt()` para isso; nada muda no protótipo principal.
+- Avaliação do repositório e da proposta Physarum: `rizoma/AVALIACAO-GITHUB-E-PHYSARUM.md`.

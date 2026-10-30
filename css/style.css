@@ -248,3 +248,9 @@ html,body{min-height:100%;min-height:100dvh}
   .line-chips .chip{min-height:38px}
   .tools-secondary>button,.zoom-group button,.more-menu>button{min-height:38px}
 }
+
+/* onboarding interaction hardening */
+.interaction-onboarding{pointer-events:auto;touch-action:manipulation}
+.onboarding-card{pointer-events:auto}
+.onboarding-actions button{position:relative;z-index:2;touch-action:manipulation;min-height:44px}
+.interaction-onboarding[hidden]{display:none!important;pointer-events:none!important}

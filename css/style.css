@@ -203,3 +203,18 @@ body.preview-open .indicator-side{opacity:.35;transition:opacity .3s}body.previe
 .discover-tools .chip.suggested{border-color:var(--sw);box-shadow:0 0 0 2px rgba(0,0,0,.08);position:relative}
 .discover-tools .chip.suggested::after{content:"SUGESTÃO";position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:7px;letter-spacing:.08em;color:#777;white-space:nowrap}
 @media(max-width:780px){.project-search{order:-1;min-width:0;max-width:none;width:100%}.project-search input{height:36px;font-size:11px}.search-results{left:0;right:0;width:100%}.discover-tools .chip.suggested::after{display:none}}
+
+
+/* ---------- onboarding estrutural — neutro, antes da identidade final ---------- */
+.interaction-onboarding{position:fixed;inset:0;z-index:260;display:grid;place-items:center;padding:20px;background:rgba(247,246,241,.82);backdrop-filter:blur(8px);opacity:0;transition:opacity .26s ease}
+.interaction-onboarding[hidden]{display:none}.interaction-onboarding.show{opacity:1}
+.onboarding-card{width:min(560px,100%);background:#fff;border:1px solid #cfcfca;padding:28px;box-shadow:0 22px 70px rgba(0,0,0,.12);transform:translateY(8px);transition:transform .26s ease}
+.interaction-onboarding.show .onboarding-card{transform:none}
+.onboarding-card h2{font-size:30px;line-height:1.02;letter-spacing:-.045em;margin:7px 0 22px}
+.onboarding-steps{display:grid;gap:0;border-top:1px solid #ddd}
+.onboarding-steps>div{display:grid;grid-template-columns:38px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid #ddd}
+.onboarding-steps b{font-size:11px;border:1px solid #222;width:28px;height:28px;border-radius:50%;display:grid;place-items:center}
+.onboarding-steps span{display:flex;flex-direction:column;gap:3px}.onboarding-steps strong{font-size:13px}.onboarding-steps small{font-size:11px;color:#777;line-height:1.45}
+.onboarding-card>p{font-size:10.5px;color:#777;line-height:1.5;margin:16px 0 0}
+.onboarding-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:780px){.interaction-onboarding{align-items:end;padding:10px}.onboarding-card{padding:20px 18px calc(20px + env(safe-area-inset-bottom));border-radius:14px 14px 4px 4px}.onboarding-card h2{font-size:25px}.onboarding-actions .primary{flex:1;justify-content:center}}

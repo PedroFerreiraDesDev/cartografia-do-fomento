@@ -146,9 +146,9 @@ function renderTrailBar(s){
   $$("[data-trail]").forEach(b=>b.onclick=()=>R.open(b.dataset.trail));
 }
 /* menu "Mais": ações terciárias */
-$("#moreBtn").onclick=e=>{e.stopPropagation();const open=$("#moreMenu").hidden;$("#moreMenu").hidden=!open;$("#moreBtn").setAttribute("aria-expanded",String(open))};
-document.addEventListener("click",e=>{if(!e.target.closest(".more-menu")){$("#moreMenu").hidden=true;$("#moreBtn").setAttribute("aria-expanded","false")}});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#moreMenu").hidden=true;$("#moreBtn").setAttribute("aria-expanded","false")}});
+$("#moreBtn").onclick=e=>{e.stopPropagation();const open=$("#moreMenu").hidden;$("#moreMenu").hidden=!open;$("#moreBtn").setAttribute("aria-expanded",String(open));document.body.classList.toggle("tools-menu-open",open)};
+document.addEventListener("click",e=>{if(!e.target.closest(".more-menu")){$("#moreMenu").hidden=true;$("#moreBtn").setAttribute("aria-expanded","false");document.body.classList.remove("tools-menu-open")}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#moreMenu").hidden=true;$("#moreBtn").setAttribute("aria-expanded","false");document.body.classList.remove("tools-menu-open")}});
 /* card visual do nó ou da relação sob o mouse (no rodapé, como a lateral dos Indicadores) */
 function showHoverCard(h){
   const card=$("#hoverCard");
@@ -188,8 +188,8 @@ $("#resetWalls").onclick=()=>R&&R.reset();
 /* ---------- busca: uma porta direta sem substituir a exploração rizomática ---------- */
 const searchInput=$("#projectSearch"),searchResults=$("#searchResults");
 const norm=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
-function closeSearch(){if(searchResults){searchResults.hidden=true;searchResults.innerHTML=""}}
-function renderSearch(){if(!searchInput||!searchResults)return;const q=norm(searchInput.value.trim());if(q.length<2){closeSearch();return}const list=PROJECTS.filter(p=>norm([p.title,p.year,p.mechanism,p.edital,p.circuit,p.region].filter(Boolean).join(" ")).includes(q)).slice(0,8);searchResults.innerHTML=list.length?list.map(p=>`<button type="button" data-search-id="${p.id}"><small>${p.year} · ${esc(p.mechanism)} · ${esc(p.circuit)}</small><b>${esc(p.title)}</b></button>`).join(""):`<div class="search-empty">Nenhum projeto encontrado.</div>`;searchResults.hidden=false;$$("[data-search-id]").forEach(b=>b.onclick=()=>{const id=b.dataset.searchId;closeSearch();searchInput.value="";openPreview(id,"discover")})}
+function closeSearch(){if(searchResults){searchResults.hidden=true;searchResults.innerHTML=""}document.body.classList.remove("search-open")}
+function renderSearch(){if(!searchInput||!searchResults)return;const q=norm(searchInput.value.trim());if(q.length<2){closeSearch();return}const list=PROJECTS.filter(p=>norm([p.title,p.year,p.mechanism,p.edital,p.circuit,p.region].filter(Boolean).join(" ")).includes(q)).slice(0,8);searchResults.innerHTML=list.length?list.map(p=>`<button type="button" data-search-id="${p.id}"><small>${p.year} · ${esc(p.mechanism)} · ${esc(p.circuit)}</small><b>${esc(p.title)}</b></button>`).join(""):`<div class="search-empty">Nenhum projeto encontrado.</div>`;searchResults.hidden=false;document.body.classList.add("search-open");$("[data-search-id]").forEach(b=>b.onclick=()=>{const id=b.dataset.searchId;closeSearch();searchInput.value="";openPreview(id,"discover")})}
 if(searchInput){searchInput.addEventListener("input",renderSearch);searchInput.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSearch();searchInput.blur()}if(e.key==="Enter"){const first=searchResults&&searchResults.querySelector("[data-search-id]");if(first)first.click()}})}
 document.addEventListener("click",e=>{if(!e.target.closest(".project-search"))closeSearch()});
 document.addEventListener("keydown",e=>{if(e.key==="/"&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!/INPUT|TEXTAREA/.test(document.activeElement?.tagName||"")){e.preventDefault();searchInput?.focus()}});

@@ -254,3 +254,51 @@ html,body{min-height:100%;min-height:100dvh}
 .onboarding-card{pointer-events:auto}
 .onboarding-actions button{position:relative;z-index:2;touch-action:manipulation;min-height:44px}
 .interaction-onboarding[hidden]{display:none!important;pointer-events:none!important}
+
+
+/* ---------- onboarding v5: orientação não bloqueante ---------- */
+.interaction-onboarding{
+  position:fixed!important;
+  inset:auto 14px auto auto!important;
+  top:78px!important;
+  z-index:90!important;
+  width:min(360px,calc(100vw - 28px))!important;
+  display:block;
+  padding:0!important;
+  background:transparent!important;
+  backdrop-filter:none!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  transition:none!important;
+}
+.interaction-onboarding[hidden]{display:none!important}
+.interaction-onboarding .onboarding-card{
+  width:100%!important;
+  background:rgba(255,255,255,.97)!important;
+  border:1px solid #cfcfca!important;
+  padding:18px!important;
+  box-shadow:0 14px 36px rgba(0,0,0,.12)!important;
+  transform:none!important;
+  pointer-events:auto!important;
+}
+.interaction-onboarding .onboarding-card h2{font-size:22px!important;margin:5px 0 14px!important}
+.interaction-onboarding .onboarding-steps>div{padding:9px 0!important}
+.interaction-onboarding .onboarding-actions{margin-top:12px!important}
+.interaction-onboarding .onboarding-actions button{min-height:42px;touch-action:manipulation}
+@media(max-width:780px){
+  .interaction-onboarding{
+    top:96px!important;
+    right:8px!important;
+    left:8px!important;
+    width:auto!important;
+  }
+  .interaction-onboarding .onboarding-card{
+    max-height:42dvh;
+    overflow:auto;
+    border-radius:10px!important;
+    padding:14px!important;
+  }
+  .interaction-onboarding .onboarding-card h2{font-size:20px!important}
+  .interaction-onboarding .onboarding-steps{display:grid;grid-template-columns:1fr!important}
+  .interaction-onboarding .onboarding-steps>div{grid-template-columns:30px 1fr!important;padding:7px 0!important}
+}

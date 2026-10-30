@@ -1,4 +1,5 @@
 name: E2E live site smoke test
+# trigger: live-e2e-v2
 
 on:
   workflow_dispatch:

@@ -29,15 +29,14 @@ function showPage(name){
 /* a capa é uma camada sobre o campo: o rizoma já vive atrás dela, em 3D, desde o primeiro quadro (montagem no fim do arquivo) */
 if(!window.__cartografiaEntered)document.body.classList.add("intro-active");
 const onboarding=$("#interactionOnboarding");
-const ONBOARD_KEY="cartografia:onboarding-v4";
+const ONBOARD_KEY="cartografia:onboarding-v5";
 let onboardingHandled=false;
 function hasSeenOnboarding(){try{return localStorage.getItem(ONBOARD_KEY)==="1"}catch(_){return false}}
 function markOnboardingSeen(){try{localStorage.setItem(ONBOARD_KEY,"1")}catch(_){}}
 function showOnboarding(){
   if(!onboarding||hasSeenOnboarding())return;
   onboarding.hidden=false;
-  onboarding.classList.remove("show");
-  requestAnimationFrame(()=>onboarding.classList.add("show"));
+  onboarding.classList.add("show");
 }
 function closeOnboarding(){
   if(!onboarding)return;
@@ -49,14 +48,12 @@ function handleEntered(){
   if(onboardingHandled)return;
   onboardingHandled=true;
   document.body.classList.remove("intro-active");
-  $("#intro")?.classList.add("leaving");
   $("#intro")?.classList.add("hidden");
   if(R)R.setIntro(false);
-  window.setTimeout(showOnboarding,120);
+  setTimeout(showOnboarding,80);
 }
 $("#onboardingStart")?.addEventListener("click",closeOnboarding);
 $("#onboardingSkip")?.addEventListener("click",closeOnboarding);
-onboarding?.addEventListener("click",e=>{if(e.target===onboarding)closeOnboarding()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&onboarding&&!onboarding.hidden)closeOnboarding()});
 window.addEventListener("cartografia:entered",handleEntered);
 if(window.__cartografiaEntered)handleEntered();

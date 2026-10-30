@@ -134,17 +134,32 @@
   const btn=document.getElementById("enterBtn");
   const intro=document.getElementById("intro");
   if(!btn||!intro)return;
+  const onboarding=document.getElementById("interactionOnboarding");
+  const ONBOARD_KEY="cartografia:onboarding-v3";
+  const showOnboarding=()=>{
+    if(!onboarding || localStorage.getItem(ONBOARD_KEY)==="1") return;
+    onboarding.hidden=false;
+    requestAnimationFrame(()=>onboarding.classList.add("show"));
+  };
+  const closeOnboarding=()=>{
+    if(!onboarding)return;
+    onboarding.classList.remove("show");
+    localStorage.setItem(ONBOARD_KEY,"1");
+    window.setTimeout(()=>onboarding.hidden=true,260);
+  };
   const dismiss=()=>{
     document.body.classList.remove("intro-active");
     intro.classList.add("leaving");
-    window.setTimeout(()=>intro.classList.add("hidden"),420);
+    window.setTimeout(()=>{intro.classList.add("hidden");showOnboarding();},420);
   };
+  document.getElementById("onboardingStart")?.addEventListener("click",closeOnboarding);
+  document.getElementById("onboardingSkip")?.addEventListener("click",closeOnboarding);
   btn.addEventListener("click",dismiss,{passive:true});
   btn.addEventListener("pointerup",e=>{ if(e.pointerType==="touch") dismiss(); },{passive:true});
 })();
 </script>
 <script src="js/data.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
 <script src="js/rizoma.js"></script>
 <script src="js/app.js"></script>
 </body>

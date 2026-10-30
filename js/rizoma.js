@@ -60,7 +60,9 @@
     const S = { mode: "rizoma", depth: !!opts.depth, intro: !!opts.intro, cutting: false, paused: false, paper: !!opts.paper, reduced: !!opts.reduced, focus: null, hover: null, hoverEdge: null, trail: [], started: false, cutKeys: new Set(), visible: true };
     const view = { rx: -0.35, ry: 0.45, lastDrag: 0, zoom: S.intro ? 0.72 : 1, zoomTarget: S.intro ? 0.72 : 1, px: 0, py: 0, pxT: 0, pyT: 0 };
     const ZOOM_MIN = 0.5, ZOOM_MAX = 3.2;
+    const coarsePointer = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
     let pinch = null; // { d, x, y } da pinça em andamento
+    let touchGesture = null, touchInspect = null, touchInspectAt = 0;
     let nodes = [], edges = [], regrown = [], spray = null, cnv = null, p = null;
     let pointerDist = 0, lastPointer = null, lastReveal = 0, lastHoverKey = "";
 
@@ -194,8 +196,11 @@
       if (lastPointer) pointerDist += Math.min(80, p.dist(x, y, lastPointer.x, lastPointer.y));
       lastPointer = { x, y };
       if (p.frameCount % 2 === 0) dot(x + p.random(-8, 8), y + p.random(-8, 8), p.random(2, 9));
-      for (const n of nodes) if (!n.revealed && p.dist(x, y, n.scr.x, n.scr.y) < 90) reveal(n);
-      if (pointerDist > 140 && now - lastReveal > 700) {
+      const revealRadius = coarsePointer ? 52 : 90;
+      const revealDistance = coarsePointer ? 230 : 140;
+      const revealCooldown = coarsePointer ? 1050 : 700;
+      for (const n of nodes) if (!n.revealed && p.dist(x, y, n.scr.x, n.scr.y) < revealRadius) reveal(n);
+      if (pointerDist > revealDistance && now - lastReveal > revealCooldown) {
         pointerDist = 0; lastReveal = now;
         let best = null, bd = 1e9;
         for (const n of nodes) if (!n.revealed) { const d = p.dist(x, y, n.scr.x, n.scr.y); if (d < bd) { bd = d; best = n; } }
@@ -261,7 +266,7 @@
       const narrow = treeNarrow(), usable = treeUsable();
       const out = { roots: [], years: [], links: [], narrow, width: usable, top, height: 0, labelMax: 30 };
       if (narrow) { // celular: sumário indentado, uma linha por nó, rolável
-        const xm = 18, xy = 46, xp = 78, row = 24; let y = top;
+        const xm = 16, xy = 44, xp = 112, row = 36; let y = top;
         mechs.forEach(m => {
           const ps = nodes.filter(n => n.p.mechanism === m);
           const years = [...new Set(ps.map(n => n.p.year))].sort();
@@ -272,7 +277,7 @@
           });
           y += row * 0.6;
         });
-        out.height = y - top; out.labelMax = Math.floor((p.width - 100) / 5.6);
+        out.height = y - top; out.labelMax = Math.max(12,Math.floor((p.width - 142) / 5.6));
         return out;
       }
       // desktop: leque (mecanismo no alto, anos abrindo em leque, projetos pendurados)
@@ -319,7 +324,7 @@
     /* ---------- hover: nó tem prioridade; depois, linha ---------- */
     function updateHover() {
       if (S.intro) { S.hover = null; S.hoverEdge = null; return; }
-      S.hover = pickNode(p.mouseX, p.mouseY);
+      S.hover = coarsePointer && touchInspect ? touchInspect : pickNode(p.mouseX, p.mouseY);
       S.hoverEdge = null;
       if (!S.hover && S.mode === "rizoma") {
         let best = null, bd = 100; // 10px
@@ -435,6 +440,25 @@
     function drawTreeArcs(n) {
       p.noFill();
       const related = nodes.filter(m => m !== n && relationsBetween(n, m).length);
+      if (treeInfo && treeInfo.narrow) {
+        const P=(x,y)=>project({x,y,z:0});
+        for (const m of related) {
+          const rels=relationsBetween(n,m);
+          rels.slice(0,3).forEach((r,k)=>{
+            const c=col(r.t), rail=P(82-k*7,0).x, A=n.scr, B=m.scr;
+            if(S.paper)p.stroke(c[0]*.55,c[1]*.55,c[2]*.55,150);else p.stroke(c[0],c[1],c[2],160);
+            p.strokeWeight(1.35);
+            p.line(A.x,A.y,rail,A.y);p.line(rail,A.y,rail,B.y);p.line(rail,B.y,B.x,B.y);
+          });
+          p.push();p.noStroke();p.textSize(7.2);p.textAlign(p.LEFT,p.CENTER);p.fill(S.paper?105:175);
+          p.text(rels.slice(0,3).map(r=>LINES[r.t].label.toUpperCase()).join(" · "),m.scr.x+12,m.scr.y+12);p.pop();
+        }
+        if(related.length){
+          p.push();p.textSize(7.4);p.textAlign(p.LEFT,p.CENTER);
+          labelBox(("SELECIONADO · "+related.length+" PROJETOS RELACIONADOS · TOQUE NOVAMENTE PARA ABRIR").toUpperCase(),n.scr.x+12,n.scr.y-13,p.LEFT,S.paper?70:210);p.pop();
+        }
+        return;
+      }
       for (const m of related) {
         const rels = relationsBetween(n, m);
         const A = n.scr, B = m.scr, mx = (A.x + B.x) / 2, my = Math.min(A.y, B.y) - Math.min(140, Math.abs(B.x - A.x) * 0.35 + 30);
@@ -496,7 +520,8 @@
       const isF = n === S.focus, isH = n === S.hover, inTrail = S.trail.includes(n);
       const edgeEnd = S.hoverEdge && (S.hoverEdge.a === n || S.hoverEdge.b === n);
       const anchor = S.hover || S.focus;
-      const dim = (anchor && !isF && !isH && !edgeEnd && !edges.some(e => (e.a === anchor || e.b === anchor) && (e.a === n || e.b === n)) ? 0.45 : 1) * fog * (ghost ? 0.35 : 1);
+      const relatedToAnchor = anchor && n!==anchor && (S.mode==="arvore" ? relationsBetween(anchor,n).length>0 : edges.some(e => (e.a===anchor||e.b===anchor)&&(e.a===n||e.b===n)));
+      const dim = (anchor && !isF && !isH && !edgeEnd && !relatedToAnchor ? (S.mode==="arvore"?0.24:0.45) : 1) * fog * (ghost ? 0.35 : 1);
       p.push();
       p.translate(n.scr.x, n.scr.y);
       if (!S.paper) {
@@ -580,6 +605,7 @@
     /* ---------- nó aberto ---------- */
     function openNode(n, silent) {
       if (!n) return;
+      touchInspect=null;
       S.focus = n;
       if (!n.revealed) reveal(n);
       if (S.trail[S.trail.length - 1] !== n) S.trail.push(n);
@@ -679,17 +705,46 @@
       };
       function pinchOf() { const t = q.touches; if (!t || t.length < 2) return null; const dx = t[0].x - t[1].x, dy = t[0].y - t[1].y; return { d: Math.hypot(dx, dy), x: (t[0].x + t[1].x) / 2, y: (t[0].y + t[1].y) / 2 }; }
       q.mouseReleased = function (e) { if (!shown() || !onCanvas(e) || S.mode !== "arvore" || dragged > 6) return; const n = pickNode(q.mouseX, q.mouseY); if (n) openNode(n); };
-      q.touchStarted = function (e) { if (!shown() || !onCanvas(e)) return; const pz = pinchOf(); if (pz) { pinch = pz; return false; } q.mousePressed(e); return false; };
+      q.touchStarted = function (e) {
+        if (!shown() || !onCanvas(e)) return;
+        const pz=pinchOf();
+        if(pz){pinch=pz;touchGesture=null;return false;}
+        touchGesture={x:q.mouseX,y:q.mouseY,lx:q.mouseX,ly:q.mouseY,move:0,t:p.millis()};
+        return false;
+      };
       q.touchMoved = function (e) {
         if (!shown() || !onCanvas(e)) return;
-        const pz = pinchOf();
-        if (pz) { // pinça: zoom no meio dos dedos; dois dedos juntos deslocam
-          if (pinch) { if (pinch.d > 0) zoomAt(pz.d / pinch.d, pz.x, pz.y); panBy(pz.x - pinch.x, pz.y - pinch.y); }
-          pinch = pz; return false;
+        const pz=pinchOf();
+        if(pz){
+          if(pinch){if(pinch.d>0)zoomAt(pz.d/pinch.d,pz.x,pz.y);panBy(pz.x-pinch.x,pz.y-pinch.y);}
+          pinch=pz;touchGesture=null;return false;
         }
-        return q.mouseDragged(e);
+        if(!touchGesture)return false;
+        const dx=q.mouseX-touchGesture.lx,dy=q.mouseY-touchGesture.ly;
+        touchGesture.move+=Math.hypot(dx,dy);touchGesture.lx=q.mouseX;touchGesture.ly=q.mouseY;
+        if(touchGesture.move<12)return false;
+        touchInspect=null;
+        if(S.mode==="arvore"){panBy(dx,dy);return false;}
+        if(S.cutting){tryCut(q.pmouseX,q.pmouseY,q.mouseX,q.mouseY);return false;}
+        pointerMove(q.mouseX,q.mouseY); // no celular, um dedo explora; 2 dedos ficam para zoom/pan
+        return false;
       };
-      q.touchEnded = function (e) { const was = pinch; if (!q.touches || q.touches.length < 2) pinch = null; if (!was && shown() && onCanvas(e)) q.mouseReleased(e); };
+      q.touchEnded = function (e) {
+        const wasPinch=!!pinch;if(!q.touches||q.touches.length<2)pinch=null;
+        if(wasPinch||!touchGesture||!shown()||!onCanvas(e)){touchGesture=null;return false;}
+        const g=touchGesture;touchGesture=null;
+        if(g.move>12||p.millis()-g.t>520)return false;
+        const n=pickNode(g.x,g.y);
+        if(n){
+          const second=touchInspect===n && p.millis()-touchInspectAt<1800;
+          if(second){touchInspect=null;openNode(n);}
+          else{touchInspect=n;touchInspectAt=p.millis();S.hover=n;lastHoverKey="";cb.change(state());}
+        }else{
+          touchInspect=null;S.hover=null;lastHoverKey="";
+          if(S.mode==="rizoma"){pointerDist=999;lastReveal=0;pointerMove(g.x,g.y);}
+        }
+        return false;
+      };
       q.keyPressed = function () {
         if (!shown() || typing() || opts.keys === false) return;
         const k = String(q.key).toLowerCase();
@@ -711,6 +766,7 @@
       toggleLine(t) { active[t] = !active[t]; buildEdges(); return active[t]; },
       setLine(t, on) { active[t] = !!on; buildEdges(); return active[t]; },
       setMode(m) {
+        touchInspect=null;
         S.mode = m === "arvore" ? "arvore" : "rizoma";
         if (S.mode === "arvore") { if (!S.started) { S.started = true; cb.started(); } view.zoomTarget = 1; view.pxT = view.pyT = 0; if (S.reduced) { view.zoom = 1; view.px = view.py = 0; } }
         else { for (const n of nodes) n.vel.set(p.random(-1, 1), p.random(-1, 1), 0); if (depthOn()) scatterDepth(); }
@@ -728,7 +784,7 @@
       setPaper(v) { S.paper = !!v; if (spray) spray.clear(); cb.change(state()); },
       setReduced(v) { S.reduced = !!v; if (S.reduced) { for (const e of edges) e.growth = 1; if (spray) spray.clear(); view.zoom = view.zoomTarget; } cb.change(state()); },
       open(id, silent) { openNode(byId(id), silent); },
-      close() { S.focus = null; cb.change(state()); },
+      close() { S.focus = null; touchInspect=null; cb.change(state()); },
       refresh() { if (S.focus) cb.open(info(S.focus.p.id)); },
       revealAll() { for (const n of nodes) reveal(n); },
       zoomBy(f) { zoomAt(f, p.width / 2, p.height / 2); },
@@ -748,7 +804,7 @@
         p.saveCanvas(name || "meu-mapa-rizoma", "png");
       },
       reset() {
-        S.focus = null; S.hover = null; S.hoverEdge = null; S.trail = []; S.cutKeys = new Set(); regrown = []; S.started = false; S.cutting = false; S.mode = "rizoma";
+        S.focus = null; S.hover = null; S.hoverEdge = null; touchInspect=null; S.trail = []; S.cutKeys = new Set(); regrown = []; S.started = false; S.cutting = false; S.mode = "rizoma";
         if (spray) spray.clear(); p.randomSeed(Date.now() % 100000); buildNodes(); buildEdges();
       },
       resize() {

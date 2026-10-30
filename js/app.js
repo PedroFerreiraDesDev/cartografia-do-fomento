@@ -55,7 +55,7 @@ $$("[data-nav]").forEach(b=>b.onclick=()=>showPage(b.dataset.nav));
 const lineChips={};
 function ensureRizoma(){
   if(R)return;
-  R=Rizoma.mount({container:"#rizomaStage",paper:true,reduced,depth:true,intro:document.body.classList.contains("intro-active"),panelWidth:400,treeTop:()=>innerWidth<=780?(document.querySelector(".discover-copy").offsetHeight||70)+14:185,treeBottom:()=>innerWidth<=780?(document.querySelector(".discover-tools").offsetHeight||100)+16:50,
+  R=Rizoma.mount({container:"#rizomaStage",paper:true,reduced,depth:!matchMedia("(pointer: coarse)").matches,intro:document.body.classList.contains("intro-active"),panelWidth:400,treeTop:()=>innerWidth<=780?(document.querySelector(".discover-copy").offsetHeight||70)+14:185,treeBottom:()=>innerWidth<=780?(document.querySelector(".discover-tools").offsetHeight||100)+16:50,
     onStarted:()=>{$("#blankMessage").style.opacity="0"},
     onChange:syncDiscover,
     onHover:showHoverCard,
@@ -122,6 +122,11 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#moreMenu").hidd
 /* card visual do nó ou da relação sob o mouse (no rodapé, como a lateral dos Indicadores) */
 function showHoverCard(h){
   const card=$("#hoverCard");
+  if(matchMedia("(pointer: coarse)").matches){
+    card.classList.remove("show");
+    if(h&&h.kind==="node")guide("touchinspect","Projeto selecionado. As relações possíveis aparecem no campo; toque novamente no mesmo nó para abrir a prévia.",3200);
+    return;
+  }
   if(!h||currentProject||$("#preview").classList.contains("open")){card.classList.remove("show");return} // com a prévia aberta, o card seria redundante
   if(h.kind==="node"){
     $("#hoverArt").innerHTML=art(h.index);

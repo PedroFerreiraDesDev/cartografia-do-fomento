@@ -28,9 +28,25 @@ function showPage(name){
 }
 /* a capa é uma camada sobre o campo: o rizoma já vive atrás dela, em 3D, desde o primeiro quadro (montagem no fim do arquivo) */
 document.body.classList.add("intro-active");
+const onboarding=$("#interactionOnboarding");
+function showOnboarding(){
+  if(!onboarding||localStorage.getItem("cartografia:onboarding-seen")==="1")return;
+  onboarding.hidden=false;
+  requestAnimationFrame(()=>onboarding.classList.add("show"));
+}
+function closeOnboarding(){
+  if(!onboarding)return;
+  onboarding.classList.remove("show");
+  localStorage.setItem("cartografia:onboarding-seen","1");
+  setTimeout(()=>onboarding.hidden=true,260);
+}
+$("#onboardingStart")?.addEventListener("click",closeOnboarding);
+$("#onboardingSkip")?.addEventListener("click",closeOnboarding);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&onboarding&&!onboarding.hidden)closeOnboarding()});
+
 $("#enterBtn").onclick=()=>{
   const intro=$("#intro");intro.classList.add("leaving");document.body.classList.remove("intro-active");
-  setTimeout(()=>intro.classList.add("hidden"),reduced?0:750);
+  setTimeout(()=>{intro.classList.add("hidden");showOnboarding()},reduced?0:750);
   if(R)R.setIntro(false); // a câmera aproxima; o campo passa a responder ao gesto
 };
 $$("[data-nav]").forEach(b=>b.onclick=()=>showPage(b.dataset.nav));

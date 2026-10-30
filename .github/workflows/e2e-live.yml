@@ -105,8 +105,15 @@ jobs:
               await page.locator('#zoomIn').click(); await page.waitForTimeout(80);
               const z1=await page.evaluate(()=>CartografiaRizoma.state().zoom);
               if(!(z1>z0)) throw new Error('zoom in did not change zoom');
-              await page.locator('#moreBtn').click();
-              if(await page.locator('#moreMenu').getAttribute('hidden')!==null) throw new Error('more menu did not open');
+
+              if(name==='mobile'){
+                if(await page.locator('#moreBtn').isVisible()) throw new Error('mobile More button should be flattened');
+                if(!(await page.locator('#pauseMotion').isVisible())) throw new Error('mobile pause control should be directly visible');
+              }else{
+                await page.locator('#moreBtn').click();
+                if(await page.locator('#moreMenu').getAttribute('hidden')!==null) throw new Error('desktop more menu did not open');
+              }
+
               await page.locator('#pauseMotion').click();
               if(!(await page.evaluate(()=>CartografiaRizoma.state().paused))) throw new Error('pause did not activate');
               await page.locator('#pauseMotion').click();
@@ -116,8 +123,7 @@ jobs:
               await page.locator('#reduceMotion').click();
               if(!(await page.evaluate(()=>CartografiaRizoma.state().reduced))) throw new Error('reduced motion did not activate');
 
-              // More menu + reset.
-              if(await page.locator('#moreMenu').getAttribute('hidden')!==null){
+              if(name!=='mobile' && await page.locator('#moreMenu').getAttribute('hidden')!==null){
                 await page.locator('#moreBtn').click();
               }
               await page.locator('#resetWalls').click(); await page.waitForTimeout(80);

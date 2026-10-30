@@ -29,28 +29,35 @@ function showPage(name){
 /* a capa é uma camada sobre o campo: o rizoma já vive atrás dela, em 3D, desde o primeiro quadro (montagem no fim do arquivo) */
 document.body.classList.add("intro-active");
 const onboarding=$("#interactionOnboarding");
+const ONBOARD_KEY="cartografia:onboarding-v4";
+let onboardingHandled=false;
+function hasSeenOnboarding(){try{return localStorage.getItem(ONBOARD_KEY)==="1"}catch(_){return false}}
+function markOnboardingSeen(){try{localStorage.setItem(ONBOARD_KEY,"1")}catch(_){}}
 function showOnboarding(){
-  let seen=false;
-  try{seen=localStorage.getItem("cartografia:onboarding-v3")==="1"}catch(_){}
-  if(!onboarding||seen)return;
+  if(!onboarding||hasSeenOnboarding())return;
   onboarding.hidden=false;
+  onboarding.classList.remove("show");
   requestAnimationFrame(()=>onboarding.classList.add("show"));
 }
 function closeOnboarding(){
   if(!onboarding)return;
+  markOnboardingSeen();
   onboarding.classList.remove("show");
-  try{localStorage.setItem("cartografia:onboarding-v3","1")}catch(_){};
-  setTimeout(()=>onboarding.hidden=true,260);
+  onboarding.hidden=true;
+}
+function handleEntered(){
+  if(onboardingHandled)return;
+  onboardingHandled=true;
+  if(R)R.setIntro(false);
+  window.setTimeout(showOnboarding,120);
 }
 $("#onboardingStart")?.addEventListener("click",closeOnboarding);
 $("#onboardingSkip")?.addEventListener("click",closeOnboarding);
+onboarding?.addEventListener("click",e=>{if(e.target===onboarding)closeOnboarding()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&onboarding&&!onboarding.hidden)closeOnboarding()});
+window.addEventListener("cartografia:entered",handleEntered);
+if(window.__cartografiaEntered)handleEntered();
 
-$("#enterBtn").onclick=()=>{
-  const intro=$("#intro");intro.classList.add("leaving");document.body.classList.remove("intro-active");
-  setTimeout(()=>{intro.classList.add("hidden");showOnboarding()},reduced?0:750);
-  if(R)R.setIntro(false); // a câmera aproxima; o campo passa a responder ao gesto
-};
 $$("[data-nav]").forEach(b=>b.onclick=()=>showPage(b.dataset.nav));
 
 /* ---------- descobrir: campo rizomático (motor em js/rizoma.js) ---------- */

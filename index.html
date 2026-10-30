@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cartografia do Fomento — Protótipo</title>
-<link rel="stylesheet" href="css/style.css?v=20261030-10">
+<link rel="stylesheet" href="css/style.css?v=20261030-14">
 </head>
 <body>
 <div id="app">
@@ -15,7 +15,10 @@
     <h1>Cartografia<br>do <em>Fomento.</em></h1>
     <p>Um Trabalho de Conclusão de Curso em Design que investiga projetos de grafite e muralismo realizados com recursos de fomento cultural em Belo Horizonte entre 2017 e 2024.</p>
     <p>A experiência reúne obras, projetos, valores, editais, territórios e documentos para criar outras formas de compreender como o financiamento público atravessa a arte urbana. Não há mapa obrigatório nem raiz: qualquer ponto é uma entrada.</p>
-    <button type="button" id="enterBtn" class="primary">ENTRAR NA EXPERIÊNCIA ↗</button>
+    <button type="button" id="enterBtn" class="primary"
+    onclick="window.__cartografiaEntered=true;document.body.classList.remove('intro-active');var i=document.getElementById('intro');if(i){i.classList.add('hidden')}window.dispatchEvent(new Event('cartografia:entered'))">
+    ENTRAR NA EXPERIÊNCIA ↗
+  </button>
     <div class="intro-doors"><span class="kicker">OU ENTRE POR OUTRA PORTA</span><button data-door="indicators">Indicadores</button><button data-door="editais">Editais</button><button data-door="about">Sobre o projeto</button></div>
     <p class="intro-cue"><span class="cue-dot"></span>O campo atrás desta capa já está vivo: vinte projetos à espera do seu gesto.</p>
   </div>
@@ -23,7 +26,7 @@
 </section>
 
 <div id="site">
-<div id="interactionOnboarding" class="interaction-onboarding" hidden aria-modal="true" role="dialog" aria-labelledby="onboardingTitle">
+<div id="interactionOnboarding" class="interaction-onboarding" hidden role="status" aria-labelledby="onboardingTitle">
   <div class="onboarding-card">
     <div class="kicker">COMO EXPLORAR</div>
     <h2 id="onboardingTitle">A cidade responde ao seu gesto.</h2>
@@ -129,27 +132,9 @@
 <div id="tooltip" class="tooltip hidden"></div>
 </div>
 </div>
-<script id="cartografia-intro-guard">
-(() => {
-  const btn=document.getElementById("enterBtn");
-  const intro=document.getElementById("intro");
-  if(!btn||!intro)return;
-  let done=false;
-  const enter=()=>{
-    if(done)return;
-    done=true;
-    window.__cartografiaEntered=true;
-    document.body.classList.remove("intro-active");
-    intro.classList.add("leaving");
-    window.setTimeout(()=>intro.classList.add("hidden"),360);
-    window.dispatchEvent(new CustomEvent("cartografia:entered"));
-  };
-  btn.addEventListener("click",enter);
-})();
-</script>
-<script src="js/data.js?v=20261030-10"></script>
+<script src="js/data.js?v=20261030-14"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
-<script src="js/rizoma.js?v=20261030-10"></script>
-<script src="js/app.js?v=20261030-10"></script>
+<script src="js/rizoma.js?v=20261030-14"></script>
+<script src="js/app.js?v=20261030-14"></script>
 </body>
 </html>

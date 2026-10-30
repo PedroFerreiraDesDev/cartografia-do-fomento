@@ -358,3 +358,23 @@ html,body{min-height:100%;min-height:100dvh}
     z-index:90!important;
   }
 }
+
+
+/* ---------- mobile: canvas yields touch while an interface menu is open ---------- */
+@media(max-width:780px){
+  body.tools-menu-open #rizomaStage,
+  body.tools-menu-open #rizomaStage canvas,
+  body.search-open #rizomaStage,
+  body.search-open #rizomaStage canvas{
+    pointer-events:none!important;
+  }
+  body.tools-menu-open .discover-tools,
+  body.search-open .discover-tools{
+    z-index:1000!important;
+    isolation:isolate;
+  }
+  body.tools-menu-open .more-panel,
+  body.search-open .search-results{
+    z-index:1001!important;
+  }
+}

@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cartografia do Fomento — Protótipo</title>
+<style>
+/* Cartografia do Fomento — protótipo editável */
+:root{--ink:#202020;--muted:#848484;--line:#dededb;--paper:#fff;--soft:#f5f5f2}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+body{overflow:hidden}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,textarea:focus-visible{outline:2px solid #111;outline-offset:3px}
+.hidden{display:none!important}
+.kicker{font-size:10px;letter-spacing:.14em;font-weight:900;color:#8a8a8a}
+.primary{border:1px solid #222;background:#222;color:#fff;padding:14px 18px;font-size:11px;font-weight:900}
+.primary:hover{background:#555}.primary.small{margin-top:10px;padding:11px 14px}
+.ghost{border:1px solid #bbb;background:#fff;padding:9px 12px;font-size:10px;font-weight:800}
+.note,.empty-state{border:1px dashed #aaa;background:#fafaf8;padding:16px;font-size:11px;line-height:1.65;color:#6c6c6c}
+.intro{height:100vh;display:flex;flex-direction:column;padding:26px clamp(22px,5vw,58px)}
+.topline,.footline{display:flex;justify-content:space-between;gap:20px;font-size:10px;letter-spacing:.08em}
+.topline span:last-child,.footline{color:#999;font-weight:400}
+.intro-main{flex:1;width:min(760px,100%);margin:auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.intro-main h1{margin:20px 0;font-size:clamp(48px,8.5vw,105px);line-height:.91;letter-spacing:-.09em}
+.intro-main h1 em{font-style:normal;color:#aaa}
+.intro-main p{max-width:600px;font-size:14px;line-height:1.75;color:#666;margin:0 0 12px}
+.intro-main .primary{margin-top:22px;display:flex;gap:30px}
+.topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rgba(255,255,255,.96);border-bottom:1px solid #ececea;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0 19px;backdrop-filter:blur(10px)}
+.brand{border:0;background:transparent;padding:0;font-size:11px;font-weight:900;line-height:1.05;letter-spacing:-.03em;text-align:left}
+.topbar nav{display:flex;gap:2px;overflow:auto}
+.topbar nav button{border:0;background:transparent;padding:12px 9px;color:#909090;font-size:10px;font-weight:800;border-bottom:2px solid transparent;white-space:nowrap}
+.topbar nav button.active,.topbar nav button:hover{color:#111;border-bottom-color:#111}
+.status{font-size:9px;padding:6px 8px;border:1px solid #ddd;color:#888;white-space:nowrap}
+.view{height:100vh;padding-top:62px;background:#fff}.scroll-view,.project-page{overflow-y:auto}
+.discover-view{position:relative;overflow:hidden;cursor:crosshair}
+.discover-copy{position:absolute;z-index:20;left:23px;top:86px;width:min(315px,44vw);background:rgba(255,255,255,.86);padding:4px 13px 11px 0;pointer-events:none}
+.discover-copy h2{margin:7px 0;font-size:25px;letter-spacing:-.06em}.discover-copy p{font-size:11px;line-height:1.55;color:#858585;margin:0}
+.discover-tools{position:absolute;z-index:20;right:17px;top:79px;display:flex;gap:5px}
+.discover-tools button{border:1px solid #ddd;background:#fff;padding:8px 9px;font-size:9px;font-weight:800}.discover-tools button.active{background:#222;color:#fff;border-color:#222}
+.blank{position:absolute;z-index:1;left:50%;top:52%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.13em;color:#c9c9c9;pointer-events:none}
+.wall-layer{position:absolute;inset:62px 0 0;z-index:4;pointer-events:none}.spray-layer{position:absolute;inset:62px 0 0;z-index:10;pointer-events:none;overflow:hidden}
+.wall{position:absolute;left:0;top:0;border:0;background:transparent;padding:0;pointer-events:auto;will-change:transform;animation:wallReveal 1.35s cubic-bezier(.22,.7,.2,1) both}
+.wall-art{width:100%;height:100%;overflow:hidden;border:2px solid #444;background:var(--soft);box-shadow:7px 8px 0 rgba(0,0,0,.1);transition:transform .25s ease,box-shadow .25s ease}.wall-art svg{display:block;width:100%;height:100%}
+.wall:hover .wall-art,.wall:focus-visible .wall-art{transform:scale(1.045) translateY(-6px);box-shadow:11px 14px 0 rgba(0,0,0,.13)}
+.wall-name{position:absolute;left:0;bottom:-27px;background:#fff;border:1px solid #ddd;padding:5px 7px;white-space:nowrap;font-size:9px;font-weight:900;opacity:0;transform:translateY(-4px);transition:.2s}
+.wall:hover .wall-name,.wall:focus-visible .wall-name{opacity:1;transform:none}
+.spray-dot{position:absolute;border-radius:50%;background:#696969;filter:blur(3px);animation:sprayFade .8s forwards}
+.discover-foot{position:absolute;z-index:20;left:20px;right:20px;bottom:15px;display:flex;justify-content:space-between;align-items:end;gap:20px;pointer-events:none}.discover-foot p{margin:0;max-width:310px;font-size:10px;line-height:1.5;color:#999}.discover-foot span{background:rgba(255,255,255,.93);border:1px solid #ddd;padding:7px 9px;font-size:10px}
+.indicators-view{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);overflow:hidden}
+.indicator-main{height:calc(100vh - 62px);overflow-y:auto;padding:31px 34px 70px}.indicator-side{height:calc(100vh - 62px);overflow-y:auto;border-left:1px solid #ddd;padding:28px 21px 55px}
+.section-hero h1{margin:8px 0 10px;font-size:clamp(39px,5.3vw,70px);letter-spacing:-.078em;line-height:.94}.section-hero p{max-width:700px;font-size:12px;line-height:1.7;color:#777;margin:0}.section-hero.narrow{max-width:770px}
+.metric-switch{display:flex;gap:5px;flex-wrap:wrap;margin:18px 0 28px}.metric-switch button{border:1px solid #ccc;background:#fff;padding:9px 11px;font-size:9px;font-weight:900}.metric-switch button.active{background:#222;color:#fff;border-color:#222}
+.chart-block{padding:24px 0 40px;border-top:1px solid #ddd}.chart-block h2{margin:5px 0;font-size:23px;letter-spacing:-.05em}.chart-block>p{margin:0 0 18px;font-size:10px;line-height:1.55;color:#999}
+.bars{display:grid;gap:6px}.chart-bar{display:grid;grid-template-columns:125px 1fr 100px;align-items:center;gap:12px;width:100%;border:0;padding:5px 0;background:#fff;text-align:left}.chart-bar:hover,.chart-bar.active{background:#fafafa}.chart-bar-label{font-size:10px;font-weight:900}.bar-track{height:29px;background:#f3f3f0}.bar-fill{display:block;height:100%;background:#656565;transition:width .55s ease}.chart-bar:hover .bar-fill,.chart-bar.active .bar-fill{background:#202020}.chart-bar-value{text-align:right;font-size:10px;font-weight:900}
+.year-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.year-col{border:1px solid #ddd;min-height:165px;background:#fff;padding:9px;display:flex;flex-direction:column;justify-content:flex-end;text-align:left}.year-col:hover,.year-col.active{border-color:#222}.year-stack{height:90px;display:flex;flex-direction:column-reverse;gap:2px;margin:8px 0}.year-piece{background:#333;min-height:5px}.year-piece.fundo{background:#8b8b8b}.year-piece.descentra{background:#c7c7c7}.year-number{font-size:22px;font-weight:900;letter-spacing:-.05em}.year-caption{font-size:9px;color:#888}
+.treemap{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:65px;gap:5px}.tree-item{border:1px solid #bbb;background:#f4f4f1;padding:8px;overflow:hidden;text-align:left}.tree-item:hover,.tree-item.active{background:#222;color:#fff;border-color:#222}.tree-item b{display:block;font-size:10px}.tree-item span{display:block;margin-top:4px;font-size:9px}
+.indicator-side h3{margin:8px 0 6px;font-size:23px;letter-spacing:-.05em}.indicator-side>p{font-size:10px;line-height:1.55;color:#888;margin:0 0 17px}.side-project{border-top:1px solid #ddd;padding:13px 0}.side-project button{border:0;background:#fff;padding:0;text-align:left;width:100%}.side-project small{display:block;font-size:9px;color:#999}.side-project b{display:block;font-size:13px;margin:5px 0}.side-project p{margin:0;font-size:10px;line-height:1.45;color:#777}.side-project strong{display:block;margin-top:7px;font-size:11px}
+.tooltip{position:fixed;z-index:300;width:280px;background:#fff;border:1px solid #333;box-shadow:7px 8px 0 rgba(0,0,0,.1);padding:13px;pointer-events:none}.tooltip h4{margin:4px 0 10px;font-size:13px}.tooltip p{margin:3px 0;font-size:10px;color:#777}.tooltip-projects{margin-top:9px;padding-top:7px;border-top:1px solid #ddd}.tooltip-projects div{padding:3px 0;font-size:10px;line-height:1.4}
+.content-wrap{width:min(1080px,calc(100% - 42px));margin:auto;padding:45px 0 80px}.content-wrap.narrow{max-width:780px}.edital-list{margin-top:30px}.edital-row{display:grid;grid-template-columns:120px 1fr 160px;gap:20px;align-items:center;padding:19px 0;border-top:1px solid #ddd}.edital-row h3{margin:0;font-size:19px;letter-spacing:-.04em}.edital-row p{margin:6px 0 0;font-size:10px;line-height:1.5;color:#888}.edital-row strong{text-align:right;font-size:12px}.edital-row button{margin-top:8px;border:1px solid #bbb;background:#fff;padding:8px 10px;font-size:9px;font-weight:900}
+.text-block{border-top:1px solid #ddd;padding:24px 0}.text-block h2{margin:0 0 8px;font-size:21px;letter-spacing:-.04em}.text-block p{font-size:12px;line-height:1.7;color:#777}
+.project-page{overflow-y:auto}.project-wrap{width:min(1120px,calc(100% - 42px));margin:auto}.project-toolbar{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:23px 0}.project-hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(310px,.75fr);gap:38px;min-height:540px;padding-bottom:65px}.project-image{min-height:500px;overflow:hidden;border:1px solid #ddd;background:var(--soft);position:relative}.project-image svg{width:100%;height:100%}.project-image-label{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.94);border:1px solid #ddd;padding:7px 9px;font-size:9px;color:#777}
+.project-info{display:flex;flex-direction:column;justify-content:flex-end}.project-info h1{margin:10px 0 14px;font-size:clamp(39px,5vw,65px);line-height:.96;letter-spacing:-.075em}.project-info>p{font-size:13px;line-height:1.7;color:#777}.status-chip{display:inline-flex;width:max-content;margin-bottom:12px;border:1px solid #aaa;padding:6px 8px;font-size:9px;font-weight:900}.fact{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid #eee;font-size:11px}.fact span{color:#888}.fact b{text-align:right;max-width:62%}.fact .missing{color:#aaa;font-weight:400}
+.project-tabs{position:sticky;z-index:50;top:62px;background:rgba(255,255,255,.97);border-top:1px solid #ddd;border-bottom:1px solid #ddd;display:flex;overflow:auto}.project-tabs button{flex:0 0 auto;border:0;background:#fff;border-bottom:2px solid transparent;padding:14px 15px;font-size:10px;font-weight:900;color:#888}.project-tabs button.active{color:#111;border-bottom-color:#111}
+.project-section{padding:75px 0;border-bottom:1px solid #eee}.project-grid{display:grid;grid-template-columns:260px minmax(0,1fr);gap:55px}.section-title h2{margin:8px 0;font-size:31px;line-height:1;letter-spacing:-.06em}.section-content{max-width:760px}.section-content p{margin:0 0 20px;font-size:14px;line-height:1.8;color:#626262}
+.gallery{display:grid;grid-template-columns:1.55fr .75fr;grid-template-rows:240px 240px;gap:8px}.gallery-item{background:var(--soft);border:1px solid #ddd;overflow:hidden;position:relative}.gallery-item:first-child{grid-row:1/3}.gallery-item svg{width:100%;height:100%}.gallery-label{position:absolute;left:9px;bottom:9px;background:#fff;border:1px solid #ddd;padding:5px 7px;font-size:9px}
+.social-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0}.social-card{border-top:2px solid #333;padding:14px 0}.social-card small{font-size:9px;color:#999}.social-card b{display:block;margin-top:7px;font-size:15px}
+#commentText{width:100%;min-height:105px;border:1px solid #bbb;padding:12px;resize:vertical}.comment{padding:15px 0;border-bottom:1px solid #ddd}.comment small{font-size:9px;color:#999}.comment p{font-size:12px;margin:7px 0}.comment button{border:0;background:#fff;padding:0;text-decoration:underline;font-size:10px}
+.question{padding:17px 0;border-bottom:1px solid #ddd}.question b{display:block;font-size:13px;margin-bottom:9px}.rating{display:flex;gap:5px}.rating button{width:36px;height:34px;border:1px solid #ccc;background:#fff}.rating button.selected{background:#222;color:#fff}
+.source-row{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:16px 0;border-bottom:1px solid #ddd}.source-row h3{margin:0 0 5px;font-size:14px}.source-row p{margin:0!important;font-size:11px!important;color:#888!important}
+.spray-text{opacity:0;filter:blur(15px);transform:translateY(30px);clip-path:circle(0% at 15% 50%);transition:opacity .75s ease,filter .9s ease,transform .8s ease,clip-path 1.15s cubic-bezier(.2,.65,.25,1)}.spray-text.visible{opacity:1;filter:blur(0);transform:none;clip-path:circle(160% at 50% 50%)}
+@keyframes wallReveal{0%{opacity:0;filter:blur(30px);clip-path:circle(0 at 50% 50%);scale:.62}42%{opacity:.5;filter:blur(13px);clip-path:circle(40% at 50% 50%)}100%{opacity:1;filter:blur(0);clip-path:circle(160% at 50% 50%);scale:1}}
+@keyframes sprayFade{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}25%{opacity:.32}100%{opacity:0;transform:translate(-50%,-50%) scale(1.9)}}
+.reduce-motion *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+@media(max-width:780px){
+  body{overflow:auto}.topbar{height:auto;min-height:84px;padding:8px 10px;flex-wrap:wrap}.brand{width:100%}.topbar nav{width:100%}.topbar nav button{font-size:9px;padding:8px 7px}.status{display:none}.view{padding-top:84px}
+  .discover-copy{top:103px;left:12px;max-width:220px}.discover-copy h2{font-size:20px}.discover-copy p{font-size:10px}.discover-tools{top:94px;right:10px;max-width:160px;flex-wrap:wrap;justify-content:flex-end}.discover-tools button{font-size:8px;padding:6px}.wall-layer,.spray-layer{inset:84px 0 0}
+  .indicators-view{display:block;overflow-y:auto}.indicator-main,.indicator-side{height:auto;overflow:visible}.indicator-main{padding:25px 18px 50px}.indicator-side{border-left:0;border-top:1px solid #ddd}.chart-bar{grid-template-columns:80px 1fr 72px;gap:7px}.year-grid{grid-template-columns:repeat(3,1fr)}.treemap{grid-template-columns:repeat(6,1fr)}
+  .project-tabs{top:84px}.project-hero{grid-template-columns:1fr}.project-image{min-height:320px}.project-grid{grid-template-columns:1fr;gap:25px}.gallery{grid-template-columns:1fr;grid-template-rows:290px 160px 160px}.gallery-item:first-child{grid-row:auto}.social-grid{grid-template-columns:1fr}.edital-row{grid-template-columns:1fr}.edital-row strong{text-align:left}
+}
+</style>
+</head>
+<body>
+<div id="app">
+<section id="intro" class="intro">
+  <div class="topline"><strong>CARTOGRAFIA DO FOMENTO</strong><span>TCC · DESIGN · PROTÓTIPO EM DESENVOLVIMENTO</span></div>
+  <div class="intro-main">
+    <div class="kicker">ARTE URBANA · FOMENTO CULTURAL · DESIGN DA INFORMAÇÃO</div>
+    <h1>Cartografia<br>do <em>Fomento.</em></h1>
+    <p>Um Trabalho de Conclusão de Curso em Design que investiga projetos de grafite e muralismo realizados com recursos de fomento cultural em Belo Horizonte entre 2017 e 2024.</p>
+    <p>A experiência reúne obras, projetos, valores, editais, territórios e documentos para criar outras formas de compreender como o financiamento público atravessa a arte urbana.</p>
+    <button id="enterBtn" class="primary">ENTRAR NA EXPERIÊNCIA ↗</button>
+  </div>
+  <div class="footline"><span>ARTEFATO DIGITAL / TESTE DE INTERAÇÃO</span><span>MOVA · DESCUBRA · INVESTIGUE</span></div>
+</section>
+
+<div id="site" class="hidden">
+<header class="topbar">
+  <button class="brand" data-nav="discover">CARTOGRAFIA<br>DO FOMENTO</button>
+  <nav>
+    <button data-nav="discover" class="active">Descobrir</button>
+    <button data-nav="indicators">Indicadores</button>
+    <button data-nav="editais">Editais</button>
+    <button data-nav="research">Pesquisa</button>
+    <button data-nav="about">Sobre</button>
+  </nav>
+  <span class="status">BASE DO TCC · CAMPOS EM VERIFICAÇÃO</span>
+</header>
+
+<main>
+<section id="discover" class="view discover-view">
+  <div class="discover-copy"><div class="kicker">01 / DESCOBRIR</div><h2>A cidade aparece pelo gesto.</h2><p>Movimente o mouse. As superfícies surgem como tinta, continuam em deriva e pausam no hover. Clique para abrir a página do projeto.</p></div>
+  <div class="discover-tools"><button id="pauseMotion">Pausar</button><button id="reduceMotion">Reduzir movimento</button><button id="resetWalls">Recomeçar</button></div>
+  <div id="blankMessage" class="blank">MOVIMENTE O MOUSE PARA REVELAR</div>
+  <div id="wallLayer" class="wall-layer"></div>
+  <div id="sprayLayer" class="spray-layer"></div>
+  <div class="discover-foot"><p>As posições são cenográficas e não representam a localização real das obras.</p><span id="wallCounter">0 / 20 PROJETOS</span></div>
+</section>
+
+<section id="indicators" class="view hidden indicators-view">
+  <div class="indicator-main">
+    <div class="section-hero"><div class="kicker">02 / LER OS DADOS</div><h1>O fomento<br>em movimento.</h1><p>Passe o mouse sobre os gráficos para ver quais projetos formam cada resultado. Clique para manter um recorte e abrir os projetos correspondentes.</p><div class="note">Esta versão usa os registros das tabelas atuais do TCC. Informações ainda não verificadas aparecem explicitamente como “Não verificada”.</div></div>
+    <div class="metric-switch"><button data-metric="count" class="active">Quantidade de projetos</button><button data-metric="value">Valor registrado</button></div>
+    <section class="chart-block"><div class="kicker">REGIÃO</div><h2>Onde os projetos aparecem?</h2><p>Somente regionais individualmente verificadas entram no gráfico. O restante fica em “Não verificada”.</p><div id="regionChart" class="bars"></div></section>
+    <section class="chart-block"><div class="kicker">ANO × MECANISMO</div><h2>Quando e por qual forma de fomento?</h2><div id="yearChart" class="year-grid"></div></section>
+    <section class="chart-block"><div class="kicker">ESCALA FINANCEIRA</div><h2>Quanto aparece registrado?</h2><div id="treemap" class="treemap"></div></section>
+    <section class="chart-block"><div class="kicker">DADOS SOCIAIS</div><h2>Perfil dos proponentes.</h2><div class="empty-state">A base atual ainda não sustenta uma visualização quantitativa completa de gênero, raça, renda ou classe social. Esses dados devem ser autodeclarados/documentados e agregados — nunca inferidos a partir da localização.</div></section>
+  </div>
+  <aside class="indicator-side"><div class="kicker" id="filterKicker">CORPUS DO TCC</div><h3 id="filterTitle">Todos os projetos</h3><p id="filterDescription">Passe o mouse sobre qualquer gráfico para pré-visualizar os projetos.</p><div id="filteredProjects"></div></aside>
+</section>
+
+<section id="editais" class="view hidden scroll-view"><div class="content-wrap"><div class="section-hero narrow"><div class="kicker">03 / MECANISMOS DE FOMENTO</div><h1>Editais não são<br>só documentos.</h1><p>Veja os mecanismos presentes no corpus e entre nos projetos correspondentes.</p></div><div id="editalList" class="edital-list"></div></div></section>
+
+<section id="research" class="view hidden scroll-view"><div class="content-wrap narrow"><div class="section-hero"><div class="kicker">04 / CAMADA SOCIAL</div><h1>Quem acessa<br>o fomento?</h1><p>A pesquisa com pessoas poderá complementar os registros documentais.</p></div><article class="text-block spray-text"><h2>Experiência com editais</h2><p>Investigar se artistas e produtores já participaram, tentaram participar ou nunca submeteram propostas.</p></article><article class="text-block spray-text"><h2>Barreiras percebidas</h2><p>Encontrar oportunidades, compreender regras, elaborar orçamento, reunir documentos e realizar prestação de contas.</p></article><article class="text-block spray-text"><h2>Perfil dos respondentes</h2><p>Dados sociodemográficos precisam ser voluntários, autodeclarados e apresentados de forma agregada.</p></article></div></section>
+
+<section id="about" class="view hidden scroll-view"><div class="content-wrap narrow"><div class="section-hero"><div class="kicker">05 / PROJETO ACADÊMICO</div><h1>Uma cartografia<br>sem mapa obrigatório.</h1><p>O território continua presente nos dados e relatos, mas a experiência pode começar pelo muro, pelo valor, pelo ano ou pelo edital.</p></div><article class="text-block spray-text"><h2>Descobrir</h2><p>Obras surgem pela movimentação do cursor e ocupam uma composição instável.</p></article><article class="text-block spray-text"><h2>Investigar</h2><p>Cada muro abre uma página dedicada com galeria, projeto, território, fomento, comunidade, questionário e fontes.</p></article><article class="text-block spray-text"><h2>Comparar</h2><p>Os gráficos permitem voltar das estatísticas aos projetos que constituem cada resultado.</p></article></div></section>
+
+<section id="projectPage" class="view hidden project-page">
+  <div class="project-wrap"><div class="project-toolbar"><button id="projectBack" class="ghost">← VOLTAR</button><span class="kicker">PROJETO / ARQUIVO EM CONSTRUÇÃO</span></div>
+  <div class="project-hero"><div id="projectHeroArt" class="project-image"></div><div class="project-info"><span id="projectStatus" class="status-chip"></span><div id="projectMeta" class="kicker"></div><h1 id="projectTitle"></h1><p id="projectSummary"></p><div id="projectFacts"></div></div></div></div>
+  <nav class="project-tabs"><button data-project-section="gallery" class="active">Galeria</button><button data-project-section="project">Projeto</button><button data-project-section="territory">Território e sociedade</button><button data-project-section="funding">Fomento</button><button data-project-section="community">Comunidade</button><button data-project-section="survey">Questionário</button><button data-project-section="sources">Fontes</button></nav>
+  <div class="project-wrap">
+    <section id="project-gallery" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">01</div><h2>Galeria.</h2></div><div class="section-content spray-text"><div id="projectGallery" class="gallery"></div><div class="note">As imagens desta versão são placeholders. Fotografias reais devem entrar com origem, crédito, legenda e autorização de uso.</div></div></div></section>
+    <section id="project-project" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">02</div><h2>O projeto.</h2></div><div id="projectNarrative" class="section-content spray-text"></div></div></section>
+    <section id="project-territory" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">03</div><h2>Território<br>e sociedade.</h2></div><div id="territoryContent" class="section-content spray-text"></div></div></section>
+    <section id="project-funding" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">04</div><h2>Como foi<br>financiado?</h2></div><div id="fundingContent" class="section-content spray-text"></div></div></section>
+    <section id="project-community" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">05</div><h2>Vozes<br>da rua.</h2></div><div class="section-content spray-text"><p>Este espaço recebe relatos sobre a relação das pessoas com a obra. Comentários não substituem documentação oficial.</p><textarea id="commentText" placeholder="Como você conhece esta obra ou projeto?"></textarea><button id="addComment" class="primary small">ADICIONAR RELATO DE TESTE ↗</button><div id="commentList"></div></div></div></section>
+    <section id="project-survey" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">06</div><h2>Entender<br>a informação.</h2></div><div class="section-content spray-text"><div class="question"><b>As informações ajudaram a compreender como este projeto foi financiado?</b><div class="rating" data-question="understanding"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div><div class="question"><b>A relação entre projeto, território e edital ficou clara?</b><div class="rating" data-question="territory"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div></div></div></section>
+    <section id="project-sources" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">07</div><h2>Fontes<br>e evidências.</h2></div><div id="sourceContent" class="section-content spray-text"></div></div></section>
+  </div>
+</section>
+</main>
+<div id="tooltip" class="tooltip hidden"></div>
+</div>
+</div>
+<script>
+window.CARTOGRAFIA_DATA = [
+{id:"p01",title:"CURA – Circuito Urbano de Arte",year:2017,mechanism:"Incentivo Fiscal",edital:"LMIC 2017 - IF",value:110000,circuit:"Monumental",region:null,proponent:null,verification:"Presente na Tabela 1 do TCC",issue:null},
+{id:"p02",title:"TAU – Território Arte Urbana",year:2017,mechanism:"Incentivo Fiscal",edital:"LMIC 2017 - IF",value:110000,circuit:"Monumental",region:null,proponent:null,verification:"Presente na Tabela 1 do TCC",issue:null},
+{id:"p03",title:"Graffitinerante",year:2017,mechanism:"Incentivo Fiscal",edital:"LMIC 2017 - IF",value:95000,circuit:"Monumental",region:null,proponent:null,verification:"Presente na Tabela 1 do TCC",issue:null},
+{id:"p04",title:"CURA – Circuito Urbano de Arte",year:2021,mechanism:"Incentivo Fiscal",edital:"LMIC 2021 - IF",value:150000,circuit:"Monumental",region:null,proponent:null,verification:"Presente na Tabela 1 do TCC",issue:null},
+{id:"p05",title:"MAMU – Morro Arte Mural – 4ª Edição",year:2023,mechanism:"Incentivo Fiscal",edital:"LMIC 2023 - IF",value:165000,circuit:"Monumental",region:null,proponent:null,verification:"Presente na Tabela 1 do TCC",issue:null},
+{id:"p06",title:"Festival Cena Graffiti no Morro",year:2023,mechanism:"Incentivo Fiscal",edital:"LMIC 2023 - IF",value:165000,circuit:"Monumental",region:null,proponent:null,verification:"Presente na Tabela 1 do TCC",issue:null},
+{id:"p07",title:"Viva a Praça Sete – Festival de Arte Urbana",year:2023,mechanism:"Incentivo Fiscal",edital:"LMIC 2023 - IF",value:164888.89,circuit:"Monumental",region:null,proponent:null,verification:"Presente na Tabela 1 do TCC",issue:null},
+{id:"p08",title:"Exposição Bolinho 15 Anos",year:2023,mechanism:"Incentivo Fiscal",edital:"LMIC 2023 - IF",value:160000,circuit:"Monumental",region:null,proponent:null,verification:"Presente na Tabela 1 do TCC",issue:null},
+{id:"p09",title:"ALA – Arte Livre Ambulante",year:2017,mechanism:"Fundo Municipal",edital:"LMIC 2017 - Fundo",value:60000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p10",title:"Traço – Escola de Graffiti",year:2019,mechanism:"Descentra",edital:"Descentra 2019",value:20000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p11",title:"Delas – Mulheres no Graffiti",year:2019,mechanism:"Descentra",edital:"Descentra 2019",value:19740,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:"Situação final precisa ser revalidada documentalmente antes de publicação."},
+{id:"p12",title:"Festival Real Grapixo",year:2021,mechanism:"Fundo Municipal",edital:"LMIC 2021 - Fundo",value:90000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p13",title:"Poucos Recursos: Graffiti no Concórdia",year:2021,mechanism:"Descentra",edital:"Descentra 2021",value:20000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p14",title:"Real Grapixo na Quebrada",year:2022,mechanism:"Fundo Municipal",edital:"LMIC 2022 - Fundo",value:30000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p15",title:"Mostra de Arte Urbana: Edição Pop Rua",year:2022,mechanism:"Descentra",edital:"Descentra 2022",value:38398,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p16",title:"Painéis de Grafite em Venda Nova",year:2023,mechanism:"Fundo Municipal",edital:"LMIC 2023 - Fundo",value:55000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p17",title:"Nuhi – Festival de Arte Gráfica",year:2023,mechanism:"Fundo Municipal",edital:"LMIC 2023 - Fundo",value:89870,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p18",title:"Criarte Urbana (Grafite em Venda Nova)",year:2024,mechanism:"Fundo Municipal",edital:"LMIC 2024 - Fundo",value:70000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p19",title:"Viva Rima Viva: Graffiti de BH",year:2024,mechanism:"Descentra",edital:"Descentra 2024",value:40000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null},
+{id:"p20",title:"Memórias da Oeste Hip Hop",year:2024,mechanism:"Descentra",edital:"Descentra 2024",value:40000,circuit:"Capilar",region:null,proponent:null,verification:"Presente na Tabela 2 do TCC",issue:null}
+];
+
+/*
+Campos intencionalmente em branco até verificação:
+- region
+- proponent
+- fotos reais
+- endereço/local de execução
+- perfil socioeconômico
+
+Use null em vez de inventar dados.
+*/
+</script>
+<script>
+(() => {
+const PROJECTS=window.CARTOGRAFIA_DATA||[];
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const money=v=>v==null?"—":new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v);
+const shortMoney=v=>v>=1000000?`R$ ${(v/1000000).toFixed(2).replace(".",",")} mi`:v>=1000?`R$ ${Math.round(v/1000)} mil`:money(v);
+const esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const idx=id=>PROJECTS.findIndex(p=>p.id===id);
+
+function art(index,variant=0){
+  const strokes=["M-40 270 Q100 -60 220 175 T520 30","M-20 80 C150 330 260 -80 530 195","M40 340 L140 -10 L260 310 L420 -20","M-30 300 Q165 -65 280 185 T520 100","M-40 20 Q215 365 530 15","M-35 300 L110 20 L250 290 L400 15 L540 280"];
+  const d=strokes[index%strokes.length],trs=["","translate(-25 10) scale(1.08)","translate(35 -20) scale(.96)"][variant];
+  return `<svg viewBox="0 0 520 340" preserveAspectRatio="xMidYMid slice"><rect width="520" height="340" fill="#f5f5f2"/><g stroke="#dfdfdc" stroke-width="2"><path d="M0 65H520M0 130H520M0 195H520M0 260H520"/><path d="M105 0V65M315 0V65M210 65V130M415 65V130M105 130V195M315 130V195M210 195V260M415 195V260M105 260V340M315 260V340"/></g><g transform="${trs}"><path d="${d}" fill="none" stroke="#444" stroke-width="68"/><path d="${d}" fill="none" stroke="#d2d2cf" stroke-width="18"/><path d="M0 315 Q260 30 520 300" fill="none" stroke="#888" stroke-width="13"/><circle cx="${180+(index%3)*70}" cy="${110+(index%4)*25}" r="${28+(index%5)*8}" fill="none" stroke="#777" stroke-width="9"/></g></svg>`;
+}
+
+let page="discover",currentProject=null,previous={page:"discover"},metric="count",selection=null,hoverSelection=null;
+let comments={},answers={};
+function showPage(name){
+  page=name;
+  ["discover","indicators","editais","research","about"].forEach(id=>$("#"+id).classList.toggle("hidden",id!==name));
+  $("#projectPage").classList.add("hidden");
+  $$("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===name));
+  if(name==="indicators")renderIndicators();
+  if(name==="editais")renderEditais();
+  if(name==="research"||name==="about")requestAnimationFrame(observeText);
+}
+$("#enterBtn").onclick=()=>{$("#intro").classList.add("hidden");$("#site").classList.remove("hidden");showPage("discover");resetWalls();startAnimation()};
+$$("[data-nav]").forEach(b=>b.onclick=()=>showPage(b.dataset.nav));
+
+/* ---------- descoberta ---------- */
+const stage=$("#discover"),wallLayer=$("#wallLayer"),sprayLayer=$("#sprayLayer");
+let revealed=[],objects=[],order=[],paused=false,reduced=false,raf=null,lastFrame=0,lastPointer=null,distance=0,lastSpawn=0,lastSpray=0;
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function resetWalls(){wallLayer.innerHTML="";sprayLayer.innerHTML="";revealed=[];objects=[];order=shuffle(PROJECTS.map(p=>p.id));$("#wallCounter").textContent=`0 / ${PROJECTS.length} PROJETOS`;$("#blankMessage").style.opacity="1"}
+function dims(p){const mobile=innerWidth<600,empena=p.circuit==="Monumental";return empena?(mobile?{w:94,h:168}:{w:Math.min(145,innerWidth*.15),h:Math.min(245,(innerHeight-62)*.42)}):(mobile?{w:145,h:95}:{w:Math.min(230,innerWidth*.26),h:Math.min(135,(innerHeight-62)*.24)})}
+function overlap(x,y,w,h,o,g=12){return Math.max(0,Math.min(x+w,o.x+o.w+g)-Math.max(x,o.x-g))*Math.max(0,Math.min(y+h,o.y+o.h+g)-Math.max(y,o.y-g))}
+function pickPos(p,mx,my){
+  const d=dims(p),maxX=Math.max(12,innerWidth-d.w-12),maxY=Math.max(100,innerHeight-62-d.h-45);let best={x:12,y:100,w:d.w,h:d.h},score=1e99;
+  for(let i=0;i<80;i++){let x=i<50?mx-d.w/2+(Math.random()-.5)*230:12+Math.random()*(maxX-12);let y=i<50?my-d.h/2+(Math.random()-.5)*180:100+Math.random()*(maxY-100);x=Math.max(12,Math.min(maxX,x));y=Math.max(100,Math.min(maxY,y));let ov=0;objects.forEach(o=>ov+=overlap(x,y,d.w,d.h,o));const s=ov*4+Math.hypot(x+d.w/2-mx,y+d.h/2-my)*.22;if(s<score){score=s;best={x,y,w:d.w,h:d.h}}if(ov===0&&s<90)break}
+  return best;
+}
+function pickTarget(o,now){
+  const maxX=Math.max(10,innerWidth-o.w-10),maxY=Math.max(95,innerHeight-62-o.h-40);let best={x:o.x,y:o.y},score=1e99;
+  for(let i=0;i<30;i++){const x=Math.max(10,Math.min(maxX,o.x+(Math.random()-.5)*350)),y=Math.max(95,Math.min(maxY,o.y+(Math.random()-.5)*240));let ov=0;objects.forEach(t=>{if(t!==o)ov+=overlap(x,y,o.w,o.h,t,8)});const travel=Math.hypot(x-o.x,y-o.y),s=ov*5+Math.abs(travel-120)*.6;if(s<score){score=s;best={x,y}}if(ov===0&&travel>60&&travel<185)break}
+  o.tx=best.x;o.ty=best.y;o.next=now+4500+Math.random()*4500;
+}
+const place=o=>o.el.style.transform=`translate3d(${o.x}px,${o.y}px,0) rotate(${o.rot}deg)`;
+function sprayDot(x,y,size=10,blur=2){if(reduced||sprayLayer.children.length>110)return;const d=document.createElement("i");d.className="spray-dot";Object.assign(d.style,{left:x+"px",top:y+"px",width:size+"px",height:size+"px",filter:`blur(${blur}px)`});sprayLayer.appendChild(d);setTimeout(()=>d.remove(),850)}
+function sprayBurst(x,y){if(reduced)return;for(let i=0;i<30;i++){const a=Math.random()*Math.PI*2,r=Math.sqrt(Math.random())*80;sprayDot(x+Math.cos(a)*r,y+Math.sin(a)*r,4+Math.random()*22,1+Math.random()*5)}}
+function revealWall(x,y){
+  const id=order.find(id=>!revealed.includes(id));if(!id)return;const p=PROJECTS.find(p=>p.id===id),pos=pickPos(p,x,y),el=document.createElement("button");
+  el.type="button";el.className="wall";el.style.width=pos.w+"px";el.style.height=pos.h+"px";el.innerHTML=`<div class="wall-art">${art(idx(id))}</div><span class="wall-name">${esc(p.title)} · ABRIR ↗</span>`;wallLayer.appendChild(el);
+  const now=performance.now(),o={id,el,x:pos.x,y:pos.y,w:pos.w,h:pos.h,tx:pos.x,ty:pos.y,rot:(Math.random()*9-4.5).toFixed(1),speed:13+Math.random()*15,born:now,next:now+5000,hover:false};
+  objects.push(o);revealed.push(id);place(o);pickTarget(o,now);el.onmouseenter=()=>o.hover=true;el.onmouseleave=()=>o.hover=false;el.onclick=e=>{e.stopPropagation();openProject(id,"discover")};
+  sprayBurst(pos.x+pos.w/2,pos.y+pos.h/2);$("#wallCounter").textContent=`${revealed.length} / ${PROJECTS.length} PROJETOS`;$("#blankMessage").style.opacity=revealed.length?"0":"1";
+}
+stage.addEventListener("pointermove",e=>{
+  if(e.pointerType==="touch"||page!=="discover")return;const r=stage.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top-62,now=performance.now();
+  if(now-lastSpray>65){lastSpray=now;sprayDot(x+(Math.random()-.5)*12,y+(Math.random()-.5)*12,5+Math.random()*14,1+Math.random()*3)}
+  if(lastPointer)distance+=Math.min(90,Math.hypot(x-lastPointer.x,y-lastPointer.y));lastPointer={x,y};
+  if(distance>100&&now-lastSpawn>850&&revealed.length<PROJECTS.length){distance=0;lastSpawn=now;revealWall(x,y)}
+});
+stage.addEventListener("pointerleave",()=>{lastPointer=null;distance=0});
+stage.addEventListener("click",e=>{if(e.target.closest(".wall")||page!=="discover")return;const r=stage.getBoundingClientRect();revealWall(e.clientX-r.left,e.clientY-r.top-62)});
+function animate(now){
+  const dt=Math.min(.05,(now-(lastFrame||now))/1000);lastFrame=now;
+  if(page==="discover"&&!paused&&!reduced){objects.forEach(o=>{if(o.hover||now-o.born<1400)return;let dx=o.tx-o.x,dy=o.ty-o.y,d=Math.hypot(dx,dy);if(d<8||now>o.next){pickTarget(o,now);dx=o.tx-o.x;dy=o.ty-o.y;d=Math.hypot(dx,dy)}if(d<.1)return;const step=Math.min(d,o.speed*dt),nx=o.x+dx/d*step,ny=o.y+dy/d*step;if(objects.some(t=>t!==o&&overlap(nx,ny,o.w,o.h,t,3)>0)){pickTarget(o,now);return}o.x=nx;o.y=ny;place(o)})}
+  raf=requestAnimationFrame(animate);
+}
+function startAnimation(){if(!raf)raf=requestAnimationFrame(animate)}
+$("#pauseMotion").onclick=()=>{paused=!paused;$("#pauseMotion").textContent=paused?"Retomar":"Pausar";$("#pauseMotion").classList.toggle("active",paused)};
+$("#reduceMotion").onclick=()=>{reduced=!reduced;document.body.classList.toggle("reduce-motion",reduced);$("#reduceMotion").classList.toggle("active",reduced)};
+$("#resetWalls").onclick=resetWalls;
+
+/* ---------- projeto ---------- */
+function fact(label,value){const miss=value==null||value==="";return `<div class="fact"><span>${label}</span><b class="${miss?"missing":""}">${miss?"A verificar":esc(value)}</b></div>`}
+function openProject(id,from="discover"){
+  const p=PROJECTS.find(x=>x.id===id);if(!p)return;previous={page:from,selection};currentProject=p;["discover","indicators","editais","research","about"].forEach(id=>$("#"+id).classList.add("hidden"));$("#projectPage").classList.remove("hidden");$("#projectPage").scrollTop=0;renderProject(p);
+}
+function closeProject(){showPage(previous.page||"discover");if(previous.page==="indicators"){selection=previous.selection;renderIndicators()}currentProject=null}
+$("#projectBack").onclick=closeProject;
+$$("[data-project-section]").forEach(b=>b.onclick=()=>$("#project-"+b.dataset.projectSection).scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"}));
+function renderProject(p){
+  const i=idx(p.id);$("#projectHeroArt").innerHTML=art(i)+`<div class="project-image-label">PLACEHOLDER — FOTOGRAFIA REAL A INCORPORAR</div>`;$("#projectStatus").textContent=p.issue?"ATENÇÃO / DADO EM REVISÃO":"REGISTRO PRESENTE NO TCC";$("#projectMeta").textContent=`${p.year} · ${p.mechanism.toUpperCase()} · ${p.circuit.toUpperCase()}`;$("#projectTitle").textContent=p.title;$("#projectSummary").textContent="Página de projeto estruturada para receber imagem, narrativa, território, financiamento, relatos, questionário e fontes verificáveis.";
+  $("#projectFacts").innerHTML=fact("Ano",String(p.year))+fact("Mecanismo",p.mechanism)+fact("Edital",p.edital)+fact("Valor registrado",money(p.value))+fact("Regional",p.region)+fact("Proponente",p.proponent)+fact("Situação",p.verification);
+  $("#projectGallery").innerHTML=[0,1,2].map((v,n)=>`<div class="gallery-item">${art(i,v)}<span class="gallery-label">${n===0?"OBRA / VISTA GERAL":n===1?"DETALHE":"TERRITÓRIO / CONTEXTO"}</span></div>`).join("");
+  $("#projectNarrative").innerHTML=`<p>O projeto <strong>${esc(p.title)}</strong> integra o corpus da Cartografia do Fomento no recorte de <strong>${p.year}</strong>.</p><p>Textos interpretativos específicos devem ser preenchidos somente quando houver documentação suficiente.</p>${p.issue?`<div class="note"><strong>Atenção documental:</strong><br>${esc(p.issue)}</div>`:""}`;
+  $("#territoryContent").innerHTML=`<p>Esta camada deverá reunir localização de execução, características do entorno, atividades abertas ao público e relatos associados ao projeto.</p><div class="social-grid"><div class="social-card"><small>REGIONAL</small><b>${p.region||"Ainda não verificada"}</b></div><div class="social-card"><small>PERFIL SOCIOECONÔMICO</small><b>Dados ainda não consolidados</b></div><div class="social-card"><small>RELAÇÃO COM A COMUNIDADE</small><b>A investigar</b></div></div><p>Renda, raça, gênero ou classe social não devem ser inferidos a partir do bairro ou da regional.</p>`;
+  $("#fundingContent").innerHTML=fact("Mecanismo",p.mechanism)+fact("Edital / fonte",p.edital)+fact("Valor registrado",money(p.value))+fact("Ano",String(p.year))+fact("Situação documental",p.verification)+`<div class="note">Na versão final, diferencie valor solicitado, aprovado, captado, pago e executado sempre que os documentos permitirem.</div>`;
+  $("#sourceContent").innerHTML=`<div class="source-row"><div><h3>Tabela do corpus do TCC</h3><p>Fonte-base desta estrutura.</p></div><span class="kicker">BASE</span></div><div class="source-row"><div><h3>Resultado oficial do edital</h3><p>Vincular documento específico do projeto antes da publicação final.</p></div><span class="kicker">A VINCULAR</span></div><div class="source-row"><div><h3>Execução da obra</h3><p>Fotografia, endereço, créditos e evidência de realização.</p></div><span class="kicker">A COMPLETAR</span></div>`;
+  renderComments();requestAnimationFrame(observeText);
+}
+$("#addComment").onclick=()=>{if(!currentProject)return;const t=$("#commentText").value.trim();if(!t)return;comments[currentProject.id]??=[];comments[currentProject.id].unshift({id:Date.now(),text:t});$("#commentText").value="";renderComments()};
+function renderComments(){if(!currentProject)return;const list=comments[currentProject.id]||[];$("#commentList").innerHTML=list.length?list.map(c=>`<div class="comment"><small>RELATO DE TESTE / VISITANTE</small><p>${esc(c.text)}</p><button data-del="${c.id}">excluir</button></div>`).join(""):`<div class="note" style="margin-top:15px">Ainda não existem relatos nesta sessão.</div>`;$$("[data-del]").forEach(b=>b.onclick=()=>{comments[currentProject.id]=comments[currentProject.id].filter(c=>c.id!==Number(b.dataset.del));renderComments()})}
+$$(".rating").forEach(g=>g.onclick=e=>{const b=e.target.closest("button");if(!b||!currentProject)return;answers[currentProject.id]??={};answers[currentProject.id][g.dataset.question]=Number(b.textContent);Array.from(g.children).forEach(x=>x.classList.toggle("selected",x===b))});
+let observer=null;function observeText(){if(observer)observer.disconnect();observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{root:currentProject?$("#projectPage"):null,threshold:.12});$$(".spray-text").forEach(el=>{el.classList.remove("visible");observer.observe(el)})}
+
+/* ---------- indicadores ---------- */
+$$("[data-metric]").forEach(b=>b.onclick=()=>{metric=b.dataset.metric;$$("[data-metric]").forEach(x=>x.classList.toggle("active",x.dataset.metric===metric));renderIndicators()});
+function aggregate(list,keyFn){const m=new Map();list.forEach(p=>{const k=keyFn(p);if(!m.has(k))m.set(k,[]);m.get(k).push(p)});return [...m.entries()].map(([key,projects])=>({key,projects,count:projects.length,value:projects.reduce((s,p)=>s+(p.value||0),0)}))}
+function renderIndicators(){renderRegion();renderYears();renderTree();renderSide()}
+function renderRegion(){
+  const groups=aggregate(PROJECTS,p=>p.region||"Não verificada").sort((a,b)=>b[metric]-a[metric]),max=Math.max(1,...groups.map(g=>g[metric]));
+  $("#regionChart").innerHTML=groups.map(g=>`<button class="chart-bar ${selection?.type==="region"&&selection.key===g.key?"active":""}" data-chart-type="region" data-chart-key="${esc(g.key)}"><span class="chart-bar-label">${esc(g.key)}</span><span class="bar-track"><span class="bar-fill" style="width:${Math.max(2,g[metric]/max*100)}%"></span></span><span class="chart-bar-value">${metric==="count"?g.count+" proj.":shortMoney(g.value)}</span></button>`).join("");bindCharts();
+}
+function renderYears(){
+  const years=[...new Set(PROJECTS.map(p=>p.year))].sort();
+  $("#yearChart").innerHTML=years.map(y=>{const ps=PROJECTS.filter(p=>p.year===y),pieces=["Incentivo Fiscal","Fundo Municipal","Descentra"].map(m=>{const n=ps.filter(p=>p.mechanism===m).length;if(!n)return"";return`<div class="year-piece ${m==="Fundo Municipal"?"fundo":m==="Descentra"?"descentra":""}" style="height:${n*20}px"></div>`}).join("");return`<button class="year-col ${selection?.type==="year"&&String(selection.key)===String(y)?"active":""}" data-chart-type="year" data-chart-key="${y}"><div class="year-stack">${pieces}</div><div class="year-number">${y}</div><div class="year-caption">${ps.length} projeto(s)</div></button>`}).join("");bindCharts();
+}
+function renderTree(){const max=Math.max(...PROJECTS.map(p=>p.value||0));$("#treemap").innerHTML=PROJECTS.map(p=>{const span=Math.max(2,Math.min(6,Math.round((p.value||0)/max*6)));return`<button class="tree-item" style="grid-column:span ${span}" data-chart-type="project" data-chart-key="${p.id}"><b>${esc(p.title)}</b><span>${money(p.value)}</span></button>`}).join("");bindCharts()}
+function selectedProjects(sel){if(!sel)return PROJECTS;if(sel.type==="region")return PROJECTS.filter(p=>(p.region||"Não verificada")===sel.key);if(sel.type==="year")return PROJECTS.filter(p=>String(p.year)===String(sel.key));if(sel.type==="mechanism")return PROJECTS.filter(p=>p.mechanism===sel.key);if(sel.type==="project")return PROJECTS.filter(p=>p.id===sel.key);return PROJECTS}
+function renderSide(){const sel=hoverSelection||selection,list=selectedProjects(sel);$("#filterKicker").textContent=sel?(hoverSelection?"PRÉ-VISUALIZAÇÃO":"SELEÇÃO FIXADA"):"CORPUS DO TCC";$("#filterTitle").textContent=sel?(sel.label||sel.key):`${PROJECTS.length} registros`;$("#filterDescription").textContent=sel?`${list.length} projeto(s) correspondem a este recorte.`:"Passe o mouse sobre qualquer gráfico para ver os projetos que formam aquele resultado.";$("#filteredProjects").innerHTML=list.map(p=>`<div class="side-project"><button data-side="${p.id}"><small>${p.year} · ${esc(p.mechanism)}</small><b>${esc(p.title)}</b><p>${esc(p.verification)}</p><strong>${money(p.value)} ↗</strong></button></div>`).join("");$$("[data-side]").forEach(b=>b.onclick=()=>openProject(b.dataset.side,"indicators"))}
+function chartProjects(type,key){if(type==="region")return PROJECTS.filter(p=>(p.region||"Não verificada")===key);if(type==="year")return PROJECTS.filter(p=>String(p.year)===String(key));if(type==="project")return PROJECTS.filter(p=>p.id===key);return[]}
+function showTip(e,type,key){const list=chartProjects(type,key),total=list.reduce((s,p)=>s+(p.value||0),0);$("#tooltip").innerHTML=`<div class="kicker">${type==="region"?"REGIÃO":type==="year"?"ANO":"PROJETO"}</div><h4>${esc(key)}</h4><p>${list.length} projeto(s)</p><p>Soma dos valores registrados: <strong>${money(total)}</strong></p><div class="tooltip-projects">${list.slice(0,6).map(p=>`<div>${esc(p.title)}</div>`).join("")}${list.length>6?`<div>+ ${list.length-6} outros</div>`:""}</div>`;$("#tooltip").classList.remove("hidden");moveTip(e)}
+function moveTip(e){$("#tooltip").style.left=Math.min(innerWidth-295,e.clientX+14)+"px";$("#tooltip").style.top=Math.min(innerHeight-255,e.clientY+14)+"px"}
+function bindCharts(){$$("[data-chart-type]").forEach(el=>{el.onmouseenter=e=>{const type=el.dataset.chartType,key=el.dataset.chartKey;hoverSelection={type,key,label:key};showTip(e,type,key);renderSide()};el.onmousemove=e=>moveTip(e);el.onmouseleave=()=>{hoverSelection=null;$("#tooltip").classList.add("hidden");renderSide()};el.onclick=()=>{const type=el.dataset.chartType,key=el.dataset.chartKey;if(type==="project"){openProject(key,"indicators");return}selection=selection&&selection.type===type&&String(selection.key)===String(key)?null:{type,key,label:key};renderIndicators()}})}
+
+/* ---------- editais ---------- */
+function renderEditais(){
+  const mechs=["Incentivo Fiscal","Fundo Municipal","Descentra"];
+  $("#editalList").innerHTML=mechs.map(m=>{const list=PROJECTS.filter(p=>p.mechanism===m),total=list.reduce((s,p)=>s+(p.value||0),0);return`<div class="edital-row"><div class="kicker">${list.length} REGISTROS</div><div><h3>${m}</h3><p>Abra este mecanismo nos indicadores e veja os projetos do corpus associados a ele.</p></div><strong>${money(total)}<br><button data-mech="${m}">EXPLORAR ↗</button></strong></div>`}).join("");
+  $$("[data-mech]").forEach(b=>b.onclick=()=>{selection={type:"mechanism",key:b.dataset.mech,label:b.dataset.mech};showPage("indicators");renderSide()});
+}
+
+renderIndicators();renderEditais();
+})();
+</script>
+</body>
+</html>

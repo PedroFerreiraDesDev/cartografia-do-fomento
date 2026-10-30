@@ -12,10 +12,10 @@
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
 body{overflow:hidden}.top{position:fixed;z-index:20;left:0;right:0;top:0;height:70px;padding:10px 14px;border-bottom:1px solid var(--line);background:rgba(247,246,241,.9);backdrop-filter:blur(10px);display:flex;align-items:center;gap:12px}
 .brand{font-size:10px;font-weight:900;line-height:1.05;text-decoration:none;color:inherit;white-space:nowrap}.brand small{display:block;color:#999;font-size:7px;letter-spacing:.12em;margin-top:3px}
-.modes{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin-left:auto}.modes::-webkit-scrollbar{display:none}.modes button{border:1px solid #bbb;background:#fff;padding:9px 12px;font-size:9px;font-weight:900;white-space:nowrap}.modes button.active{background:#161616;color:#fff;border-color:#161616}
-.stage{position:fixed;inset:70px 0 0}.stage canvas{display:block}
+.modes{position:relative;z-index:30;display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin-left:auto;pointer-events:auto;touch-action:pan-x}.modes::-webkit-scrollbar{display:none}.modes button{position:relative;z-index:31;border:1px solid #bbb;background:#fff;padding:9px 12px;font-size:9px;font-weight:900;white-space:nowrap;min-height:40px;touch-action:manipulation;pointer-events:auto}.modes button.active{background:#161616;color:#fff;border-color:#161616}
+.stage{position:fixed;z-index:1;inset:70px 0 0;pointer-events:auto}.stage canvas{display:block;touch-action:none}
 .info{position:fixed;z-index:12;left:18px;top:92px;width:min(360px,calc(100% - 36px));background:rgba(247,246,241,.9);backdrop-filter:blur(8px);padding:14px 15px;border:1px solid rgba(22,22,22,.12);pointer-events:none}.eyebrow{font-size:8px;letter-spacing:.15em;font-weight:900;color:#929292}.info h1{font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;margin:6px 0 6px;font-size:clamp(28px,6vw,48px);line-height:.88;letter-spacing:-.07em}.info p{font-size:10.5px;line-height:1.55;color:#6d6d6d;margin:0}.info .question{margin-top:8px;font-weight:900;color:#222;font-size:9px;letter-spacing:.05em}
-.controls{position:fixed;z-index:15;left:12px;right:12px;bottom:12px;display:flex;align-items:end;gap:8px;pointer-events:none}.panel{pointer-events:auto;margin-left:auto;width:min(440px,100%);background:rgba(247,246,241,.94);border:1px solid var(--line);backdrop-filter:blur(10px);padding:10px}.row{display:flex;align-items:center;gap:7px}.row+.row{margin-top:7px}.row label{font-size:8px;letter-spacing:.09em;font-weight:900;color:#777;min-width:92px}.row input[type=range]{width:100%;accent-color:#161616}.row select{width:100%;border:1px solid #bbb;background:#fff;padding:7px;font-size:9px;font-weight:800}.actions{display:flex;gap:5px}.actions button{border:1px solid #bbb;background:#fff;padding:8px 10px;font-size:8px;font-weight:900}.actions button.active{background:#161616;color:#fff;border-color:#161616}
+.controls{position:fixed;z-index:15;left:12px;right:12px;bottom:12px;display:flex;align-items:end;gap:8px;pointer-events:none}.panel{position:relative;z-index:25;pointer-events:auto;touch-action:manipulation;margin-left:auto;width:min(440px,100%);background:rgba(247,246,241,.94);border:1px solid var(--line);backdrop-filter:blur(10px);padding:10px}.row{display:flex;align-items:center;gap:7px}.row+.row{margin-top:7px}.row label{font-size:8px;letter-spacing:.09em;font-weight:900;color:#777;min-width:92px}.row input[type=range]{width:100%;accent-color:#161616;touch-action:pan-x;pointer-events:auto}.row select{width:100%;border:1px solid #bbb;background:#fff;padding:9px;font-size:9px;font-weight:800;min-height:40px;touch-action:manipulation;pointer-events:auto}.actions{display:flex;gap:5px}.actions button{border:1px solid #bbb;background:#fff;padding:8px 10px;font-size:8px;font-weight:900;min-height:40px;touch-action:manipulation;pointer-events:auto}.actions button.active{background:#161616;color:#fff;border-color:#161616}
 .legend{position:fixed;z-index:11;right:14px;top:88px;display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:46vw}.legend span{display:flex;align-items:center;gap:5px;background:rgba(247,246,241,.88);border:1px solid var(--line);padding:6px 7px;font-size:7.5px;font-weight:900}.legend i{width:7px;height:7px;border-radius:50%;background:var(--c)}
 .hint{position:fixed;z-index:11;left:50%;bottom:120px;transform:translateX(-50%);font-size:8px;letter-spacing:.1em;font-weight:900;background:#161616;color:#fff;padding:7px 9px;pointer-events:none;white-space:nowrap}
 @media(max-width:700px){
@@ -30,10 +30,10 @@ body{overflow:hidden}.top{position:fixed;z-index:20;left:0;right:0;top:0;height:
 <header class="top">
   <a class="brand" href="lab-identidade.html">CARTOGRAFIA<br>DO FOMENTO<small>LAB 02 · OUTRAS CARTOGRAFIAS</small></a>
   <nav class="modes" aria-label="Modos cartográficos">
-    <button data-mode="campo" class="active">CAMPO</button>
-    <button data-mode="palimpsesto">PALIMPSESTO</button>
-    <button data-mode="mirante">MIRANTE</button>
-    <button data-mode="trama">TRAMA</button>
+    <button type="button" data-mode="campo" class="active">CAMPO</button>
+    <button type="button" data-mode="palimpsesto">PALIMPSESTO</button>
+    <button type="button" data-mode="mirante">MIRANTE</button>
+    <button type="button" data-mode="trama">TRAMA</button>
   </nav>
 </header>
 
@@ -52,13 +52,13 @@ body{overflow:hidden}.top{position:fixed;z-index:20;left:0;right:0;top:0;height:
   <div class="panel">
     <div class="row"><label id="rangeLabel" for="mainRange">INTENSIDADE</label><input id="mainRange" type="range" min="0" max="100" value="58"></div>
     <div class="row"><label for="modeSelect">LEITURA</label><select id="modeSelect"></select></div>
-    <div class="row actions"><button id="resetBtn">RECOMEÇAR</button><button id="pauseBtn">PAUSAR</button><button id="labelsBtn" class="active">TEXTOS</button></div>
+    <div class="row actions"><button type="button" id="resetBtn">RECOMEÇAR</button><button type="button" id="pauseBtn">PAUSAR</button><button type="button" id="labelsBtn" class="active">TEXTOS</button></div>
   </div>
 </div>
 
 <div id="hint" class="hint">ARRASTE O DEDO PARA INTERFERIR</div>
 
-<script src="js/data.js"></script>
+<script src="js/data.js?v=20261030-12"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
 <script>
 (() => {
@@ -90,12 +90,13 @@ function options(){
     : `<span style="--c:#ffd43b"><i></i>ANO</span><span style="--c:#31a8ff"><i></i>MECANISMO</span><span style="--c:#ff8a3d"><i></i>VALOR</span><span style="--c:#ff4f9a"><i></i>VISIBILIDADE</span>`;
 }
 
-$$("[data-mode]").forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;state.scratches=[];state.hover=null;$$("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));options()});
-$("#mainRange").oninput=e=>state.amount=Number(e.target.value);
-$("#modeSelect").onchange=e=>state.select=e.target.value;
-$("#resetBtn").onclick=()=>{state.seed++;state.scratches=[];state.hover=null;if(window.labSketch)window.labSketch.reset()};
-$("#pauseBtn").onclick=()=>{state.paused=!state.paused;$("#pauseBtn").textContent=state.paused?"RETOMAR":"PAUSAR"};
-$("#labelsBtn").onclick=()=>{state.labels=!state.labels;$("#labelsBtn").classList.toggle("active",state.labels)};
+$("[data-mode]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();state.mode=b.dataset.mode;state.scratches=[];state.hover=null;$("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));options()}));
+$("#mainRange").addEventListener("input",e=>{e.stopPropagation();state.amount=Number(e.target.value)});
+$("#modeSelect").addEventListener("change",e=>{e.stopPropagation();state.select=e.target.value});
+$("#resetBtn").addEventListener("click",e=>{e.stopPropagation();state.seed++;state.scratches=[];state.hover=null;if(window.labSketch)window.labSketch.reset()});
+$("#pauseBtn").addEventListener("click",e=>{e.stopPropagation();state.paused=!state.paused;$("#pauseBtn").textContent=state.paused?"RETOMAR":"PAUSAR"});
+$("#labelsBtn").addEventListener("click",e=>{e.stopPropagation();state.labels=!state.labels;$("#labelsBtn").classList.toggle("active",state.labels)});
+["pointerdown","touchstart","mousedown"].forEach(ev=>{document.querySelector(".top")?.addEventListener(ev,e=>e.stopPropagation(),{passive:true});document.querySelector(".controls")?.addEventListener(ev,e=>e.stopPropagation(),{passive:true})});
 
 function sketch(p){
  let nodes=[],t=0;
@@ -192,19 +193,28 @@ function sketch(p){
    });
    if(state.hover&&state.labels){p.noStroke();p.fill(22);p.rect(12,p.height-50,p.width-24,34,2);p.fill(255);p.textSize(9);p.textAlign(p.LEFT,p.CENTER);p.text(short(state.hover.d.title).toUpperCase()+" · "+state.hover.d.year+" · "+state.hover.d.mechanism,22,p.height-33)}
  }
+ function isCanvasEvent(e){
+   const t=e&&e.target;
+   return !t || t.tagName==="CANVAS" || (typeof t.closest==="function" && !!t.closest("#stage"));
+ }
  function recordPointer(){
    state.pointer.x=p.mouseX;state.pointer.y=p.mouseY;
    if(state.mode==="palimpsesto"&&state.pointer.down){const r=p.map(state.amount,0,100,30,95);state.scratches.push({x:p.mouseX,y:p.mouseY,r});if(state.scratches.length>80)state.scratches.shift()}
  }
- p.mouseMoved=recordPointer;
- p.mouseDragged=()=>{recordPointer();return false};
- p.mousePressed=()=>{state.pointer.down=true;recordPointer();return false};
- p.mouseReleased=()=>{state.pointer.down=false;return false};
- p.touchStarted=()=>{state.pointer.down=true;recordPointer();return false};
- p.touchMoved=()=>{recordPointer();return false};
- p.touchEnded=()=>{state.pointer.down=false;return false};
+ p.mouseMoved=e=>{if(!isCanvasEvent(e))return;recordPointer()};
+ p.mouseDragged=e=>{if(!isCanvasEvent(e))return true;recordPointer();return false};
+ p.mousePressed=e=>{if(!isCanvasEvent(e))return true;state.pointer.down=true;recordPointer();return false};
+ p.mouseReleased=e=>{if(!isCanvasEvent(e))return true;state.pointer.down=false;return false};
+ p.touchStarted=e=>{if(!isCanvasEvent(e))return true;state.pointer.down=true;recordPointer();return false};
+ p.touchMoved=e=>{if(!isCanvasEvent(e))return true;recordPointer();return false};
+ p.touchEnded=e=>{if(!isCanvasEvent(e))return true;state.pointer.down=false;return false};
 }
-options();new p5(sketch,$("#stage"));
+options();
+if(typeof window.p5==="function"){new p5(sketch,$("#stage"))}
+else{
+  $("#hint").textContent="MOTOR VISUAL NÃO CARREGOU · OS CONTROLES CONTINUAM DISPONÍVEIS";
+  $("#hint").style.background="#b42318";
+}
 })();
 </script>
 </body>

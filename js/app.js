@@ -20,7 +20,7 @@ function showPage(name){
   ["discover","indicators","editais","research","about"].forEach(id=>$("#"+id).classList.toggle("hidden",id!==name));
   $("#projectPage").classList.add("hidden");
   $$("[data-nav]").forEach(b=>b.classList.toggle("active",b.dataset.nav===name));
-  if(name==="discover"){ensureRizoma();R.setVisible(true)}else if(R)R.setVisible(false);
+  if(name==="discover"){if(ensureRizoma()&&R)R.setVisible(true)}else if(R)R.setVisible(false);
   if(name==="indicators")renderIndicators();
   if(name==="editais")renderEditais();
   if(name==="research"||name==="about"){requestAnimationFrame(observeText);if(R&&R.state().focus)R.close()} // páginas de leitura fecham a prévia; a trilha fica
@@ -30,14 +30,16 @@ function showPage(name){
 document.body.classList.add("intro-active");
 const onboarding=$("#interactionOnboarding");
 function showOnboarding(){
-  if(!onboarding||localStorage.getItem("cartografia:onboarding-seen")==="1")return;
+  let seen=false;
+  try{seen=localStorage.getItem("cartografia:onboarding-v3")==="1"}catch(_){}
+  if(!onboarding||seen)return;
   onboarding.hidden=false;
   requestAnimationFrame(()=>onboarding.classList.add("show"));
 }
 function closeOnboarding(){
   if(!onboarding)return;
   onboarding.classList.remove("show");
-  localStorage.setItem("cartografia:onboarding-seen","1");
+  try{localStorage.setItem("cartografia:onboarding-v3","1")}catch(_){};
   setTimeout(()=>onboarding.hidden=true,260);
 }
 $("#onboardingStart")?.addEventListener("click",closeOnboarding);
@@ -54,7 +56,12 @@ $$("[data-nav]").forEach(b=>b.onclick=()=>showPage(b.dataset.nav));
 /* ---------- descobrir: campo rizomático (motor em js/rizoma.js) ---------- */
 const lineChips={};
 function ensureRizoma(){
-  if(R)return;
+  if(R)return true;
+  if(!window.Rizoma||typeof window.p5!=="function"){
+    $("#blankMessage").textContent="CARREGANDO O MOTOR VISUAL…";
+    return false;
+  }
+  try{
   R=Rizoma.mount({container:"#rizomaStage",paper:true,reduced,depth:!matchMedia("(pointer: coarse)").matches,intro:document.body.classList.contains("intro-active"),panelWidth:400,treeTop:()=>innerWidth<=780?(document.querySelector(".discover-copy").offsetHeight||70)+14:185,treeBottom:()=>innerWidth<=780?(document.querySelector(".discover-tools").offsetHeight||100)+16:50,
     onStarted:()=>{$("#blankMessage").style.opacity="0"},
     onChange:syncDiscover,
@@ -64,6 +71,13 @@ function ensureRizoma(){
   for(const t in Rizoma.LINES){const L=Rizoma.LINES[t];const b=document.createElement("button");b.className="chip";b.innerHTML="<i></i><span>"+L.label+"</span><small></small>";b.style.setProperty("--sw","rgb("+L.color.join(",")+")");b.setAttribute("aria-pressed","false");
     b.onclick=()=>{clearSuggestedLines();const on=R.toggleLine(t);if(on){b.classList.add("growing");setTimeout(()=>b.classList.remove("growing"),1400)}if(R.state().focus)R.refresh()};$("#lineChips").appendChild(b);lineChips[t]=b}
   syncDiscover(R.state());
+  return true;
+  }catch(err){
+    console.error("Falha ao iniciar Rizoma",err);
+    R=null;
+    $("#blankMessage").textContent="O MOTOR VISUAL NÃO CARREGOU · USE INDICADORES, EDITAIS OU TENTE RECARREGAR";
+    return false;
+  }
 }
 let lastFocus=null;
 function syncDiscover(s){
@@ -259,4 +273,9 @@ setInterval(()=>{
 
 renderLegend();renderIndicators();renderEditais();
 showPage("discover"); // monta o campo já na capa
+window.addEventListener("load",()=>{ // cartografia-rizoma-retry
+  if(!R&&page==="discover"&&typeof window.p5==="function"){
+    if(ensureRizoma()&&R)R.setVisible(true);
+  }
+});
 })();

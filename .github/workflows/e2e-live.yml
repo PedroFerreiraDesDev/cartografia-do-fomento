@@ -105,6 +105,8 @@ jobs:
               await page.locator('#zoomIn').click(); await page.waitForTimeout(80);
               const z1=await page.evaluate(()=>CartografiaRizoma.state().zoom);
               if(!(z1>z0)) throw new Error('zoom in did not change zoom');
+              await page.locator('#moreBtn').click();
+              if(await page.locator('#moreMenu').getAttribute('hidden')!==null) throw new Error('more menu did not open');
               await page.locator('#pauseMotion').click();
               if(!(await page.evaluate(()=>CartografiaRizoma.state().paused))) throw new Error('pause did not activate');
               await page.locator('#pauseMotion').click();
@@ -115,8 +117,9 @@ jobs:
               if(!(await page.evaluate(()=>CartografiaRizoma.state().reduced))) throw new Error('reduced motion did not activate');
 
               // More menu + reset.
-              await page.locator('#moreBtn').click();
-              if(await page.locator('#moreMenu').getAttribute('hidden')!==null) throw new Error('more menu did not open');
+              if(await page.locator('#moreMenu').getAttribute('hidden')!==null){
+                await page.locator('#moreBtn').click();
+              }
               await page.locator('#resetWalls').click(); await page.waitForTimeout(80);
               const rst=await page.evaluate(()=>CartografiaRizoma.state());
               if(rst.revealed!==0||rst.focus!==null) throw new Error('reset did not clear field');

@@ -58,7 +58,7 @@ body{overflow:hidden}.top{position:fixed;z-index:20;left:0;right:0;top:0;height:
 
 <div id="hint" class="hint">ARRASTE O DEDO PARA INTERFERIR</div>
 
-<script src="js/data.js?v=20261030-13"></script>
+<script src="js/data.js?v=20261030-14"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
 <script>
 (() => {
@@ -90,7 +90,7 @@ function options(){
     : `<span style="--c:#ffd43b"><i></i>ANO</span><span style="--c:#31a8ff"><i></i>MECANISMO</span><span style="--c:#ff8a3d"><i></i>VALOR</span><span style="--c:#ff4f9a"><i></i>VISIBILIDADE</span>`;
 }
 
-$("[data-mode]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();state.mode=b.dataset.mode;state.scratches=[];state.hover=null;$("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));options()}));
+$$("[data-mode]").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();state.mode=b.dataset.mode;state.scratches=[];state.hover=null;$$("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));options()}));
 $("#mainRange").addEventListener("input",e=>{e.stopPropagation();state.amount=Number(e.target.value)});
 $("#modeSelect").addEventListener("change",e=>{e.stopPropagation();state.select=e.target.value});
 $("#resetBtn").addEventListener("click",e=>{e.stopPropagation();state.seed++;state.scratches=[];state.hover=null;if(window.labSketch)window.labSketch.reset()});

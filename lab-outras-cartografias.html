@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LAB 02 — Outras Cartografias</title>
+<style>
+:root{
+  --paper:#f7f6f1;--concrete:#e8e6df;--ink:#161616;--muted:#747474;--line:#c9c7c1;
+  --year:#ffd43b;--mechanism:#31a8ff;--edital:#b595ff;--scale:#ff8a3d;--region:#65e77d;--curation:#ff4f9a
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+body{overflow:hidden}.top{position:fixed;z-index:20;left:0;right:0;top:0;height:70px;padding:10px 14px;border-bottom:1px solid var(--line);background:rgba(247,246,241,.9);backdrop-filter:blur(10px);display:flex;align-items:center;gap:12px}
+.brand{font-size:10px;font-weight:900;line-height:1.05;text-decoration:none;color:inherit;white-space:nowrap}.brand small{display:block;color:#999;font-size:7px;letter-spacing:.12em;margin-top:3px}
+.modes{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin-left:auto}.modes::-webkit-scrollbar{display:none}.modes button{border:1px solid #bbb;background:#fff;padding:9px 12px;font-size:9px;font-weight:900;white-space:nowrap}.modes button.active{background:#161616;color:#fff;border-color:#161616}
+.stage{position:fixed;inset:70px 0 0}.stage canvas{display:block}
+.info{position:fixed;z-index:12;left:18px;top:92px;width:min(360px,calc(100% - 36px));background:rgba(247,246,241,.9);backdrop-filter:blur(8px);padding:14px 15px;border:1px solid rgba(22,22,22,.12);pointer-events:none}.eyebrow{font-size:8px;letter-spacing:.15em;font-weight:900;color:#929292}.info h1{font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;margin:6px 0 6px;font-size:clamp(28px,6vw,48px);line-height:.88;letter-spacing:-.07em}.info p{font-size:10.5px;line-height:1.55;color:#6d6d6d;margin:0}.info .question{margin-top:8px;font-weight:900;color:#222;font-size:9px;letter-spacing:.05em}
+.controls{position:fixed;z-index:15;left:12px;right:12px;bottom:12px;display:flex;align-items:end;gap:8px;pointer-events:none}.panel{pointer-events:auto;margin-left:auto;width:min(440px,100%);background:rgba(247,246,241,.94);border:1px solid var(--line);backdrop-filter:blur(10px);padding:10px}.row{display:flex;align-items:center;gap:7px}.row+.row{margin-top:7px}.row label{font-size:8px;letter-spacing:.09em;font-weight:900;color:#777;min-width:92px}.row input[type=range]{width:100%;accent-color:#161616}.row select{width:100%;border:1px solid #bbb;background:#fff;padding:7px;font-size:9px;font-weight:800}.actions{display:flex;gap:5px}.actions button{border:1px solid #bbb;background:#fff;padding:8px 10px;font-size:8px;font-weight:900}.actions button.active{background:#161616;color:#fff;border-color:#161616}
+.legend{position:fixed;z-index:11;right:14px;top:88px;display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:46vw}.legend span{display:flex;align-items:center;gap:5px;background:rgba(247,246,241,.88);border:1px solid var(--line);padding:6px 7px;font-size:7.5px;font-weight:900}.legend i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+.hint{position:fixed;z-index:11;left:50%;bottom:120px;transform:translateX(-50%);font-size:8px;letter-spacing:.1em;font-weight:900;background:#161616;color:#fff;padding:7px 9px;pointer-events:none;white-space:nowrap}
+@media(max-width:700px){
+  .top{height:94px;display:block;padding:8px 10px}.brand{display:inline-block}.modes{margin-top:7px;width:100%}.modes button{padding:8px 10px}
+  .stage{inset:94px 0 0}.info{top:108px;left:10px;width:calc(100% - 20px);padding:10px 11px}.info h1{font-size:31px}.info p{font-size:9.5px;max-width:86%}
+  .legend{top:auto;right:10px;left:10px;bottom:105px;max-width:none;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}.legend span{flex:none}
+  .controls{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));display:block}.panel{width:100%;padding:8px}.row label{min-width:80px}.hint{bottom:160px;font-size:7px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="lab-identidade.html">CARTOGRAFIA<br>DO FOMENTO<small>LAB 02 · OUTRAS CARTOGRAFIAS</small></a>
+  <nav class="modes" aria-label="Modos cartográficos">
+    <button data-mode="campo" class="active">CAMPO</button>
+    <button data-mode="palimpsesto">PALIMPSESTO</button>
+    <button data-mode="mirante">MIRANTE</button>
+    <button data-mode="trama">TRAMA</button>
+  </nav>
+</header>
+
+<div id="stage" class="stage"></div>
+
+<aside class="info">
+  <span id="modeKicker" class="eyebrow">01 / CAMPO DE PRESSÃO</span>
+  <h1 id="modeTitle">O dinheiro deforma o campo.</h1>
+  <p id="modeText">Projetos deixam de ser pontos: seus valores exercem pressão sobre uma superfície contínua. Concentração, proximidade temporal e mecanismo alteram a intensidade do campo.</p>
+  <div id="modeQuestion" class="question">O QUE FICA VISÍVEL QUANDO O DADO VIRA FORÇA?</div>
+</aside>
+
+<div id="legend" class="legend"></div>
+
+<div class="controls">
+  <div class="panel">
+    <div class="row"><label id="rangeLabel" for="mainRange">INTENSIDADE</label><input id="mainRange" type="range" min="0" max="100" value="58"></div>
+    <div class="row"><label for="modeSelect">LEITURA</label><select id="modeSelect"></select></div>
+    <div class="row actions"><button id="resetBtn">RECOMEÇAR</button><button id="pauseBtn">PAUSAR</button><button id="labelsBtn" class="active">TEXTOS</button></div>
+  </div>
+</div>
+
+<div id="hint" class="hint">ARRASTE O DEDO PARA INTERFERIR</div>
+
+<script src="js/data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
+<script>
+(() => {
+const PROJECTS=window.CARTOGRAFIA_DATA||[];
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const COLORS={year:[255,212,59],mechanism:[49,168,255],edital:[181,149,255],scale:[255,138,61],region:[101,231,125],curation:[255,79,154]};
+const MECH={"Incentivo Fiscal":[255,79,154],"Fundo Municipal":[49,168,255],"Descentra":[101,231,125]};
+const YEARS=[2017,2018,2019,2020,2021,2022,2023,2024];
+const MAX=Math.max(1,...PROJECTS.map(p=>Number(p.value)||0));
+const state={mode:"campo",amount:58,select:"valor",paused:false,labels:true,seed:7,scratches:[],pointer:{x:0,y:0,down:false},hover:null};
+
+const MODES={
+  campo:{k:"01 / CAMPO DE PRESSÃO",t:"O dinheiro deforma o campo.",p:"Projetos deixam de ser pontos: seus valores exercem pressão sobre uma superfície contínua. Concentração, proximidade temporal e mecanismo alteram a intensidade do campo.",q:"O QUE FICA VISÍVEL QUANDO O DADO VIRA FORÇA?",range:"PRESSÃO",options:[["valor","Valor"],["ano","Tempo"],["mecanismo","Mecanismo"]]},
+  palimpsesto:{k:"02 / PALIMPSESTO",t:"A cidade acumula camadas.",p:"Cada ano cobre parcialmente o anterior. Arrastar funciona como desgaste: a superfície mais recente se rompe e deixa aparecer tempos, projetos e valores que estavam por baixo.",q:"O QUE O PRESENTE ESCONDE DO HISTÓRICO DO FOMENTO?",range:"PROFUNDIDADE",options:[["tempo","2017 → 2024"],["valor","Valor"],["documento","Verificação"]]},
+  mirante:{k:"03 / MIRANTE",t:"Ver também é escolher.",p:"A informação permanece no campo, mas uma lente móvel decide o que ganha nitidez. O filtro não reorganiza o mundo: ele muda aquilo que conseguimos enxergar.",q:"QUAIS RELAÇÕES O FILTRO TORNA VISÍVEIS — E QUAIS APAGA?",range:"ABERTURA",options:[["valor","Valor"],["ano","Ano"],["mecanismo","Mecanismo"]]},
+  trama:{k:"04 / TRAMA",t:"O projeto é um cruzamento.",p:"Cada projeto vira um fio que atravessa estruturas institucionais, tempo e escala financeira. A cartografia aparece no entrelaçamento, não em um ponto isolado.",q:"QUE CONDIÇÕES PRECISAM SE CRUZAR PARA UM PROJETO EXISTIR?",range:"TENSÃO",options:[["mecanismo-ano","Mecanismo → Ano"],["ano-escala","Ano → Escala"],["mecanismo-escala","Mecanismo → Escala"]]}
+};
+
+function mechanismColor(p){return MECH[p.mechanism]||[110,110,110]}
+function scaleName(v){return v<=30000?"MICRO":v<=100000?"MÉDIO":"MACRO"}
+function short(t){return String(t||"").split(" – ")[0].split(":")[0]}
+function options(){
+  const cfg=MODES[state.mode];
+  $("#modeKicker").textContent=cfg.k;$("#modeTitle").textContent=cfg.t;$("#modeText").textContent=cfg.p;$("#modeQuestion").textContent=cfg.q;$("#rangeLabel").textContent=cfg.range;
+  $("#modeSelect").innerHTML=cfg.options.map(([v,l])=>`<option value="${v}">${l}</option>`).join("");
+  state.select=cfg.options[0][0];$("#mainRange").value=state.amount;
+  $("#legend").innerHTML=state.mode==="trama"
+    ? ["Incentivo Fiscal","Fundo Municipal","Descentra"].map(m=>`<span style="--c:rgb(${mechanismColor({mechanism:m}).join(",")})"><i></i>${m}</span>`).join("")
+    : `<span style="--c:#ffd43b"><i></i>ANO</span><span style="--c:#31a8ff"><i></i>MECANISMO</span><span style="--c:#ff8a3d"><i></i>VALOR</span><span style="--c:#ff4f9a"><i></i>VISIBILIDADE</span>`;
+}
+
+$$("[data-mode]").forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;state.scratches=[];state.hover=null;$$("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));options()});
+$("#mainRange").oninput=e=>state.amount=Number(e.target.value);
+$("#modeSelect").onchange=e=>state.select=e.target.value;
+$("#resetBtn").onclick=()=>{state.seed++;state.scratches=[];state.hover=null;if(window.labSketch)window.labSketch.reset()};
+$("#pauseBtn").onclick=()=>{state.paused=!state.paused;$("#pauseBtn").textContent=state.paused?"RETOMAR":"PAUSAR"};
+$("#labelsBtn").onclick=()=>{state.labels=!state.labels;$("#labelsBtn").classList.toggle("active",state.labels)};
+
+function sketch(p){
+ let nodes=[],t=0;
+ function reset(){
+   p.randomSeed(state.seed*997);p.noiseSeed(state.seed*313);
+   nodes=PROJECTS.map((d,i)=>({d,i,x:p.random(.1,.9),y:p.random(.2,.86),phase:p.random(999)}));
+ }
+ p.setup=()=>{const c=p.createCanvas(p.windowWidth,Math.max(200,p.windowHeight-(innerWidth<=700?94:70)));c.parent("stage");p.pixelDensity(Math.min(2,window.devicePixelRatio||1));p.noiseDetail(4,.56);reset();window.labSketch={reset}};
+ p.windowResized=()=>p.resizeCanvas(p.windowWidth,Math.max(200,p.windowHeight-(innerWidth<=700?94:70)));
+ p.draw=()=>{
+   if(!state.paused)t+=.004;
+   p.background(247,246,241);
+   if(state.mode==="campo")drawCampo();
+   if(state.mode==="palimpsesto")drawPalimpsesto();
+   if(state.mode==="mirante")drawMirante();
+   if(state.mode==="trama")drawTrama();
+ };
+ function pos(n){
+   const wob=state.paused?0:22;
+   return {x:n.x*p.width+(p.noise(n.phase+t)-.5)*wob,y:n.y*p.height+(p.noise(n.phase+70+t)-.5)*wob};
+ }
+ function drawCampo(){
+   const step=p.map(state.amount,0,100,42,20);
+   p.noStroke();
+   for(let y=0;y<p.height;y+=step)for(let x=0;x<p.width;x+=step){
+     let v=0,rr=0,gg=0,bb=0,wc=0;
+     for(const n of nodes){
+       const P=pos(n),dx=x-P.x,dy=y-P.y,d2=dx*dx+dy*dy+800;
+       let w=(Number(n.d.value)||12000)/MAX*8000/d2;
+       if(state.select==="ano")w*=.45+((Number(n.d.year)||2017)-2017)/7;
+       if(state.select==="mecanismo")w*=n.d.mechanism==="Incentivo Fiscal"?1.25:n.d.mechanism==="Descentra"?.72:.92;
+       const c=mechanismColor(n.d);v+=w;rr+=c[0]*w;gg+=c[1]*w;bb+=c[2]*w;wc+=w;
+     }
+     const noise=.75+p.noise(x*.008,y*.008,t)*.65;
+     const a=p.constrain(v*75*noise,0,165);
+     if(wc){p.fill(rr/wc,gg/wc,bb/wc,a);p.rect(x,y,step+1,step+1)}
+   }
+   p.noFill();p.stroke(22,55);p.strokeWeight(1);
+   for(let k=0;k<5;k++){p.beginShape();for(let x=0;x<=p.width+20;x+=20){const y=p.height*(.22+k*.14)+(p.noise(x*.004,k*2+state.seed,t)-.5)*70*(state.amount/100);p.vertex(x,y)}p.endShape()}
+   if(state.labels)for(const n of nodes.filter((_,i)=>i%4===0)){const P=pos(n);p.noStroke();p.fill(22,150);p.textSize(8);p.text(short(n.d.title).toUpperCase(),P.x+6,P.y)}
+ }
+ function drawPalimpsesto(){
+   const depth=Math.max(1,Math.round(p.map(state.amount,0,100,2,8)));
+   const shown=YEARS.slice(-depth);
+   const h=p.height/shown.length;
+   shown.forEach((yr,idx)=>{
+     const ps=nodes.filter(n=>Number(n.d.year)===yr),c=COLORS[["year","mechanism","edital","scale","region","curation"][idx%6]];
+     p.noStroke();p.fill(c[0],c[1],c[2],55+idx*10);p.rect(0,idx*h,p.width,h+1);
+     p.fill(22,150);p.textSize(Math.max(18,h*.34));p.textAlign(p.RIGHT,p.CENTER);p.text(String(yr),p.width-18,idx*h+h/2);
+     p.textAlign(p.LEFT,p.CENTER);p.textSize(8);
+     let yy=idx*h+18;for(const n of ps.slice(0,6)){p.text(short(n.d.title).toUpperCase(),16,yy);yy+=13}
+   });
+   p.noStroke();p.fill(247,246,241,218);
+   for(const s of state.scratches){
+     for(let k=0;k<5;k++){const rr=s.r*(1-k*.13);p.fill(247,246,241,22);p.circle(s.x,s.y,rr*2)}
+   }
+   p.noFill();p.stroke(22,80);for(const s of state.scratches.slice(-8))p.circle(s.x,s.y,s.r*2);
+ }
+ function drawMirante(){
+   const radius=p.map(state.amount,0,100,55,190);
+   const px=state.pointer.x||p.width*.55,py=state.pointer.y||p.height*.55;
+   for(const n of nodes){
+     const P=pos(n),inside=p.dist(px,py,P.x,P.y)<radius;
+     const c=mechanismColor(n.d),r=8+Math.sqrt((Number(n.d.value)||0)/MAX)*24;
+     p.noStroke();p.fill(c[0],c[1],c[2],inside?210:28);p.circle(P.x,P.y,r*(inside?1.05:.72));
+     if(inside&&state.labels){p.fill(22,220);p.textSize(8);p.text(short(n.d.title).toUpperCase(),P.x+r*.6+5,P.y)}
+   }
+   p.noFill();p.stroke(22,220);p.strokeWeight(2);p.circle(px,py,radius*2);p.strokeWeight(1);p.circle(px,py,radius*2+10);
+   p.noStroke();p.fill(22,220);p.textSize(8);p.textAlign(p.CENTER,p.CENTER);p.text(state.select.toUpperCase(),px,py-radius-14);
+ }
+ function groupVals(type){
+   if(type==="mecanismo")return ["Incentivo Fiscal","Fundo Municipal","Descentra"];
+   if(type==="ano")return YEARS.map(String);
+   return ["MICRO","MÉDIO","MACRO"];
+ }
+ function valOf(d,type){if(type==="mecanismo")return d.mechanism;if(type==="ano")return String(d.year);return scaleName(Number(d.value)||0)}
+ function drawTrama(){
+   const [leftType,rightType]=state.select.split("-");
+   const left=groupVals(leftType),right=groupVals(rightType);
+   const lx=80,rx=p.width-80;
+   const yFor=(arr,v)=>{const i=Math.max(0,arr.indexOf(v));return p.map(i,0,Math.max(1,arr.length-1),70,p.height-65)};
+   p.stroke(22,45);p.strokeWeight(1);
+   for(const label of left){const y=yFor(left,label);p.line(0,y,lx-12,y);if(state.labels){p.noStroke();p.fill(22,180);p.textSize(8);p.textAlign(p.LEFT,p.CENTER);p.text(label.toUpperCase(),8,y);p.stroke(22,45)}}
+   for(const label of right){const y=yFor(right,label);p.line(rx+12,y,p.width,y);if(state.labels){p.noStroke();p.fill(22,180);p.textSize(8);p.textAlign(p.RIGHT,p.CENTER);p.text(label.toUpperCase(),p.width-8,y);p.stroke(22,45)}}
+   state.hover=null;let best=999;
+   nodes.forEach((n,i)=>{
+     const a=yFor(left,valOf(n.d,leftType)),b=yFor(right,valOf(n.d,rightType)),mid=p.width*.5+(p.noise(n.phase)-.5)*80;
+     const c=mechanismColor(n.d),w=.6+Math.sqrt((Number(n.d.value)||0)/MAX)*p.map(state.amount,0,100,2,8);
+     const mx=state.pointer.x,my=state.pointer.y;
+     const approxY=p.lerp(a,b,p.constrain((mx-lx)/(rx-lx),0,1)),dist=Math.abs(my-approxY);
+     const hot=dist<best&&dist<18;if(hot){best=dist;state.hover=n}
+     p.noFill();p.stroke(c[0],c[1],c[2],state.hover&&state.hover!==n?28:hot?230:95);p.strokeWeight(hot?w+2:w);
+     p.bezier(lx,a,mid,a,mid,b,rx,b);
+   });
+   if(state.hover&&state.labels){p.noStroke();p.fill(22);p.rect(12,p.height-50,p.width-24,34,2);p.fill(255);p.textSize(9);p.textAlign(p.LEFT,p.CENTER);p.text(short(state.hover.d.title).toUpperCase()+" · "+state.hover.d.year+" · "+state.hover.d.mechanism,22,p.height-33)}
+ }
+ function recordPointer(){
+   state.pointer.x=p.mouseX;state.pointer.y=p.mouseY;
+   if(state.mode==="palimpsesto"&&state.pointer.down){const r=p.map(state.amount,0,100,30,95);state.scratches.push({x:p.mouseX,y:p.mouseY,r});if(state.scratches.length>80)state.scratches.shift()}
+ }
+ p.mouseMoved=recordPointer;
+ p.mouseDragged=()=>{recordPointer();return false};
+ p.mousePressed=()=>{state.pointer.down=true;recordPointer();return false};
+ p.mouseReleased=()=>{state.pointer.down=false;return false};
+ p.touchStarted=()=>{state.pointer.down=true;recordPointer();return false};
+ p.touchMoved=()=>{recordPointer();return false};
+ p.touchEnded=()=>{state.pointer.down=false;return false};
+}
+options();new p5(sketch,$("#stage"));
+})();
+</script>
+</body>
+</html>

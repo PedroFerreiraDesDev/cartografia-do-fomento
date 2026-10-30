@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Rizoma do Fomento — protótipo p5.js</title>
+<style>
+  :root{--bg:#0b0e14;--ink:#f2f2ef;--muted:#8d93a1;--line:#242a36;--panel:#121722;--accent:#ffd23f}
+  body.paper{--bg:#ffffff;--ink:#202020;--muted:#848484;--line:#dededb;--panel:#f5f5f2;--accent:#202020}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+  button{font:inherit;cursor:pointer}
+  .kicker{font-size:10px;letter-spacing:.14em;font-weight:900;color:var(--muted)}
+  #top{position:fixed;z-index:20;top:0;left:0;right:0;min-height:56px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:6px 14px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px)}
+  #top .brand{font-size:11px;font-weight:900;line-height:1.05;letter-spacing:-.02em;margin-right:8px}
+  #top .brand small{display:block;font-weight:400;color:var(--muted);letter-spacing:.1em;font-size:9px;margin-top:2px}
+  .group{display:flex;align-items:center;gap:4px;padding:0 8px;border-left:1px solid var(--line)}
+  .group .kicker{margin-right:4px}
+  .chip{border:1px solid var(--line);background:transparent;color:var(--ink);padding:6px 9px;font-size:11px;font-weight:700;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+  .chip i{width:8px;height:8px;border-radius:50%;background:var(--sw);opacity:.35}
+  .chip.on{border-color:var(--sw,var(--ink))}
+  .chip.on i{opacity:1}
+  .btn{border:1px solid var(--line);background:transparent;color:var(--ink);padding:6px 10px;font-size:11px;font-weight:700}
+  .btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  #stage{position:fixed;inset:var(--topH,56px) 0 0 0}
+  #stage canvas{display:block}
+  #hint{position:fixed;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;pointer-events:none;z-index:5;transition:opacity .6s}
+  #hint h1{font-size:clamp(28px,6vw,72px);letter-spacing:-.06em;line-height:.95;margin:0 0 10px}
+  #hint h1 em{font-style:normal;color:var(--muted)}
+  #hint p{color:var(--muted);font-size:13px;margin:0}
+  #foot{position:fixed;z-index:20;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:12px;padding:8px 14px;font-size:10px;color:var(--muted);letter-spacing:.06em;pointer-events:none}
+  #panel{position:fixed;z-index:30;top:var(--topH,56px);right:0;bottom:0;width:min(400px,100vw);background:var(--panel);border-left:1px solid var(--line);padding:22px 22px 40px;overflow:auto;transform:translateX(104%);transition:transform .35s}
+  #panel.open{transform:none}
+  #panel h2{font-size:24px;letter-spacing:-.04em;line-height:1.05;margin:8px 0 6px}
+  #panel .trans{font-size:13px;line-height:1.55;color:var(--muted);margin:0 0 14px}
+  #panel .trans b{color:var(--ink)}
+  .fact{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:8px 0;font-size:12px}
+  .fact span{color:var(--muted)}
+  .fact b.missing{color:var(--muted);font-weight:400;font-style:italic}
+  #links{display:flex;flex-direction:column;gap:6px;margin:10px 0 14px}
+  #links button{text-align:left;border:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 10px;font-size:12px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+  #links button:hover{border-color:var(--ink)}
+  #links button small{color:var(--muted);font-size:10px;white-space:nowrap}
+  #links button i{width:8px;height:8px;border-radius:50%;flex:none;background:var(--sw)}
+  #trail{font-size:11px;color:var(--muted);line-height:1.6;border-top:1px dashed var(--line);padding-top:10px}
+  .note{border:1px dashed var(--line);padding:10px;font-size:11px;line-height:1.55;color:var(--muted);margin-top:14px}
+  #closeNode{margin-top:10px}
+  .hcard{position:fixed;z-index:25;left:14px;bottom:40px;width:min(360px,calc(100vw - 28px));background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--sw,var(--accent));padding:12px 14px;opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s;pointer-events:none}
+  .hcard.show{opacity:1;transform:none}
+  .hcard-kicker{font-size:9px;letter-spacing:.12em;font-weight:900;color:var(--muted)}
+  .hcard b{display:block;font-size:14px;letter-spacing:-.02em;margin:4px 0;line-height:1.2}
+  .hcard p{margin:0 0 6px;font-size:11px;line-height:1.5;color:var(--muted)}
+  .hcard-cta{font-size:9px;letter-spacing:.1em;font-weight:900}
+  @media (max-width:760px){
+    #top{padding:8px 10px;gap:6px}
+    #top .brand{width:100%}
+    .group{border-left:0;padding:0}
+    #panel{top:auto;height:60vh;width:100vw;border-left:0;border-top:1px solid var(--line);transform:translateY(104%)}
+    #hint h1{font-size:34px}
+  }
+</style>
+</head>
+<body>
+<header id="top">
+  <div class="brand">RIZOMA DO<br>FOMENTO<small>CARTOGRAFIA DO FOMENTO · PROTÓTIPO P5.JS</small></div>
+  <div class="group" id="lines"><span class="kicker">LINHAS DE FUGA</span></div>
+  <div class="group">
+    <span class="kicker">MODO</span>
+    <button class="btn on" id="btnRizoma">Rizoma</button>
+    <button class="btn" id="btnArvore">Árvore / decalque</button>
+    <button class="btn" id="btn3d" title="Tecla D · arraste o fundo para girar">3D</button>
+  </div>
+  <div class="group">
+    <button class="btn" id="btnCortar" title="Tecla C">Cortar linha</button>
+    <button class="btn" id="btnPausar" title="Tecla P">Pausar</button>
+    <button class="btn" id="btnPapel" title="Tecla T">Modo papel</button>
+    <button class="btn" id="btnSalvar" title="Tecla S">Salvar meu mapa</button>
+    <button class="btn" id="btnReset" title="Tecla R">Recomeçar</button>
+  </div>
+</header>
+
+<div id="stage"></div>
+
+<div id="hint">
+  <h1>Não há <em>raiz.</em><br>Mova a mão.</h1>
+  <p>Qualquer ponto é uma entrada. O spray revela projetos soltos; ligue uma linha de fuga no topo para ver as relações crescerem.</p>
+</div>
+<aside id="hcard" class="hcard"><div class="hcard-kicker" id="hKicker"></div><b id="hTitle"></b><p id="hMeta"></p><span class="hcard-cta" id="hCta"></span></aside>
+
+<aside id="panel" aria-live="polite">
+  <div class="kicker" id="pKicker">NÓ ABERTO</div>
+  <h2 id="pTitle"></h2>
+  <p class="trans" id="pTrans"></p>
+  <div id="pFacts"></div>
+  <div class="kicker" style="margin-top:16px">SEGUIR UMA LINHA</div>
+  <div id="links"></div>
+  <div id="trail"></div>
+  <button class="btn" id="closeNode">Fechar nó (a trilha fica)</button>
+  <div class="note">Sem botão "voltar": o rizoma não tem raiz. Feche o nó e continue por outra linha, ou siga uma conexão daqui. Dados não verificados aparecem como "A verificar" e não geram linhas.</div>
+</aside>
+
+<footer id="foot">
+  <span id="counter">0 NÓS · 0 LINHAS</span>
+  <span>POSIÇÕES CENOGRÁFICAS · NÃO REPRESENTAM LOCALIZAÇÃO REAL · FEITO COM P5.JS</span>
+</footer>
+
+<script src="../../js/data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<script src="../../js/rizoma.js"></script>
+<script src="sketch.js"></script>
+</body>
+</html>

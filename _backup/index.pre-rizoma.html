@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cartografia do Fomento — Protótipo</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+<section id="intro" class="intro">
+  <div class="topline"><strong>CARTOGRAFIA DO FOMENTO</strong><span>TCC · DESIGN · PROTÓTIPO EM DESENVOLVIMENTO</span></div>
+  <div class="intro-main">
+    <div class="kicker">ARTE URBANA · FOMENTO CULTURAL · DESIGN DA INFORMAÇÃO</div>
+    <h1>Cartografia<br>do <em>Fomento.</em></h1>
+    <p>Um Trabalho de Conclusão de Curso em Design que investiga projetos de grafite e muralismo realizados com recursos de fomento cultural em Belo Horizonte entre 2017 e 2024.</p>
+    <p>A experiência reúne obras, projetos, valores, editais, territórios e documentos para criar outras formas de compreender como o financiamento público atravessa a arte urbana.</p>
+    <button id="enterBtn" class="primary">ENTRAR NA EXPERIÊNCIA ↗</button>
+  </div>
+  <div class="footline"><span>ARTEFATO DIGITAL / TESTE DE INTERAÇÃO</span><span>MOVA · DESCUBRA · INVESTIGUE</span></div>
+</section>
+
+<div id="site" class="hidden">
+<header class="topbar">
+  <button class="brand" data-nav="discover">CARTOGRAFIA<br>DO FOMENTO</button>
+  <nav>
+    <button data-nav="discover" class="active">Descobrir</button>
+    <button data-nav="indicators">Indicadores</button>
+    <button data-nav="editais">Editais</button>
+    <button data-nav="research">Pesquisa</button>
+    <button data-nav="about">Sobre</button>
+  </nav>
+  <span class="status">BASE DO TCC · CAMPOS EM VERIFICAÇÃO</span>
+</header>
+
+<main>
+<section id="discover" class="view discover-view">
+  <div class="discover-copy"><div class="kicker">01 / DESCOBRIR</div><h2>A cidade aparece pelo gesto.</h2><p>Movimente o mouse. As superfícies surgem como tinta, continuam em deriva e pausam no hover. Clique para abrir a página do projeto.</p></div>
+  <div class="discover-tools"><button id="pauseMotion">Pausar</button><button id="reduceMotion">Reduzir movimento</button><button id="resetWalls">Recomeçar</button></div>
+  <div id="blankMessage" class="blank">MOVIMENTE O MOUSE PARA REVELAR</div>
+  <div id="wallLayer" class="wall-layer"></div>
+  <div id="sprayLayer" class="spray-layer"></div>
+  <div class="discover-foot"><p>As posições são cenográficas e não representam a localização real das obras.</p><span id="wallCounter">0 / 20 PROJETOS</span></div>
+</section>
+
+<section id="indicators" class="view hidden indicators-view">
+  <div class="indicator-main">
+    <div class="section-hero"><div class="kicker">02 / LER OS DADOS</div><h1>O fomento<br>em movimento.</h1><p>Passe o mouse sobre os gráficos para ver quais projetos formam cada resultado. Clique para manter um recorte e abrir os projetos correspondentes.</p><div class="note">Esta versão usa os registros das tabelas atuais do TCC. Informações ainda não verificadas aparecem explicitamente como “Não verificada”.</div></div>
+    <div class="metric-switch"><button data-metric="count" class="active">Quantidade de projetos</button><button data-metric="value">Valor registrado</button></div>
+    <section class="chart-block"><div class="kicker">REGIÃO</div><h2>Onde os projetos aparecem?</h2><p>Somente regionais individualmente verificadas entram no gráfico. O restante fica em “Não verificada”.</p><div id="regionChart" class="bars"></div></section>
+    <section class="chart-block"><div class="kicker">ANO × MECANISMO</div><h2>Quando e por qual forma de fomento?</h2><div id="yearChart" class="year-grid"></div></section>
+    <section class="chart-block"><div class="kicker">ESCALA FINANCEIRA</div><h2>Quanto aparece registrado?</h2><div id="treemap" class="treemap"></div></section>
+    <section class="chart-block"><div class="kicker">DADOS SOCIAIS</div><h2>Perfil dos proponentes.</h2><div class="empty-state">A base atual ainda não sustenta uma visualização quantitativa completa de gênero, raça, renda ou classe social. Esses dados devem ser autodeclarados/documentados e agregados — nunca inferidos a partir da localização.</div></section>
+  </div>
+  <aside class="indicator-side"><div class="kicker" id="filterKicker">CORPUS DO TCC</div><h3 id="filterTitle">Todos os projetos</h3><p id="filterDescription">Passe o mouse sobre qualquer gráfico para pré-visualizar os projetos.</p><div id="filteredProjects"></div></aside>
+</section>
+
+<section id="editais" class="view hidden scroll-view"><div class="content-wrap"><div class="section-hero narrow"><div class="kicker">03 / MECANISMOS DE FOMENTO</div><h1>Editais não são<br>só documentos.</h1><p>Veja os mecanismos presentes no corpus e entre nos projetos correspondentes.</p></div><div id="editalList" class="edital-list"></div></div></section>
+
+<section id="research" class="view hidden scroll-view"><div class="content-wrap narrow"><div class="section-hero"><div class="kicker">04 / CAMADA SOCIAL</div><h1>Quem acessa<br>o fomento?</h1><p>A pesquisa com pessoas poderá complementar os registros documentais.</p></div><article class="text-block spray-text"><h2>Experiência com editais</h2><p>Investigar se artistas e produtores já participaram, tentaram participar ou nunca submeteram propostas.</p></article><article class="text-block spray-text"><h2>Barreiras percebidas</h2><p>Encontrar oportunidades, compreender regras, elaborar orçamento, reunir documentos e realizar prestação de contas.</p></article><article class="text-block spray-text"><h2>Perfil dos respondentes</h2><p>Dados sociodemográficos precisam ser voluntários, autodeclarados e apresentados de forma agregada.</p></article></div></section>
+
+<section id="about" class="view hidden scroll-view"><div class="content-wrap narrow"><div class="section-hero"><div class="kicker">05 / PROJETO ACADÊMICO</div><h1>Uma cartografia<br>sem mapa obrigatório.</h1><p>O território continua presente nos dados e relatos, mas a experiência pode começar pelo muro, pelo valor, pelo ano ou pelo edital.</p></div><article class="text-block spray-text"><h2>Descobrir</h2><p>Obras surgem pela movimentação do cursor e ocupam uma composição instável.</p></article><article class="text-block spray-text"><h2>Investigar</h2><p>Cada muro abre uma página dedicada com galeria, projeto, território, fomento, comunidade, questionário e fontes.</p></article><article class="text-block spray-text"><h2>Comparar</h2><p>Os gráficos permitem voltar das estatísticas aos projetos que constituem cada resultado.</p></article></div></section>
+
+<section id="projectPage" class="view hidden project-page">
+  <div class="project-wrap"><div class="project-toolbar"><button id="projectBack" class="ghost">← VOLTAR</button><span class="kicker">PROJETO / ARQUIVO EM CONSTRUÇÃO</span></div>
+  <div class="project-hero"><div id="projectHeroArt" class="project-image"></div><div class="project-info"><span id="projectStatus" class="status-chip"></span><div id="projectMeta" class="kicker"></div><h1 id="projectTitle"></h1><p id="projectSummary"></p><div id="projectFacts"></div></div></div></div>
+  <nav class="project-tabs"><button data-project-section="gallery" class="active">Galeria</button><button data-project-section="project">Projeto</button><button data-project-section="territory">Território e sociedade</button><button data-project-section="funding">Fomento</button><button data-project-section="community">Comunidade</button><button data-project-section="survey">Questionário</button><button data-project-section="sources">Fontes</button></nav>
+  <div class="project-wrap">
+    <section id="project-gallery" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">01</div><h2>Galeria.</h2></div><div class="section-content spray-text"><div id="projectGallery" class="gallery"></div><div class="note">As imagens desta versão são placeholders. Fotografias reais devem entrar com origem, crédito, legenda e autorização de uso.</div></div></div></section>
+    <section id="project-project" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">02</div><h2>O projeto.</h2></div><div id="projectNarrative" class="section-content spray-text"></div></div></section>
+    <section id="project-territory" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">03</div><h2>Território<br>e sociedade.</h2></div><div id="territoryContent" class="section-content spray-text"></div></div></section>
+    <section id="project-funding" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">04</div><h2>Como foi<br>financiado?</h2></div><div id="fundingContent" class="section-content spray-text"></div></div></section>
+    <section id="project-community" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">05</div><h2>Vozes<br>da rua.</h2></div><div class="section-content spray-text"><p>Este espaço recebe relatos sobre a relação das pessoas com a obra. Comentários não substituem documentação oficial.</p><textarea id="commentText" placeholder="Como você conhece esta obra ou projeto?"></textarea><button id="addComment" class="primary small">ADICIONAR RELATO DE TESTE ↗</button><div id="commentList"></div></div></div></section>
+    <section id="project-survey" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">06</div><h2>Entender<br>a informação.</h2></div><div class="section-content spray-text"><div class="question"><b>As informações ajudaram a compreender como este projeto foi financiado?</b><div class="rating" data-question="understanding"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div><div class="question"><b>A relação entre projeto, território e edital ficou clara?</b><div class="rating" data-question="territory"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div></div></div></section>
+    <section id="project-sources" class="project-section"><div class="project-grid"><div class="section-title spray-text"><div class="kicker">07</div><h2>Fontes<br>e evidências.</h2></div><div id="sourceContent" class="section-content spray-text"></div></div></section>
+  </div>
+</section>
+</main>
+<div id="tooltip" class="tooltip hidden"></div>
+</div>
+</div>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -87,6 +87,14 @@ function ensureRizoma(){
   }
 }
 let lastFocus=null;
+function updateMobileToolsSpace(){
+  if(innerWidth>780)return;
+  const tools=$("#discover .discover-tools");
+  if(!tools)return;
+  const h=Math.ceil(tools.getBoundingClientRect().height||0);
+  document.documentElement.style.setProperty("--mobile-tools-space",Math.max(118,h)+"px");
+}
+window.addEventListener("resize",()=>requestAnimationFrame(updateMobileToolsSpace));
 function syncDiscover(s){
   if(page==="indicators"&&s.focus!==lastFocus)renderSide();lastFocus=s.focus; // a lista lateral marca o nó aberto
   $("#wallCounter").textContent=`${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS${s.cuts?` · ${s.cuts} CORTES`:""}${s.started&&!s.anyLine?" · NENHUMA LINHA LIGADA":""}`;
@@ -105,6 +113,7 @@ function syncDiscover(s){
   $("#discover").classList.toggle("preview-open",!!s.focus);document.body.classList.toggle("preview-open",!!s.focus); // as ferramentas cedem lugar ao painel, em vez de ficar escondidas atrás dele
   if(s.focus)$("#hoverCard").classList.remove("show");
   if(!s.focus)$("#preview").classList.remove("open");
+  requestAnimationFrame(updateMobileToolsSpace);
 }
 /* prévia do nó: painel lateral (desktop) ou folha inferior (celular); a página completa só com "Explorar projeto" */
 let previewId=null,previewOrigin="discover";

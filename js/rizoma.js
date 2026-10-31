@@ -75,6 +75,7 @@
     const depthOn = () => S.depth && S.mode === "rizoma";
     const depthRange = () => depthOn() ? Math.min(p.width, p.height) * 0.35 : 0;
     const SPREAD = Math.max(0.5, opts.spread || 1), LINE_W = Math.max(0.2, opts.lineWeight || 1);
+    const margin = () => Object.assign({ t: 40, r: 40, b: 40, l: 40 }, (typeof opts.margin === "function" ? opts.margin() : opts.margin) || {}); // área útil do campo, em px
     const col = t => LINES[t].color;
 
     /* ---------- relações possíveis entre dois nós (todas as naturezas) ---------- */
@@ -261,7 +262,13 @@
         if (still) n.vel.mult(0.35);
         if (n === S.hover && !depthOn()) { const dx = p.mouseX - n.scr.x, dy = p.mouseY - n.scr.y, m = Math.hypot(dx, dy) || 1, k = Math.min(0.6, m * 0.05); n.pos.add(dx / m * k, dy / m * k, 0); } // ímã sutil
         n.pos.add(p5.Vector.mult(n.vel, dt));
-        n.pos.x = p.constrain(n.pos.x, 40, p.width - 40); n.pos.y = p.constrain(n.pos.y, 40, p.height - 40); n.pos.z = D ? p.constrain(n.pos.z, -D, D) : 0;
+        // margens medidas na TELA: usa a posição projetada do último quadro (perspectiva, giro e zoom incluídos) e corrige a posição do mundo
+        const M = margin(), soft = 70, sc = Math.max(0.5, (n.scr && n.scr.s) || view.zoom || 1), sx = n.scr ? n.scr.x : n.pos.x, sy = n.scr ? n.scr.y : n.pos.y;
+        if (sx < M.l + soft) n.vel.x += (M.l + soft - sx) / sc * 0.012; if (sx > p.width - M.r - soft) n.vel.x -= (sx - (p.width - M.r - soft)) / sc * 0.012;
+        if (sy < M.t + soft) n.vel.y += (M.t + soft - sy) / sc * 0.012; if (sy > p.height - M.b - soft) n.vel.y -= (sy - (p.height - M.b - soft)) / sc * 0.012;
+        if (sx < M.l) n.pos.x += (M.l - sx) / sc; if (sx > p.width - M.r) n.pos.x -= (sx - (p.width - M.r)) / sc;
+        if (sy < M.t) n.pos.y += (M.t - sy) / sc; if (sy > p.height - M.b) n.pos.y -= (sy - (p.height - M.b)) / sc;
+        n.pos.x = p.constrain(n.pos.x, 20, p.width - 20); n.pos.y = p.constrain(n.pos.y, 20, p.height - 20); n.pos.z = D ? p.constrain(n.pos.z, -D, D) : 0;
       }
     }
 

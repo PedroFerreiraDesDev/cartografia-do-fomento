@@ -94,3 +94,10 @@ Medido no navegador do app: zoom 1 → 1,18 ao abrir → 1 ao fechar; nós espal
 ## 9. Menos elementos (31/10, quinta passagem)
 
 "Ainda acho muito elemento; as bolinhas no fundo não estão legais." As bolinhas eram o spray do gesto (a textura cinza que o motor deixa onde a mão passa). O motor ganhou `spray: false` e o Lab 04 usa; o micélio livre (sem linha) ficou quase da cor do papel e deposita menos (3 em vez de 5). Sobram só muros, linhas finas e o micélio colorido das linhas ligadas. O protótipo principal mantém o spray, que ali é a metáfora de revelar.
+
+## 10. Radar, bordas e movimento (31/10, sexta passagem)
+
+- **Radar dos escondidos** (o autor gostou do ponto que pisca): todo projeto ainda não revelado pisca de leve no lugar onde está; os ligados ao nó sob a mão piscam mais forte. Clicar (ou tocar) num ponto que pisca revela aquele projeto. Os já revelados funcionam como radar: ao pairar neles, os escondidos ligados acendem.
+- **Bordas**: o motor ganhou `margin` (topo, direita, base, esquerda, em px, fixo ou função). A margem vale na tela: a posição projetada do último quadro (com perspectiva, giro e zoom) corrige a posição do mundo, então nem o nó que vem para a frente passa da faixa. No Lab 04: longe do texto, das ferramentas e, com a ficha aberta, da ficha.
+- **Movimento mais sutil**: deriva 0,9 (era 2,4), para facilitar o clique; o nó sob a mão já ficava parado.
+- **Spray ainda visível no site publicado**: os labs carregavam `js/rizoma.js` sem versão, então o navegador servia o motor antigo. Agora os labs também levam `?v=` nos scripts; a cada mudança no motor, subir o número em `index.html` e nos labs.

@@ -108,9 +108,9 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   </aside>
 </div>
 
-<script src="js/data.js"></script>
+<script src="js/data.js?v=20261030-29"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
-<script src="js/rizoma.js"></script>
+<script src="js/rizoma.js?v=20261030-29"></script>
 <script>
 /* Lab 04 — Physarum: o micélio como terceira forma de ligação do campo rizomático.
    Cartografia do Fomento · TCC Pedro H. F. Moreira (Design UFMG).
@@ -294,7 +294,8 @@ function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.lengt
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 2.4, nodeStyle: "muro", lineWeight: 0.55, spread: 1.45, focusZoom: true, spray: false, // sem as bolinhas do gesto no fundo: só muros, linhas e micélio // linhas finas, nós espaçados, foco que aproxima
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "muro", lineWeight: 0.55, spread: 1.45, focusZoom: true, spray: false,
+    margin: () => small() ? { t: 110, r: 28, b: 150, l: 28 } : { t: 130, r: document.body.classList.contains("card-open") ? 400 : 70, b: 80, l: 70 }, // longe das bordas, do texto, das ferramentas e da ficha // sem as bolinhas do gesto no fundo: só muros, linhas e micélio // linhas finas, nós espaçados, foco que aproxima
     treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
     onChange: sync, onOpen: openCard, onHover: onHover
   });
@@ -322,7 +323,7 @@ function sync(s) {
   document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
   if (s.revealed >= s.total && !finalHinted) { finalHinted = true; guide("Todos os projetos revelados. Quer fechar o seu mapa? O botão congela o micélio e gera a estampa desta visita."); }
   if (!PH.on) guide("O sistema pede menos movimento: o micélio fica desligado; nós e linhas continuam funcionando.");
-  else if (s.revealed < 3) guide(touch ? "Toque no campo para revelar nós: cada nó revelado solta agentes." : "Mova a mão para revelar nós: cada nó revelado solta agentes.");
+  else if (s.revealed < 3) guide(touch ? "Os pontos que piscam são projetos escondidos: toque num deles para revelar." : "Os pontos que piscam são projetos escondidos: clique num deles, ou passe a mão, para revelar.");
   else if (!s.anyLine) guide("Ligue uma linha de fuga: os nós que a compartilham alimentam o micélio e a rede cresce entre eles.");
   else guide("Desligue a linha para ver a rede evaporar; arraste o fundo para girar o campo e ver o rastro ficar para trás.");
 }
@@ -374,11 +375,20 @@ setInterval(() => { // o atrativo do cursor dura 2,5 s depois do último movimen
   if (tier === 3 && hover.tier < 3 && hid.length) guide(`Fique: ${hid.length} nó(s) ligado(s) a este ainda está(ão) escondido(s). Eles pulsam no micélio.`);
   hover.tier = tier;
 }, 120);
-function drawHints(p) { // sementes: escondidos ligados ao nó em foco pulsam, só no micélio
-  if (!hover.id || hover.tier < 3 || !R) return; const hid = hiddenSiblings(IDX[hover.id]); if (!hid.length) return;
-  const gs = R.ghosts(), t = performance.now() / 600; p.noFill(); p.stroke(22, 70); p.strokeWeight(1);
-  for (const g of gs) if (hid.includes(IDX[g.id])) { const r = 10 + (Math.sin(t + IDX[g.id]) + 1) * 8; p.circle(g.x, g.y, r * 2); p.circle(g.x, g.y, 4); }
+function drawHints(p) { // radar: cada projeto ainda escondido pisca de leve no lugar onde está; os ligados ao nó em foco piscam mais forte
+  if (!R || final.on) return;
+  const gs = R.ghosts(); if (!gs.length) return;
+  const hid = hover.id && hover.tier >= 1 ? hiddenSiblings(IDX[hover.id]) : [], t = performance.now() / 700;
+  for (const g of gs) {
+    const i = IDX[g.id], strong = hid.includes(i), ph = (Math.sin(t * (strong ? 2.2 : 1) + i * 1.7) + 1) / 2;
+    p.noStroke(); p.fill(22, strong ? 150 + 80 * ph : 60 + 70 * ph); p.circle(g.x, g.y, strong ? 4.5 : 3.2);
+    p.noFill(); p.stroke(22, (strong ? 120 : 45) * (1 - ph)); p.strokeWeight(1); p.circle(g.x, g.y, 6 + ph * (strong ? 26 : 16));
+  }
 }
+stage.addEventListener("pointerdown", e => { // clicar num ponto que pisca revela aquele projeto
+  if (!R || final.on) return; const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 22); if (g) { R.revealAt(x, y, 26, 1); guide(`${Rizoma.shortTitle(g.title)} revelado.`); }
+}, { capture: true });
 
 /* ---------- interação final: Meu micélio ---------- */
 const final = { on: false };

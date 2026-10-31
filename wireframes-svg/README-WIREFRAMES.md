@@ -16,6 +16,7 @@ Arquivos vetoriais editáveis pensados para Adobe Illustrator.
 10-mobile-principal.svg
 11-user-flow-cartografia-do-fomento.svg
 12-identidade-e-novos-graficos.svg — Lab 05: tipografia em tensão (três quadros da animação da capa) e os quatro gráficos novos dos Indicadores (régua de valores, curva de Lorenz, matriz de relações, declive), com interações e referências; implementado em `lab-05-sistema.html`.
+13-graficos-lab06-e-popover.svg — Lab 05, Indicadores: os três gráficos vindos do Lab 06 (cordas, células de valor, mancha que cresce), a seleção compartilhada entre todos os gráficos, a lista lateral e a ficha, e o pop-over de explicação de cada gráfico (balão ancorado no desktop, folha inferior no celular), com faixa de celular; implementado em `lab-05-sistema.html`.
 
 ## Como editar no Illustrator
 1. Abra o SVG diretamente no Illustrator.

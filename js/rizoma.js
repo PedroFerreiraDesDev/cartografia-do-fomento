@@ -241,7 +241,7 @@
         const target = e.rest * (1 - 0.25 * pull), boost = m > target ? 1 + 3 * pull : 1; // o puxão só aproxima; nunca empurra (medido: 80→21→171 px com 5×; 3× suaviza o rebote)
         d.setMag((m - target) * SPRING * boost); e.a.acc.add(d); e.b.acc.sub(d);
       }
-      const cx = p.width / 2, cy = p.height / 2, drift = S.reduced ? 0 : DRIFT, D = depthRange();
+      const cx = p.width / 2, cy = p.height / 2, drift = S.reduced ? 0 : DRIFT * (opts.drift || 1), D = depthRange(); // opts.drift: quanto os nós vagam (Lab 04 usa 2,4)
       const anchor = S.hover || S.focus; // vizinhança estável
       const frozen = new Set();
       if (anchor) { frozen.add(anchor); for (const e of edges) { if (e.a === anchor && e.b.revealed) frozen.add(e.b); if (e.b === anchor && e.a.revealed) frozen.add(e.a); } }

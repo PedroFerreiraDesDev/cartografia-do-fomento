@@ -24,6 +24,19 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch
 .chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px}.chip i{width:7px;height:7px;border-radius:50%;background:var(--sw);opacity:.4}.chip.active{background:#fff!important;color:var(--ink)!important;border-color:var(--sw)!important}.chip.active i{opacity:1}.chip small{color:#888;font-size:8px}
 .foot{position:absolute;z-index:20;left:20px;right:20px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;pointer-events:none}.foot p{margin:0;max-width:460px;font-size:9px;line-height:1.5;color:#888}.foot span{font-size:9px;font-weight:800;background:rgba(255,255,255,.9);border:1px solid #ddd;padding:6px 8px;white-space:nowrap}
 .guide{position:absolute;z-index:23;left:50%;bottom:80px;transform:translateX(-50%);max-width:min(560px,calc(100% - 40px));background:#161616;color:#fff;padding:9px 13px;font-size:10.5px;line-height:1.5;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s}.guide.show{opacity:1}
+/* pista por permanência: o nó conta mais quanto mais tempo a mão fica nele */
+.hover-tip{position:absolute;z-index:24;pointer-events:none;background:rgba(247,246,241,.96);border:1px solid #cfcfca;padding:8px 10px 10px;min-width:150px;max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translate(14px,-50%);font-size:10.5px;line-height:1.4}
+.hover-tip[hidden]{display:none}.hover-tip b{display:block;font-size:12px;letter-spacing:-.02em}.hover-tip span{display:block;color:#666;margin-top:3px}.hover-tip span:empty{display:none}
+.hover-tip i{display:block;height:2px;background:#ddd;margin-top:7px;position:relative;overflow:hidden}.hover-tip i::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--w,0%);background:var(--ink);transition:width .25s linear}
+.hidden-note{font-size:11px;line-height:1.5;color:#666;margin:6px 0 0}
+.final-btn{border-color:var(--ink)!important}
+/* estampa final */
+.final{position:absolute;z-index:60;inset:0;display:grid;place-items:center;padding:20px;background:rgba(247,246,241,.72);backdrop-filter:blur(3px)}.final[hidden]{display:none}
+.final-card{width:min(640px,100%);max-height:100%;overflow:auto;background:#fff;border:1px solid #cfcfca;padding:22px 24px;box-shadow:0 24px 70px rgba(0,0,0,.14)}
+.final-card .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.final-card h2{font-size:26px;letter-spacing:-.05em;line-height:1.05;margin:8px 0 6px}.final-card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
+.final-preview{border:1px solid #e3e1da;background:var(--paper);aspect-ratio:16/10;display:grid;place-items:center;overflow:hidden}.final-preview img{width:100%;height:100%;object-fit:cover;display:block}
+.final-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.final-actions .primary{display:inline-block;width:auto;margin:0;padding:11px 14px}.final-note{font-size:10px;color:#999;margin:12px 0 0}
+@media(max-width:780px){.final{padding:10px;align-items:end}.final-card{padding:16px;border-radius:14px 14px 4px 4px}.final-card h2{font-size:21px}.final-preview{aspect-ratio:4/3}.hover-tip{display:none!important}}
 /* ficha do nó aberto */
 .card{position:absolute;z-index:30;top:0;right:0;bottom:0;width:min(380px,100%);background:rgba(247,246,241,.97);border-left:1px solid var(--line);padding:18px 20px 30px;overflow:auto;transform:translateX(104%);transition:transform .35s cubic-bezier(.2,.7,.2,1)}.card.open{transform:none}
 .card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}.card .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.card h2{margin:8px 0;font-size:24px;letter-spacing:-.05em;line-height:1.05}.card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
@@ -64,16 +77,29 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
       <button id="evapBtn" title="Tecla E">Evaporação · média</button>
       <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
       <button id="resetBtn" title="Tecla R">Recomeçar</button>
+      <button id="finalBtn" class="final-btn" title="Tecla M · congela o campo e gera a estampa da sua visita">Fechar meu mapa ↗</button>
     </div>
   </div>
   <div class="foot"><p>O micélio é cenográfico: os agentes seguem o algoritmo de Jones (2010) sobre as posições dos nós na tela, não sobre a cidade. Os dados vêm de <code>js/data.js</code>; nós, linhas de fuga e 3D vêm do mesmo motor do protótipo (<code>js/rizoma.js</code>).</p><span id="counter">0 / 20 NÓS</span></div>
   <div class="guide" id="guide"></div>
+  <div id="hoverTip" class="hover-tip" hidden><b id="htTitle"></b><span id="htMeta"></span><span id="htMore"></span><i id="htBar"></i></div>
+  <section id="final" class="final" hidden aria-label="Meu micélio">
+    <div class="final-card">
+      <div class="kicker">MEU MICÉLIO · ESTAMPA DESTA VISITA</div>
+      <h2 id="finalTitle"></h2>
+      <p id="finalText"></p>
+      <div class="final-preview"><img id="finalImg" alt="Estampa do micélio desta visita"></div>
+      <div class="final-actions"><a id="finalDownload" class="primary" download="meu-micelio.png" href="#">BAIXAR PNG ↗</a><button id="finalLast" class="ghost">ABRIR O ÚLTIMO PROJETO</button><button id="finalBack" class="ghost">CONTINUAR EXPLORANDO</button><button id="finalReset" class="ghost">RECOMEÇAR</button></div>
+      <p class="final-note">O mapa é seu: cada visita produz outro. Nada aqui é a localização real das obras.</p>
+    </div>
+  </section>
 
   <aside class="card" id="card" aria-live="polite">
     <div class="top"><div class="kicker" id="cKicker">NÓ ABERTO</div><button class="ghost" id="cClose">FECHAR</button></div>
     <h2 id="cTitle"></h2><p id="cTrans"></p>
     <div id="cFacts"></div>
     <a class="primary" id="cOpen" href="index.html">VER NO PROTÓTIPO ↗</a>
+    <div class="sub">AINDA ESCONDIDO</div><p id="cHidden" class="hidden-note"></p>
     <div class="sub">LINHAS LIGADAS</div><div class="links" id="cLinks"></div>
     <div class="sub">LIGAÇÕES POSSÍVEIS</div><div class="links" id="cPot"></div>
   </aside>
@@ -108,6 +134,9 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
    - ajuste de 31/10 (pedido do autor): o rastro segue a bolinha com que o nó se liga (quimiotaxia mais
      forte, agente que chega volta pelo caminho e engrossa a veia), as cores se fundem devagar (mix 0,35),
      e a camada é ampliada com desfoque na GPU, para ler como forma contínua, não como pontos;
+   - 31/10, segunda passagem: agentes livres rumam a outro nó revelado (traços entre todos), nós sem halo;
+     o cursor é alimento (os agentes do nó em foco seguem a mão e revelam escondidos no caminho);
+     camadas por permanência no hover; "Meu micélio" congela o campo e gera a estampa da visita;
    - contagem adaptativa: ~2500 agentes no desktop, ~700 no celular, com um governador que
      reduz se o quadro passar de 30 ms; pausa quando a aba está oculta; desligado com
      prefers-reduced-motion. Modo instância, como o resto do motor. */
@@ -135,7 +164,7 @@ const PH = {
   step: (touch || small()) ? 200 : 500, min: 200, max: 6000, floor: (touch || small()) ? 400 : 1000, // o governador não desce abaixo de floor
   evapLevels: [["lenta", 0.012, 1], ["média", 0.03, 1], ["rápida", 0.07, 2]], evap: 1, // [nome, fator do retângulo, decaimento linear]
   sensorAngle: 0.5, sensorDist: 12, turn: 0.2, speed: 1.15, jitter: 0.06,   // curvas longas: o rastro vira veia, não ruído
-  deposit: 5, depositLinked: 22, bias: 0.09, biasFree: 0.02, mix: 0.35, life: [260, 820], // bias: puxão rumo ao irmão ligado; mix: as cores se fundem onde as redes se cruzam
+  deposit: 5, depositLinked: 22, bias: 0.09, biasFree: 0.03, biasLure: 0.16, mix: 0.35, life: [260, 820], // bias: puxão rumo ao irmão ligado; biasFree: rumo a qualquer outro nó revelado (traços entre todos); biasLure: rumo ao cursor
   blur: (touch || small()) ? 1.6 : 2.4
 };
 let trail = null, tw = 0, th = 0, trailP = null;
@@ -189,7 +218,8 @@ function respawn(i) {
   const pick = opts.length ? opts[(Math.random() * opts.length) | 0] : null;
   const an = Math.random() * Math.PI * 2, rr = Math.random() * 2.5;
   A.x[i] = pos.x[home] + Math.cos(an) * rr; A.y[i] = pos.y[home] + Math.sin(an) * rr; A.h[i] = Math.random() * Math.PI * 2;
-  A.home[i] = home; A.target[i] = pick ? pick.j : -1; A.type[i] = pick ? pick.t : -1;
+  let free = -1; if (!pick && spawnPool.length > 1) { for (let k = 0; k < 4; k++) { const j = spawnPool[(Math.random() * spawnPool.length) | 0]; if (j !== home) { free = j; break; } } } // livre: ruma a outro nó revelado qualquer
+  A.home[i] = home; A.target[i] = pick ? pick.j : free; A.type[i] = pick ? pick.t : -1;
   A.age[i] = 0; A.life[i] = PH.life[0] + Math.random() * (PH.life[1] - PH.life[0]);
   return true;
 }
@@ -201,6 +231,7 @@ new p5(p => {
   p.windowResized = () => { p.resizeCanvas(stage.clientWidth, stage.clientHeight); makeTrail(p); };
   p.draw = () => {
     if (!PH.on || !R) { p.clear(); return; }
+    if (final.on) return; // congelado: a estampa fica como está
     const t0 = performance.now();
     updateSources();
     let [, evapF, evapL] = PH.evapLevels[PH.evap];
@@ -212,8 +243,8 @@ new p5(p => {
     for (let i = 0; i < DATA.length; i++) {
       if (!pos.on[i]) continue;
       const l = linkOf(i), c = l ? Rizoma.LINES[TYPES[l.t]].color : INK;
-      if (l) { trail.fill(c[0], c[1], c[2], 6); trail.circle(pos.x[i], pos.y[i], 26); trail.fill(c[0], c[1], c[2], 24); trail.circle(pos.x[i], pos.y[i], 9); }
-      else { trail.fill(c[0], c[1], c[2], 7); trail.circle(pos.x[i], pos.y[i], 14); }
+      if (l) { trail.fill(c[0], c[1], c[2], 22); trail.circle(pos.x[i], pos.y[i], 7); }
+      else { trail.fill(c[0], c[1], c[2], 8); trail.circle(pos.x[i], pos.y[i], 6); } // alimento pequeno: o nó é ponto de partida, não mancha
     }
     // 3. agentes: o mapa é lido uma vez por quadro; cada agente sente três pontos, vira, anda e deposita
     trail.loadPixels();
@@ -226,11 +257,13 @@ new p5(p => {
       const f = sense(x + Math.cos(h) * sd, y + Math.sin(h) * sd), l = sense(x + Math.cos(h - sa) * sd, y + Math.sin(h - sa) * sd), r = sense(x + Math.cos(h + sa) * sd, y + Math.sin(h + sa) * sd);
       if (f > l && f > r) { } else if (f < l && f < r) h += Math.random() < 0.5 ? -ta : ta; else if (l > r) h -= ta; else if (r > l) h += ta;
       const tg = A.target[i];
-      if (tg >= 0 && pos.on[tg]) { // quimiotaxia rumo ao irmão ligado: o rastro segue a bolinha com que o nó se liga
-        const dx = pos.x[tg] - x, dy = pos.y[tg] - y, dist = Math.hypot(dx, dy), d = Math.atan2(dy, dx) - h;
-        h += Math.atan2(Math.sin(d), Math.cos(d)) * (dist < 6 ? 0.5 : PH.bias);
-        if (dist < 3) { A.target[i] = A.home[i]; A.home[i] = tg; } // chegou: volta pelo mesmo caminho, engrossando a veia
-      } else if (A.home[i] >= 0 && A.age[i] > 90) { const d = Math.atan2(pos.y[A.home[i]] - y, pos.x[A.home[i]] - x) - h; h += Math.atan2(Math.sin(d), Math.cos(d)) * PH.biasFree; } // livre: orbita o nó de origem e forma a mancha de fundo
+      if (lure.on && A.home[i] === lure.home) { // o cursor é alimento: os agentes do nó em foco seguem a mão e esticam a veia
+        const dx = lure.x - x, dy = lure.y - y, d = Math.atan2(dy, dx) - h; h += Math.atan2(Math.sin(d), Math.cos(d)) * PH.biasLure;
+      } else if (tg >= 0 && pos.on[tg]) { // quimiotaxia rumo ao irmão ligado (forte) ou a outro nó revelado (fraca): traços entre todos
+        const dx = pos.x[tg] - x, dy = pos.y[tg] - y, dist = Math.hypot(dx, dy), d = Math.atan2(dy, dx) - h, linked = A.type[i] >= 0;
+        h += Math.atan2(Math.sin(d), Math.cos(d)) * (dist < 6 ? 0.5 : linked ? PH.bias : PH.biasFree);
+        if (dist < 3) { A.target[i] = A.home[i]; A.home[i] = tg; } // chegou: volta pelo mesmo caminho, engrossando o traço
+      }
       h += (Math.random() - 0.5) * jt;
       x += Math.cos(h) * sp; y += Math.sin(h) * sp;
       if (x < 1 || y < 1 || x >= tw - 1 || y >= th - 1) { A.life[i] = 0; continue; } // saiu do mapa: renasce num nó
@@ -241,7 +274,10 @@ new p5(p => {
     }
     trail.updatePixels();
     // 4. o rastro vai para a tela ampliado 3× (a interpolação do navegador faz a difusão visual)
+    if (!final.on) { // na estampa final nada evapora nem se mexe
     p.clear(); const dc = p.drawingContext; dc.filter = `blur(${PH.blur}px)`; p.image(trail, 0, 0, p.width, p.height); dc.filter = "none";
+    drawHints(p);
+    }
     // governador: se o quadro ficar pesado, menos agentes
     drawMs += (performance.now() - t0 - drawMs) * 0.05; if (++frameN % 180 === 0 && drawMs > 12 && PH.count > PH.floor) setCount(Math.max(PH.floor, PH.count - PH.step)); // governador: o micélio não pode comer o quadro
   };
@@ -255,9 +291,9 @@ function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.lengt
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380,
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 2.4,
     treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
-    onChange: sync, onOpen: openCard
+    onChange: sync, onOpen: openCard, onHover: onHover
   });
   window.Lab4Rizoma = R;
   for (const t of TYPES) {
@@ -279,6 +315,7 @@ function sync(s) {
   $("#depthBtn").classList.toggle("active", s.depth);
   $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (PH.on ? ` · ${PH.count} AGENTES` : "");
   document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
+  if (s.revealed >= s.total && !finalHinted) { finalHinted = true; guide("Todos os projetos revelados. Quer fechar o seu mapa? O botão congela o micélio e gera a estampa desta visita."); }
   if (!PH.on) guide("O sistema pede menos movimento: o micélio fica desligado; nós e linhas continuam funcionando.");
   else if (s.revealed < 3) guide(touch ? "Toque no campo para revelar nós: cada nó revelado solta agentes." : "Mova a mão para revelar nós: cada nó revelado solta agentes.");
   else if (!s.anyLine) guide("Ligue uma linha de fuga: os nós que a compartilham alimentam o micélio e a rede cresce entre eles.");
@@ -293,12 +330,77 @@ function openCard(i) {
   $("#cFacts").innerHTML = [["Ano", i.year], ["Mecanismo", i.mechanism], ["Edital", i.edital], ["Valor registrado", i.valueText || Rizoma.money(i.value)], ["Escala", i.scale]].map(([k, v]) => `<div class="fact"><span>${k}</span><b>${v == null || v === "" ? "A verificar" : v}</b></div>`).join("");
   $("#cOpen").href = `index.html#${i.id}`;
   const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${Rizoma.shortTitle(c.title)}</span><small>${c.why} →</small></button>`).join("") : `<div class="empty">Nenhuma linha ligada chega aqui. Ligue uma linha de fuga nas ferramentas.</div>`;
+  const hid = hiddenSiblings(IDX[i.id]); $("#cHidden").textContent = hid.length ? `${hid.length} nó(s) ligado(s) a este ainda escondido(s): ${hid.slice(0, 3).map(g => Rizoma.shortTitle(DATA[g].title)).join(", ")}${hid.length > 3 ? "…" : ""}. Passe a mão por eles no campo, ou estique o micélio até lá.` : "Nenhum nó ligado a este continua escondido.";
   const P = {}; for (const q of (i.potentials || [])) (P[q.type] = P[q.type] || []).push(q);
   $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button data-line="${t}" style="--sw:rgb(${Rizoma.LINES[t].color.join(",")})"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} nó(s)</small></button>`).join("") : `<div class="empty">Revele mais nós para ver ligações possíveis.</div>`;
   $$("[data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("[data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
   $("#card").classList.add("open");
 }
 $("#cClose").onclick = () => R.close();
+
+/* ---------- descoberta: o cursor é alimento; parar sobre o nó revela em camadas; os escondidos ligados pulsam ---------- */
+const lure = { on: false, home: -1, x: 0, y: 0, lastMove: 0 };
+let hover = { id: null, since: 0, x: 0, y: 0, tier: -1 };
+function hiddenSiblings(i) { // nós ligados a i (por qualquer natureza) ainda não revelados
+  if (i == null) return []; const out = new Set();
+  for (const t of TYPES) { const L = Rizoma.LINES[t]; if (L.pair) { for (const r of REL) { if (r.a === DATA[i].id && !pos.on[IDX[r.b]]) out.add(IDX[r.b]); if (r.b === DATA[i].id && !pos.on[IDX[r.a]]) out.add(IDX[r.a]); } continue; }
+    const k = L.key(DATA[i]); if (k == null) continue; DATA.forEach((d, j) => { if (j !== i && !pos.on[j] && L.key(d) === k) out.add(j); }); }
+  return [...out];
+}
+function onHover(h) {
+  if (h && h.kind === "node") { if (hover.id !== h.id) { hover = { id: h.id, since: performance.now(), x: h.x, y: h.y, tier: -1 }; lure.on = true; lure.home = IDX[h.id]; lure.x = h.x / SCALE; lure.y = h.y / SCALE; lure.lastMove = performance.now(); } else { hover.x = h.x; hover.y = h.y; } }
+  else { hover = { id: null, since: 0, x: 0, y: 0, tier: -1 }; $("#hoverTip").hidden = true; }
+}
+stage.addEventListener("pointermove", e => { // a mão puxa o micélio do nó em foco; perto de um escondido, ele se revela
+  if (!lure.on || touch) return; const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  lure.x = x / SCALE; lure.y = y / SCALE; lure.lastMove = performance.now();
+  if (R && !R.state().hover) { const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 34); if (g) { R.revealAt(x, y, 40, 1); guide(`${Rizoma.shortTitle(g.title)} se revelou pelo micélio.`); } }
+});
+setInterval(() => { // o atrativo do cursor dura 2,5 s depois do último movimento; o aviso por permanência sobe de camada
+  if (lure.on && performance.now() - lure.lastMove > 2500) lure.on = false;
+  if (!hover.id || touch) return; const dwell = performance.now() - hover.since, i = R.info(hover.id); if (!i) return;
+  const tier = dwell > 2600 ? 3 : dwell > 1500 ? 2 : dwell > 700 ? 1 : dwell > 250 ? 0 : -1; if (tier < 0) return;
+  const tip = $("#hoverTip"); tip.hidden = false; tip.style.left = hover.x + "px"; tip.style.top = hover.y + "px";
+  $("#htTitle").textContent = Rizoma.shortTitle(i.title);
+  $("#htMeta").textContent = tier >= 1 ? `${i.year} · ${i.mechanism} · ${i.circuit}` : "";
+  const hid = hiddenSiblings(IDX[i.id]);
+  $("#htMore").textContent = tier >= 2 ? `${i.valueText || "valor a verificar"} · ${(i.potentials || []).length} ligação(ões) possível(is) · ${hid.length} escondida(s)` : "";
+  $("#htBar").style.setProperty("--w", Math.min(100, dwell / 30) + "%");
+  if (tier === 3 && hover.tier < 3 && hid.length) guide(`Fique: ${hid.length} nó(s) ligado(s) a este ainda está(ão) escondido(s). Eles pulsam no micélio.`);
+  hover.tier = tier;
+}, 120);
+function drawHints(p) { // sementes: escondidos ligados ao nó em foco pulsam, só no micélio
+  if (!hover.id || hover.tier < 3 || !R) return; const hid = hiddenSiblings(IDX[hover.id]); if (!hid.length) return;
+  const gs = R.ghosts(), t = performance.now() / 600; p.noFill(); p.stroke(22, 70); p.strokeWeight(1);
+  for (const g of gs) if (hid.includes(IDX[g.id])) { const r = 10 + (Math.sin(t + IDX[g.id]) + 1) * 8; p.circle(g.x, g.y, r * 2); p.circle(g.x, g.y, 4); }
+}
+
+/* ---------- interação final: Meu micélio ---------- */
+const final = { on: false };
+function composeFinal() { // junta rastro e rizoma num PNG com título
+  const tc = $("#trailStage canvas"), rc = $("#rizomaStage canvas"); if (!tc || !rc) return null;
+  const W = rc.width, H = rc.height, out = document.createElement("canvas"); out.width = W; out.height = H + Math.round(H * .12); const g = out.getContext("2d");
+  g.fillStyle = "#f7f6f1"; g.fillRect(0, 0, out.width, out.height);
+  g.filter = `blur(${PH.blur * (W / stage.clientWidth)}px)`; g.drawImage(trail.elt, 0, 0, W, H); g.filter = "none"; g.drawImage(rc, 0, 0, W, H);
+  const s = R.state(), lines = TYPES.filter(t => s.active[t]).map(t => Rizoma.LINES[t].label), d = new Date(), pad = n => String(n).padStart(2, "0");
+  const title = `${s.revealed} projeto${s.revealed > 1 ? "s" : ""} · ${lines.length ? lines.join(" e ") : "sem linha ligada"} · ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+  g.fillStyle = "#161616"; const sc = W / 900; g.font = `900 ${Math.round(28 * sc)}px Arial`; g.fillText("CARTOGRAFIA DO FOMENTO · MEU MICÉLIO", Math.round(24 * sc), H + Math.round(40 * sc));
+  g.font = `${Math.round(18 * sc)}px Arial`; g.fillStyle = "#666"; g.fillText(title + (s.trailTitles && s.trailTitles.length ? " · trilha: " + s.trailTitles.join(" → ") : ""), Math.round(24 * sc), H + Math.round(72 * sc));
+  return { url: out.toDataURL("image/png"), title, lines };
+}
+function openFinal() {
+  if (!R) return; final.on = true; R.setPaused(true); lure.on = false; $("#hoverTip").hidden = true;
+  const f = composeFinal(); if (!f) { final.on = false; R.setPaused(false); return; }
+  const s = R.state();
+  $("#finalTitle").textContent = f.title; $("#finalImg").src = f.url; $("#finalDownload").href = f.url; $("#finalDownload").download = `meu-micelio-${Date.now()}.png`;
+  $("#finalText").textContent = `Você revelou ${s.revealed} de ${s.total} projetos e abriu ${s.trail.length}. O micélio congelou do jeito que estava: este é o mapa que a sua visita desenhou, e nenhuma outra visita desenha o mesmo.`;
+  $("#finalLast").hidden = !s.trail.length;
+  $("#final").hidden = false;
+}
+function closeFinal(reset) { final.on = false; $("#final").hidden = true; R.setPaused(false); if (reset) { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); } }
+$("#finalBtn").onclick = openFinal; $("#finalBack").onclick = () => closeFinal(false); $("#finalReset").onclick = () => closeFinal(true);
+$("#finalLast").onclick = () => { const s = R.state(); closeFinal(false); if (s.trail.length) R.open(s.trail[s.trail.length - 1]); };
+let finalHinted = false;
 
 /* ---------- ferramentas ---------- */
 $("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
@@ -308,7 +410,7 @@ $("#countBtn").onclick = () => setCount((touch || small()) ? 700 : 2500);
 $("#evapBtn").onclick = () => setEvap(PH.evap + 1);
 $("#clearBtn").onclick = () => trailP && trailP.clearTrail();
 $("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
-document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "x") trailP && trailP.clearTrail(); });
+document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
 window.addEventListener("resize", () => R && R.resize());
 document.addEventListener("visibilitychange", () => { const hid = document.hidden; if (trailP) hid ? trailP.noLoop() : trailP.loop(); if (R) R.setVisible(!hid); }); // aba oculta: tudo pausa
 

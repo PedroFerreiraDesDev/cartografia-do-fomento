@@ -65,3 +65,10 @@ Recomendação: 1 + 2 + 4 juntos. O 1 muda o gesto (arrastar o micélio), o 2 re
 - Interação final: A (Meu micélio) com D como saída? ou outra?
 - Nó: testar a forma "fragmento de muro" no Lab 04 com botão de comparação?
 - Descoberta: implementar 1 + 2 + 4?
+
+## 6. Implementado em 31/10 (segunda passagem), a pedido do autor
+
+- **Rastro**: os nós deixaram de ter halo ("o ano ficar centralizado no nó"); os agentes livres rumam a outro nó revelado qualquer, então os traços se formam entre todos os nós, como na primeira versão do Lab 04, e os ligados continuam mais fortes e coloridos; as cores seguem se fundindo. Os nós vagam mais (`drift: 2.4`, opção nova do motor).
+- **Descoberta** (seção 4, itens 1 + 2 + 4): o cursor é alimento (os agentes do nó em foco seguem a mão por até 2,5 s depois do último movimento e, se a mão chega a 34 px de um nó escondido, ele se revela "pelo micélio"); parar sobre um nó revela em camadas (0,25 s título; 0,7 s ano, mecanismo, circuito; 1,5 s valor, ligações possíveis e quantas escondidas; 2,6 s os escondidos ligados pulsam no micélio); a ficha ganhou "Ainda escondido", com os nomes.
+- **Interação final** (seção 2, proposta A): botão "Fechar meu mapa" (tecla M) congela o campo e o micélio, compõe rastro + rizoma num PNG com título gerado ("12 projetos · Mecanismo · data" e a trilha) e abre o painel "Meu micélio" com baixar, abrir o último projeto, continuar ou recomeçar; ao revelar os 20, o guia sugere fechar.
+- Ainda não feitos: forma do nó (seção 3), muro coletivo (2B), pistas de direção (4.3) e sementes (4.5). As propostas ficam registradas para a próxima rodada.

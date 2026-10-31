@@ -49,6 +49,7 @@
   };
   const DEFAULT_ACTIVE = { ano: false, mecanismo: false, edital: false, escala: false, territorio: false, curadoria: false };
   const REP = 9000, SPRING = 0.004, CENTER = 0.0025, DRIFT = 0.12, FOCAL = 900, PULL_MS = 1400;
+  // opções de montagem usadas pelos labs: lineWeight (× espessura das linhas), spread (× distância entre nós), focusZoom (abrir um nó aproxima a câmera e traz o nó à frente)
 
   function mount(opts) {
     opts = opts || {};
@@ -73,6 +74,7 @@
     const edgeKey = (a, b, t) => [Math.min(a.i, b.i), Math.max(a.i, b.i), t].join("|");
     const depthOn = () => S.depth && S.mode === "rizoma";
     const depthRange = () => depthOn() ? Math.min(p.width, p.height) * 0.35 : 0;
+    const SPREAD = Math.max(0.5, opts.spread || 1), LINE_W = Math.max(0.2, opts.lineWeight || 1);
     const col = t => LINES[t].color;
 
     /* ---------- relações possíveis entre dois nós (todas as naturezas) ---------- */
@@ -123,7 +125,7 @@
     function scatterDepth() { const D = depthRange(); for (const n of nodes) { n.pos.z = p.random(-D, D) * 0.8; } }
 
     /* ---------- arestas ---------- */
-    function makeEdge(a, b, t, k, extra) { return Object.assign({ key: edgeKey(a, b, t), a, b, t, k, growth: S.reduced ? 1 : 0, born: p.millis(), seed: p.random(100), rest: 120 + p.random(80), regrown: false, pts: [] }, extra || {}); }
+    function makeEdge(a, b, t, k, extra) { return Object.assign({ key: edgeKey(a, b, t), a, b, t, k, growth: S.reduced ? 1 : 0, born: p.millis(), seed: p.random(100), rest: (120 + p.random(80)) * SPREAD, regrown: false, pts: [] }, extra || {}); }
     function buildEdges() {
       const keep = new Map(edges.map(e => [e.key, e]));
       edges = [];
@@ -165,7 +167,7 @@
           for (const r of relationsBetween(n, m)) {
             const key = edgeKey(n, m, r.t);
             if (S.cutKeys.has(key) || edges.find(x => x.key === key)) continue;
-            cands.push(makeEdge(n, m, r.t, r.k, { regrown: true, source: r.source, rest: 140 + p.random(80) }));
+            cands.push(makeEdge(n, m, r.t, r.k, { regrown: true, source: r.source, rest: (140 + p.random(80)) * SPREAD }));
           }
         }
         if (cands.length) {
@@ -232,7 +234,7 @@
       for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
         const a = nodes[i], b = nodes[j];
         const d = p5.Vector.sub(b.pos, a.pos); const m = Math.max(d.mag(), 24);
-        d.setMag(REP / (m * m)); a.acc.sub(d); b.acc.add(d);
+        d.setMag(REP * SPREAD * SPREAD / (m * m)); a.acc.sub(d); b.acc.add(d);
       }
       for (const e of edges) {
         if (!(e.a.revealed && e.b.revealed)) continue;
@@ -248,7 +250,7 @@
       if (anchor) { frozen.add(anchor); for (const e of edges) { if (e.a === anchor && e.b.revealed) frozen.add(e.b); if (e.b === anchor && e.a.revealed) frozen.add(e.a); } }
       if (S.hoverEdge) { frozen.add(S.hoverEdge.a); frozen.add(S.hoverEdge.b); }
       for (const n of nodes) {
-        n.acc.add((cx - n.pos.x) * CENTER, (cy - n.pos.y) * CENTER, -n.pos.z * CENTER * 1.5);
+        n.acc.add((cx - n.pos.x) * CENTER / SPREAD, (cy - n.pos.y) * CENTER / SPREAD, -n.pos.z * CENTER * 1.5);
         const still = frozen.has(n);
         if (!still && drift) {
           const ang = p.noise(n.seed, p.frameCount * 0.003) * p.TWO_PI * 2;
@@ -489,7 +491,7 @@
       const nx = -dy / L, ny = dx / L;
       p.noFill();
       if (S.paper) p.stroke(c[0] * 0.5, c[1] * 0.5, c[2] * 0.5, alpha); else p.stroke(c[0], c[1], c[2], alpha);
-      p.strokeWeight(weight * Math.min(A.s, B.s));
+      p.strokeWeight(weight * LINE_W * Math.min(A.s, B.s));
       const steps = Math.max(8, Math.floor(L / 12));
       e.pts = [];
       p.beginShape();
@@ -541,7 +543,8 @@
       const ghost = !n.revealed; // só na capa
       const age = ghost ? 1 : Math.min(1, (p.millis() - n.born) / 600);
       const ease = 1 - Math.pow(1 - age, 3);
-      const r = n.r * (0.6 + 0.4 * ease) * n.scr.s;
+      const focusScale = S.focus ? (n === S.focus ? 1.3 : (edges.some(e => (e.a === S.focus || e.b === S.focus) && (e.a === n || e.b === n)) ? 1.1 : 1)) : 1; // o aberto cresce; quem se liga a ele, um pouco
+      const r = n.r * (0.6 + 0.4 * ease) * n.scr.s * focusScale;
       const mon = n.p.circuit === "Monumental";
       const fog = depthOn() ? 0.45 + 0.55 * p.constrain((n.scr.s / view.zoom - 0.6) / 0.8, 0, 1) : 1; // névoa: longe = mais apagado
       const isF = n === S.focus, isH = n === S.hover, inTrail = S.trail.includes(n);
@@ -631,10 +634,18 @@
     }
 
     /* ---------- nó aberto ---------- */
+    let focusCam = null; // câmera antes do foco, para voltar ao fechar
+    function focusIn(n) {
+      if (!opts.focusZoom) return;
+      if (!focusCam) focusCam = { zoom: view.zoomTarget, px: view.pxT, py: view.pyT };
+      zoomAt(focusCam.zoom * 1.18 / Math.max(view.zoomTarget, 0.001), n.scr.x, n.scr.y); // aproxima 18% em torno do nó, sem acumular ao trocar de nó
+      if (depthOn()) { n.pos.z = -depthRange() * 0.9; n.vel.z = 0; } // vem para a frente
+    }
+    function focusOut() { if (!opts.focusZoom || !focusCam) return; view.zoomTarget = focusCam.zoom; view.pxT = focusCam.px; view.pyT = focusCam.py; focusCam = null; clampPan(); }
     function openNode(n, silent) {
       if (!n) return;
       touchInspect=null;
-      S.focus = n;
+      S.focus = n; focusIn(n);
       if (!n.revealed) reveal(n);
       if (S.trail[S.trail.length - 1] !== n) S.trail.push(n);
       if (!silent) cb.open(info(n.p.id));
@@ -814,7 +825,7 @@
       setNodeStyle(v) { S.nodeStyle = v === "muro" ? "muro" : "circulo"; cb.change(state()); },
       setReduced(v) { S.reduced = !!v; if (S.reduced) { for (const e of edges) e.growth = 1; if (spray) spray.clear(); view.zoom = view.zoomTarget; } cb.change(state()); },
       open(id, silent) { openNode(byId(id), silent); },
-      close() { S.focus = null; touchInspect=null; cb.change(state()); },
+      close() { S.focus = null; touchInspect=null; focusOut(); cb.change(state()); },
       refresh() { if (S.focus) cb.open(info(S.focus.p.id)); },
       revealAll() { for (const n of nodes) reveal(n); },
       revealAt(x, y, r, max) { return revealAt(x, y, r, max); },
@@ -836,6 +847,7 @@
         p.saveCanvas(name || "meu-mapa-rizoma", "png");
       },
       reset() {
+        focusCam = null;
         S.focus = null; S.hover = null; S.hoverEdge = null; touchInspect=null; S.trail = []; S.cutKeys = new Set(); regrown = []; S.started = false; S.cutting = false; S.mode = "rizoma";
         if (spray) spray.clear(); p.randomSeed(Date.now() % 100000); buildNodes(); buildEdges();
       },

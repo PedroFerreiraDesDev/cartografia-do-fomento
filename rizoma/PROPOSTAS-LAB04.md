@@ -81,3 +81,12 @@ Seção 3, proposta 2, agora no motor (`js/rizoma.js`, opção `nodeStyle: "muro
 - **Cor = mecanismo** (rosa Incentivo Fiscal, azul Fundo Municipal, verde Descentra), a mesma paleta dos Labs 01–03; nó aberto fica em tinta cheia; foco e hover ganham um quadro.
 - O micélio continua nascendo do centro da forma; o protótipo principal segue com círculos até o autor decidir.
 - Fica para depois: fotografia por cima da forma (proposta 5) quando houver acervo.
+
+## 8. Linhas finas, mais espaço, foco que aproxima (31/10, quarta passagem)
+
+Pedido: "linhas mais finas, estou achando muitos elementos; os muros podem ficar mais espaçados, brincar mais com o espaço da tela; ao selecionar um projeto, um zoom sutil ou ele vir para a frente, ou uma leve aumentada".
+Três opções novas de montagem no motor, usadas só pelo Lab 04 por enquanto (o protótipo principal segue igual):
+- `lineWeight: 0.55`: todas as linhas de fuga com pouco mais da metade da espessura;
+- `spread: 1.45`: repulsão entre nós ×2,1, molas 45% mais longas, atração ao centro 30% menor, então o campo ocupa a tela em vez de se aglomerar no meio;
+- `focusZoom: true`: abrir um nó aproxima a câmera 18% em torno dele (sem acumular ao trocar de nó), traz o nó para a frente no 3D e o desenha 30% maior; os nós ligados a ele crescem 10%; fechar devolve a câmera de onde estava.
+Medido no navegador do app: zoom 1 → 1,18 ao abrir → 1 ao fechar; nós espalhados por ~500 px numa janela de 724 px.

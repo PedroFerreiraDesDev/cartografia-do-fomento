@@ -294,7 +294,7 @@ function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.lengt
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 2.4, nodeStyle: "muro",
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 2.4, nodeStyle: "muro", lineWeight: 0.55, spread: 1.45, focusZoom: true, // linhas finas, nós espaçados, foco que aproxima
     treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
     onChange: sync, onOpen: openCard, onHover: onHover
   });

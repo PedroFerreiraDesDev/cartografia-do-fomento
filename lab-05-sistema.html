@@ -28,7 +28,7 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid va
 
 /* identidade: tipografia em tensão (Lab 01): deslocamento, micro-rotação e pressão por letra; nunca uma "fonte grafite". Só títulos tensionam; dados e textos ficam estáveis */
 .tense .w{display:inline-block;white-space:nowrap}.tense i{display:inline-block;font-style:normal;transform-origin:50% 70%;transition:transform .45s cubic-bezier(.2,.7,.25,1),color .45s}.tense i.sp{width:.26em}h1.tense{display:block}
-.mark{cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.09em;line-height:.76;white-space:nowrap}.mark.paused{opacity:.78}.mark .tense i{transition:transform .55s cubic-bezier(.2,.7,.25,1),color .55s;margin:0 -.012em}.mark .strong i{margin:0 var(--squeeze,-.03em)}.mark .w{overflow:visible}
+.mark-wrap{position:relative;width:100%}.mark-wrap .mark{display:inline-block;vertical-align:top}.mark-live{position:absolute;z-index:2;left:0;top:0;-webkit-tap-highlight-color:transparent;touch-action:pan-y}.mark-live[hidden]{display:none}.mark-live canvas{display:block}.mark-wrap.live #mark .tense{opacity:0}.mark-tip{position:absolute;z-index:3;pointer-events:none;background:rgba(247,246,241,.96);border:1px solid #cfcfca;padding:8px 10px 10px;min-width:150px;max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translate(14px,-50%);font-size:10.5px;line-height:1.4;color:var(--ink)}.mark-tip.flip{transform:translate(calc(-100% - 14px),-50%)}.mark-tip[hidden]{display:none}.mark-tip b{display:block;font-size:12px;letter-spacing:-.02em;font-family:Arial,Helvetica,sans-serif}.mark-tip span{display:block;color:#666;margin-top:3px}.mark{cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.09em;line-height:.76;white-space:nowrap}.mark.paused{opacity:.78}.mark .tense i{transition:transform .55s cubic-bezier(.2,.7,.25,1),color .55s;margin:0 -.012em}.mark .strong i{margin:0 var(--squeeze,-.03em)}.mark .w{overflow:visible}
 /* painel de experimento tipográfico da capa (fonte, peso, pesos por letra, fundo) */
 .typo{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:22px;font-size:9px}.typo .kicker{margin-right:2px}.typo button{border:1px solid #bbb;background:rgba(255,255,255,.8);padding:7px 9px;font-size:9px;font-weight:800;letter-spacing:.03em}.typo button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.typo .group button{border-radius:0}.typo .group button+button{border-left:0}.typo .mid{min-width:44px;text-align:center}.typo button:disabled{opacity:.4;cursor:default}.typo .auto{margin-left:8px}.typo .auto.active{background:var(--rosa,#ff4f9a);border-color:var(--rosa,#ff4f9a);color:#161616}.typo .autoLabel{min-width:150px;color:#777;letter-spacing:.08em}.typo .autoLabel b{color:var(--ink)}.intro.dark .typo .autoLabel b{color:var(--paper)}
 .intro.dark{background:rgba(22,22,22,.94);color:var(--paper)}.intro.dark .kicker,.intro.dark .topline,.intro.dark .footline,.intro.dark .intro-main p,.intro.dark .intro-cue,.intro.dark .legend{color:#b9b7b0}.intro.dark .cue{background:var(--paper)}.intro.dark .typo button{background:transparent;color:var(--paper);border-color:#555}.intro.dark .typo button.active{background:var(--paper);color:var(--ink);border-color:var(--paper)}.intro.dark .doors button{background:transparent;color:var(--paper);border-color:#555}.intro.dark .primary{background:var(--paper);color:var(--ink);border-color:var(--paper)}
@@ -50,7 +50,7 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid va
 .block .kicker i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--acc,var(--ink));vertical-align:middle;margin-right:6px}
 
 /* ---------- capa ---------- */
-.intro{position:fixed;inset:0;z-index:200;background:rgba(247,246,241,.78);backdrop-filter:blur(1.5px);display:flex;flex-direction:column;padding:22px clamp(20px,5vw,56px);overflow:auto;transition:opacity .7s ease,transform .7s ease}
+.intro{position:fixed;inset:0;z-index:200;background:rgba(247,246,241,.78);backdrop-filter:blur(1.5px);display:flex;flex-direction:column;padding:22px clamp(20px,5vw,56px);overflow:auto;overflow-x:hidden;transition:opacity .7s ease,transform .7s ease}
 .intro.leaving{opacity:0;transform:scale(1.03);pointer-events:none}.intro[hidden]{display:none}
 .topline,.footline{display:flex;justify-content:space-between;gap:20px;font-size:9px;letter-spacing:.1em;font-weight:900;color:#777}
 .intro-main{flex:1;width:min(820px,100%);margin:auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:30px 0}
@@ -193,14 +193,18 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="topline"><span>CARTOGRAFIA DO FOMENTO</span><span>TCC · DESIGN UFMG · LAB 05 · O SISTEMA NA LINGUAGEM DO PHYSARUM</span></div>
   <div class="intro-main">
     <div class="kicker">ARTE URBANA · FOMENTO CULTURAL · DESIGN DA INFORMAÇÃO</div>
-    <h1 class="mark" id="mark" title="Toque: pausa ou retoma os pulsos"><span class="tense" data-seed="1" data-k=".35">CARTOGRAFIA</span><br><span class="tense" data-seed="7" data-k=".35">DO</span> <span class="tense strong" data-seed="5" data-accent="1" data-k="1.9">FOMENTO</span></h1>
+    <div class="mark-wrap" id="markWrap">
+      <h1 class="mark" id="mark" title="Toque: pausa ou retoma os pulsos"><span class="tense" data-seed="1" data-k=".35">CARTOGRAFIA</span><br><span class="tense" data-seed="7" data-k=".35">DO</span> <span class="tense strong" data-seed="5" data-accent="1" data-k="1.9">FOMENTO</span></h1>
+      <div id="markLive" class="mark-live" role="img" aria-label="Cartografia do Fomento. Marca viva: as letras são feitas de pontos, cada um uma fração do valor de um dos vinte projetos, na ordem do ano; a cor marca um projeto por vez." hidden></div>
+      <div id="markTip" class="mark-tip" hidden></div>
+    </div>
     <p>Vinte projetos de grafite e muralismo realizados com fomento cultural em Belo Horizonte, 2017–2024. Cada projeto é um fragmento de muro; entre eles cresce um micélio que ninguém desenhou.</p>
     <p>Não há mapa obrigatório nem raiz: qualquer ponto é uma entrada. Revele, ligue linhas de fuga, abra nós, leve a sua estampa.</p>
     <div class="intro-actions"><button type="button" id="enterBtn" class="primary">ENTRAR NO CAMPO ↗</button><div class="doors"><button data-door="indicators">Indicadores</button><button data-door="editais">Editais</button><button data-door="about">Sobre</button></div></div>
     <div class="legend" id="introLegend"></div>
-    <p class="intro-cue"><span class="cue"></span>O campo atrás desta capa já está vivo. A marca também: a cada poucos segundos a cor troca e uma região das letras cede; toque nela para pausar.</p>
+    <p class="intro-cue"><span class="cue"></span><span id="introCue">O campo atrás desta capa já está vivo. A marca também: a cada poucos segundos a cor troca e uma região das letras cede; toque nela para pausar.</span></p>
   </div>
-  <div class="typo" id="typo" aria-label="Experimento tipográfico"><span class="kicker">TIPO</span><span id="typoFonts" class="seg" style="display:contents"></span><span class="kicker" style="margin-left:8px">PESO</span><span class="group"><button id="wLess" title="Mais leve">−</button><button id="wVal" class="mid">700</button><button id="wMore" title="Mais pesado">+</button></span><button id="wVary" title="Cada letra recebe um peso e uma largura diferentes (só fontes variáveis)">pesos por letra</button><button id="bgBtn" title="Compara a marca sobre papel e sobre tinta">fundo · papel</button><button id="autoBtn" class="auto" title="Troca fonte e peso sozinho, a cada 6 s">testes automáticos</button><span id="autoLabel" class="autoLabel"></span></div>
+  <div class="typo" id="typo" aria-label="Experimento tipográfico"><span class="kicker">TIPO</span><span id="typoFonts" class="seg" style="display:contents"></span><span class="kicker" style="margin-left:8px">PESO</span><span class="group"><button id="wLess" title="Mais leve">−</button><button id="wVal" class="mid">700</button><button id="wMore" title="Mais pesado">+</button></span><button id="wVary" title="Cada letra recebe um peso e uma largura diferentes (só fontes variáveis)">pesos por letra</button><button id="bgBtn" title="Compara a marca sobre papel e sobre tinta">fundo · papel</button><button id="liveBtn" title="Marca viva: as letras feitas de pontos, cada um uma fração do valor de um projeto (Lab 06, experimento 02)">marca viva</button><button id="orderBtn" title="Ordem das fatias no título: ano, mecanismo ou valor">ordem · ano</button><button id="autoBtn" class="auto" title="Troca fonte e peso sozinho, a cada 6 s">testes automáticos</button><span id="autoLabel" class="autoLabel"></span></div>
   <div class="footline"><span>ARTEFATO DIGITAL / TESTE DE INTERAÇÃO</span><span>MOVA · DESCUBRA · INVESTIGUE</span></div>
 </section>
 
@@ -413,15 +417,20 @@ function tense(el, amp, seed, acc = -1, color = "") {
   amp *= +(el.dataset.k || 1); // data-k: quanto a palavra sofre (FOMENTO 2,6; CARTOGRAFIA 0,35, como no pôster do Lab 01)
   const F = FONTS[TYPO.font], clamp = (v, a, b) => Math.max(a, Math.min(b, v)), vary = TYPO.vary && F.wght && !F.fixed;
   kids.forEach((c, i) => {
-    // região: só as letras perto da letra colorida (acc) sofrem; a pressão cai com uma gaussiana (σ = 1,6 letras); longe dela, quase repouso
-    const g = acc >= 0 ? Math.exp(-Math.pow((i - acc) / 1.6, 2)) : 0, local = acc >= 0 ? 0.25 + 1.35 * g : 1, a = amp * local;
-    const n = Math.sin(seed * 1.71 + i * 2.13), m = Math.cos(seed + i * 1.31), isAcc = i === acc;
-    const y = n * 9 * a * fs + (isAcc ? 6 * fs * Math.min(1, a) : 0), x = m * 7 * a * fs, r = n * 3.2 * a, sk = m * 3 * a;
-    const sy = 1 + Math.abs(n) * .12 * a + g * .08 * amp, sx = 1 - Math.abs(m) * .06 * a;
-    c.style.transform = `translate(${x.toFixed(2)}px,${y.toFixed(2)}px) rotate(${r.toFixed(2)}deg) skewX(${sk.toFixed(2)}deg) scale(${sx.toFixed(3)},${sy.toFixed(3)})`;
-    c.style.color = isAcc ? color : "";
-    c.style.fontVariationSettings = vary ? `"wght" ${Math.round(clamp(TYPO.weight + (n * 200 + g * 300) * Math.min(1.4, a), F.wght[0], F.wght[1]))}${F.wdth ? `, "wdth" ${Math.round(clamp(100 - (m * 24 + g * 16) * Math.min(1.4, a), F.wdth[0], F.wdth[1]))}` : ""}` : "";
+    const P = pose(i, acc, amp, seed, fs);
+    c.style.transform = `translate(${P.x.toFixed(2)}px,${P.y.toFixed(2)}px) rotate(${P.r.toFixed(2)}deg) skewX(${P.sk.toFixed(2)}deg) scale(${P.sx.toFixed(3)},${P.sy.toFixed(3)})`;
+    c.style.color = P.isAcc ? color : "";
+    c.style.fontVariationSettings = vary ? `"wght" ${Math.round(clamp(TYPO.weight + P.dw, F.wght[0], F.wght[1]))}${F.wdth ? `, "wdth" ${Math.round(clamp(100 - P.dwd, F.wdth[0], F.wdth[1]))}` : ""}` : "";
   });
+}
+/* a pose de uma letra sob pressão: a mesma matemática para a letra em HTML (tense) e para a letra de pontos (marca viva).
+   i = índice da letra na palavra; acc = letra colorida (−1 = nenhuma); amp = pressão base; seed = semente; fs = corpo / 148 */
+function pose(i, acc, amp, seed, fs) {
+  // região: só as letras perto da letra colorida (acc) sofrem; a pressão cai com uma gaussiana (σ = 1,6 letras); longe dela, quase repouso
+  const g = acc >= 0 ? Math.exp(-Math.pow((i - acc) / 1.6, 2)) : 0, local = acc >= 0 ? 0.25 + 1.35 * g : 1, a = amp * local;
+  const n = Math.sin(seed * 1.71 + i * 2.13), m = Math.cos(seed + i * 1.31), isAcc = i === acc, q = Math.min(1.4, a);
+  return { g, a, isAcc, x: m * 7 * a * fs, y: n * 9 * a * fs + (isAcc ? 6 * fs * Math.min(1, a) : 0), r: n * 3.2 * a, sk: m * 3 * a,
+    sy: 1 + Math.abs(n) * .12 * a + g * .08 * amp, sx: 1 - Math.abs(m) * .06 * a, dw: (n * 200 + g * 300) * q, dwd: (m * 24 + g * 16) * q }; // dw/dwd: desvio de peso e de largura (fonte variável)
 }
 /* ---------- experimento tipográfico da capa: fonte, peso, pesos por letra, fundo ----------
    Fontes do Google Fonts (licença SIL OFL): Anton (display condensada pesada), Oswald (peso variável 200–700,
@@ -453,7 +462,7 @@ const FONTS = [
   { id: "squada", label: "Squada One", family: "'Squada One',Impact,sans-serif", weights: [400], squeeze: -.01 },
   { id: "chakra", label: "Chakra Petch", family: "'Chakra Petch','Arial Narrow',sans-serif", wght: [300, 700], fixed: true, squeeze: -.01 }
 ];
-const TYPO = { v: 2, font: FONTS.findIndex(f => f.id === "teko"), weight: 600, vary: true, dark: false, auto: false };
+const TYPO = { v: 2, font: FONTS.findIndex(f => f.id === "teko"), weight: 600, vary: true, dark: false, auto: false, live: true, order: "ano" }; // live: marca viva (Lab 06); order: ordem das fatias
 /* testes automáticos: a cada 6 s a capa troca de fonte e de peso sozinha (percorre a lista; nas variáveis sorteia o peso e liga "pesos por letra"),
    para comparar sem clicar. Escolher uma fonte à mão desliga o ciclo. */
 const AUTO = { timer: 0, step: 0, order: FONTS.map((_, i) => i).filter(i => i).concat(0) }; // todas, Arial Narrow por último
@@ -472,7 +481,7 @@ function fitMark() {
   h.style.fontSize = "100px"; const nat = h.getBoundingClientRect().width / 100 || 6; // largura natural da linha mais larga por px de corpo (a tensão não entra no layout; erro < 3%)
   h.style.fontSize = Math.max(40, Math.min(190, inner * 0.985 / nat)).toFixed(1) + "px";
 }
-addEventListener("resize", () => fitMark());
+addEventListener("resize", () => { fitMark(); markRefresh(true); });
 function applyTypo() {
   const F = FONTS[TYPO.font] || FONTS[0]; if (!FONTS[TYPO.font]) TYPO.font = 0;
   const range = F.wght || [F.weights[0], F.weights[0]]; TYPO.weight = Math.max(range[0], Math.min(range[1], TYPO.weight));
@@ -482,10 +491,13 @@ function applyTypo() {
   $("#wVal").textContent = TYPO.weight; $("#wLess").disabled = TYPO.weight <= range[0]; $("#wMore").disabled = TYPO.weight >= range[1];
   $("#wVary").classList.toggle("active", TYPO.vary && !!F.wght && !F.fixed); $("#wVary").disabled = !F.wght || !!F.fixed; $("#wVary").textContent = F.wght && !F.fixed ? "pesos por letra" : "pesos por letra (fonte fixa)";
   $("#bgBtn").textContent = TYPO.dark ? "fundo · tinta" : "fundo · papel"; $("#intro").classList.toggle("dark", TYPO.dark);
+  $("#liveBtn").classList.toggle("active", !!TYPO.live); $("#liveBtn").textContent = TYPO.live ? "marca viva" : "marca tipográfica"; $("#orderBtn").textContent = "ordem · " + (TYPO.order || "ano"); $("#orderBtn").disabled = !TYPO.live;
   $("#autoBtn").classList.toggle("active", TYPO.auto); $("#autoLabel").innerHTML = TYPO.auto ? `teste ${(AUTO.step - 1 + AUTO.order.length) % AUTO.order.length + 1}/${AUTO.order.length} · <b>${F.label} ${TYPO.weight}${TYPO.vary && F.wght ? " · pesos por letra" : ""}</b>` : `<b>${F.label} ${TYPO.weight}</b>`;
   try { localStorage.setItem("lab05:typo", JSON.stringify(TYPO)); } catch (_) {}
-  $$("#mark .tense").forEach(tenseWrap); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitMark); fitMark(); pulse(true); $$(".hero h1, #copy h1").forEach((h, k) => tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7));
+  $$("#mark .tense").forEach(tenseWrap); if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitMark(); markRefresh(true); }); fitMark(); pulse(true); markRefresh(true); $$(".hero h1, #copy h1").forEach((h, k) => tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7));
 }
+$("#liveBtn").onclick = () => { TYPO.live = !TYPO.live; applyTypo(); };
+$("#orderBtn").onclick = () => { TYPO.order = TYPO.order === "ano" ? "mecanismo" : TYPO.order === "mecanismo" ? "valor" : "ano"; applyTypo(); };
 $("#wLess").onclick = () => { TYPO.weight -= 100; applyTypo(); }; $("#wMore").onclick = () => { TYPO.weight += 100; applyTypo(); };
 $("#wVary").onclick = () => { TYPO.vary = !TYPO.vary; applyTypo(); }; $("#bgBtn").onclick = () => { TYPO.dark = !TYPO.dark; applyTypo(); };
 $("#autoBtn").onclick = () => { TYPO.auto = !TYPO.auto; if (TYPO.auto) { AUTO.step = 0; autoTick(); } else applyTypo(); autoRun(); };
@@ -507,6 +519,7 @@ function pulse(now) { // now = reaplica o estado atual (troca de fonte); senão,
     if (!now || TENSE.acc < 0) TENSE.acc = pickLetter(f.querySelectorAll("i"), TENSE.acc);
     cw.forEach((w, k) => tense(w, REST, TENSE.seed + k * 5, w === f ? TENSE.acc : -1, color));
   }
+  markPulse(now); // marca viva: a mesma semente e o mesmo mecanismo; a região cai na fatia do projeto da vez
   const bw = $$(".brand .tense"); if (bw.length) { // cabeçalho: a região cai numa das duas palavras
     bw.forEach(tenseWrap);
     if (!now || TENSE.bacc < 0) { TENSE.bword = Math.floor(Math.random() * bw.length); TENSE.bacc = pickLetter(bw[TENSE.bword].querySelectorAll("i"), TENSE.bacc); }
@@ -522,6 +535,204 @@ function initTension() {
   $("#mark").addEventListener("click", e => { e.stopPropagation(); TENSE.paused = !TENSE.paused; $("#mark").classList.toggle("paused", TENSE.paused); });
   $("#brandBtn").onclick = reopenIntro; // a marca do cabeçalho leva de volta à capa, onde o site começa
 }
+/* ---------- marca viva: a tipografia viva do Lab 06 como a própria marca da capa ----------
+   Origem: lab-06-experimentos.html, função expTipo (experimento 02 "Tipografia viva", aprovado pelo autor em 31/10): o título
+   é desenhado num canvas, amostrado em pontos a cada 3–5 px, e cada ponto é ocupado por uma partícula com o comportamento
+   "arrive" de Reynolds (1999; implementação didática em Shiffman, 2012, cap. 6: a partícula quer chegar ao alvo e freia
+   perto dele). Cada partícula é uma fração do valor de um projeto; as fatias são contíguas da esquerda para a direita,
+   na ordem do ano (ou do mecanismo, ou do valor). Lido da esquerda para a direita, o título é a linha do tempo.
+   Adaptações para ser a marca do Lab 05 (documentadas em rizoma/IDENTIDADE-COESAO-LAB05.md, seção 2, quinto ajuste):
+   1. As letras são amostradas uma a uma, com a fonte e o peso do painel tipográfico, no corpo que fitMark calcula, então
+      cada ponto sabe a que letra pertence e guarda a posição relativa ao centro dela (a origem das transformações do CSS,
+      50 % / 70 %). O HTML continua embaixo, invisível: é a medida, o texto acessível e o fallback (sem rede, sem p5).
+   2. Os pulsos de tensão continuam: a cada 4,6 s os alvos das partículas de uma letra e da região em volta se deslocam,
+      giram, inclinam e escalam com a mesma matemática de tense() (pose(): translate, rotate, skewX, scale e gaussiana
+      σ = 1,6 letras), e as partículas vão até lá com "arrive". Entre pulsos nada se move.
+   3. O peso por letra (fonte variável) entra na amostragem; o "engordar" da região do pulso vira o tamanho do ponto.
+   4. A cor segue a regra da capa (tinta, e uma só região colorida por mecanismo): a região é a fatia do projeto da vez,
+      escolhido pelo mecanismo do ciclo rosa → azul → verde; a letra onde a fatia tem o centro recebe a tensão.
+   5. O cursor ou o dedo dispersa e as letras voltam; passar a mão numa fatia mostra o projeto num balão (projeto, ano,
+      mecanismo, valor, % do título); tocar abre a mesma ficha do campo (openPreview). No toque, o primeiro toque mostra,
+      o segundo abre. Cor nunca é o único código: o balão escreve o mecanismo, e a legenda da capa continua embaixo.
+   O que ficou de fora do Lab 06: o fundo escuro ("asfalto"), o controle de dispersão por slider, o escurecimento das
+   outras fatias ao selecionar (aqui a capa inteira deve continuar legível).
+   Por que a marca pode ser um gráfico: Lupi (2017, "data humanism": o dado como matéria sensível, imperfeita, próxima)
+   e Viégas & Wattenberg (2007, visualização artística com ponto de vista explícito); ver FONTES-DADOS-E-METODOLOGIA.md §5.7.
+   A mesma máquina serve de abertura para os títulos de seção: window.Lab5Living.play(elemento, opções), no fim deste bloco. */
+const LTOTAL = DATA.reduce((s, d) => s + (Number(d.value) || 0), 0) || 1;
+const LIVE_BUDGET = { desktop: 5000, mobile: 1600 }; // partículas: acima disso o passo da amostragem cresce (Lab 06 tinha ~1.500 e ~650 com passo fixo; aqui o desenho é por fillRect em lote, ~0,2 ms por mil)
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const firstFamily = fam => fam.split(",")[0].trim().replace(/^['"]|['"]$/g, "");
+const stretchName = w => w <= 56 ? "ultra-condensed" : w <= 69 ? "extra-condensed" : w <= 81 ? "condensed" : w <= 94 ? "semi-condensed" : w <= 106 ? "normal" : w <= 119 ? "semi-expanded" : w <= 137 ? "expanded" : "extra-expanded"; // o canvas só aceita as palavras-chave do CSS para o eixo wdth
+const OC = document.createElement("canvas"), OCX = OC.getContext("2d", { willReadFrequently: true });
+/* amostra um texto letra a letra. S: { fs, family, weight, vary, wght, wdth, ls (entreletra px), lineH (px), left, top, seed,
+   words: [{ text, line, k, margin }], minStep, maxStep, budget }. Devolve letras (com origem e peso) e pontos ordenados por x. */
+function sampleText(S) {
+  const fam = /[ ]/.test(S.family) ? `"${S.family}"` : S.family, fontOf = wg => `${wg} ${S.fs}px ${fam}`;
+  OCX.font = fontOf(S.weight); OCX.fontStretch = "normal"; const M = OCX.measureText("CARTOGRAFIA");
+  const asc = M.fontBoundingBoxAscent || S.fs * 0.92, desc = M.fontBoundingBoxDescent || S.fs * 0.26, box = asc + desc;
+  const letters = [], cursor = {};
+  S.words.forEach((w, k) => {
+    const baseY = S.top + w.line * S.lineH + (S.lineH - box) / 2 + asc, lineTop = baseY - asc; // a linha de base onde o CSS a põe: meia-entrelinha + ascendente
+    if (cursor[w.line] == null) cursor[w.line] = S.left; else { OCX.font = fontOf(S.weight); OCX.fontStretch = "normal"; cursor[w.line] += OCX.measureText(" ").width + S.ls; }
+    let x = cursor[w.line];
+    [...w.text].forEach((ch, i) => {
+      let wg = S.weight, wd = 100;
+      if (S.vary && S.wght) { const P = pose(i, -1, REST * w.k, S.seed + k * 5, S.fs / 148); wg = clamp(Math.round(S.weight + P.dw), S.wght[0], S.wght[1]); if (S.wdth) wd = clamp(Math.round(100 - P.dwd), S.wdth[0], S.wdth[1]); }
+      OCX.font = fontOf(wg); OCX.fontStretch = S.wdth ? stretchName(wd) : "normal";
+      const adv = OCX.measureText(ch).width;
+      letters.push({ w: k, i, ch, k: w.k, left: x + w.margin, top: lineTop, adv, box, ox: x + w.margin + adv / 2, oy: lineTop + box * 0.7, font: OCX.font, stretch: OCX.fontStretch });
+      x += adv + S.ls + 2 * w.margin;
+    });
+    cursor[w.line] = x;
+  });
+  const scan = step => {
+    const pts = [];
+    letters.forEach((L, idx) => {
+      const pad = step + 2, cw = Math.ceil(L.adv) + 2 * pad, chh = Math.ceil(L.box) + 2 * pad;
+      if (OC.width !== cw || OC.height !== chh) { OC.width = cw; OC.height = chh; } else OCX.clearRect(0, 0, cw, chh);
+      OCX.font = L.font; OCX.fontStretch = L.stretch; OCX.fillStyle = "#000"; OCX.textBaseline = "alphabetic"; OCX.fillText(L.ch, pad, pad + asc);
+      const px = OCX.getImageData(0, 0, cw, chh).data, x0 = Math.ceil((L.left - pad) / step) * step, y0 = Math.ceil((L.top - pad) / step) * step;
+      for (let ay = y0; ay < L.top + L.box + pad; ay += step) for (let ax = x0; ax < L.left + L.adv + pad; ax += step) {
+        const sx = Math.round(ax + step / 2 - L.left + pad), sy = Math.round(ay + step / 2 - L.top + pad); if (sx < 0 || sy < 0 || sx >= cw || sy >= chh) continue;
+        if (px[4 * (sy * cw + sx) + 3] > 128) pts.push({ L: idx, lx: ax + step / 2 - L.ox, ly: ay + step / 2 - L.oy, ax: ax + step / 2, ay: ay + step / 2 });
+      }
+    });
+    return pts;
+  };
+  let step = S.minStep, pts = scan(step);
+  if (pts.length > S.budget * 1.3) { step = Math.min(S.maxStep || 9, Math.max(step + 1, Math.round(step * Math.sqrt(pts.length / S.budget)))); pts = scan(step); }
+  pts.sort((a, b) => a.ax - b.ax || a.ay - b.ay); // fatias = faixas verticais, da esquerda para a direita, atravessando as duas linhas (como no Lab 06)
+  return { letters, points: pts, step };
+}
+const orderOf = o => { const list = DATA.slice(); if (o === "mecanismo") list.sort((a, b) => MECHS.indexOf(a.mechanism) - MECHS.indexOf(b.mechanism) || a.year - b.year || (b.value || 0) - (a.value || 0)); else if (o === "valor") list.sort((a, b) => (b.value || 0) - (a.value || 0)); else list.sort((a, b) => a.year - b.year || (b.value || 0) - (a.value || 0)); return list; };
+/* o motor: um canvas p5 (modo instância) num contêiner; cor por partícula decidida por hooks.color(pt, ink).
+   Desenho por fillRect em lote (a cor só troca na fronteira entre fatias), não por p.point(): é o que permite ~5 mil pontos a ~1,7 ms. */
+function liveEngine(cont, hooks) {
+  const E = { spec: null, letters: [], parts: [], poses: [], P: null, ptr: { x: -1e9, y: -1e9, at: 0 }, ms: 0, moving: 0, word: -1, acc: -1, W: 10, H: 10, visible: false };
+  function sk(p) {
+    p.setup = () => { p.createCanvas(E.W, E.H); p.pixelDensity(Math.min(2, p.displayDensity())); p.noLoop(); if (E.visible && !reduced) p.loop(); else p.redraw(); };
+    p.draw = () => {
+      const t0 = performance.now(), S = E.spec; p.clear(); if (!S || E.poses.length !== E.letters.length) return;
+      const ctx = p.drawingContext, ptr = E.ptr, live = ptr.at && t0 - ptr.at < 900, Rr = S.disp, maxS = S.maxS, ink = hooks.ink();
+      let cur = null, moving = 0; ctx.globalAlpha = 0.88;
+      for (const pt of E.parts) {
+        const dx = pt.tx - pt.x, dy = pt.ty - pt.y, d = Math.sqrt(dx * dx + dy * dy) || 1e-6;
+        if (!reduced) { // "arrive" (Reynolds 1999; Shiffman 2012): velocidade desejada proporcional à distância, limitada; mais a fuga do cursor
+          const sp = Math.min(maxS, d * 0.14); let sx = dx / d * sp - pt.vx, sy = dy / d * sp - pt.vy;
+          if (live) { const ex = pt.x - ptr.x, ey = pt.y - ptr.y, e2 = ex * ex + ey * ey; if (e2 < Rr * Rr) { const e = Math.sqrt(e2) || 1e-6, w = 1 - e / Rr; sx += ex / e * w * 5.5; sy += ey / e * w * 5.5; } }
+          pt.vx = (pt.vx + sx * 0.35) * 0.86; pt.vy = (pt.vy + sy * 0.35) * 0.86; pt.x += pt.vx; pt.y += pt.vy; if (d > 0.8) moving++;
+        } else { pt.x = pt.tx; pt.y = pt.ty; }
+        const col = hooks.color(pt, ink); if (col !== cur) ctx.fillStyle = cur = col;
+        const s = E.poses[pt.L].size; ctx.fillRect(pt.x - s / 2, pt.y - s / 2, s, s);
+      }
+      E.moving = moving; E.ms = E.ms * 0.9 + (performance.now() - t0) * 0.1; if (hooks.frame) hooks.frame(E);
+    };
+  }
+  E.build = (spec, keep, W, H) => { // amostra de novo; keep = as partículas continuam de onde estão (troca de fonte, resize)
+    const smp = sampleText(spec); spec.dot = smp.step * 0.8; spec.pickR = smp.step * 2 + 4; E.spec = spec; E.letters = smp.letters; E.step = smp.step; E.W = W; E.H = H;
+    const old = keep ? E.parts : null, pts = smp.points, n = pts.length, list = orderOf(spec.order), next = []; let k = 0, cum = 0;
+    list.forEach((d, idx) => { // fatias pelo valor acumulado: contíguas, exatas, na ordem escolhida
+      cum += Number(d.value) || 0; const end = idx === list.length - 1 ? n : Math.round(n * cum / LTOTAL);
+      for (; k < end; k++) { const pt = pts[k], o = old && old.length ? old[Math.min(old.length - 1, Math.floor(k * old.length / n))] : null; next.push({ L: pt.L, lx: pt.lx, ly: pt.ly, tx: pt.ax, ty: pt.ay, x: o ? o.x : Math.random() * W, y: o ? o.y : Math.random() * H, vx: o ? o.vx : 0, vy: o ? o.vy : 0, d }); }
+    });
+    E.parts = next;
+    cont.style.width = W + "px"; cont.style.height = H + "px";
+    if (!E.P) E.P = new p5(sk, cont); else if (E.P._setupDone && (E.P.width !== W || E.P.height !== H)) E.P.resizeCanvas(W, H);
+  };
+  E.pose = (seed, now) => { // alvos de cada partícula pela pose da sua letra; now = sem viagem (reduced ou primeiro estado)
+    const S = E.spec; if (!S) return; const fs = S.fs / 148;
+    E.poses = E.letters.map(L => { const acc = L.w === E.word ? E.acc : -1, amp = REST * (L.w === E.word ? Math.max(L.k, S.accK || 0) : L.k) * (S.ampK == null ? 1 : S.ampK); const P = pose(L.i, acc, amp, seed + L.w * 5, fs); P.cos = Math.cos(P.r * Math.PI / 180); P.sin = Math.sin(P.r * Math.PI / 180); P.tan = Math.tan(P.sk * Math.PI / 180); P.size = S.dot * (1 + 0.55 * P.g * Math.min(1, amp)); return P; });
+    for (const pt of E.parts) { const L = E.letters[pt.L], P = E.poses[pt.L]; let x = pt.lx * P.sx, y = pt.ly * P.sy; x += P.tan * y; pt.tx = L.ox + P.x + x * P.cos - y * P.sin; pt.ty = L.oy + P.y + x * P.sin + y * P.cos; if (now || reduced) { pt.x = pt.tx; pt.y = pt.ty; pt.vx = pt.vy = 0; } }
+    if (reduced && E.P && E.P._setupDone) E.P.redraw();
+  };
+  E.locate = d => { // a letra onde a fatia do projeto tem o centro: ali cai a região da tensão
+    const mine = E.parts.filter(p => p.d === d); if (!mine.length) { E.word = -1; E.acc = -1; return; }
+    const L = E.letters[mine[Math.floor(mine.length / 2)].L]; E.word = L.w; E.acc = L.i;
+  };
+  E.nearest = (x, y) => { let best = null, bd = (E.spec ? E.spec.pickR : 10) ** 2; for (const pt of E.parts) { const dx = pt.tx - x, dy = pt.ty - y, d2 = dx * dx + dy * dy; if (d2 < bd) { bd = d2; best = pt; } } return best ? best.d : null; };
+  E.setVisible = v => { E.visible = v; if (!E.P || !E.P._setupDone) return; if (v && !reduced) E.P.loop(); else { E.P.noLoop(); if (v) E.P.redraw(); } };
+  E.redraw = () => { if (E.P && E.P._setupDone && (reduced || !E.visible)) E.P.redraw(); };
+  E.dispose = () => { if (E.P) { try { E.P.remove(); } catch (_) {} E.P = null; } E.parts = []; };
+  E.stats = () => ({ particles: E.parts.length, step: E.step, msPerFrame: +E.ms.toFixed(2), canvas: [E.W, E.H] });
+  return E;
+}
+/* a marca da capa */
+const MARK = { sel: null, hover: null, tapAt: 0, timer: 0, tipTimer: 0 };
+const COVER = liveEngine($("#markLive"), { ink: () => TYPO.dark ? "#f7f6f1" : "#161616", color: (pt, ink) => (pt.d === MARK.sel || pt.d === MARK.hover) ? MECH[pt.d.mechanism] : ink });
+function markCue() { $("#introCue").textContent = TYPO.live ? `O campo atrás desta capa já está vivo. A marca também: ${COVER.parts.length || "os"} pontos, cada um uma fração do valor de um dos 20 projetos, em ordem de ${TYPO.order === "mecanismo" ? "mecanismo" : TYPO.order === "valor" ? "valor" : "ano, 2017 à esquerda e 2024 à direita"}. A cada poucos segundos a cor passa a outro projeto e a região em volta cede; passe a mão para dispersar, toque numa fatia para abrir a ficha.` : "O campo atrás desta capa já está vivo. A marca também: a cada poucos segundos a cor troca e uma região das letras cede; toque nela para pausar."; }
+function markChoose() { // o projeto da vez: do mecanismo do ciclo (rosa → azul → verde), sorteado, diferente do anterior
+  const mech = MECHS[TENSE.mech], cands = DATA.filter(d => d.mechanism === mech && d !== MARK.sel);
+  MARK.sel = cands.length ? cands[Math.floor(Math.random() * cands.length)] : MARK.sel || DATA[0]; COVER.locate(MARK.sel);
+}
+function markPulse(now) { if (!TYPO.live || !COVER.spec) return; if (!now || !MARK.sel) markChoose(); else COVER.locate(MARK.sel); COVER.pose(TENSE.seed, false); }
+function markBuild(keep) {
+  const wrap = $("#markWrap"), cont = $("#markLive"), h = $("#mark");
+  wrap.classList.toggle("live", !!TYPO.live); cont.hidden = !TYPO.live; markCue();
+  if (!TYPO.live) { COVER.setVisible(false); markTip(null); return; }
+  const F = FONTS[TYPO.font], fam = firstFamily(F.family), fs = parseFloat(getComputedStyle(h).fontSize) || 100;
+  const go = () => {
+    if (!TYPO.live || !$("#markWrap").classList.contains("live")) return;
+    const mob = small(), bleed = Math.round(Math.max(36, fs * 0.3)), cs = getComputedStyle(h);
+    let line = 0; const words = [...h.childNodes].map(nd => { if (nd.nodeName === "BR") { line++; return null; } if (nd.nodeType !== 1 || !nd.classList.contains("tense")) return null; const i = nd.querySelector("i"); return { text: nd.textContent.replace(/\s+/g, ""), line, k: +(nd.dataset.k || 1), margin: i ? parseFloat(getComputedStyle(i).marginLeft) || 0 : 0 }; }).filter(Boolean);
+    const spec = { fs, family: fam, weight: TYPO.weight, vary: TYPO.vary && !!F.wght && !F.fixed, wght: F.wght, wdth: F.wdth, ls: parseFloat(cs.letterSpacing) || 0, lineH: parseFloat(cs.lineHeight) || fs * 0.76, words, seed: TENSE.seed, left: bleed, top: bleed, minStep: mob ? 3 : 4, maxStep: 9, budget: mob ? LIVE_BUDGET.mobile : LIVE_BUDGET.desktop, accK: 1.9, order: TYPO.order, disp: Math.max(mob ? 30 : 44, fs * 0.33), maxS: mob ? 4.5 : 6 };
+    const W = h.offsetWidth + 2 * bleed, H = h.offsetHeight + 2 * bleed;
+    cont.style.left = (h.offsetLeft - bleed) + "px"; cont.style.top = (h.offsetTop - bleed) + "px";
+    COVER.build(spec, keep, W, H); markPulse(true); markCue(); COVER.setVisible(introOn && !document.hidden);
+  };
+  const fontStr = `${TYPO.weight} ${Math.round(fs)}px "${fam}"`;
+  if (document.fonts && document.fonts.load) document.fonts.load(fontStr).then(go, go); else go();
+}
+function markRefresh(keep = true) { clearTimeout(MARK.timer); MARK.timer = setTimeout(() => markBuild(keep), 60); }
+function markTip(d, cx, cy, touchHint) {
+  const tip = $("#markTip"); clearTimeout(MARK.tipTimer); MARK.hover = d; $("#markLive").style.cursor = d ? "pointer" : "";
+  if (!d) { tip.hidden = true; COVER.redraw(); return; }
+  const share = (Number(d.value) || 0) / LTOTAL * 100, n = COVER.parts.reduce((s, p) => s + (p.d === d), 0), wrap = $("#markWrap").getBoundingClientRect();
+  tip.innerHTML = `<b>${esc(Rizoma.shortTitle(d.title))}</b><span>${d.year} · ${esc(d.mechanism)} · ${money(d.value)}</span><span>${share.toFixed(1).replace(".", ",")}% do título · ${n} pontos${touchHint ? " · toque de novo para abrir a ficha" : " · clique abre a ficha"}</span>`;
+  tip.hidden = false; tip.classList.toggle("flip", cx + 270 > innerWidth); tip.style.left = (cx - wrap.left) + "px"; tip.style.top = (cy - wrap.top) + "px"; COVER.redraw();
+}
+function markOpen(d) { markTip(null); enter(); if (page !== "discover") showPage("discover"); setTimeout(() => openPreview(d.id, "discover"), 120); }
+(() => {
+  const cont = $("#markLive"); let down = null;
+  const at = e => { const r = cont.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+  cont.addEventListener("pointermove", e => { const p = at(e); COVER.ptr.x = p.x; COVER.ptr.y = p.y; COVER.ptr.at = performance.now(); if (e.pointerType === "mouse") { const d = COVER.nearest(p.x, p.y); if (d !== MARK.hover || d) markTip(d, e.clientX, e.clientY, false); } });
+  cont.addEventListener("pointerleave", () => { COVER.ptr.at = 0; if (!touch) markTip(null); });
+  cont.addEventListener("pointerdown", e => { down = { x: e.clientX, y: e.clientY, t: performance.now() }; const p = at(e); COVER.ptr.x = p.x; COVER.ptr.y = p.y; COVER.ptr.at = performance.now(); });
+  cont.addEventListener("pointerup", e => {
+    const dn = down; down = null; if (!dn || Math.hypot(e.clientX - dn.x, e.clientY - dn.y) > 8 || performance.now() - dn.t > 600) return;
+    const p = at(e), d = COVER.nearest(p.x, p.y); e.stopPropagation();
+    if (!d) { TENSE.paused = !TENSE.paused; $("#mark").classList.toggle("paused", TENSE.paused); markTip(null); return; } // fora das letras: pausa/retoma, como no HTML
+    if (e.pointerType === "mouse") { markOpen(d); return; }
+    if (MARK.hover === d && performance.now() - MARK.tapAt < 4000) { markOpen(d); return; } // toque: o primeiro mostra, o segundo abre
+    MARK.tapAt = performance.now(); markTip(d, e.clientX, e.clientY, true); MARK.tipTimer = setTimeout(() => markTip(null), 4000);
+  });
+  document.addEventListener("visibilitychange", () => COVER.setVisible(introOn && !document.hidden && !!TYPO.live));
+})();
+/* abertura dos gráficos: anima o título de uma seção do mesmo modo (as partículas chegam de posições aleatórias, ou de um
+   ponto, e formam as letras; quando assentam, o canvas se desfaz e o título em HTML reaparece). Para a página Indicadores:
+   window.Lab5Living.play(document.querySelector("#indicators .hero h1"), { from: {x, y}, color: "mechanism" | "ink", order: "ano",
+   hold: 900 }). Devolve { stop() } e uma promessa em .done. Lê fonte, peso, corpo, entrelinha e entreletra do próprio elemento. */
+function playLiving(el, opts) {
+  opts = opts || {}; if (!el || reduced) return { stop() {}, done: Promise.resolve(false) };
+  const cs = getComputedStyle(el), fs = parseFloat(cs.fontSize) || 32, fam = firstFamily(cs.fontFamily), weight = parseInt(cs.fontWeight, 10) || 700;
+  const lines = (el.innerText || el.textContent).split("\n").map(s => s.trim()).filter(Boolean).map(s => cs.textTransform === "uppercase" ? s.toUpperCase() : s);
+  const words = []; lines.forEach((ln, li) => ln.split(/\s+/).forEach(w => words.push({ text: w, line: li, k: opts.k == null ? 1 : opts.k, margin: 0 })));
+  const bleed = Math.round(Math.max(24, fs * 0.3)), r0 = el.getBoundingClientRect(), W = Math.ceil(r0.width) + 2 * bleed, H = Math.ceil(r0.height) + 2 * bleed;
+  const cont = document.createElement("div"); cont.className = "mark-live"; cont.style.cssText = `position:fixed;z-index:${opts.z || 90};pointer-events:none;left:${r0.left - bleed}px;top:${r0.top - bleed}px;transition:opacity .5s`; document.body.appendChild(cont);
+  const F = FONTS[TYPO.font], same = fam === firstFamily(F.family);
+  const spec = { fs, family: fam, weight, vary: false, wght: same ? F.wght : null, wdth: null, ls: parseFloat(cs.letterSpacing) || 0, lineH: parseFloat(cs.lineHeight) || fs * 1.1, words, seed: +(el.dataset.seed || 0) + 3, left: bleed, top: bleed, minStep: Math.max(2, Math.round(fs / 22)), maxStep: 6, budget: opts.budget || 1400, accK: 0, ampK: opts.amp == null ? 1 : opts.amp, order: opts.order || TYPO.order || "ano", disp: 0, maxS: Math.max(4, fs / 9) };
+  const E = liveEngine(cont, { ink: () => "#161616", color: (pt, ink) => opts.color === "mechanism" ? MECH[pt.d.mechanism] : ink });
+  const prev = el.style.visibility; let alive = true, settledAt = 0, t0 = performance.now(), resolve; const done = new Promise(r => resolve = r);
+  const finish = ok => { if (!alive) return; alive = false; cont.style.opacity = "0"; el.style.visibility = prev; setTimeout(() => { E.dispose(); cont.remove(); resolve(ok); }, 520); };
+  E.build(spec, false, W, H); if (opts.from) for (const pt of E.parts) { pt.x = opts.from.x - r0.left + bleed + (Math.random() - 0.5) * 20; pt.y = opts.from.y - r0.top + bleed + (Math.random() - 0.5) * 20; }
+  E.word = -1; E.acc = -1; E.pose(spec.seed, false); el.style.visibility = "hidden"; E.setVisible(true);
+  const tick = () => { if (!alive) return; const r = el.getBoundingClientRect(); cont.style.left = (r.left - bleed) + "px"; cont.style.top = (r.top - bleed) + "px"; const now = performance.now();
+    if (E.moving < E.parts.length * 0.02 && now - t0 > 600) { if (!settledAt) settledAt = now; if (now - settledAt > (opts.hold == null ? 900 : opts.hold)) return finish(true); } else settledAt = 0;
+    if (now - t0 > (opts.max || 6000)) return finish(true); requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+  return { stop: () => finish(false), done, engine: E };
+}
+window.Lab5Living = { play: playLiving, stats: () => COVER.stats(), engine: COVER, pose, sample: sampleText };
 /* voltar à capa: o inverso de enter(); a ficha fecha, o campo volta ao estado de intro e os pulsos seguem */
 function reopenIntro() {
   if (introOn) return; introOn = true; document.body.classList.add("intro-active");
@@ -529,7 +740,7 @@ function reopenIntro() {
   $("#card").classList.remove("open"); document.body.classList.remove("card-open");
   if (page !== "discover") showPage("discover");
   const i = $("#intro"); i.hidden = false; i.scrollTop = 0; setTimeout(() => i.classList.remove("leaving"), 30); // setTimeout, não rAF: em aba de fundo o rAF não dispara
-  marginCache.at = 0; fitMark(); pulse(true);
+  marginCache.at = 0; fitMark(); pulse(true); markRefresh(true); COVER.setVisible(!!TYPO.live && !document.hidden);
 }
 
 /* ---------- navegação ---------- */
@@ -557,7 +768,7 @@ $$("[data-nav]").forEach(b => b.onclick = () => { if (introOn) enter(); showPage
 /* ---------- capa ---------- */
 function enter() {
   if (!introOn) return; introOn = false; document.body.classList.remove("intro-active");
-  const i = $("#intro"); i.classList.add("leaving"); setTimeout(() => i.hidden = true, 750);
+  const i = $("#intro"); i.classList.add("leaving"); setTimeout(() => i.hidden = true, 750); COVER.setVisible(false); markTip(null);
   if (R) { R.setIntro(false); whenLoaded(() => setTimeout(() => { for (let k = 0; k < (touch ? 4 : 3); k++) R.revealOne(); }, 500)); } // já nasce com alguns nós: o micélio aparece antes do primeiro gesto (o p5 só inicia o sketch no load)
   marginCache.at = 0;
 }

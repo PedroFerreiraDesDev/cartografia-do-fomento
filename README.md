@@ -102,3 +102,4 @@ O laboratório é exploratório: suas decisões visuais não devem ser tratadas 
 - Os nós revelados são fontes de agentes. Com uma linha de fuga ligada, os nós que compartilham o atributo recebem mais agentes, que depositam mais forte na cor da linha: a rede cresce entre eles. Desligar a linha deixa a rede evaporar.
 - Mapa de rastro num `p5.Graphics` a 1/3 da resolução, lido uma vez por quadro; evaporação por retângulo semitransparente; ~2500 agentes no desktop e ~700 no celular, com governador; pausa com a aba oculta; desligado com `prefers-reduced-motion`.
 - Ferramentas: chips das seis linhas, 3D, agentes −/+, evaporação (lenta/média/rápida, tecla E), limpar rastro (tecla X), recomeçar. Referências (ABNT) em `rizoma/README-RIZOMA.md`, seção 7; registro da adaptação em `rizoma/PROPOSTAS-INTERACAO-3D.md`, seção 9.5.
+- Propostas para o Lab 04 (interação final, forma do nó, descoberta): `rizoma/PROPOSTAS-LAB04.md`.

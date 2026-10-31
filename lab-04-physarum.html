@@ -105,6 +105,9 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
      vez por quadro (não uma vez por agente) e devolvido com updatePixels; evaporação por
      retângulo semitransparente (destination-out) mais um decaimento linear mínimo, para o
      rastro não ficar preso na quantização de 8 bits do canvas;
+   - ajuste de 31/10 (pedido do autor): o rastro segue a bolinha com que o nó se liga (quimiotaxia mais
+     forte, agente que chega volta pelo caminho e engrossa a veia), as cores se fundem devagar (mix 0,35),
+     e a camada é ampliada com desfoque na GPU, para ler como forma contínua, não como pontos;
    - contagem adaptativa: ~2500 agentes no desktop, ~700 no celular, com um governador que
      reduz se o quadro passar de 30 ms; pausa quando a aba está oculta; desligado com
      prefers-reduced-motion. Modo instância, como o resto do motor. */
@@ -131,8 +134,9 @@ const PH = {
   count: (touch || small()) ? 700 : 2500,
   step: (touch || small()) ? 200 : 500, min: 200, max: 6000, floor: (touch || small()) ? 400 : 1000, // o governador não desce abaixo de floor
   evapLevels: [["lenta", 0.012, 1], ["média", 0.03, 1], ["rápida", 0.07, 2]], evap: 1, // [nome, fator do retângulo, decaimento linear]
-  sensorAngle: 0.42, sensorDist: 8, turn: 0.3, speed: 1.05, jitter: 0.12,
-  deposit: 6, depositLinked: 24, bias: 0.035, life: [240, 720]
+  sensorAngle: 0.5, sensorDist: 12, turn: 0.2, speed: 1.15, jitter: 0.06,   // curvas longas: o rastro vira veia, não ruído
+  deposit: 5, depositLinked: 22, bias: 0.09, biasFree: 0.02, mix: 0.35, life: [260, 820], // bias: puxão rumo ao irmão ligado; mix: as cores se fundem onde as redes se cruzam
+  blur: (touch || small()) ? 1.6 : 2.4
 };
 let trail = null, tw = 0, th = 0, trailP = null;
 const A = { x: null, y: null, h: null, home: null, target: null, type: null, age: null, life: null };
@@ -208,8 +212,8 @@ new p5(p => {
     for (let i = 0; i < DATA.length; i++) {
       if (!pos.on[i]) continue;
       const l = linkOf(i), c = l ? Rizoma.LINES[TYPES[l.t]].color : INK;
-      if (l) { trail.fill(c[0], c[1], c[2], 7); trail.circle(pos.x[i], pos.y[i], 20); trail.fill(c[0], c[1], c[2], 26); trail.circle(pos.x[i], pos.y[i], 8); }
-      else { trail.fill(c[0], c[1], c[2], 8); trail.circle(pos.x[i], pos.y[i], 10); }
+      if (l) { trail.fill(c[0], c[1], c[2], 6); trail.circle(pos.x[i], pos.y[i], 26); trail.fill(c[0], c[1], c[2], 24); trail.circle(pos.x[i], pos.y[i], 9); }
+      else { trail.fill(c[0], c[1], c[2], 7); trail.circle(pos.x[i], pos.y[i], 14); }
     }
     // 3. agentes: o mapa é lido uma vez por quadro; cada agente sente três pontos, vira, anda e deposita
     trail.loadPixels();
@@ -222,17 +226,22 @@ new p5(p => {
       const f = sense(x + Math.cos(h) * sd, y + Math.sin(h) * sd), l = sense(x + Math.cos(h - sa) * sd, y + Math.sin(h - sa) * sd), r = sense(x + Math.cos(h + sa) * sd, y + Math.sin(h + sa) * sd);
       if (f > l && f > r) { } else if (f < l && f < r) h += Math.random() < 0.5 ? -ta : ta; else if (l > r) h -= ta; else if (r > l) h += ta;
       const tg = A.target[i];
-      if (tg >= 0 && pos.on[tg]) { const d = Math.atan2(pos.y[tg] - y, pos.x[tg] - x) - h; h += Math.atan2(Math.sin(d), Math.cos(d)) * PH.bias; } // quimiotaxia leve rumo ao irmão
+      if (tg >= 0 && pos.on[tg]) { // quimiotaxia rumo ao irmão ligado: o rastro segue a bolinha com que o nó se liga
+        const dx = pos.x[tg] - x, dy = pos.y[tg] - y, dist = Math.hypot(dx, dy), d = Math.atan2(dy, dx) - h;
+        h += Math.atan2(Math.sin(d), Math.cos(d)) * (dist < 6 ? 0.5 : PH.bias);
+        if (dist < 3) { A.target[i] = A.home[i]; A.home[i] = tg; } // chegou: volta pelo mesmo caminho, engrossando a veia
+      } else if (A.home[i] >= 0 && A.age[i] > 90) { const d = Math.atan2(pos.y[A.home[i]] - y, pos.x[A.home[i]] - x) - h; h += Math.atan2(Math.sin(d), Math.cos(d)) * PH.biasFree; } // livre: orbita o nó de origem e forma a mancha de fundo
       h += (Math.random() - 0.5) * jt;
       x += Math.cos(h) * sp; y += Math.sin(h) * sp;
       if (x < 1 || y < 1 || x >= tw - 1 || y >= th - 1) { A.life[i] = 0; continue; } // saiu do mapa: renasce num nó
       const k = (((y | 0) * tw + (x | 0)) << 2), t = A.type[i], c = t >= 0 ? Rizoma.LINES[TYPES[t]].color : INK, dep = t >= 0 ? PH.depositLinked : PH.deposit;
-      px[k] += (c[0] - px[k]) * 0.6; px[k + 1] += (c[1] - px[k + 1]) * 0.6; px[k + 2] += (c[2] - px[k + 2]) * 0.6; px[k + 3] = px[k + 3] + dep;
+      const m = PH.mix; px[k] += (c[0] - px[k]) * m; px[k + 1] += (c[1] - px[k + 1]) * m; px[k + 2] += (c[2] - px[k + 2]) * m; px[k + 3] = px[k + 3] + dep;
+      if (t >= 0) { const k2 = k + 4; if (k2 + 3 < px.length) { px[k2] += (c[0] - px[k2]) * m; px[k2 + 1] += (c[1] - px[k2 + 1]) * m; px[k2 + 2] += (c[2] - px[k2 + 2]) * m; px[k2 + 3] += dep >> 1; } } // veia ligada mais grossa
       A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
     }
     trail.updatePixels();
     // 4. o rastro vai para a tela ampliado 3× (a interpolação do navegador faz a difusão visual)
-    p.clear(); p.image(trail, 0, 0, p.width, p.height);
+    p.clear(); const dc = p.drawingContext; dc.filter = `blur(${PH.blur}px)`; p.image(trail, 0, 0, p.width, p.height); dc.filter = "none";
     // governador: se o quadro ficar pesado, menos agentes
     drawMs += (performance.now() - t0 - drawMs) * 0.05; if (++frameN % 180 === 0 && drawMs > 12 && PH.count > PH.floor) setCount(Math.max(PH.floor, PH.count - PH.step)); // governador: o micélio não pode comer o quadro
   };

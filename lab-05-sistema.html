@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lab 05 — Sistema: o site inteiro na linguagem do Physarum</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,100..900&family=Bebas+Neue&family=Oswald:wght@200..700&family=Big+Shoulders+Display:wght@100..900&family=Antonio:wght@100..700&family=Teko:wght@300..700&family=Sofia+Sans+Extra+Condensed:wght@1..1000&family=League+Gothic&family=Six+Caps&family=Fjalla+One&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Bungee&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,100..900&family=Bebas+Neue&family=Oswald:wght@200..700&family=Big+Shoulders+Display:wght@100..900&family=Antonio:wght@100..700&family=Teko:wght@300..700&family=Sofia+Sans+Extra+Condensed:wght@1..1000&family=League+Gothic&family=Six+Caps&family=Fjalla+One&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Bungee&family=Khand:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Saira+Extra+Condensed:wght@100;200;300;400;500;600;700;800;900&family=Staatliches&family=Squada+One&family=Chakra+Petch:wght@300;400;500;600;700&display=swap">
 <style>
 /* Lab 05 — Sistema. O site completo (capa, Descobrir, Indicadores, Editais, Pesquisa, Sobre, projeto)
    redesenhado para ter coesão com o Lab 04: papel, tinta, cor por mecanismo, cor por natureza de linha,
@@ -28,10 +28,7 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid va
 
 /* identidade: tipografia em tensão (Lab 01): deslocamento, micro-rotação e pressão por letra; nunca uma "fonte grafite". Só títulos tensionam; dados e textos ficam estáveis */
 .tense .w{display:inline-block;white-space:nowrap}.tense i{display:inline-block;font-style:normal;transform-origin:50% 70%;transition:transform .45s cubic-bezier(.2,.7,.25,1),color .45s}.tense i.sp{width:.26em}h1.tense{display:block}
-.mark{cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.09em;line-height:.76}.mark .tense i{transition:transform .55s cubic-bezier(.2,.7,.25,1),color .55s;margin:0 -.012em}.mark .strong i{margin:0 var(--squeeze,-.03em)}.mark .w{overflow:visible}
-/* o pôster do Lab 01 entra na capa como um lambe colado no papel: bloco de tinta, letras de papel, uma letra em cor de mecanismo */
-.poster{position:relative;display:block;width:100%;background:var(--ink);color:var(--paper);padding:26px 34px 22px 26px;margin:14px 0 20px;box-shadow:10px 12px 0 rgba(22,22,22,.08)}.poster .pk,.poster .pf{display:block;font-size:9px;letter-spacing:.18em;font-weight:900;color:#8f8d87}.poster .pk{margin-bottom:18px}.poster .pf{margin-top:16px}.poster.paused .pf:after{content:" · PAUSADO"}
-.intro-main .poster h1{margin:0}.intro.dark .poster{background:var(--paper);color:var(--ink);box-shadow:10px 12px 0 rgba(247,246,241,.08)}
+.mark{cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.09em;line-height:.76;white-space:nowrap}.mark.paused{opacity:.78}.mark .tense i{transition:transform .55s cubic-bezier(.2,.7,.25,1),color .55s;margin:0 -.012em}.mark .strong i{margin:0 var(--squeeze,-.03em)}.mark .w{overflow:visible}
 /* painel de experimento tipográfico da capa (fonte, peso, pesos por letra, fundo) */
 .typo{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:22px;font-size:9px}.typo .kicker{margin-right:2px}.typo button{border:1px solid #bbb;background:rgba(255,255,255,.8);padding:7px 9px;font-size:9px;font-weight:800;letter-spacing:.03em}.typo button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.typo .group button{border-radius:0}.typo .group button+button{border-left:0}.typo .mid{min-width:44px;text-align:center}.typo button:disabled{opacity:.4;cursor:default}.typo .auto{margin-left:8px}.typo .auto.active{background:var(--rosa,#ff4f9a);border-color:var(--rosa,#ff4f9a);color:#161616}.typo .autoLabel{min-width:150px;color:#777;letter-spacing:.08em}.typo .autoLabel b{color:var(--ink)}.intro.dark .typo .autoLabel b{color:var(--paper)}
 .intro.dark{background:rgba(22,22,22,.94);color:var(--paper)}.intro.dark .kicker,.intro.dark .topline,.intro.dark .footline,.intro.dark .intro-main p,.intro.dark .intro-cue,.intro.dark .legend{color:#b9b7b0}.intro.dark .cue{background:var(--paper)}.intro.dark .typo button{background:transparent;color:var(--paper);border-color:#555}.intro.dark .typo button.active{background:var(--paper);color:var(--ink);border-color:var(--paper)}.intro.dark .doors button{background:transparent;color:var(--paper);border-color:#555}.intro.dark .primary{background:var(--paper);color:var(--ink);border-color:var(--paper)}
@@ -153,7 +150,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   :root{--top:84px}
   .topbar{height:auto;min-height:84px;flex-wrap:wrap;gap:4px;padding:8px 10px 0;align-items:flex-start}.brand{width:100%;padding:4px 0 2px;font-size:13px}
   .topbar nav{width:100%;margin:0 -10px;padding:0 10px;overflow-x:auto;scrollbar-width:none;gap:0}.topbar nav::-webkit-scrollbar{display:none}.topbar nav button{flex:none;padding:9px 9px}.status{display:none}
-  .intro{padding:14px 16px 20px}.intro-main{padding:14px 0;justify-content:flex-start}.intro-main h1{font-size:clamp(44px,14vw,84px);margin:10px 0 14px}.poster{padding:16px 18px 14px 16px;margin:8px 0 16px}.intro-main p{font-size:12.5px}
+  .intro{padding:14px 16px 20px}.intro-main{padding:14px 0;justify-content:flex-start}.intro-main h1{font-size:clamp(44px,14vw,84px);margin:10px 0 14px}.intro-main p{font-size:12.5px}
   .typo{gap:5px 6px}.typo button{padding:8px 8px}
   .intro-actions{width:100%}.intro-actions .primary{width:100%}.intro-actions .doors{width:100%}.intro-actions .doors button{flex:1}
   .topline span:last-child,.footline{display:none}
@@ -196,7 +193,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="topline"><span>CARTOGRAFIA DO FOMENTO</span><span>TCC · DESIGN UFMG · LAB 05 · O SISTEMA NA LINGUAGEM DO PHYSARUM</span></div>
   <div class="intro-main">
     <div class="kicker">ARTE URBANA · FOMENTO CULTURAL · DESIGN DA INFORMAÇÃO</div>
-    <div class="poster" id="poster"><span class="pk">SISTEMA / 2017—2024</span><h1 class="mark" id="mark" title="Toque: pausa ou retoma os pulsos"><span class="tense" data-seed="1" data-k=".35">CARTOGRAFIA</span><br><span class="tense strong" data-seed="5" data-accent="1" data-k="1.9">FOMENTO</span></h1><span class="pf">TIPO RACIONAL + INTERFERÊNCIA GENERATIVA</span></div>
+    <h1 class="mark" id="mark" title="Toque: pausa ou retoma os pulsos"><span class="tense" data-seed="1" data-k=".35">CARTOGRAFIA</span><br><span class="tense" data-seed="7" data-k=".35">DO</span> <span class="tense strong" data-seed="5" data-accent="1" data-k="1.9">FOMENTO</span></h1>
     <p>Vinte projetos de grafite e muralismo realizados com fomento cultural em Belo Horizonte, 2017–2024. Cada projeto é um fragmento de muro; entre eles cresce um micélio que ninguém desenhou.</p>
     <p>Não há mapa obrigatório nem raiz: qualquer ponto é uma entrada. Revele, ligue linhas de fuga, abra nós, leve a sua estampa.</p>
     <div class="intro-actions"><button type="button" id="enterBtn" class="primary">ENTRAR NO CAMPO ↗</button><div class="doors"><button data-door="indicators">Indicadores</button><button data-door="editais">Editais</button><button data-door="about">Sobre</button></div></div>
@@ -447,9 +444,16 @@ const FONTS = [
   { id: "sixcaps", label: "Six Caps", family: "'Six Caps','Arial Narrow',sans-serif", weights: [400], squeeze: 0 },
   { id: "fjalla", label: "Fjalla One", family: "'Fjalla One','Arial Narrow',sans-serif", weights: [400] },
   { id: "barlow", label: "Barlow Cond.", family: "'Barlow Condensed','Arial Narrow',sans-serif", wght: [400, 900], fixed: true },
-  { id: "bungee", label: "Bungee", family: "Bungee,Impact,sans-serif", weights: [400], squeeze: -.004 }
+  { id: "bungee", label: "Bungee", family: "Bungee,Impact,sans-serif", weights: [400], squeeze: -.004 },
+  // terceira leva (31/10, o autor gostou da Teko): irmãs de desenho quadrado e condensado
+  { id: "khand", label: "Khand", family: "Khand,Teko,'Arial Narrow',sans-serif", wght: [300, 700], fixed: true },
+  { id: "rajdhani", label: "Rajdhani", family: "Rajdhani,Teko,'Arial Narrow',sans-serif", wght: [300, 700], fixed: true },
+  { id: "sairaxc", label: "Saira XC", family: "'Saira Extra Condensed','Arial Narrow',sans-serif", wght: [100, 900], fixed: true },
+  { id: "staatliches", label: "Staatliches", family: "Staatliches,Impact,sans-serif", weights: [400], squeeze: -.01 },
+  { id: "squada", label: "Squada One", family: "'Squada One',Impact,sans-serif", weights: [400], squeeze: -.01 },
+  { id: "chakra", label: "Chakra Petch", family: "'Chakra Petch','Arial Narrow',sans-serif", wght: [300, 700], fixed: true, squeeze: -.01 }
 ];
-const TYPO = { font: 0, weight: 700, vary: false, dark: false, auto: true };
+const TYPO = { v: 2, font: FONTS.findIndex(f => f.id === "teko"), weight: 600, vary: true, dark: false, auto: false };
 /* testes automáticos: a cada 6 s a capa troca de fonte e de peso sozinha (percorre a lista; nas variáveis sorteia o peso e liga "pesos por letra"),
    para comparar sem clicar. Escolher uma fonte à mão desliga o ciclo. */
 const AUTO = { timer: 0, step: 0, order: FONTS.map((_, i) => i).filter(i => i).concat(0) }; // todas, Arial Narrow por último
@@ -459,13 +463,13 @@ function autoTick() {
   applyTypo();
 }
 function autoRun() { clearInterval(AUTO.timer); AUTO.timer = 0; if (TYPO.auto && !reduced) AUTO.timer = setInterval(autoTick, 6000); }
-try { Object.assign(TYPO, JSON.parse(localStorage.getItem("lab05:typo") || "{}")); } catch (_) {}
+try { const saved = JSON.parse(localStorage.getItem("lab05:typo") || "{}"); if (saved.v === 2) Object.assign(TYPO, saved); } catch (_) {}
 /* a marca cabe no pôster em qualquer fonte: mede CARTOGRAFIA a 100 px e escala o corpo para a largura interna do bloco (as
    transformações da tensão não entram na medida; o transbordo é parte do desenho, como no pôster do Lab 01) */
 function fitMark() {
-  const h = $("#mark"), box = $("#poster"); if (!h || !box) return; const w = h.querySelector(".w"); if (!w) return;
-  const inner = box.clientWidth - parseFloat(getComputedStyle(box).paddingLeft) - parseFloat(getComputedStyle(box).paddingRight);
-  h.style.fontSize = "100px"; const nat = w.getBoundingClientRect().width / 100 || 6; // largura natural por px de corpo (getBoundingClientRect inclui transform; medimos com a tensão no repouso, erro < 3%)
+  const h = $("#mark"), box = h && h.parentElement; if (!h || !box) return;
+  const inner = box.clientWidth; // a coluna da capa (.intro-main)
+  h.style.fontSize = "100px"; const nat = h.getBoundingClientRect().width / 100 || 6; // largura natural da linha mais larga por px de corpo (a tensão não entra no layout; erro < 3%)
   h.style.fontSize = Math.max(40, Math.min(190, inner * 0.985 / nat)).toFixed(1) + "px";
 }
 addEventListener("resize", () => fitMark());
@@ -480,7 +484,7 @@ function applyTypo() {
   $("#bgBtn").textContent = TYPO.dark ? "fundo · tinta" : "fundo · papel"; $("#intro").classList.toggle("dark", TYPO.dark);
   $("#autoBtn").classList.toggle("active", TYPO.auto); $("#autoLabel").innerHTML = TYPO.auto ? `teste ${(AUTO.step - 1 + AUTO.order.length) % AUTO.order.length + 1}/${AUTO.order.length} · <b>${F.label} ${TYPO.weight}${TYPO.vary && F.wght ? " · pesos por letra" : ""}</b>` : `<b>${F.label} ${TYPO.weight}</b>`;
   try { localStorage.setItem("lab05:typo", JSON.stringify(TYPO)); } catch (_) {}
-  tenseWrap($("#mark .tense")); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitMark); fitMark(); pulse(true); $$(".hero h1, #copy h1").forEach((h, k) => tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7));
+  $$("#mark .tense").forEach(tenseWrap); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitMark); fitMark(); pulse(true); $$(".hero h1, #copy h1").forEach((h, k) => tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7));
 }
 $("#wLess").onclick = () => { TYPO.weight -= 100; applyTypo(); }; $("#wMore").onclick = () => { TYPO.weight += 100; applyTypo(); };
 $("#wVary").onclick = () => { TYPO.vary = !TYPO.vary; applyTypo(); }; $("#bgBtn").onclick = () => { TYPO.dark = !TYPO.dark; applyTypo(); };
@@ -515,7 +519,7 @@ function initTension() {
   $$(".hero h1, #copy h1").forEach((h, k) => { h.classList.add("tense"); tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7); });
   if (TYPO.auto && !reduced) { AUTO.step = 0; autoTick(); } else applyTypo(); // applyTypo já aplica o pulso atual
   autoRun(); tensionLoop();
-  $("#mark").addEventListener("click", e => { e.stopPropagation(); TENSE.paused = !TENSE.paused; $("#poster").classList.toggle("paused", TENSE.paused); });
+  $("#mark").addEventListener("click", e => { e.stopPropagation(); TENSE.paused = !TENSE.paused; $("#mark").classList.toggle("paused", TENSE.paused); });
   $("#brandBtn").onclick = reopenIntro; // a marca do cabeçalho leva de volta à capa, onde o site começa
 }
 /* voltar à capa: o inverso de enter(); a ficha fecha, o campo volta ao estado de intro e os pulsos seguem */

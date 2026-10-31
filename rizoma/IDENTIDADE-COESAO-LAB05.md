@@ -55,6 +55,13 @@ O que saiu nesta passagem: a animação de chegada (1,5 → 0,42 em 1,4 s, Präg
 
 O que saiu: as duas ondas senoidais e a onda de pressão que atravessava a palavra; a letra colorida que trocava a cada 11 s (agora a troca é o próprio pulso).
 
+**Quarto ajuste de 31/10 (autor: "o tensionamento é exatamente assim; gostei da Teko; escrever CARTOGRAFIA DO FOMENTO; não entendi o motivo da tarja preta").**
+
+- **Sai a tarja (o lambe).** O bloco de tinta por trás da marca foi retirado: a marca volta a ser tinta sobre o papel da capa, como o resto do Lab 05. A defesa do lambe (seção anterior) fica registrada como hipótese descartada pelo autor; a pista de que o pôster do Lab 01 precisava de fundo escuro para funcionar não se confirmou com a Teko, cujo peso e desenho quadrado sustentam a marca no papel.
+- **Três palavras.** `CARTOGRAFIA / DO FOMENTO`: "DO" entra na segunda linha, em repouso (fator 0,35, como CARTOGRAFIA); a região colorida e a tensão seguem só em FOMENTO. O corpo é ajustado para a linha mais larga caber na coluna da capa (`fitMark`, até 190 px).
+- **Teko como padrão** (600, pesos por letra ligados; testes automáticos desligados, mas disponíveis). Teko (Indian Type Foundry, 2014; variável 300–700; SIL OFL) é uma condensada de desenho quadrado, feita para títulos e sinalização, com formas que lembram o estêncil e a letra de muro sem imitar grafite: atende à regra do Lab 01 ("grotesca neutra, condensada quando possível", nunca uma "fonte grafite" pronta). Terceira leva de fontes para comparar na mesma família de desenho: Khand e Rajdhani (mesma fundição da Teko), Saira Extra Condensed, Staatliches, Squada One e Chakra Petch (todas Google Fonts, SIL OFL). Agora são 20 opções no painel.
+- **Próximo passo acordado:** a tipografia viva do Lab 06 (letras preenchidas por partículas, cada uma uma fração do valor de um projeto) passa a ser estudada como a própria marca, com a tensão por pulsos mantida, para a capa e como animação de abertura dos gráficos; e os gráficos do Lab 06 (Cordas, Células de valor, Mancha) entram nos Indicadores com explicação breve em pop-over e seleção compartilhada entre gráficos. Ambos em sessões próprias, a partir desta versão.
+
 ## 3. Defesa das cores
 
 **Papel e tinta.** O papel `#f7f6f1` não é branco: é o cimento claro do muro, a superfície que recebe o traço. A tinta `#161616` é o traço. A dupla vem do pixo, que é monocromático por natureza (Lassala, 2010; Pereira, 2005): a escrita da cidade antes da cor. Tudo o que é texto, linha, estrutura, é tinta sobre papel.

@@ -48,7 +48,152 @@ Inconsistências a conferir antes de qualquer gráfico novo: o valor de "Viva a 
 
 ## 3. Fontes públicas levantadas (31/10/2026)
 
-*(preenchido com o relatório da pesquisa na web; ver abaixo)*
+Levantamento feito por agente desta sessão em **31 out. 2026** (busca na web e leitura das páginas). Páginas renderizadas por JavaScript (DOM-web, Mapa Cultural BH) apareceram vazias para a ferramenta, mas os links subjacentes foram copiados literalmente das páginas da PBH. Nenhuma URL foi inventada; o que não pôde ser lido está marcado **não verificado**.
+
+### 3.1 Relação de projetos aprovados, LMIC Incentivo Fiscal (2017–2024/25): a fonte que faltava
+
+- **Nome oficial:** "Incentivo à Cultura – Renúncia Fiscal" (Secretaria Municipal de Cultura).
+- **URL:** https://prefeitura.pbh.gov.br/cultura/renuncia-fiscal (página criada em 18/05/2026).
+- **O que oferece:** uma planilha `.xlsx` por edital de Incentivo Fiscal (2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024/2025) e o link para a publicação no DOM. Prefixo comum `https://prefeitura.pbh.gov.br/sites/default/files/estrutura-de-governo/cultura/`: `relacao-de-projetos-aprovados-if-2017.xlsx` (DOM ed. 2395), `…-if-2018_1.xlsx` (ed. 2849), `…-if-2019_0.xlsx` (ed. 2550), `…-if-2020.xlsx` (ed. 2923), `…-if-2021.xlsx` (ato 12314), `…-if-2022.xlsx` (ato 391327), `…-if-2023.xlsx` (ato 454520), `…-if-2024-2025.xlsx` (ato 472284).
+- **Campos (verificados, planilhas baixadas e abertas):** `NÚMERO DO PROJETO | ANO | EDITAL | NOME DO(A) PROPONENTE | TÍTULO | CPF/CNPJ (mascarado) | TIPO DE PROPONENTE | VALOR APROVADO`. **Não há** regional, endereço, setor nem valor captado.
+- **Limitação:** "valor aprovado" é o teto autorizado a captar; a captação efetiva não é publicada. O cruzamento com o corpus do TCC está na seção 3.16.
+
+### 3.2 Páginas de cada edital (Fundo, Descentra, Multilinguagens, BH nas Telas, IF)
+
+- **Índice:** https://prefeitura.pbh.gov.br/cultura/editais/editais-anteriores (33 editais, 2017–2025).
+- LMIC 2017–2018 Fundo e IF: https://prefeitura.pbh.gov.br/cultura/editais/lmic-2017-2018 (relação dos 275 contemplados em PDF; notas dos 1.480 habilitados; estudo `…/fundacao-municipal-de-cultura/2020/lmic-edital-2017-2018-estudo.pdf`).
+- LMIC 2018–2019, 2020, 2021: páginas `…/editais/lmic-2018-2019-if`, `…-fundo`, `…/lmic-2020-fundo`, `…/lmic-2020-if`, `…/lmic-2021-fundo`, `…/lmic-2021-incentivo-fiscal` (**não abertas**; padrão idêntico presumido).
+- LMIC 2022 Fundo (Multilinguagens): https://prefeitura.pbh.gov.br/cultura/editais/lmic-2022-fundo (R$ 8,2 mi; 607 inscritos; homologação DOM ato 26101, anexos em `api-dom.pbh.gov.br/api/v1/documentos/<hash>`). Colunas visíveis: Nº | Projeto | Empreendedor(a) | **Setor** | Valor aprovado | Pontuação (sem regional).
+- LMIC 2023 IF: https://prefeitura.pbh.gov.br/cultura/lmic/if2023 (edital PDF; 487 inscritos; homologação DOM ato 449086, retificação ato 454520). Renúncia média de R$ 16 mi/ano (Lei 11.594/2023).
+- LMIC 2024 Multilinguagens: https://prefeitura.pbh.gov.br/cultura/editais/lmic-multilinguagens-2024 (R$ 9.598.374; 661 inscritos; 124 aprovados; homologação DOM ato 451790).
+- **Limitação:** não há planilha consolidada do Fundo; os anexos trazem nº, projeto, proponente, setor, valor e nota, **sem regional**.
+
+### 3.3 Descentra BH
+
+- **URL mãe:** https://prefeitura.pbh.gov.br/cultura/descentra. Edições: 2018, 2019, 2021, 2022, 2023, 2024, 2025, 2026. **Não há Descentra 2020** (ano da pandemia e da Lei Aldir Blanc): isso explica em parte o vazio de 2020 no corpus.
+- 2018: https://prefeitura.pbh.gov.br/cultura/descentra-2018 (R$ 1 mi, teto R$ 20 mil, 51 projetos; Anexo I contemplados `…/cultura/DESCENTRA%20-%20ANEXO%20I_0.pdf`; a página afirma: 39 % dos recursos para Barreiro, Venda Nova e Norte; 76,5 % proponentes estreantes; 82 % negros).
+- 2019: https://prefeitura.pbh.gov.br/cultura/descentra-2019. 2021: `…/editais/lmic-2021-descentra`. 2022: `…/editais/descentra-2022` (R$ 1,56 mi, 41 projetos). 2023: `…/edital-descentra-2023-fundo`. (**não abertas**)
+- 2024: https://prefeitura.pbh.gov.br/cultura/descentra-2024 (R$ 1,8 mi, teto R$ 40 mil, 450 inscritos, 46 selecionados; 83 % proponentes pretos/pardos). **Anexo II: relação de bairros × regional × Territórios de Gestão Compartilhada** `…/cultura/edital-descentra-2024-anexo-ii.pdf` (a chave de georreferenciamento que a própria SMC usa). Homologação DOM ato 454840, retificada ato 455171. Inscrição via Mapa Cultural BH, oportunidade 742.
+- 2025: https://prefeitura.pbh.gov.br/cultura/descentra-2025.
+- **Limitação:** os critérios territoriais estão só nos PDFs dos editais; não há tabela pública de regional por projeto.
+
+### 3.4 Observatório da Cultura de BH (eixo Fomento, painéis interativos)
+
+- https://prefeitura.pbh.gov.br/cultura/observatorio-da-cultura · https://prefeitura.pbh.gov.br/cultura/observatorio-da-cultura/eixo-fomento · https://prefeitura.pbh.gov.br/cultura/observatorio-da-cultura/paineis-interativos.
+- Cinco painéis: Fundo/LMIC **2020–2024** (perfil de proponentes e projetos), Incentivo Fiscal por edital (captação), execução da renúncia por ano, Lei Paulo Gustavo, PNAB. Filtros: gênero, raça/cor, setor, público. Painel de atividades georreferenciado por 9 regionais e 41 TGC. **Sem exportação declarada** (não verificado).
+- E-book do Observatório (PDF, 27/01/2026): `…/cultura/e-book_observatorio-bh-27.01.26.pdf` (**não aberto**, > 10 MB).
+- **Estudo JLeiva 2018–2025** (apresentado em 07/10/2026): R$ 278 mi, 3.391 projetos, 2.044 proponentes; LMIC R$ 238 mi (Fundo R$ 121 mi; IF R$ 117,3 mi); Centro-Sul = 12 % da população, 26 % dos proponentes e 31 % dos recursos; Norte com a menor fatia. Relatório prometido para o fim de 2026. https://prefeitura.pbh.gov.br/noticias/estudo-apresenta-panorama-do-fomento-cultura-em-bh-e-aponta-desafios-para-o-setor. **É a evidência agregada da tese "monumental no Centro-Sul" que o TCC afirma.**
+- Contato SMIIC: monitoramento.cultura@pbh.gov.br.
+
+### 3.5 Relatórios de gestão SMC/FMC (2017–2021)
+
+https://prefeitura.pbh.gov.br/cultura/relatorio-balanco-de-gestao (PDFs por ano; conteúdo por regional **não verificado**; não há 2022–2024).
+
+### 3.6 Programa Gentileza / Concurso de Murais de Arte Urbana (SMC 001/2017)
+
+https://prefeitura.pbh.gov.br/cultura/gentileza: R$ 300 mil, 40 propostas × R$ 7,5 mil, 198 inscritos; técnicas: 15 grafites, 8 lambes, 8 muralismos, 5 estênceis, 3 pinturas livres; **distribuição por regional publicada** (Centro-Sul 10, Leste 8, Noroeste 5, Oeste 4, Venda Nova 4, Pampulha 3, Barreiro 2, Nordeste 2, Norte 2). Resultados no DOM ed. 2361. Fomento direto por concurso, fora da LMIC: camada comparativa valiosa e **a única fonte com murais por regional**.
+
+### 3.7 Lei Aldir Blanc 2020 em BH
+
+https://prefeitura.pbh.gov.br/cultura/lei-de-emergencia-cultural-aldir-blanc: listas no DOM ed. 2884, 2888 (subsídio a espaços), 2902 e 2912 (premiação, R$ 15,89 mi). Premiação por trajetória, não por projeto/endereço.
+
+### 3.8 Lei Paulo Gustavo em BH (2023–2024)
+
+https://prefeitura.pbh.gov.br/cultura/lei-paulo-gustavo (≈ R$ 19 mi). Premiação 01/2023 "Culturas Populares e Tradicionais, Culturas Urbanas e Pontos de Cultura" (R$ 2,2 mi; homologação DOM ato 435667; **Anexo X bairros × regional × TGC**). BH Múltiplas Artes e Culturas (02/2023; homologação DOM ato 440185). BH nas Telas – Paulo Gustavo (R$ 12,6 mi, audiovisual).
+
+### 3.9 PNAB em BH (2024–2025)
+
+https://prefeitura.pbh.gov.br/cultura/politica-nacional-aldir-blanc: BH Fomento (R$ 5,9 mi), Premiação Agentes Culturais (R$ 5,5 mi; categoria "culturas urbanas"), Cultura Viva.
+
+### 3.10 Portal de Dados Abertos PBH (CKAN, CC-BY)
+
+- https://dados.pbh.gov.br/. **Não existe** dataset de projetos LMIC/Descentra/IF. Único dataset de fomento: "Atendimentos em editais públicos", só **2020** (https://dados.pbh.gov.br/dataset/atendimentos-em-editais-publicos, CSV + dicionário).
+- Territorial (Prodabel/SMPOG, EPSG:31983, CSV com geometria): Região Administrativa https://dados.pbh.gov.br/dataset/regiao-administrativa (9 regionais até jan/2025; 10 a partir de 03/02/2025, com Hipercentro); Território de Gestão Compartilhada https://dados.pbh.gov.br/dataset/territorio-de-gestao-compartilhada; População e Domicílio por Regional 2010 https://dados.pbh.gov.br/dataset/populacao-regionais-2010; IVS (Saúde) https://dados.pbh.gov.br/dataset/indice-de-vulnerabilidade-de-saude.
+
+### 3.11 BHMap / IDE-BHGeo (WFS)
+
+https://bhmap.pbh.gov.br/v2/api/idebhgeo/wfs (GetCapabilities 2.0.0 respondeu): camadas `ide_bhgeo:BAIRRO_OFICIAL`, `BAIRRO_POPULAR`, `DENSIDADE_POPULACIONAL_REGIONAL_2010/2022`, `DENSIDADE_POPULACIONAL_BAIRRO_2010/2022`; saídas GeoJSON, SHAPE-ZIP, CSV, KML, GeoPackage. Página: https://prefeitura.pbh.gov.br/bhgeo/acesso-aos-dados. É daqui que sairia o mapa de regionais do protótipo, se o campo `region` for preenchido.
+
+### 3.12 Mapa Cultural BH (API Mapas Culturais, JSON sem autenticação)
+
+- https://mapaculturalbh.pbh.gov.br/. API verificada: `/api/project/find?@select=id,name,type&@limit=5`, `/api/opportunity/find?…` (Descentra 2024 = oportunidade 742; Multilinguagens 2022 = 643; LPG Premiação = 699), `/api/space/find?@select=id,name,location,endereco` (lat/long), `/api/agent/find?…`. Documentação: https://github.com/hacklabr/mapasculturais/blob/develop/documentation/docs/mc_config_api.md.
+- **Limitação:** inscrições e resultados dos editais **não** são expostos pela API; o endereço do agente depende de o proponente preencher.
+
+### 3.13 Diário Oficial do Município (DOM-BH)
+
+https://dom-web.pbh.gov.br/ (app JS). Endereços: `/visualizacao/edicao/<nº>` e `/visualizacao/ato/<id>`; anexos em `https://api-dom.pbh.gov.br/api/v1/documentos/<hash>?prefix=AAAAMMDD`; acervo antigo em `portal6.pbh.gov.br/dom/`. Busca avançada ("lupa com +") com correspondência exata, intervalo de datas, número da edição e categoria (FAQ: https://prefeitura.pbh.gov.br/secretaria-geral/perguntas-frequentes). Termos úteis: "homologação do resultado", "Edital LMIC", "Descentra", "Incentivo Fiscal", nome do projeto.
+
+### 3.14 Transparência e Lei de Acesso à Informação (e-SIC PBH)
+
+- Portal da Transparência https://prefeitura.pbh.gov.br/transparencia: **nenhum módulo de fomento cultural**; renúncia fiscal consta na LOA.
+- **Pedido LAI:** https://servicos.pbh.gov.br/servicos/i/5eb30ad2282e7567ed76dc28/servicos+lei-de-acesso-a-informacao (acompanhar em https://servicos.pbh.gov.br/servicos/my-requests); legado https://ouvidoriageral.pbh.gov.br/lai/NovaManif.html. Prazo 20 dias + 10; recurso em 10 dias. Base: Lei 12.527/2011 e Decreto Municipal 14.906/2012 (https://ouvidoriageral.pbh.gov.br/lai/files/dec14906-atual.pdf).
+
+### 3.15 Legislação e fontes nacionais
+
+- Lei 11.010/2016 (LMIC; texto **não verificado**); Lei 10.901/2016 (Sistema Municipal de Cultura e SMIIC): https://leismunicipais.com.br/a/mg/b/belo-horizonte/lei-ordinaria/2016/1090/10901/lei-ordinaria-n-10901-2016-dispoe-sobre-o-sistema-municipal-de-cultura-e-da-outras-providencias; Plano Municipal de Cultura (Lei 10.854/2015).
+- **Salic / Lei Rouanet:** dataset https://dados.cultura.gov.br/dataset/incentivos-da-lei-rouanet (JSON/XML, CC-BY, atualizado 08/09/2026); API `api.salic.cultura.gov.br/api/v1/` **em manutenção em 31/10/2026**. O CURA declara usar Rouanet, LEIC-MG e LMIC (https://www.cura.art/faq): o mesmo projeto aparece em três mecanismos, o que o protótipo hoje não mostra.
+- IBGE, *Perfil dos Municípios: Cultura 2014* https://biblioteca.ibge.gov.br/visualizacao/livros/liv95013.pdf (**não aberto**). Atlas do Desenvolvimento Humano http://www.atlasbrasil.org.br/ (IDHM por UDH; sem recorte por regional). Atlas IVS/Ipea https://ivs.ipea.gov.br/.
+- Secult-MG / LEIC: sem dataset aberto localizado; relevante porque murais em BH também usam a lei estadual (Arte em Cores BH, 27 artistas, 3 por regional, 2023: https://prefeitura.pbh.gov.br/noticias/pbh-e-projeto-arte-em-cores-selecionam-artistas-para-criacao-de-murais-na-cidade).
+- **Correções de referência:** "Negro Muro" é projeto do Rio de Janeiro, não de BH; "Arte Fora do Museu" é plataforma paulistana (2011). Ambos seguem válidos como **referências de artefato**, não como fontes de dados de BH. Catálogo "BH Graffiti": não localizado. Nenhum dataset público de murais georreferenciados de BH foi encontrado.
+- Acadêmicos sobre grafite em BH: Revista PÓS/UFMG 2023 (duas obras do CURA judicializadas) https://periodicos.ufmg.br/index.php/revistapos/article/view/45484; repositório UFMG https://repositorio.ufmg.br/items/c4f896b6-95f5-4260-869c-e9c2a0eee5b4, https://repositorio.ufmg.br/items/11a0cb16-e95a-4d88-9983-654cfe8d36c9/full, https://repositorio.ufmg.br/items/d2f4d54f-8d46-423e-bd5a-6a3cd044853c (Alto Vera Cruz); Caminhos de Geografia/UFU https://seer.ufu.br/index.php/caminhosdegeografia/article/view/45174; Projeto Guernica (PUC Minas) http://www.biblioteca.pucminas.br/teses/CiencSociais_LodiMI_1.pdf.
+
+### 3.16 Conferência do corpus nas planilhas oficiais do Incentivo Fiscal (feita nesta sessão, 31/10/2026)
+
+As oito planilhas da seção 3.1 foram abertas e filtradas por palavras-chave (grafite/graffiti, mural, arte urbana, lambe, CURA, TAU, MAMU, tapume, Rima Viva). Resultado, comparado com a Tabela 1 do TCC:
+
+| Ano | Na Tabela 1 do TCC | Nas planilhas oficiais do IF e **fora** da Tabela 1 (título oficial, proponente, tipo, valor aprovado) |
+|---|---|---|
+| 2017 | CURA (110 mil), TAU (110 mil), Graffitinerante (95 mil) | nenhum a mais (confere; CURA aparece como "Programação Mirante", proponente pessoa física) |
+| 2018 | **nenhum** ("ano sem projeto") | **TAU – Território Arte Urbana** (Gisele C. da Silva, PF, R$ 130.000); **2º Festival de Arte Urbana BH** (Frederico E. Maciel, PF, R$ 115.900); **CURA – Programação Mirante** (Pública Agência de Arte, PJ, R$ 125.200); **Arte Lambe-lambe, uma caixinha de surpresas** (Rosceli V. Silveira, PF, R$ 59.000) |
+| 2019 | nenhum | nenhum (confere) |
+| 2020 | nenhum | nenhum (confere; e não houve Descentra 2020) |
+| 2021 | CURA (150 mil) | **#UmLambePorDia – 2ª edição do livro "Poemas de muro e amor"** (Leonardo V. C. Beltrão, PF, R$ 80.000), se lambe contar como arte urbana |
+| 2022 | **nenhum** | **TAU 4ª edição** (Mercê Soluções Culturais, PJ, R$ 165.000); **MAMU – Morro Arte Mural 3ª edição** (Pública Agência de Arte, PJ, R$ 165.000); **Circuito Tapume – Mostra de lambe-lambes de Beagá** (Júlia O. Ho, PF, R$ 165.000); **Festival Cena Graffiti no Morro 2ª edição** (Luan L. O. Pinto, PF, R$ 165.000); **CURA – Programação** (Agência CURA, PJ, R$ 165.000) |
+| 2023 | MAMU 4ª (165 mil), Cena Graffiti (165 mil), Viva a Praça Sete (164.888,89), Bolinho 15 Anos (160 mil) | **R.U.A – Rotas Urbanas de Artes Visuais** (Luiza P. Amorim, PF, R$ 165.000); **Circuito Tapume II** (Lívia F. M. Viana, PF, R$ 165.000); **CURA – Programação** (Agência Urbana de Arte, PJ, R$ 165.000); **Paciência Gera Gentileza – mosaico como arte urbana** (Eliete C. Boggione, PF, R$ 100.000). ("Exposição Bolinho 15 Anos" confere na planilha 2023: proponente Maria Raquel Alves Couto Ramiro 06084991610, mei - microempreendedor individual, R$ 160000.0.) |
+| 2024/25 | **nenhum** | **Circuito Tapume 2026** (R$ 165.000); **Festival Cena Graffiti no Morro 4ª edição** (R$ 165.000); **TAU 6ª edição** (Mercê, PJ, R$ 165.000); **MAMU 5ª edição** (Pública, PJ, R$ 165.000); **CURA – Programação** (AGUA – Agência Urbana de Arte, PJ, R$ 165.000); **Formação Graffiti Rima Viva** (Flavio D. S. Alves, PF, R$ 100.000) |
+
+O que isso muda, para o autor decidir:
+
+1. **2018 não é um ano vazio no Incentivo Fiscal.** A afirmação do TCC e do protótipo ("2018 e 2020 sem projeto") vale para 2020 (sem Descentra e sem IF de arte urbana), mas em 2018 houve ao menos quatro projetos de arte urbana aprovados no IF, incluindo TAU e CURA. O "Rio" do Lab 06 que seca em 2018 está secando por falta de levantamento, não por falta de fomento.
+2. **A série do IF é contínua para CURA, TAU, MAMU e Cena Graffiti** (2017 → 2024/25), com teto crescente 110 → 130 → 150 → 165 mil. É exatamente a tese do "circuito monumental que atinge o teto", agora com evidência ano a ano e com o nome do proponente (pessoa jurídica com fins lucrativos nas edições recentes do CURA, MAMU e TAU; pessoa física nas primeiras). O campo `proponent` do protótipo pode ser preenchido para todo o IF sem inferir nada: o tipo de proponente é coluna oficial.
+3. **Os valores da Tabela 1 são tetos aprovados**, como nas planilhas (Viva a Praça Sete R$ 164.888,89 confere). A coluna "valor" do protótipo é homogênea: bom para a régua e para o Gini, mas precisa da legenda "valor aprovado, não captado".
+4. **Lambe-lambe** (Arte Lambe-lambe 2018, #UmLambePorDia 2021, Circuito Tapume 2022–2024) é uma linguagem de arte urbana com três ou quatro projetos no IF que o recorte "grafite e muralismo" deixa de fora. Decisão de recorte do autor: incluir como "lambe" (e o lambe da capa do Lab 05 ganha mais um sentido) ou declarar a exclusão.
+5. Para o Fundo e o Descentra a mesma conferência ainda **não foi feita** (não há planilha consolidada; os aprovados estão em PDFs de anexo e no DOM, seção 3.2 e 3.3). É o próximo passo natural e é onde a Tabela 2 pode ter lacunas parecidas.
+
+As planilhas (fonte: PBH, acesso em 31/10/2026) foram copiadas para `dados/fontes/pbh-incentivo-fiscal/` no repositório.
+
+### 3.17 Tabela-síntese: fonte, o que dá, formato, como citar
+
+| Fonte | O que dá | Formato | Como citar (ABNT, acesso em 31 out. 2026) |
+|---|---|---|---|
+| Renúncia Fiscal: relação de projetos aprovados IF 2017–2024/25 | nº, ano, edital, proponente, tipo de proponente, título, valor aprovado | XLSX (1 por ano) + DOM | BELO HORIZONTE. Secretaria Municipal de Cultura. **Incentivo à Cultura – Renúncia Fiscal: relação de projetos aprovados (2017-2024/2025)**. Belo Horizonte: PBH, 2026. Disponível em: https://prefeitura.pbh.gov.br/cultura/renuncia-fiscal. Acesso em: 31 out. 2026. |
+| Páginas dos editais (Fundo, Descentra, Multilinguagens, IF) | edital, anexos (bairros × regional × TGC), listas de aprovados/suplentes, nº do DOM | HTML → PDF / api-dom | BELO HORIZONTE. Secretaria Municipal de Cultura. **Edital Descentra 2024 – Fundo Municipal de Cultura: homologação do resultado**. Diário Oficial do Município, Belo Horizonte, ato 454840, 2024. Disponível em: https://prefeitura.pbh.gov.br/cultura/descentra-2024. Acesso em: 31 out. 2026. (adaptar por edital) |
+| DOM-BH | atos oficiais; busca avançada | HTML (JS) + PDF | BELO HORIZONTE. **Diário Oficial do Município**. Belo Horizonte: PBH, [2017-2026]. Disponível em: https://dom-web.pbh.gov.br/. Acesso em: 31 out. 2026. |
+| Observatório da Cultura, eixo Fomento | perfil de proponentes e projetos 2020–2024, renúncia por ano, LPG, PNAB | painéis (sem download) | BELO HORIZONTE. Secretaria Municipal de Cultura. **Observatório da Cultura: eixo Fomento à Cultura**. Belo Horizonte: PBH, 2026. Disponível em: https://prefeitura.pbh.gov.br/cultura/observatorio-da-cultura/eixo-fomento. Acesso em: 31 out. 2026. |
+| Estudo JLeiva 2018–2025 (via notícia PBH) | totais por mecanismo, distribuição por regional, raça, gênero | notícia HTML | BELO HORIZONTE. **Estudo apresenta panorama do fomento à cultura em BH e aponta desafios para o setor**. Belo Horizonte: PBH, 7 out. 2026. Disponível em: https://prefeitura.pbh.gov.br/noticias/estudo-apresenta-panorama-do-fomento-cultura-em-bh-e-aponta-desafios-para-o-setor. Acesso em: 31 out. 2026. |
+| Dados Abertos PBH: Região Administrativa | limites das 9/10 regionais | CSV (geometria) + PDF, CC-BY | PRODABEL. **Região Administrativa (Regional)** [dataset]. Belo Horizonte: Portal de Dados Abertos PBH, 2026. Disponível em: https://dados.pbh.gov.br/dataset/regiao-administrativa. Acesso em: 31 out. 2026. |
+| Dados Abertos PBH: População por Regional 2010 | habitantes, domicílios | CSV + PDF | PRODABEL. **População e Domicílio por Regional 2010** [dataset]. Belo Horizonte: Portal de Dados Abertos PBH, 2024. Disponível em: https://dados.pbh.gov.br/dataset/populacao-regionais-2010. Acesso em: 31 out. 2026. |
+| BHMap / IDE-BHGeo | bairros, densidade por regional e bairro | WFS 2.0 (GeoJSON etc.) | PRODABEL. **IDE-BHGeo: serviço WFS** [base cartográfica]. Belo Horizonte: PBH, 2026. Disponível em: https://bhmap.pbh.gov.br/v2/api/idebhgeo/wfs. Acesso em: 31 out. 2026. |
+| Mapa Cultural BH (API) | agentes, espaços (lat/long), projetos, editais | JSON | FUNDAÇÃO MUNICIPAL DE CULTURA. **Mapa Cultural BH**. Belo Horizonte: FMC, 2026. Disponível em: https://mapaculturalbh.pbh.gov.br/. Acesso em: 31 out. 2026. |
+| Gentileza: concurso de murais 2017/18 | 40 murais, técnicas, distribuição por regional | HTML + PDF + DOM ed. 2361 | BELO HORIZONTE. Secretaria Municipal de Cultura. **Gentileza: Edital de Arte Urbana**. Belo Horizonte: PBH, 2018. Disponível em: https://prefeitura.pbh.gov.br/cultura/gentileza. Acesso em: 31 out. 2026. |
+| Lei Paulo Gustavo BH | três editais; anexos de aprovados | HTML + api-dom | BELO HORIZONTE. Secretaria Municipal de Cultura. **Lei Paulo Gustavo**. Belo Horizonte: PBH, 2023-2025. Disponível em: https://prefeitura.pbh.gov.br/cultura/lei-paulo-gustavo. Acesso em: 31 out. 2026. |
+| Salic (Lei Rouanet) | projetos, proponentes, valores, município | JSON/XML/API (em manutenção) | BRASIL. Ministério da Cultura. **Projetos do Programa Nacional de Apoio à Cultura – Lei Rouanet – SALIC** [dataset]. Brasília: MinC, 2026. Disponível em: https://dados.cultura.gov.br/dataset/incentivos-da-lei-rouanet. Acesso em: 31 out. 2026. |
+| LAI / e-SIC PBH | pedidos de informação | formulário web | BELO HORIZONTE. Controladoria-Geral do Município. **Lei de Acesso à Informação**. Disponível em: https://prefeitura.pbh.gov.br/lei-de-acesso-a-informacao. Acesso em: 31 out. 2026. |
+
+### 3.18 O que não está público e deve ser pedido via LAI
+
+Pedido em https://servicos.pbh.gov.br/servicos/i/5eb30ad2282e7567ed76dc28/servicos+lei-de-acesso-a-informacao, destinatário Secretaria Municipal de Cultura / Fundação Municipal de Cultura (Diretoria de Fomento; fomentocultura@pbh.gov.br; Observatório: monitoramento.cultura@pbh.gov.br). Registrar protocolo e resposta como fonte documental (seção 4).
+
+1. **Regional e bairro de cada projeto aprovado** (Fundo, IF e Descentra, 2017–2024): a SMC coleta (Anexo II dos editais, painéis georreferenciados), mas não publica por projeto. Pedir tabela: nº, edital, ano, título, proponente, setor, regional, bairro/TGC, valor aprovado.
+2. **Valor efetivamente captado por projeto de IF** e data de captação.
+3. **Setor/linguagem dos projetos de IF** (as planilhas do IF não têm a coluna; as do Fundo têm).
+4. **Microdados do painel LMIC 2020–2024** e do estudo JLeiva.
+5. **Local de execução** (muro, empena, praça) declarado na inscrição ou na prestação de contas.
+6. **Descentra:** pontuação por critério territorial e lista por regional em cada edição.
+7. **Fundo 2018–2021 em formato tabular.**
+8. **Gentileza 2018:** nomes dos 40 artistas e endereços (DOM ed. 2361, não tabulado).
+9. **Grafite/muralismo em LPG, PNAB e Aldir Blanc** ("culturas urbanas"), com regional.
+10. **Rouanet:** projetos com município Belo Horizonte quando a API Salic voltar (o CURA declara usá-la).
 
 ## 4. Metodologia
 
@@ -218,4 +363,6 @@ Regras para a integração (mesmas do Lab 05): papel e tinta, cor só por mecani
 
 ## 7. Referências (ABNT)
 
-*(consolidado ao fim; as referências já usadas no Lab 05 estão em `IDENTIDADE-COESAO-LAB05.md`, seção 8)*
+As referências bibliográficas já estão em formato ABNT nas seções 4 e 5 (metodologia e visualização) e na tabela 3.17 (fontes de dados). As referências de identidade visual, leis de UX e cores estão em `IDENTIDADE-COESAO-LAB05.md`, seção 8; as dos algoritmos do Lab 06, em `README-RIZOMA.md`, seção 7. Antes de levar ao TCC, conferir na biblioteca os itens marcados **não confirmado**.
+
+Cópias das planilhas oficiais do Incentivo Fiscal (fonte: PBH, acesso em 31 out. 2026) estão em `dados/fontes/pbh-incentivo-fiscal/`.

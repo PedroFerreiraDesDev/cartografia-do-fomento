@@ -108,9 +108,9 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   </aside>
 </div>
 
-<script src="js/data.js?v=20261030-29"></script>
+<script src="js/data.js?v=20261030-30"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
-<script src="js/rizoma.js?v=20261030-29"></script>
+<script src="js/rizoma.js?v=20261030-30"></script>
 <script>
 /* Lab 04 — Physarum: o micélio como terceira forma de ligação do campo rizomático.
    Cartografia do Fomento · TCC Pedro H. F. Moreira (Design UFMG).
@@ -163,11 +163,11 @@ const SCALE = 3;                                     // o mapa de rastro tem 1/3
 const INK = [170, 168, 162];                         // cor do rastro livre (sem linha): cinza bem claro, quase fundo
 const PH = {
   on: !reduced,
-  count: (touch || small()) ? 700 : 2500,
-  step: (touch || small()) ? 200 : 500, min: 200, max: 6000, floor: (touch || small()) ? 400 : 1000, // o governador não desce abaixo de floor
+  count: 200,                                        // padrão escolhido pelo autor
+  step: 100, min: 100, max: 6000, floor: 200, // o governador não desce abaixo de floor
   evapLevels: [["lenta", 0.012, 1], ["média", 0.03, 1], ["rápida", 0.07, 2]], evap: 1, // [nome, fator do retângulo, decaimento linear]
   sensorAngle: 0.5, sensorDist: 12, turn: 0.2, speed: 1.15, jitter: 0.06,   // curvas longas: o rastro vira veia, não ruído
-  deposit: 3, depositLinked: 22, bias: 0.09, biasFree: 0.03, biasLure: 0.16, mix: 0.35, life: [260, 820], // bias: puxão rumo ao irmão ligado; biasFree: rumo a qualquer outro nó revelado (traços entre todos); biasLure: rumo ao cursor
+  deposit: 3, depositLinked: 22, bias: 0.09, biasFree: 0.03, biasLure: 0.16, mix: 0.35, life: [600, 1600], // bias: puxão rumo ao irmão ligado; biasFree: rumo a qualquer outro nó revelado (traços entre todos); biasLure: rumo ao cursor
   blur: (touch || small()) ? 1.6 : 2.4
 };
 let trail = null, tw = 0, th = 0, trailP = null;
@@ -290,12 +290,28 @@ new p5(p => {
 function setCount(n) { PH.count = Math.max(PH.min, Math.min(PH.max, n)); $("#countBtn").textContent = PH.on ? `${PH.count} agentes` : "sem agentes"; $("#lessBtn").disabled = !PH.on || PH.count <= PH.min; $("#moreBtn").disabled = !PH.on || PH.count >= PH.max; if (R) sync(R.state()); }
 function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.length; $("#evapBtn").textContent = `Evaporação · ${PH.evapLevels[PH.evap][0]}`; }
 
+/* margens do campo medidas nos elementos reais: o nó nunca fica por trás de texto, ferramentas, contador ou ficha */
+let marginCache = { t: 120, r: 60, b: 80, l: 60, at: 0 };
+function uiMargin() {
+  const now = performance.now(); if (now - marginCache.at < 400) return marginCache; // mede no máximo a cada 400 ms
+  const sr = stage.getBoundingClientRect(), pad = 26;
+  const rect = sel => { const el = $(sel); if (!el || el.hidden || getComputedStyle(el).display === "none") return null; const r = el.getBoundingClientRect(); return r.width && r.height ? r : null; };
+  let t = pad, b = pad, l = pad, r = pad;
+  const copy = rect(".copy"), tools = rect(".tools"), foot = rect(".foot span"), card = document.body.classList.contains("card-open") ? rect("#card") : null;
+  for (const el of [copy, tools, foot]) { if (!el) continue; // cada elemento ocupa uma faixa: a que menos rouba campo
+    const fromTop = el.bottom - sr.top, fromBottom = sr.bottom - el.top, fromLeft = el.right - sr.left, fromRight = sr.right - el.left;
+    const best = Math.min(fromTop, fromBottom, fromLeft, fromRight);
+    if (best === fromTop) t = Math.max(t, fromTop + pad); else if (best === fromBottom) b = Math.max(b, fromBottom + pad); else if (best === fromLeft) l = Math.max(l, fromLeft + pad); else r = Math.max(r, fromRight + pad);
+  }
+  if (card && !small()) r = Math.max(r, sr.right - card.left + pad); // no celular a ficha é uma folha temporária sobre o campo: não espremer os nós na faixa que sobra
+  marginCache = { t, r, b, l, at: now }; return marginCache;
+}
 /* ---------- camada 2: o rizoma (motor do protótipo, fundo transparente) ---------- */
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
     container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "muro", lineWeight: 0.55, spread: 1.45, focusZoom: true, spray: false,
-    margin: () => small() ? { t: 110, r: 28, b: 150, l: 28 } : { t: 130, r: document.body.classList.contains("card-open") ? 400 : 70, b: 80, l: 70 }, // longe das bordas, do texto, das ferramentas e da ficha // sem as bolinhas do gesto no fundo: só muros, linhas e micélio // linhas finas, nós espaçados, foco que aproxima
+    margin: uiMargin, lineCycle: 2.2, // margens medidas nos elementos da interface; linhas crescem e puxam 2,2× mais devagar // sem as bolinhas do gesto no fundo: só muros, linhas e micélio // linhas finas, nós espaçados, foco que aproxima
     treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
     onChange: sync, onOpen: openCard, onHover: onHover
   });
@@ -422,7 +438,7 @@ $("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
 $("#shapeBtn").onclick = () => R.setNodeStyle(R.state().nodeStyle === "muro" ? "circulo" : "muro");
 $("#lessBtn").onclick = () => setCount(PH.count - PH.step);
 $("#moreBtn").onclick = () => setCount(PH.count + PH.step);
-$("#countBtn").onclick = () => setCount((touch || small()) ? 700 : 2500);
+$("#countBtn").onclick = () => setCount(200);
 $("#evapBtn").onclick = () => setEvap(PH.evap + 1);
 $("#clearBtn").onclick = () => trailP && trailP.clearTrail();
 $("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };

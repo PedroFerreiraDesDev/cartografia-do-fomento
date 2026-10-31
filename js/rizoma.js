@@ -240,7 +240,7 @@
       for (const e of edges) {
         if (!(e.a.revealed && e.b.revealed)) continue;
         // puxão: nos primeiros instantes a mola é mais forte e curta; os nós se aproximam enquanto a linha se forma
-        const age = (now - e.born) / PULL_MS, pull = S.reduced ? 0 : Math.max(0, 1 - age);
+        const age = (now - e.born) / (PULL_MS * (opts.lineCycle || 1)), pull = S.reduced ? 0 : Math.max(0, 1 - age); // lineCycle: × duração do puxão e do crescimento
         const d = p5.Vector.sub(e.b.pos, e.a.pos); const m = d.mag();
         const target = e.rest * (1 - 0.25 * pull), boost = m > target ? 1 + 3 * pull : 1; // o puxão só aproxima; nunca empurra (medido: 80→21→171 px com 5×; 3× suaviza o rebote)
         d.setMag((m - target) * SPRING * boost); e.a.acc.add(d); e.b.acc.sub(d);
@@ -263,9 +263,9 @@
         if (n === S.hover && !depthOn()) { const dx = p.mouseX - n.scr.x, dy = p.mouseY - n.scr.y, m = Math.hypot(dx, dy) || 1, k = Math.min(0.6, m * 0.05); n.pos.add(dx / m * k, dy / m * k, 0); } // ímã sutil
         n.pos.add(p5.Vector.mult(n.vel, dt));
         // margens medidas na TELA: usa a posição projetada do último quadro (perspectiva, giro e zoom incluídos) e corrige a posição do mundo
-        const M = margin(), soft = 70, sc = Math.max(0.5, (n.scr && n.scr.s) || view.zoom || 1), sx = n.scr ? n.scr.x : n.pos.x, sy = n.scr ? n.scr.y : n.pos.y;
-        if (sx < M.l + soft) n.vel.x += (M.l + soft - sx) / sc * 0.012; if (sx > p.width - M.r - soft) n.vel.x -= (sx - (p.width - M.r - soft)) / sc * 0.012;
-        if (sy < M.t + soft) n.vel.y += (M.t + soft - sy) / sc * 0.012; if (sy > p.height - M.b - soft) n.vel.y -= (sy - (p.height - M.b - soft)) / sc * 0.012;
+        const M = margin(), soft = 110, sc = Math.max(0.5, (n.scr && n.scr.s) || view.zoom || 1), sx = n.scr ? n.scr.x : n.pos.x, sy = n.scr ? n.scr.y : n.pos.y;
+        if (sx < M.l + soft) n.vel.x += (M.l + soft - sx) / sc * 0.02; if (sx > p.width - M.r - soft) n.vel.x -= (sx - (p.width - M.r - soft)) / sc * 0.02;
+        if (sy < M.t + soft) n.vel.y += (M.t + soft - sy) / sc * 0.02; if (sy > p.height - M.b - soft) n.vel.y -= (sy - (p.height - M.b - soft)) / sc * 0.02;
         if (sx < M.l) n.pos.x += (M.l - sx) / sc; if (sx > p.width - M.r) n.pos.x -= (sx - (p.width - M.r)) / sc;
         if (sy < M.t) n.pos.y += (M.t - sy) / sc; if (sy > p.height - M.b) n.pos.y -= (sy - (p.height - M.b)) / sc;
         n.pos.x = p.constrain(n.pos.x, 20, p.width - 20); n.pos.y = p.constrain(n.pos.y, 20, p.height - 20); n.pos.z = D ? p.constrain(n.pos.z, -D, D) : 0;
@@ -380,7 +380,7 @@
         const litEdges = lit ? edges.filter(e => (e.a === lit || e.b === lit) && e.a.revealed && e.b.revealed) : [];
         for (const e of edges) {
           if (!(e.a.revealed && e.b.revealed)) { e.pts = []; continue; }
-          if (!S.paused) e.growth = Math.min(1, e.growth + (S.reduced ? 1 : 0.025 * dt));
+          if (!S.paused) e.growth = Math.min(1, e.growth + (S.reduced ? 1 : 0.025 / (opts.lineCycle || 1) * dt));
           const isLit = litEdges.includes(e), isHov = e === S.hoverEdge;
           drawEdge(e, isHov ? 255 : isLit ? 230 : lit ? 50 : 150, isHov ? 2.8 : isLit ? 2 : e.regrown ? 1 : 1.4);
         }

@@ -101,3 +101,10 @@ Medido no navegador do app: zoom 1 → 1,18 ao abrir → 1 ao fechar; nós espal
 - **Bordas**: o motor ganhou `margin` (topo, direita, base, esquerda, em px, fixo ou função). A margem vale na tela: a posição projetada do último quadro (com perspectiva, giro e zoom) corrige a posição do mundo, então nem o nó que vem para a frente passa da faixa. No Lab 04: longe do texto, das ferramentas e, com a ficha aberta, da ficha.
 - **Movimento mais sutil**: deriva 0,9 (era 2,4), para facilitar o clique; o nó sob a mão já ficava parado.
 - **Spray ainda visível no site publicado**: os labs carregavam `js/rizoma.js` sem versão, então o navegador servia o motor antigo. Agora os labs também levam `?v=` nos scripts; a cada mudança no motor, subir o número em `index.html` e nos labs.
+
+## 11. Padrões fixados e ciclo das linhas (31/10, sétima passagem)
+
+- **200 agentes e evaporação média** como padrão (o autor aprovou o estado atual); os botões continuam permitindo mudar, com passo de 100.
+- **Nada preso na parede nem atrás de elementos**: as margens do campo passaram a ser medidas nos elementos reais da interface (texto, ferramentas, contador e, no desktop, a ficha aberta), com 26 px de folga, e a faixa de retorno ficou mais larga e mais forte (110 px, força ×1,7), para o nó voltar ao campo em vez de ficar encostado. No celular a ficha é uma folha temporária e não espreme os nós. Verificado: 20 nós entre o fim do texto e o início das ferramentas, nenhum por baixo.
+- **Ciclo mais longo das linhas**: opção `lineCycle` no motor (Lab 04 usa 2,2): o puxão entre nós ligados dura 3 s em vez de 1,4 s e a linha cresce 2,2× mais devagar; os agentes do micélio vivem 2,3× mais (600–1600 quadros), então as veias se formam e se desfazem em ciclos longos, sem o "pisca" de antes.
+- O Lab 05 (todas as páginas na linguagem do Lab 04) foi aberto em sessão própria; registro em seção 12 quando chegar.

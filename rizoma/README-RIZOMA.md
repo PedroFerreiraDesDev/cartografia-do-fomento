@@ -193,6 +193,8 @@ LIMA, Manuel. **Visual complexity**: mapping patterns of information. New York: 
 
 FRUCHTERMAN, Thomas M. J.; REINGOLD, Edward M. Graph drawing by force-directed placement. **Software: Practice and Experience**, v. 21, n. 11, p. 1129-1164, 1991.
 
+JONES, Jeff. Characteristics of pattern formation and evolution in approximations of Physarum transport networks. **Artificial Life**, v. 16, n. 2, p. 127-153, 2010. (algoritmo de agentes do Lab 04; a implementação em `lab-04-physarum.html` é própria)
+
 PERLIN, Ken. An image synthesizer. **ACM SIGGRAPH Computer Graphics**, v. 19, n. 3, p. 287-296, 1985.
 
 McCARTHY, Lauren; REAS, Casey; FRY, Ben. **Getting started with p5.js**. San Francisco: Maker Media, 2015.
@@ -202,6 +204,8 @@ PROCESSING FOUNDATION. **p5.js Reference**. Disponível em: https://p5js.org/ref
 PROCESSING FOUNDATION. **p5.js 1.x Reference**. Disponível em: https://v1.p5js.org/reference/. Acesso em: 30 out. 2026.
 
 OPENPROCESSING. **OpenProcessing**: creative coding community. Disponível em: https://openprocessing.org/. Acesso em: 30 out. 2026.
+
+VIRA, Patt. **Slime Molds (Physarum)**: coding tutorial. [S. l.]: Patt Vira, 2023. 1 vídeo. Disponível em: https://youtu.be/VyXxSNcgDtg e https://www.pattvira.com/. Acesso em: 30 out. 2026. (referência didática do Lab 04; nenhum código do tutorial foi copiado)
 
 ---
 

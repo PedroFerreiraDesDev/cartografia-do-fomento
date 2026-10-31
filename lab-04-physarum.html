@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lab 04 — Physarum: o micélio do fomento</title>
+<style>
+:root{--paper:#f7f6f1;--ink:#161616;--muted:#747474;--line:#d4d1c8}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rgba(247,246,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 20px}
+.brand{font-size:11px;font-weight:900;line-height:1;letter-spacing:-.04em;color:inherit;text-decoration:none}.topbar nav{margin-left:auto;display:flex;gap:4px}.topbar nav a{font-size:9px;font-weight:800;text-transform:uppercase;padding:9px;border-bottom:2px solid transparent;color:inherit;text-decoration:none}.topbar nav a:hover{border-color:var(--ink)}.status{font-size:9px;color:#888;border:1px solid var(--line);padding:6px 8px;white-space:nowrap}
+/* camadas do campo: rastro do Physarum (embaixo) → rizoma transparente (em cima) */
+.stage{position:absolute;inset:62px 0 0;overflow:hidden;overflow:clip}
+.layer{position:absolute;inset:0}.layer canvas{display:block}
+#trailStage{pointer-events:none}
+#rizomaStage canvas{touch-action:none;-webkit-user-select:none;user-select:none}
+/* texto e ferramentas */
+.copy{position:absolute;z-index:20;left:22px;top:22px;width:min(330px,46vw);pointer-events:none}.copy .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.copy h1{margin:6px 0 8px;font-size:26px;letter-spacing:-.06em;line-height:1}.copy p{margin:0;font-size:11px;line-height:1.55;color:#666;background:rgba(247,246,241,.7)}
+.tools{position:absolute;z-index:22;right:18px;top:16px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;max-width:60vw}
+.chips,.row{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
+.tools button{border:1px solid #ccc;background:rgba(255,255,255,.92);padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.03em}.tools button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.tools button:disabled{opacity:.4;cursor:default}
+.group{display:inline-flex}.group button{border-radius:0}.group button+button{border-left:0}.group button:first-child{border-radius:3px 0 0 3px}.group button:last-child{border-radius:0 3px 3px 0}.group .mid{min-width:96px;text-align:center}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px}.chip i{width:7px;height:7px;border-radius:50%;background:var(--sw);opacity:.4}.chip.active{background:#fff!important;color:var(--ink)!important;border-color:var(--sw)!important}.chip.active i{opacity:1}.chip small{color:#888;font-size:8px}
+.foot{position:absolute;z-index:20;left:20px;right:20px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;pointer-events:none}.foot p{margin:0;max-width:460px;font-size:9px;line-height:1.5;color:#888}.foot span{font-size:9px;font-weight:800;background:rgba(255,255,255,.9);border:1px solid #ddd;padding:6px 8px;white-space:nowrap}
+.guide{position:absolute;z-index:23;left:50%;bottom:80px;transform:translateX(-50%);max-width:min(560px,calc(100% - 40px));background:#161616;color:#fff;padding:9px 13px;font-size:10.5px;line-height:1.5;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s}.guide.show{opacity:1}
+/* ficha do nó aberto */
+.card{position:absolute;z-index:30;top:0;right:0;bottom:0;width:min(380px,100%);background:rgba(247,246,241,.97);border-left:1px solid var(--line);padding:18px 20px 30px;overflow:auto;transform:translateX(104%);transition:transform .35s cubic-bezier(.2,.7,.2,1)}.card.open{transform:none}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}.card .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.card h2{margin:8px 0;font-size:24px;letter-spacing:-.05em;line-height:1.05}.card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
+.fact{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #e3e1da;padding:8px 0;font-size:11px}.fact span{color:#888}.fact b{text-align:right}
+.ghost{border:1px solid #bbb;background:#fff;padding:8px 10px;font-size:9px;font-weight:900}.primary{display:block;width:100%;margin:12px 0;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:11px;font-size:9px;font-weight:900;letter-spacing:.05em;text-align:center;text-decoration:none}
+.links{display:flex;flex-direction:column;gap:4px;margin:6px 0 14px}.links button{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid #e3e1da;background:#fff;padding:8px 10px;font-size:11px;text-align:left}.links button i{width:8px;height:8px;border-radius:50%;background:var(--sw);flex:none}.links button small{color:#888;font-size:9px;white-space:nowrap}.links .empty{font-size:11px;color:#888;border:1px dashed #ccc;padding:10px}
+.sub{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777;margin-top:12px}
+body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{opacity:.35}
+@media(max-width:780px){
+  .topbar{height:auto;min-height:84px;flex-wrap:wrap;gap:6px;padding:8px 10px 0}.brand{width:100%;padding:4px 0}.topbar nav{width:100%;margin:0 -10px;padding:0 10px;overflow-x:auto;scrollbar-width:none}.topbar nav::-webkit-scrollbar{display:none}.topbar nav a{flex:none}.status{display:none}
+  .stage{inset:84px 0 0}.card{top:auto;bottom:0;height:70vh;width:100%;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(104%)}
+  .copy{left:0;right:0;top:0;width:auto;padding:9px 118px 9px 14px;background:rgba(247,246,241,.9);border-bottom:1px solid #e6e4dc}.copy h1{font-size:16px;margin:3px 0 2px}.copy p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:9.5px;background:none}
+  .foot{top:8px;bottom:auto;left:auto;right:10px;display:block}.foot p{display:none}.foot span{display:inline-block;font-size:8.5px;max-width:104px;text-align:right;white-space:normal}
+  .tools{top:auto;bottom:0;left:0;right:0;max-width:none;align-items:stretch;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(247,246,241,.95);border-top:1px solid #e6e4dc}
+  .chips,.row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;margin:0 -10px;padding:0 10px}.chips::-webkit-scrollbar,.row::-webkit-scrollbar{display:none}.tools button{flex:none;padding:9px 10px;font-size:9.5px;white-space:nowrap}.group{flex:none}
+  .guide{bottom:112px}body.card-open .tools{display:none}body.card-open .copy{opacity:.3}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">CARTOGRAFIA<br>DO FOMENTO</a>
+  <nav aria-label="Laboratórios"><a href="lab-identidade.html">Lab 01 · Identidade</a><a href="lab-outras-cartografias.html">Lab 02 · Outras cartografias</a><a href="lab-03-mescla.html">Lab 03 · Mescla</a><a href="lab-04-physarum.html" style="border-color:#161616">Lab 04 · Physarum</a><a href="index.html">Protótipo ↗</a></nav>
+  <span class="status">LAB 04 · RIZOMA + PHYSARUM</span>
+</header>
+
+<div class="stage" id="stage">
+  <div id="trailStage" class="layer" aria-hidden="true"></div>
+  <div id="rizomaStage" class="layer"></div>
+
+  <div class="copy"><div class="kicker">LAB 04 / PHYSARUM, A TERCEIRA LIGAÇÃO</div><h1>Uma rede que ninguém desenhou.</h1><p>Cada nó revelado solta agentes que sentem o rastro à frente, à esquerda e à direita, viram para o mais forte e depositam ao passar. Ligue uma linha de fuga: os nós que compartilham aquele atributo alimentam o micélio com mais força, e a rede cresce entre eles. Desligue, e ela evapora.</p></div>
+
+  <div class="tools">
+    <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
+    <div class="row">
+      <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
+      <span class="group" aria-label="Quantidade de agentes"><button id="lessBtn" title="Menos agentes">−</button><button id="countBtn" class="mid" title="Agentes ativos">0 agentes</button><button id="moreBtn" title="Mais agentes">+</button></span>
+      <button id="evapBtn" title="Tecla E">Evaporação · média</button>
+      <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
+      <button id="resetBtn" title="Tecla R">Recomeçar</button>
+    </div>
+  </div>
+  <div class="foot"><p>O micélio é cenográfico: os agentes seguem o algoritmo de Jones (2010) sobre as posições dos nós na tela, não sobre a cidade. Os dados vêm de <code>js/data.js</code>; nós, linhas de fuga e 3D vêm do mesmo motor do protótipo (<code>js/rizoma.js</code>).</p><span id="counter">0 / 20 NÓS</span></div>
+  <div class="guide" id="guide"></div>
+
+  <aside class="card" id="card" aria-live="polite">
+    <div class="top"><div class="kicker" id="cKicker">NÓ ABERTO</div><button class="ghost" id="cClose">FECHAR</button></div>
+    <h2 id="cTitle"></h2><p id="cTrans"></p>
+    <div id="cFacts"></div>
+    <a class="primary" id="cOpen" href="index.html">VER NO PROTÓTIPO ↗</a>
+    <div class="sub">LINHAS LIGADAS</div><div class="links" id="cLinks"></div>
+    <div class="sub">LIGAÇÕES POSSÍVEIS</div><div class="links" id="cPot"></div>
+  </aside>
+</div>
+
+<script src="js/data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
+<script src="js/rizoma.js"></script>
+<script>
+/* Lab 04 — Physarum: o micélio como terceira forma de ligação do campo rizomático.
+   Cartografia do Fomento · TCC Pedro H. F. Moreira (Design UFMG).
+
+   Algoritmo: modelo de agentes de Jeff Jones para redes de transporte do Physarum polycephalum.
+     JONES, Jeff. Characteristics of pattern formation and evolution in approximations of
+     Physarum transport networks. Artificial Life, v. 16, n. 2, p. 127-153, 2010.
+   Referência didática (sem código copiado): VIRA, Patt. Slime Molds (Physarum): coding tutorial.
+     2023. Disponível em: https://youtu.be/VyXxSNcgDtg e https://www.pattvira.com/.
+
+   Adaptação própria para o campo rizomático:
+   - os nós revelados pelo motor (js/rizoma.js) são as fontes: cada um solta agentes e
+     projeta "alimento" (um gradiente) na sua posição de tela;
+   - com uma linha de fuga ligada, os nós que compartilham o atributo (mesmo ano, mesmo
+     mecanismo…) recebem mais agentes, e esses agentes depositam mais forte, na cor da
+     natureza da linha (Rizoma.LINES[t].color), com um leve puxão de quimiotaxia na direção de
+     um nó irmão; desligar a linha deixa a rede evaporar (ruptura sem corte manual);
+   - cada agente sente três pontos (frente, esquerda, direita), vira para o mais forte,
+     anda um passo e deposita; agentes que saem do mapa ou envelhecem renascem num nó;
+   - o mapa de rastro é um p5.Graphics com um terço da resolução, lido com loadPixels uma
+     vez por quadro (não uma vez por agente) e devolvido com updatePixels; evaporação por
+     retângulo semitransparente (destination-out) mais um decaimento linear mínimo, para o
+     rastro não ficar preso na quantização de 8 bits do canvas;
+   - contagem adaptativa: ~2500 agentes no desktop, ~700 no celular, com um governador que
+     reduz se o quadro passar de 30 ms; pausa quando a aba está oculta; desligado com
+     prefers-reduced-motion. Modo instância, como o resto do motor. */
+(() => {
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const DATA = window.CARTOGRAFIA_DATA || [], REL = window.CARTOGRAFIA_RELATIONS || [];
+const IDX = {}; DATA.forEach((d, i) => IDX[d.id] = i);
+const TYPES = Object.keys(Rizoma.LINES);
+const touch = matchMedia("(pointer:coarse)").matches; if (touch) document.body.classList.add("touch");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const small = () => innerWidth <= 780;
+const stage = $("#stage");
+let R = null;
+
+/* ---------- parâmetros do Physarum ---------- */
+const SCALE = 3;                                     // o mapa de rastro tem 1/3 da resolução do palco
+const INK = [132, 130, 124];                         // cor do rastro livre (sem linha): tinta cinza clara
+const PH = {
+  on: !reduced,
+  count: (touch || small()) ? 700 : 2500,
+  step: (touch || small()) ? 200 : 500, min: 200, max: 6000, floor: (touch || small()) ? 400 : 1000, // o governador não desce abaixo de floor
+  evapLevels: [["lenta", 0.012, 1], ["média", 0.03, 1], ["rápida", 0.07, 2]], evap: 1, // [nome, fator do retângulo, decaimento linear]
+  sensorAngle: 0.42, sensorDist: 8, turn: 0.3, speed: 1.05, jitter: 0.12,
+  deposit: 6, depositLinked: 24, bias: 0.035, life: [240, 720]
+};
+let trail = null, tw = 0, th = 0, trailP = null;
+const A = { x: null, y: null, h: null, home: null, target: null, type: null, age: null, life: null };
+const pos = { x: new Float32Array(DATA.length), y: new Float32Array(DATA.length), on: new Uint8Array(DATA.length) }; // posição de tela (escala do rastro) de cada nó
+let sibs = DATA.map(() => []);                       // por nó: [{ j, t }] nós irmãos pela linha t ligada
+let spawnPool = [];                                  // índices dos nós revelados, com peso maior para os ligados
+let drawMs = 0, frameN = 0;                          // custo médio (ms) do quadro do micélio, para o governador
+let flush = 0;                                       // quadros de evaporação forte depois de desligar uma linha (ruptura)
+
+function alloc() {
+  const n = PH.max;
+  A.x = new Float32Array(n); A.y = new Float32Array(n); A.h = new Float32Array(n);
+  A.home = new Int16Array(n).fill(-1); A.target = new Int16Array(n).fill(-1); A.type = new Int8Array(n).fill(-1);
+  A.age = new Float32Array(n); A.life = new Float32Array(n).fill(0); // age >= life: renasce no próximo quadro
+}
+function makeTrail(p) {
+  tw = Math.max(8, Math.ceil(p.width / SCALE)); th = Math.max(8, Math.ceil(p.height / SCALE));
+  if (trail) trail.remove();
+  // o mapa é lido a cada quadro: o contexto 2D precisa nascer com willReadFrequently, e createGraphics não aceita a opção;
+  // por isso getContext é interceptado só durante a criação do p5.Graphics
+  const orig = HTMLCanvasElement.prototype.getContext;
+  HTMLCanvasElement.prototype.getContext = function (t, o) { return orig.call(this, t, t === "2d" ? Object.assign({ willReadFrequently: true }, o || {}) : o); };
+  try { trail = p.createGraphics(tw, th); } finally { HTMLCanvasElement.prototype.getContext = orig; }
+  trail.pixelDensity(1); trail.noStroke(); trail.clear();
+  if (A.life) A.life.fill(0);
+}
+
+/* nós irmãos por linha ligada: calculado só quando o estado do rizoma muda */
+function rebuildSibs(active) {
+  sibs = DATA.map(() => []);
+  for (const t of TYPES) {
+    if (!active[t]) continue;
+    const L = Rizoma.LINES[t], ti = TYPES.indexOf(t);
+    if (L.pair) { for (const r of REL) { const a = IDX[r.a], b = IDX[r.b]; if (a == null || b == null) continue; sibs[a].push({ j: b, t: ti }); sibs[b].push({ j: a, t: ti }); } continue; }
+    const groups = {};
+    DATA.forEach((d, i) => { const k = L.key(d); if (k != null) (groups[k] = groups[k] || []).push(i); });
+    for (const k in groups) { const g = groups[k]; if (g.length < 2) continue; for (const i of g) for (const j of g) if (i !== j) sibs[i].push({ j, t: ti }); }
+  }
+}
+const linkOf = i => { for (const s of sibs[i]) if (pos.on[s.j]) return s; return null; }; // primeira ligação com irmão revelado
+function updateSources() {
+  pos.on.fill(0); spawnPool.length = 0;
+  for (const n of R.screen().nodes) { const i = IDX[n.id]; if (i == null) continue; pos.x[i] = n.x / SCALE; pos.y[i] = n.y / SCALE; pos.on[i] = 1; }
+  for (let i = 0; i < DATA.length; i++) { if (!pos.on[i]) continue; spawnPool.push(i); if (linkOf(i)) spawnPool.push(i, i); } // nós ligados recebem 3× mais agentes
+}
+function respawn(i) {
+  if (!spawnPool.length) return false;
+  const home = spawnPool[(Math.random() * spawnPool.length) | 0];
+  const opts = sibs[home].filter(s => pos.on[s.j]);
+  const pick = opts.length ? opts[(Math.random() * opts.length) | 0] : null;
+  const an = Math.random() * Math.PI * 2, rr = Math.random() * 2.5;
+  A.x[i] = pos.x[home] + Math.cos(an) * rr; A.y[i] = pos.y[home] + Math.sin(an) * rr; A.h[i] = Math.random() * Math.PI * 2;
+  A.home[i] = home; A.target[i] = pick ? pick.j : -1; A.type[i] = pick ? pick.t : -1;
+  A.age[i] = 0; A.life[i] = PH.life[0] + Math.random() * (PH.life[1] - PH.life[0]);
+  return true;
+}
+
+/* ---------- camada 1: o micélio (sketch em modo instância) ---------- */
+new p5(p => {
+  trailP = p;
+  p.setup = () => { p.pixelDensity(1); const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("trailStage"); p.frameRate(60); alloc(); makeTrail(p); };
+  p.windowResized = () => { p.resizeCanvas(stage.clientWidth, stage.clientHeight); makeTrail(p); };
+  p.draw = () => {
+    if (!PH.on || !R) { p.clear(); return; }
+    const t0 = performance.now();
+    updateSources();
+    let [, evapF, evapL] = PH.evapLevels[PH.evap];
+    if (flush > 0) { flush--; evapF = 0.09; evapL = 3; } // a rede antiga se desfaz antes de o micélio livre se refazer
+    // 1. evaporação: um retângulo semitransparente apaga o rastro em bloco (destination-out multiplica o alfa)
+    const ctx = trail.drawingContext;
+    ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = `rgba(0,0,0,${evapF})`; ctx.fillRect(0, 0, tw, th); ctx.globalCompositeOperation = "source-over";
+    // 2. alimento: cada nó revelado projeta um gradiente na sua posição; o nó ligado projeta na cor da linha
+    for (let i = 0; i < DATA.length; i++) {
+      if (!pos.on[i]) continue;
+      const l = linkOf(i), c = l ? Rizoma.LINES[TYPES[l.t]].color : INK;
+      if (l) { trail.fill(c[0], c[1], c[2], 7); trail.circle(pos.x[i], pos.y[i], 20); trail.fill(c[0], c[1], c[2], 26); trail.circle(pos.x[i], pos.y[i], 8); }
+      else { trail.fill(c[0], c[1], c[2], 8); trail.circle(pos.x[i], pos.y[i], 10); }
+    }
+    // 3. agentes: o mapa é lido uma vez por quadro; cada agente sente três pontos, vira, anda e deposita
+    trail.loadPixels();
+    const px = trail.pixels, n = PH.count, sa = PH.sensorAngle, sd = PH.sensorDist, ta = PH.turn, sp = PH.speed, jt = PH.jitter;
+    if (evapL) for (let k = 3, e = px.length; k < e; k += 4) px[k] = px[k] > evapL ? px[k] - evapL : 0; // decaimento linear mínimo
+    const sense = (x, y) => (x < 0 || y < 0 || x >= tw || y >= th) ? -1 : px[(((y | 0) * tw + (x | 0)) << 2) + 3];
+    for (let i = 0; i < n; i++) {
+      if (A.age[i] >= A.life[i] || A.home[i] < 0 || !pos.on[A.home[i]]) { if (!respawn(i)) { A.life[i] = 0; continue; } }
+      let x = A.x[i], y = A.y[i], h = A.h[i];
+      const f = sense(x + Math.cos(h) * sd, y + Math.sin(h) * sd), l = sense(x + Math.cos(h - sa) * sd, y + Math.sin(h - sa) * sd), r = sense(x + Math.cos(h + sa) * sd, y + Math.sin(h + sa) * sd);
+      if (f > l && f > r) { } else if (f < l && f < r) h += Math.random() < 0.5 ? -ta : ta; else if (l > r) h -= ta; else if (r > l) h += ta;
+      const tg = A.target[i];
+      if (tg >= 0 && pos.on[tg]) { const d = Math.atan2(pos.y[tg] - y, pos.x[tg] - x) - h; h += Math.atan2(Math.sin(d), Math.cos(d)) * PH.bias; } // quimiotaxia leve rumo ao irmão
+      h += (Math.random() - 0.5) * jt;
+      x += Math.cos(h) * sp; y += Math.sin(h) * sp;
+      if (x < 1 || y < 1 || x >= tw - 1 || y >= th - 1) { A.life[i] = 0; continue; } // saiu do mapa: renasce num nó
+      const k = (((y | 0) * tw + (x | 0)) << 2), t = A.type[i], c = t >= 0 ? Rizoma.LINES[TYPES[t]].color : INK, dep = t >= 0 ? PH.depositLinked : PH.deposit;
+      px[k] += (c[0] - px[k]) * 0.6; px[k + 1] += (c[1] - px[k + 1]) * 0.6; px[k + 2] += (c[2] - px[k + 2]) * 0.6; px[k + 3] = px[k + 3] + dep;
+      A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
+    }
+    trail.updatePixels();
+    // 4. o rastro vai para a tela ampliado 3× (a interpolação do navegador faz a difusão visual)
+    p.clear(); p.image(trail, 0, 0, p.width, p.height);
+    // governador: se o quadro ficar pesado, menos agentes
+    drawMs += (performance.now() - t0 - drawMs) * 0.05; if (++frameN % 180 === 0 && drawMs > 12 && PH.count > PH.floor) setCount(Math.max(PH.floor, PH.count - PH.step)); // governador: o micélio não pode comer o quadro
+  };
+  p.clearTrail = () => { if (trail) trail.clear(); };
+  window.Lab4Physarum = { PH, fps: () => p.frameRate(), drawMs: () => drawMs, trail: () => trail }; // para testes no console
+});
+function setCount(n) { PH.count = Math.max(PH.min, Math.min(PH.max, n)); $("#countBtn").textContent = PH.on ? `${PH.count} agentes` : "sem agentes"; $("#lessBtn").disabled = !PH.on || PH.count <= PH.min; $("#moreBtn").disabled = !PH.on || PH.count >= PH.max; if (R) sync(R.state()); }
+function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.length; $("#evapBtn").textContent = `Evaporação · ${PH.evapLevels[PH.evap][0]}`; }
+
+/* ---------- camada 2: o rizoma (motor do protótipo, fundo transparente) ---------- */
+const chips = {};
+function mountField() {
+  R = Rizoma.mount({
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380,
+    treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
+    onChange: sync, onOpen: openCard
+  });
+  window.Lab4Rizoma = R;
+  for (const t of TYPES) {
+    const L = Rizoma.LINES[t], b = document.createElement("button"); b.className = "chip"; b.style.setProperty("--sw", `rgb(${L.color.join(",")})`);
+    b.innerHTML = `<i></i><span>${L.label}</span><small>0</small>`; b.onclick = () => { R.toggleLine(t); if (R.state().focus) R.refresh(); }; $("#chips").appendChild(b); chips[t] = b;
+  }
+  sync(R.state());
+}
+let lastActiveKey = "";
+function sync(s) {
+  const ak = TYPES.map(t => s.active[t] ? 1 : 0).join("");
+  if (ak !== lastActiveKey) { // o conjunto de linhas mudou: todos os agentes renascem; se uma linha saiu, a rede dela evapora depressa
+    const removed = [...lastActiveKey].some((c, i) => c === "1" && ak[i] !== "1");
+    lastActiveKey = ak; rebuildSibs(s.active);
+    if (A.life) { A.life.fill(0); A.type.fill(-1); A.target.fill(-1); }
+    if (removed) flush = 70;
+  }
+  for (const t in chips) { chips[t].classList.toggle("active", !!s.active[t]); chips[t].querySelector("small").textContent = s.linesByType ? s.linesByType[t] : 0; }
+  $("#depthBtn").classList.toggle("active", s.depth);
+  $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (PH.on ? ` · ${PH.count} AGENTES` : "");
+  document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
+  if (!PH.on) guide("O sistema pede menos movimento: o micélio fica desligado; nós e linhas continuam funcionando.");
+  else if (s.revealed < 3) guide(touch ? "Toque no campo para revelar nós: cada nó revelado solta agentes." : "Mova a mão para revelar nós: cada nó revelado solta agentes.");
+  else if (!s.anyLine) guide("Ligue uma linha de fuga: os nós que a compartilham alimentam o micélio e a rede cresce entre eles.");
+  else guide("Desligue a linha para ver a rede evaporar; arraste o fundo para girar o campo e ver o rastro ficar para trás.");
+}
+let guideT = 0; function guide(t) { const g = $("#guide"); clearTimeout(guideT); if (!t) { g.classList.remove("show"); return; } g.textContent = t; g.classList.add("show"); guideT = setTimeout(() => g.classList.remove("show"), 6000); }
+
+/* ---------- ficha ---------- */
+function openCard(i) {
+  $("#cKicker").textContent = ((i.trailIndex > 1 ? `NÓ ${i.trailIndex} DA TRILHA · ` : "NÓ ABERTO · ") + i.circuit).toUpperCase();
+  $("#cTitle").textContent = i.title; $("#cTrans").textContent = i.translation;
+  $("#cFacts").innerHTML = [["Ano", i.year], ["Mecanismo", i.mechanism], ["Edital", i.edital], ["Valor registrado", i.valueText || Rizoma.money(i.value)], ["Escala", i.scale]].map(([k, v]) => `<div class="fact"><span>${k}</span><b>${v == null || v === "" ? "A verificar" : v}</b></div>`).join("");
+  $("#cOpen").href = `index.html#${i.id}`;
+  const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${Rizoma.shortTitle(c.title)}</span><small>${c.why} →</small></button>`).join("") : `<div class="empty">Nenhuma linha ligada chega aqui. Ligue uma linha de fuga nas ferramentas.</div>`;
+  const P = {}; for (const q of (i.potentials || [])) (P[q.type] = P[q.type] || []).push(q);
+  $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button data-line="${t}" style="--sw:rgb(${Rizoma.LINES[t].color.join(",")})"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} nó(s)</small></button>`).join("") : `<div class="empty">Revele mais nós para ver ligações possíveis.</div>`;
+  $$("[data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("[data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
+  $("#card").classList.add("open");
+}
+$("#cClose").onclick = () => R.close();
+
+/* ---------- ferramentas ---------- */
+$("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
+$("#lessBtn").onclick = () => setCount(PH.count - PH.step);
+$("#moreBtn").onclick = () => setCount(PH.count + PH.step);
+$("#countBtn").onclick = () => setCount((touch || small()) ? 700 : 2500);
+$("#evapBtn").onclick = () => setEvap(PH.evap + 1);
+$("#clearBtn").onclick = () => trailP && trailP.clearTrail();
+$("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
+document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "x") trailP && trailP.clearTrail(); });
+window.addEventListener("resize", () => R && R.resize());
+document.addEventListener("visibilitychange", () => { const hid = document.hidden; if (trailP) hid ? trailP.noLoop() : trailP.loop(); if (R) R.setVisible(!hid); }); // aba oculta: tudo pausa
+
+setCount(PH.count); setEvap(PH.evap);
+mountField();
+if (touch) setTimeout(() => { for (let i = 0; i < 4; i++) R.revealOne(); }, 600);
+})();
+</script>
+</body>
+</html>

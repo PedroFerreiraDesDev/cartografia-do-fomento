@@ -95,3 +95,10 @@ O laboratório é exploratório: suas decisões visuais não devem ser tratadas 
 - `lab-03-mescla.html` — o rizoma 3D do protótipo (mesmo `js/rizoma.js`) sobre a cidade desfocada do Lab 01, com três camadas do Lab 02 recombinadas: mancha (tinta que segue o gesto e toma a cor do mecanismo do nó mais próximo), palimpsesto (cada nó aberto é carimbado; carimbos novos apagam um pouco os antigos) e mirante (lupa que mostra os nós ainda escondidos e os revela ao clique/toque; tecla L).
 - O motor ganhou `transparent`, `ghosts()` e `revealAt()` para isso; nada muda no protótipo principal.
 - Avaliação do repositório e da proposta Physarum: `rizoma/AVALIACAO-GITHUB-E-PHYSARUM.md`.
+
+## Lab 04 — Physarum
+
+- `lab-04-physarum.html` — o mesmo rizoma (mesmo `js/data.js` e `js/rizoma.js`, montado com `transparent:true`) sobre um micélio: implementação própria do modelo de agentes de Jeff Jones (2010) para as redes do *Physarum polycephalum*, a terceira forma de ligação do campo, ao lado das linhas de fuga e dos arcos da árvore.
+- Os nós revelados são fontes de agentes. Com uma linha de fuga ligada, os nós que compartilham o atributo recebem mais agentes, que depositam mais forte na cor da linha: a rede cresce entre eles. Desligar a linha deixa a rede evaporar.
+- Mapa de rastro num `p5.Graphics` a 1/3 da resolução, lido uma vez por quadro; evaporação por retângulo semitransparente; ~2500 agentes no desktop e ~700 no celular, com governador; pausa com a aba oculta; desligado com `prefers-reduced-motion`.
+- Ferramentas: chips das seis linhas, 3D, agentes −/+, evaporação (lenta/média/rápida, tecla E), limpar rastro (tecla X), recomeçar. Referências (ABNT) em `rizoma/README-RIZOMA.md`, seção 7; registro da adaptação em `rizoma/PROPOSTAS-INTERACAO-3D.md`, seção 9.5.

@@ -17,7 +17,7 @@ O Lab 01 (seção 03) propôs: base grotesca neutra, condensada quando possível
 
 - **Mecânica.** Cada letra de um título vira um elemento próprio, deslocado (até 9 px em 148 px de corpo), girado (até 3,2°) e comprimido/esticado (até 12 % na vertical, 6 % na horizontal) por uma função senoidal com semente, a mesma do Lab 01 (`updateType`). As medidas escalam com o corpo da letra, então a marca da barra (15 px) sofre a mesma pressão, só que em miniatura.
 - **Onde vive.** Capa (marca grande, animada), barra (marca pequena, estática, amplitude 0,6), título do Descobrir e títulos das seções (estáticos, amplitude de repouso 0,42). Nunca em: fichas, valores, rótulos de gráfico, textos de leitura, nomes de projeto. É a regra do Lab 01 traduzida em CSS: a classe `tense` só entra em `h1`.
-- **Animação da capa.** A palavra chega com amplitude 1,5 (mais tensionada que o máximo do Lab 01) e assenta em 1,4 s com ease-out cúbico até o repouso 0,42; depois respira ±0,1 num ciclo de ~11 s. "DO FOMENTO" sofre mais que "CARTOGRAFIA" (fator 1 contra 0,6), como no Lab 01, em que só FOMENTO era distorcido. Tocar no título sorteia outra semente e outra letra isolada. Com `prefers-reduced-motion`, a palavra nasce em repouso e não se mexe.
+- **Animação da capa** *(primeira versão, substituída em 31/10 pela marca viva, abaixo)*. A palavra chega com amplitude 1,5 (mais tensionada que o máximo do Lab 01) e assenta em 1,4 s com ease-out cúbico até o repouso 0,42; depois respira ±0,1 num ciclo de ~11 s. "DO FOMENTO" sofre mais que "CARTOGRAFIA" (fator 1 contra 0,6), como no Lab 01, em que só FOMENTO era distorcido. Tocar no título sorteia outra semente e outra letra isolada. Com `prefers-reduced-motion`, a palavra nasce em repouso e não se mexe.
 - **A única cor da capa.** Uma letra de "DO FOMENTO" recebe a cor de um dos três mecanismos, sorteado a cada visita e trocado a cada toque. É a mesma regra do campo (cor = mecanismo) e o item isolado que a memória guarda (Von Restorff).
 
 Por que assim, pelas leis de UX (ver seção 4): Prägnanz (a palavra que assenta dá ao olho a forma estável que ele procura), Doherty (o primeiro quadro já está na tela, nada espera a animação), Von Restorff (a letra isolada), efeito estética–usabilidade (a tensão é identidade, mas não toca o que a pessoa precisa ler com precisão).
@@ -36,6 +36,15 @@ Por que assim, pelas leis de UX (ver seção 4): Prägnanz (a palavra que assent
 | Big Shoulders Display | condensada, peso variável 100–900 (Patric King), desenhada a partir da sinalização industrial de Chicago | peso variável com desenho de rua, próximo do letreiro | SIL OFL |
 
 Controles: peso (−/+ em passos de 100, dentro do eixo da fonte), **pesos por letra** (em fontes variáveis cada letra recebe um peso e, na Archivo, uma largura diferentes, derivados da mesma semente da tensão: `font-variation-settings`), **fundo papel / tinta** (para comparar com o pôster escuro do Lab 01; o resto do site segue em papel). Todas as fontes vêm do Google Fonts (uma só folha de estilo, `display=swap`); a marca da barra e os títulos de seção seguem a fonte escolhida, para avaliar o sistema inteiro, não só a capa.
+
+**Segundo ajuste de 31/10 (pedido do autor: "deve ser uma animação corrente, sem precisar clicar"; "não tivemos outros testes").**
+
+- **O pôster vira lambe.** A marca da capa deixa de ser texto solto sobre o papel e passa a ser o pôster do Lab 01 inteiro, colado na capa como um lambe-lambe: bloco de tinta, letras de papel, kicker "SISTEMA / 2017—2024" e a linha "TIPO RACIONAL + INTERFERÊNCIA GENERATIVA", com a sombra deslocada do cartaz colado. O lambe é a forma mais barata e mais presente de ocupação gráfica da rua em BH, ao lado do pixo; faz sentido que a identidade entre no sistema como um cartaz colado no muro de papel, e não como um logotipo. Com "fundo · tinta" o lambe inverte (papel sobre tinta).
+- **A marca vive, sem clique.** Em vez de assentar, a tensão agora é contínua: cada letra segue duas ondas lentas (períodos de 3,1 s e 5,3 s, incomensuráveis, logo o padrão nunca se repete) com fase própria, e uma onda de pressão gaussiana atravessa FOMENTO da esquerda para a direita a cada 7,3 s: a letra sob a onda desce, inclina (skew) e, em fonte variável, engorda. A letra colorida troca de mecanismo a cada 11 s. Amplitude entre 0,16 e 0,68 (× 1,9 em FOMENTO, × 0,35 em CARTOGRAFIA), tudo abaixo de 0,35 Hz: é **animação ambiente** (HEAD, 2016), lenta e de pouca amplitude, que não dispara alerta mas que o olho não consegue ignorar, porque movimento em comum agrupa e atrai (lei do destino comum, WERTHEIMER, 1923; YABLONSKI, 2020). Tocar na marca pausa e retoma, cumprindo o critério 2.2.2 da WCAG 2.2 (todo movimento com mais de 5 s precisa de pausa; W3C, 2023); com `prefers-reduced-motion` a marca nasce em repouso e não se mexe. Durações: Laubheimer (NNG, 2020) recomenda transições de interface entre 100 e 500 ms, mas distingue a **animação ambiente**, que pode ser contínua desde que não concorra com a tarefa; na capa não há tarefa além de ler e entrar.
+- **Cabe em qualquer fonte.** O corpo da marca é calculado para que CARTOGRAFIA (sem tensão) ocupe a largura interna do lambe, em qualquer fonte e em qualquer tela (`fitMark`); a sobreposição das letras de FOMENTO depende das laterais de cada fonte (−0,03 em na Arial Narrow, −0,012 em na Anton, −0,02 em nas demais). Pela regra do Lab 01, o transbordo faz parte do desenho.
+- **Testes automáticos.** Botão "testes automáticos" (ligado por padrão): a cada 6 s a capa troca de fonte na ordem Anton, Oswald, Archivo, Bebas Neue, Big Shoulders, Arial Narrow; nas variáveis alterna peso médio e peso máximo e liga "pesos por letra". O rótulo diz "teste n/6 · fonte peso". Escolher uma fonte à mão desliga o ciclo. É o que o autor pediu: ver as alternativas passando sem clicar, para decidir depois.
+
+O que saiu nesta passagem: a animação de chegada (1,5 → 0,42 em 1,4 s, Prägnanz) e o "toque = outra semente"; a Prägnanz segue valendo para os títulos de seção, que ficam em repouso.
 
 ## 3. Defesa das cores
 
@@ -143,6 +152,10 @@ MUNZNER, Tamara. **Visualization analysis and design**. Boca Raton: CRC Press, 2
 
 MURDOCK, Bennet B. The serial position effect of free recall. **Journal of Experimental Psychology**, v. 64, n. 5, p. 482-488, 1962.
 
+HEAD, Val. **Designing interface animation**: meaningful motion for user experience. Brooklyn: Rosenfeld Media, 2016.
+
+LAUBHEIMER, Page. Animation duration and motion characteristics in user interface design. **Nielsen Norman Group**, 2 fev. 2020. Disponível em: https://www.nngroup.com/articles/animation-duration/. Acesso em: 31 out. 2026.
+
 NIELSEN, Jakob. End of web design. **Nielsen Norman Group**, 23 jul. 2000. Disponível em: https://www.nngroup.com/articles/end-of-web-design/. Acesso em: 31 out. 2026.
 
 OKABE, Masataka; ITO, Kei. **Color universal design (CUD)**: how to make figures and presentations that are friendly to colorblind people. 2008. Disponível em: https://jfly.uni-koeln.de/color/. Acesso em: 31 out. 2026.
@@ -156,6 +169,8 @@ TUFTE, Edward R. **The visual display of quantitative information**. 2. ed. Ches
 VON RESTORFF, Hedwig. Über die Wirkung von Bereichsbildungen im Spurenfeld. **Psychologische Forschung**, v. 18, p. 299-342, 1933.
 
 WARE, Colin. **Information visualization**: perception for design. 3. ed. Waltham: Morgan Kaufmann, 2012.
+
+W3C. **Web Content Accessibility Guidelines (WCAG) 2.2**: success criterion 2.2.2, pause, stop, hide. W3C Recommendation, 5 out. 2023. Disponível em: https://www.w3.org/TR/WCAG22/. Acesso em: 31 out. 2026.
 
 WERTHEIMER, Max. Untersuchungen zur Lehre von der Gestalt II. **Psychologische Forschung**, v. 4, p. 301-350, 1923.
 

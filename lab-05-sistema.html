@@ -28,9 +28,12 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid va
 
 /* identidade: tipografia em tensão (Lab 01): deslocamento, micro-rotação e pressão por letra; nunca uma "fonte grafite". Só títulos tensionam; dados e textos ficam estáveis */
 .tense .w{display:inline-block;white-space:nowrap}.tense i{display:inline-block;font-style:normal;transform-origin:50% 70%;transition:transform .45s cubic-bezier(.2,.7,.25,1),color .45s}.tense i.sp{width:.26em}h1.tense{display:block}
-.mark{cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.09em;line-height:.76}.mark .tense i{transition:color .6s;margin:0 -.012em}.mark .strong i{margin:0 -.03em}.mark .w{overflow:visible}
+.mark{cursor:pointer;-webkit-tap-highlight-color:transparent;letter-spacing:-.09em;line-height:.76}.mark .tense i{transition:color .6s;margin:0 -.012em;will-change:transform}.mark .strong i{margin:0 var(--squeeze,-.03em)}.mark .w{overflow:visible}
+/* o pôster do Lab 01 entra na capa como um lambe colado no papel: bloco de tinta, letras de papel, uma letra em cor de mecanismo */
+.poster{position:relative;display:block;width:100%;background:var(--ink);color:var(--paper);padding:26px 34px 22px 26px;margin:14px 0 20px;box-shadow:10px 12px 0 rgba(22,22,22,.08)}.poster .pk,.poster .pf{display:block;font-size:9px;letter-spacing:.18em;font-weight:900;color:#8f8d87}.poster .pk{margin-bottom:18px}.poster .pf{margin-top:16px}.poster.paused .pf:after{content:" · PAUSADO"}
+.intro-main .poster h1{margin:0}.intro.dark .poster{background:var(--paper);color:var(--ink);box-shadow:10px 12px 0 rgba(247,246,241,.08)}
 /* painel de experimento tipográfico da capa (fonte, peso, pesos por letra, fundo) */
-.typo{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:22px;font-size:9px}.typo .kicker{margin-right:2px}.typo button{border:1px solid #bbb;background:rgba(255,255,255,.8);padding:7px 9px;font-size:9px;font-weight:800;letter-spacing:.03em}.typo button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.typo .group button{border-radius:0}.typo .group button+button{border-left:0}.typo .mid{min-width:44px;text-align:center}.typo button:disabled{opacity:.4;cursor:default}
+.typo{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:22px;font-size:9px}.typo .kicker{margin-right:2px}.typo button{border:1px solid #bbb;background:rgba(255,255,255,.8);padding:7px 9px;font-size:9px;font-weight:800;letter-spacing:.03em}.typo button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.typo .group button{border-radius:0}.typo .group button+button{border-left:0}.typo .mid{min-width:44px;text-align:center}.typo button:disabled{opacity:.4;cursor:default}.typo .auto{margin-left:8px}.typo .auto.active{background:var(--rosa,#ff4f9a);border-color:var(--rosa,#ff4f9a);color:#161616}.typo .autoLabel{min-width:150px;color:#777;letter-spacing:.08em}.typo .autoLabel b{color:var(--ink)}.intro.dark .typo .autoLabel b{color:var(--paper)}
 .intro.dark{background:rgba(22,22,22,.94);color:var(--paper)}.intro.dark .kicker,.intro.dark .topline,.intro.dark .footline,.intro.dark .intro-main p,.intro.dark .intro-cue,.intro.dark .legend{color:#b9b7b0}.intro.dark .cue{background:var(--paper)}.intro.dark .typo button{background:transparent;color:var(--paper);border-color:#555}.intro.dark .typo button.active{background:var(--paper);color:var(--ink);border-color:var(--paper)}.intro.dark .doors button{background:transparent;color:var(--paper);border-color:#555}.intro.dark .primary{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 @media(prefers-reduced-motion:reduce){.tense i{transition:none}}
 
@@ -54,7 +57,7 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid va
 .intro.leaving{opacity:0;transform:scale(1.03);pointer-events:none}.intro[hidden]{display:none}
 .topline,.footline{display:flex;justify-content:space-between;gap:20px;font-size:9px;letter-spacing:.1em;font-weight:900;color:#777}
 .intro-main{flex:1;width:min(820px,100%);margin:auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:30px 0}
-.intro-main h1{font-size:clamp(64px,13vw,170px);text-transform:uppercase;margin:14px 0 18px}
+.intro-main h1{font-size:clamp(60px,11.5vw,150px);text-transform:uppercase;margin:14px 0 18px}
 .intro-main p{max-width:560px;font-size:13.5px;line-height:1.7;color:#555;margin:0 0 10px}
 .intro-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}.intro-actions .primary{padding:13px 18px;font-size:10px}
 .intro-actions .doors{display:flex;gap:6px;flex-wrap:wrap}.intro-actions .doors button{border:1px solid #bbb;background:rgba(255,255,255,.8);padding:11px 12px;font-size:9px;font-weight:900}.intro-actions .doors button:hover{border-color:var(--ink)}
@@ -150,7 +153,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   :root{--top:84px}
   .topbar{height:auto;min-height:84px;flex-wrap:wrap;gap:4px;padding:8px 10px 0;align-items:flex-start}.brand{width:100%;padding:4px 0 2px;font-size:13px}
   .topbar nav{width:100%;margin:0 -10px;padding:0 10px;overflow-x:auto;scrollbar-width:none;gap:0}.topbar nav::-webkit-scrollbar{display:none}.topbar nav button{flex:none;padding:9px 9px}.status{display:none}
-  .intro{padding:14px 16px 20px}.intro-main{padding:14px 0;justify-content:flex-start}.intro-main h1{font-size:clamp(44px,15vw,84px);margin:10px 0 14px}.intro-main p{font-size:12.5px}
+  .intro{padding:14px 16px 20px}.intro-main{padding:14px 0;justify-content:flex-start}.intro-main h1{font-size:clamp(44px,14vw,84px);margin:10px 0 14px}.poster{padding:16px 18px 14px 16px;margin:8px 0 16px}.intro-main p{font-size:12.5px}
   .typo{gap:5px 6px}.typo button{padding:8px 8px}
   .intro-actions{width:100%}.intro-actions .primary{width:100%}.intro-actions .doors{width:100%}.intro-actions .doors button{flex:1}
   .topline span:last-child,.footline{display:none}
@@ -193,14 +196,14 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="topline"><span>CARTOGRAFIA DO FOMENTO</span><span>TCC · DESIGN UFMG · LAB 05 · O SISTEMA NA LINGUAGEM DO PHYSARUM</span></div>
   <div class="intro-main">
     <div class="kicker">ARTE URBANA · FOMENTO CULTURAL · DESIGN DA INFORMAÇÃO</div>
-    <h1 class="mark" id="mark" title="Toque: outra tensão"><span class="tense" data-seed="1" data-k=".35">CARTOGRAFIA</span><br><span class="tense strong" data-seed="5" data-accent="1" data-k="2.6">FOMENTO</span></h1>
+    <div class="poster" id="poster"><span class="pk">SISTEMA / 2017—2024</span><h1 class="mark" id="mark" title="Toque: pausa ou retoma a tensão"><span class="tense" data-seed="1" data-k=".35">CARTOGRAFIA</span><br><span class="tense strong" data-seed="5" data-accent="1" data-k="1.9">FOMENTO</span></h1><span class="pf">TIPO RACIONAL + INTERFERÊNCIA GENERATIVA</span></div>
     <p>Vinte projetos de grafite e muralismo realizados com fomento cultural em Belo Horizonte, 2017–2024. Cada projeto é um fragmento de muro; entre eles cresce um micélio que ninguém desenhou.</p>
     <p>Não há mapa obrigatório nem raiz: qualquer ponto é uma entrada. Revele, ligue linhas de fuga, abra nós, leve a sua estampa.</p>
     <div class="intro-actions"><button type="button" id="enterBtn" class="primary">ENTRAR NO CAMPO ↗</button><div class="doors"><button data-door="indicators">Indicadores</button><button data-door="editais">Editais</button><button data-door="about">Sobre</button></div></div>
     <div class="legend" id="introLegend"></div>
-    <p class="intro-cue"><span class="cue"></span>O campo atrás desta capa já está vivo. O título sofre a cidade: toque nele para outra tensão.</p>
+    <p class="intro-cue"><span class="cue"></span>O campo atrás desta capa já está vivo. A marca também: a cidade pressiona as letras sem parar; toque nela para pausar.</p>
   </div>
-  <div class="typo" id="typo" aria-label="Experimento tipográfico"><span class="kicker">TIPO</span><span id="typoFonts" class="seg" style="display:contents"></span><span class="kicker" style="margin-left:8px">PESO</span><span class="group"><button id="wLess" title="Mais leve">−</button><button id="wVal" class="mid">700</button><button id="wMore" title="Mais pesado">+</button></span><button id="wVary" title="Cada letra recebe um peso e uma largura diferentes (só fontes variáveis)">pesos por letra</button><button id="bgBtn" title="Compara a marca sobre papel e sobre tinta">fundo · papel</button></div>
+  <div class="typo" id="typo" aria-label="Experimento tipográfico"><span class="kicker">TIPO</span><span id="typoFonts" class="seg" style="display:contents"></span><span class="kicker" style="margin-left:8px">PESO</span><span class="group"><button id="wLess" title="Mais leve">−</button><button id="wVal" class="mid">700</button><button id="wMore" title="Mais pesado">+</button></span><button id="wVary" title="Cada letra recebe um peso e uma largura diferentes (só fontes variáveis)">pesos por letra</button><button id="bgBtn" title="Compara a marca sobre papel e sobre tinta">fundo · papel</button><button id="autoBtn" class="auto" title="Troca fonte e peso sozinho, a cada 6 s">testes automáticos</button><span id="autoLabel" class="autoLabel"></span></div>
   <div class="footline"><span>ARTEFATO DIGITAL / TESTE DE INTERAÇÃO</span><span>MOVA · DESCUBRA · INVESTIGUE</span></div>
 </section>
 
@@ -398,7 +401,7 @@ $("#aboutWalls").innerHTML = DATA.filter(d => ["p05", "p09", "p17", "p11"].inclu
    Regra do Lab 01: títulos podem tensionar; dados e textos ficam estáveis. Na capa a palavra chega
    tensionada e assenta (lei de Prägnanz: o olho busca a forma mais simples e estável); toque = outra tensão.
    A única cor fora do papel na capa é a de um mecanismo, numa letra isolada (efeito Von Restorff). */
-const TENSE = { seed: 1 + Math.floor(Math.random() * 89), accent: Math.floor(Math.random() * 3), raf: 0, t0: 0 };
+const TENSE = { seed: 1 + Math.floor(Math.random() * 89), accent: Math.floor(Math.random() * 3), raf: 0, t0: 0, paused: false, lastAcc: 0 };
 const REST = 0.42; // tensão de repouso: a letra nunca fica totalmente "limpa" (0,42 = pouco menos da metade da pressão do Lab 01 a 100%)
 function tenseWrap(el) {
   if (el.dataset.ready) return; const frag = document.createDocumentFragment();
@@ -408,16 +411,21 @@ function tenseWrap(el) {
   });
   el.innerHTML = ""; el.appendChild(frag); el.dataset.ready = "1";
 }
-function tense(el, amp, seed) {
+function tense(el, amp, seed, t = 0, wave = -1) {
   tenseWrap(el); const kids = el.querySelectorAll("i"), fs = parseFloat(getComputedStyle(el).fontSize) / 148; // as medidas do Lab 01 valem para 148 px; aqui escalam com o corpo
   amp *= +(el.dataset.k || 1); // data-k: quanto a palavra sofre (FOMENTO 2,6; CARTOGRAFIA 0,35, como no pôster do Lab 01)
   const F = FONTS[TYPO.font], clamp = (v, a, b) => Math.max(a, Math.min(b, v)), vary = TYPO.vary && F.wght;
   kids.forEach((c, i) => {
-    const n = Math.sin(seed * 1.71 + i * 2.13), m = Math.cos(seed + i * 1.31), acc = el.dataset.accent && i === ((seed + 2) % kids.length);
-    const y = n * 9 * amp * fs + (acc ? 6 * fs * Math.min(1, amp) : 0), x = m * 5 * amp * fs, r = n * 3.2 * amp, sy = 1 + Math.abs(n) * .12 * amp, sx = 1 - Math.abs(m) * .06 * amp;
-    c.style.transform = `translate(${x.toFixed(2)}px,${y.toFixed(2)}px) rotate(${r.toFixed(2)}deg) scale(${sx.toFixed(3)},${sy.toFixed(3)})`;
+    // fase própria por letra: as ondas lentas chegam a cada letra num instante diferente (o muro não é empurrado inteiro de uma vez)
+    const ph = i * 0.9 + seed * 0.37, n = Math.sin(seed * 1.71 + i * 2.13 + t * 0.55 + Math.sin(t / 4.7 + ph) * 0.8), m = Math.cos(seed + i * 1.31 + t * 0.41 + ph * 0.3);
+    const acc = el.dataset.accent && i === ((TENSE.accent + 2) % kids.length);
+    // onda de pressão: gaussiana que atravessa a palavra; a letra sob a onda desce, inclina e engorda (fonte variável)
+    const pw = wave >= 0 && kids.length > 1 ? Math.exp(-Math.pow((i / (kids.length - 1) - wave) * 3.2, 2)) * amp : 0;
+    const y = n * 9 * amp * fs + pw * 7 * fs + (acc ? 6 * fs * Math.min(1, amp) : 0), x = m * 7 * amp * fs, r = n * 3.2 * amp + pw * 2.5, sk = m * 3 * amp + pw * -4;
+    const sy = 1 + Math.abs(n) * .12 * amp + pw * .06, sx = 1 - Math.abs(m) * .06 * amp;
+    c.style.transform = `translate(${x.toFixed(2)}px,${y.toFixed(2)}px) rotate(${r.toFixed(2)}deg) skewX(${sk.toFixed(2)}deg) scale(${sx.toFixed(3)},${sy.toFixed(3)})`;
     if (el.dataset.accent) c.style.color = acc ? MECH[MECHS[TENSE.accent % 3]] : "";
-    c.style.fontVariationSettings = vary ? `"wght" ${Math.round(clamp(TYPO.weight + n * 260 * Math.min(1.4, amp), F.wght[0], F.wght[1]))}${F.wdth ? `, "wdth" ${Math.round(clamp(100 - m * 24 * Math.min(1.4, amp), F.wdth[0], F.wdth[1]))}` : ""}` : "";
+    c.style.fontVariationSettings = vary ? `"wght" ${Math.round(clamp(TYPO.weight + (n * 260 + pw * 220) * Math.min(1.4, amp), F.wght[0], F.wght[1]))}${F.wdth ? `, "wdth" ${Math.round(clamp(100 - (m * 24 + pw * 18) * Math.min(1.4, amp), F.wdth[0], F.wdth[1]))}` : ""}` : "";
   });
 }
 /* ---------- experimento tipográfico da capa: fonte, peso, pesos por letra, fundo ----------
@@ -427,38 +435,68 @@ function tense(el, amp, seed) {
    desenhada para a sinalização industrial de Chicago). Arial Narrow é a base do Lab 01. A escolha fica no
    navegador (localStorage) só para comparar; a decisão final é do autor. */
 const FONTS = [
-  { id: "narrow", label: "Arial Narrow", family: '"Arial Narrow","Helvetica Neue Condensed","Roboto Condensed","Liberation Sans Narrow",Arial,sans-serif', stretch: "condensed", weights: [700] },
-  { id: "anton", label: "Anton", family: "Anton,Impact,'Arial Narrow',sans-serif", weights: [400] },
+  { id: "narrow", label: "Arial Narrow", family: '"Arial Narrow","Helvetica Neue Condensed","Roboto Condensed","Liberation Sans Narrow",Arial,sans-serif', stretch: "condensed", weights: [700], squeeze: -.03 },
+  { id: "anton", label: "Anton", family: "Anton,Impact,'Arial Narrow',sans-serif", weights: [400], squeeze: -.012 },
   { id: "oswald", label: "Oswald", family: "Oswald,'Arial Narrow',sans-serif", wght: [200, 700] },
   { id: "archivo", label: "Archivo (variável)", family: "Archivo,Arial,sans-serif", wght: [100, 900], wdth: [62, 125] },
   { id: "bebas", label: "Bebas Neue", family: "'Bebas Neue',Impact,'Arial Narrow',sans-serif", weights: [400] },
   { id: "shoulders", label: "Big Shoulders", family: "'Big Shoulders Display','Arial Narrow',sans-serif", wght: [100, 900] }
 ];
-const TYPO = { font: 0, weight: 700, vary: false, dark: false };
+const TYPO = { font: 0, weight: 700, vary: false, dark: false, auto: true };
+/* testes automáticos: a cada 6 s a capa troca de fonte e de peso sozinha (percorre a lista; nas variáveis sorteia o peso e liga "pesos por letra"),
+   para comparar sem clicar. Escolher uma fonte à mão desliga o ciclo. */
+const AUTO = { timer: 0, step: 0, order: [1, 2, 3, 4, 5, 0] };
+function autoTick() {
+  const i = AUTO.order[AUTO.step % AUTO.order.length]; AUTO.step++; const F = FONTS[i]; TYPO.font = i;
+  if (F.wght) { TYPO.weight = AUTO.step % 2 ? F.wght[1] : Math.round((F.wght[0] + F.wght[1]) / 200) * 100; TYPO.vary = true; } else { TYPO.weight = F.weights[0]; } // variáveis: alterna peso médio e máximo
+  applyTypo();
+}
+function autoRun() { clearInterval(AUTO.timer); AUTO.timer = 0; if (TYPO.auto && !reduced) AUTO.timer = setInterval(autoTick, 6000); }
 try { Object.assign(TYPO, JSON.parse(localStorage.getItem("lab05:typo") || "{}")); } catch (_) {}
+/* a marca cabe no pôster em qualquer fonte: mede CARTOGRAFIA a 100 px e escala o corpo para a largura interna do bloco (as
+   transformações da tensão não entram na medida; o transbordo é parte do desenho, como no pôster do Lab 01) */
+function fitMark() {
+  const h = $("#mark"), box = $("#poster"); if (!h || !box) return; const w = h.querySelector(".w"); if (!w) return;
+  const inner = box.clientWidth - parseFloat(getComputedStyle(box).paddingLeft) - parseFloat(getComputedStyle(box).paddingRight);
+  h.style.fontSize = "100px"; const nat = w.getBoundingClientRect().width / 100 || 6; // largura natural por px de corpo (getBoundingClientRect inclui transform; medimos com a tensão no repouso, erro < 3%)
+  h.style.fontSize = Math.max(40, Math.min(190, inner * 0.985 / nat)).toFixed(1) + "px";
+}
+addEventListener("resize", () => fitMark());
 function applyTypo() {
   const F = FONTS[TYPO.font] || FONTS[0]; if (!FONTS[TYPO.font]) TYPO.font = 0;
   const range = F.wght || [F.weights[0], F.weights[0]]; TYPO.weight = Math.max(range[0], Math.min(range[1], TYPO.weight));
-  const root = document.documentElement.style; root.setProperty("--head", F.family); root.setProperty("--headw", TYPO.weight); root.setProperty("--headstretch", F.stretch || "normal");
+  const root = document.documentElement.style; root.setProperty("--head", F.family); root.setProperty("--headw", TYPO.weight); root.setProperty("--headstretch", F.stretch || "normal"); root.setProperty("--squeeze", (F.squeeze || -.02) + "em");
   $("#typoFonts").innerHTML = FONTS.map((f, i) => `<button data-font="${i}" class="${i === TYPO.font ? "active" : ""}" style="font-family:${f.family.replace(/"/g, "'")}">${f.label}</button>`).join("");
-  $$("[data-font]").forEach(b => b.onclick = () => { TYPO.font = +b.dataset.font; const G = FONTS[TYPO.font]; TYPO.weight = G.wght ? Math.max(G.wght[0], Math.min(G.wght[1], TYPO.weight)) : G.weights[0]; applyTypo(); });
+  $$("[data-font]").forEach(b => b.onclick = () => { TYPO.auto = false; autoRun(); TYPO.font = +b.dataset.font; const G = FONTS[TYPO.font]; TYPO.weight = G.wght ? Math.max(G.wght[0], Math.min(G.wght[1], TYPO.weight)) : G.weights[0]; applyTypo(); });
   $("#wVal").textContent = TYPO.weight; $("#wLess").disabled = TYPO.weight <= range[0]; $("#wMore").disabled = TYPO.weight >= range[1];
   $("#wVary").classList.toggle("active", TYPO.vary && !!F.wght); $("#wVary").disabled = !F.wght; $("#wVary").textContent = F.wght ? "pesos por letra" : "pesos por letra (fonte fixa)";
   $("#bgBtn").textContent = TYPO.dark ? "fundo · tinta" : "fundo · papel"; $("#intro").classList.toggle("dark", TYPO.dark);
+  $("#autoBtn").classList.toggle("active", TYPO.auto); $("#autoLabel").innerHTML = TYPO.auto ? `teste ${(AUTO.step - 1 + AUTO.order.length) % AUTO.order.length + 1}/${AUTO.order.length} · <b>${F.label} ${TYPO.weight}${TYPO.vary && F.wght ? " · pesos por letra" : ""}</b>` : `<b>${F.label} ${TYPO.weight}</b>`;
   try { localStorage.setItem("lab05:typo", JSON.stringify(TYPO)); } catch (_) {}
-  coverTension(false); $$(".brand .tense").forEach(w => tense(w, +(w.dataset.amp || REST), +(w.dataset.seed || 1) + TENSE.seed)); $$(".hero h1, #copy h1").forEach((h, k) => tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7));
+  tenseWrap($("#mark .tense")); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitMark); fitMark(); coverTension(false); $$(".brand .tense").forEach(w => tense(w, +(w.dataset.amp || REST), +(w.dataset.seed || 1) + TENSE.seed)); $$(".hero h1, #copy h1").forEach((h, k) => tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7));
 }
 $("#wLess").onclick = () => { TYPO.weight -= 100; applyTypo(); }; $("#wMore").onclick = () => { TYPO.weight += 100; applyTypo(); };
 $("#wVary").onclick = () => { TYPO.vary = !TYPO.vary; applyTypo(); }; $("#bgBtn").onclick = () => { TYPO.dark = !TYPO.dark; applyTypo(); };
-function coverTension(restart) { // capa: chega com amplitude 1,1 e assenta em 1,4 s (easeOutCubic); depois respira de leve
+$("#autoBtn").onclick = () => { TYPO.auto = !TYPO.auto; if (TYPO.auto) { AUTO.step = 0; autoTick(); } else applyTypo(); autoRun(); };
+/* A marca vive: cada letra segue duas ondas lentas (períodos de 3,1 s e 5,3 s, incomensuráveis, logo o padrão nunca
+   repete) e uma onda de pressão que atravessa a palavra a cada ~7 s, como um carro passando pelo muro. Movimento
+   ambiente: lento (< 0,35 Hz) e de pequena amplitude, abaixo do limiar que dispara alerta (Head, 2016; Nielsen
+   Norman Group, 2020), mas contínuo, porque movimento é o que o olho não consegue ignorar (lei do destino comum,
+   Wertheimer 1923; Yablonski 2020). Toque na marca pausa/retoma (WCAG 2.2, critério 2.2.2: qualquer movimento
+   com mais de 5 s precisa de pausa). prefers-reduced-motion: tensão fixa, sem animação. */
+function coverTension(restart) {
   const words = $$("#mark .tense"); if (!words.length) return;
-  if (restart) { TENSE.seed += 7; TENSE.accent++; TENSE.t0 = performance.now(); }
+  if (restart) { TENSE.seed += 7; TENSE.accent++; }
   if (reduced) { words.forEach((w, k) => tense(w, REST, TENSE.seed + k * 5)); return; }
   cancelAnimationFrame(TENSE.raf); if (!TENSE.t0) TENSE.t0 = performance.now();
   const step = () => {
-    const t = (performance.now() - TENSE.t0) / 1400, e = t >= 1 ? 1 : 1 - Math.pow(1 - t, 3), breathe = t >= 1 ? 0.1 * Math.sin(performance.now() / 1700) : 0;
-    const amp = 1.5 - (1.5 - REST) * e + breathe;
-    words.forEach((w, k) => tense(w, amp, TENSE.seed + k * 5)); // cada palavra tem o seu fator (data-k): FOMENTO sofre, CARTOGRAFIA quase não (pôster do Lab 01)
+    if (!TENSE.paused) {
+      const t = (performance.now() - TENSE.t0) / 1000;
+      const amp = REST + 0.16 * Math.sin(t / 3.1 * 2 * Math.PI) + 0.1 * Math.sin(t / 5.3 * 2 * Math.PI + 1.2); // respiração base (0,16–0,68)
+      const wave = (t % 7.3) / 7.3; // onda de pressão: percorre a palavra da esquerda para a direita a cada 7,3 s
+      words.forEach((w, k) => tense(w, Math.max(0.15, amp), TENSE.seed + k * 5, t, wave));
+      if (Math.floor(t / 11) !== TENSE.lastAcc) { TENSE.lastAcc = Math.floor(t / 11); TENSE.accent++; } // a letra colorida muda de mecanismo a cada 11 s
+    }
     if (introOn) TENSE.raf = requestAnimationFrame(step);
   };
   step();
@@ -466,8 +504,9 @@ function coverTension(restart) { // capa: chega com amplitude 1,1 e assenta em 1
 function initTension() {
   $$(".brand .tense").forEach(w => tense(w, +(w.dataset.amp || REST), +(w.dataset.seed || 1) + TENSE.seed));
   $$(".hero h1, #copy h1").forEach((h, k) => { h.classList.add("tense"); tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7); });
-  applyTypo(); // já chama coverTension
-  $("#mark").addEventListener("click", e => { e.stopPropagation(); coverTension(true); });
+  if (TYPO.auto && !reduced) { AUTO.step = 0; autoTick(); } else applyTypo(); // applyTypo já chama coverTension
+  autoRun();
+  $("#mark").addEventListener("click", e => { e.stopPropagation(); TENSE.paused = !TENSE.paused; $("#poster").classList.toggle("paused", TENSE.paused); });
 }
 
 /* ---------- navegação ---------- */
@@ -950,5 +989,6 @@ renderIndicators(); renderEditais();
 initTension();
 })();
 </script>
+<script src="js/labs-nav.js"></script>
 </body>
 </html>

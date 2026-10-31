@@ -110,6 +110,10 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
      prefers-reduced-motion. Modo instância, como o resto do motor. */
 (() => {
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+if (typeof p5 === "undefined" || typeof Rizoma === "undefined" || !window.CARTOGRAFIA_DATA) { // aberto pelo arquivo (file://) ou sem rede: os scripts não vieram
+  const g = $("#guide"); g.textContent = "O motor não carregou. Abra esta página por um servidor (http://…) ou pelo site publicado, não pelo arquivo: ela precisa de js/data.js, js/rizoma.js e do p5.js (CDN)."; g.classList.add("show"); g.style.background = "#b42318";
+  return;
+}
 const DATA = window.CARTOGRAFIA_DATA || [], REL = window.CARTOGRAFIA_RELATIONS || [];
 const IDX = {}; DATA.forEach((d, i) => IDX[d.id] = i);
 const TYPES = Object.keys(Rizoma.LINES);
@@ -301,7 +305,7 @@ document.addEventListener("visibilitychange", () => { const hid = document.hidde
 
 setCount(PH.count); setEvap(PH.evap);
 mountField();
-if (touch) setTimeout(() => { for (let i = 0; i < 4; i++) R.revealOne(); }, 600);
+setTimeout(() => { for (let i = 0; i < (touch ? 4 : 3); i++) R.revealOne(); }, 600); // já nasce com alguns nós: o micélio aparece antes do primeiro gesto
 })();
 </script>
 </body>

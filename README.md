@@ -103,3 +103,11 @@ O laboratório é exploratório: suas decisões visuais não devem ser tratadas 
 - Mapa de rastro num `p5.Graphics` a 1/3 da resolução, lido uma vez por quadro; evaporação por retângulo semitransparente; ~2500 agentes no desktop e ~700 no celular, com governador; pausa com a aba oculta; desligado com `prefers-reduced-motion`.
 - Ferramentas: chips das seis linhas, 3D, agentes −/+, evaporação (lenta/média/rápida, tecla E), limpar rastro (tecla X), recomeçar. Referências (ABNT) em `rizoma/README-RIZOMA.md`, seção 7; registro da adaptação em `rizoma/PROPOSTAS-INTERACAO-3D.md`, seção 9.5.
 - Propostas para o Lab 04 (interação final, forma do nó, descoberta): `rizoma/PROPOSTAS-LAB04.md`.
+
+## Lab 05 — Sistema
+
+- `lab-05-sistema.html` — o site completo (capa, Descobrir, Indicadores, Editais, Pesquisa, Sobre e página de projeto) redesenhado na linguagem do Lab 04, que o autor escolheu como direção. Arquivo separado, com CSS e script próprios; carrega `js/data.js` e `js/rizoma.js` com `?v=` e não altera `index.html`, `css/style.css` nem `js/app.js`.
+- O Descobrir é o campo do Lab 04: motor montado com nó "muro", linhas finas (`lineWeight 0.55`), nós espaçados (`spread 1.45`), foco que aproxima, sem spray, margens medidas nos elementos da interface, mais o micélio Physarum (200 agentes e evaporação média por padrão), radar dos escondidos, cursor como alimento, camadas por permanência e "Meu micélio" (tecla M).
+- Linguagem estendida às outras páginas: papel `#f7f6f1`, tinta `#161616`, cor por mecanismo (rosa Incentivo Fiscal, azul Fundo Municipal, verde Descentra), cor por natureza de linha (`Rizoma.LINES`) nos acentos dos gráficos e dos editais, títulos condensados (Arial Narrow), linhas finas, poucos elementos. O nó-muro (empena = monumental, fachadas = capilar, área = valor) vira ícone SVG na legenda, no gráfico de escala, na lista lateral, nos editais, na ficha e na página de projeto.
+- Uma só ficha (`openPreview`) para campo, indicadores e editais; "Explorar projeto" abre a página inteira; voltar reabre a ficha onde se estava. Mobile-first: faixa curta no topo, ferramentas no pé, ficha como folha inferior.
+- Decisões de coesão registradas em `rizoma/PROPOSTAS-LAB04.md`, seção 12.

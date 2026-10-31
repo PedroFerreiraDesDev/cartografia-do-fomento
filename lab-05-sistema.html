@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lab 05 — Sistema: o site inteiro na linguagem do Physarum</title>
+<style>
+/* Lab 05 — Sistema. O site completo (capa, Descobrir, Indicadores, Editais, Pesquisa, Sobre, projeto)
+   redesenhado para ter coesão com o Lab 04: papel, tinta, cor por mecanismo, cor por natureza de linha,
+   títulos condensados, linhas finas, o nó como fragmento de muro reaproveitado como ícone. Poucos elementos. */
+:root{--paper:#f7f6f1;--ink:#161616;--muted:#747474;--line:#d4d1c8;--soft:#edebe4;--if:#ff4f9a;--fundo:#31a8ff;--desc:#65e77d;--top:62px;
+  --head:"Arial Narrow","Helvetica Neue Condensed","Roboto Condensed","Liberation Sans Narrow",Arial,sans-serif}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+h1,h2,h3,.brand,.display{font-family:var(--head);font-stretch:condensed;font-weight:700;letter-spacing:-.01em;line-height:.95;margin:0}
+button{font:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{color:inherit}
+button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.hidden{display:none!important}
+.kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}
+.ghost{border:1px solid #bbb;background:#fff;padding:8px 10px;font-size:9px;font-weight:900}
+.primary{display:inline-block;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:11px 14px;font-size:9px;font-weight:900;letter-spacing:.05em;text-align:center;text-decoration:none}
+.primary:hover{background:#333}
+.note{border:1px dashed #bbb;background:rgba(255,255,255,.55);padding:12px 14px;font-size:11px;line-height:1.6;color:#666}
+.wall{display:inline-block;vertical-align:middle;flex:none}
+.rule{border:0;border-top:1px solid var(--line);margin:0}
+
+/* ---------- barra ---------- */
+.topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:var(--top);background:rgba(247,246,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 20px}
+.brand{border:0;background:none;padding:0;font-size:15px;line-height:.92;text-align:left;text-transform:uppercase}
+.topbar nav{margin-left:auto;display:flex;gap:2px}.topbar nav button{border:0;background:none;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:10px 9px;border-bottom:2px solid transparent;color:#777}.topbar nav button.active,.topbar nav button:hover{color:var(--ink);border-color:var(--ink)}
+.status{font-size:9px;color:#888;border:1px solid var(--line);padding:6px 8px;white-space:nowrap;text-decoration:none}.status:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ---------- vistas ---------- */
+.view{position:absolute;inset:var(--top) 0 0;overflow:auto;-webkit-overflow-scrolling:touch}
+.content{width:min(1040px,calc(100% - 48px));margin:0 auto;padding:40px 0 90px}.content.narrow{max-width:760px}
+.hero h1{font-size:clamp(44px,7vw,96px);text-transform:uppercase;line-height:.86;margin:8px 0 14px}.hero p{max-width:640px;font-size:13px;line-height:1.7;color:#666;margin:0}
+.hero .mark{display:inline-block;width:34px;height:3px;background:var(--acc,var(--ink));margin:0 0 10px}
+.block{border-top:1px solid var(--line);padding:22px 0 26px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px}
+.block h2{font-size:26px;text-transform:uppercase}.block p{font-size:12.5px;line-height:1.7;color:#666;margin:0 0 10px}.block .kicker{display:block;margin-bottom:6px}
+.block .kicker i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--acc,var(--ink));vertical-align:middle;margin-right:6px}
+
+/* ---------- capa ---------- */
+.intro{position:fixed;inset:0;z-index:200;background:rgba(247,246,241,.78);backdrop-filter:blur(1.5px);display:flex;flex-direction:column;padding:22px clamp(20px,5vw,56px);overflow:auto;transition:opacity .7s ease,transform .7s ease}
+.intro.leaving{opacity:0;transform:scale(1.03);pointer-events:none}.intro[hidden]{display:none}
+.topline,.footline{display:flex;justify-content:space-between;gap:20px;font-size:9px;letter-spacing:.1em;font-weight:900;color:#777}
+.intro-main{flex:1;width:min(820px,100%);margin:auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:30px 0}
+.intro-main h1{font-size:clamp(64px,13vw,170px);text-transform:uppercase;line-height:.82;margin:14px 0 18px}.intro-main h1 em{font-style:normal;color:#9a9890}
+.intro-main p{max-width:560px;font-size:13.5px;line-height:1.7;color:#555;margin:0 0 10px}
+.intro-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}.intro-actions .primary{padding:13px 18px;font-size:10px}
+.intro-actions .doors{display:flex;gap:6px;flex-wrap:wrap}.intro-actions .doors button{border:1px solid #bbb;background:rgba(255,255,255,.8);padding:11px 12px;font-size:9px;font-weight:900}.intro-actions .doors button:hover{border-color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:9px;font-weight:800;color:#555}.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:9px;height:9px;border-radius:2px;background:var(--c)}
+.intro .legend{margin-top:22px}
+.intro-cue{display:flex;align-items:center;gap:8px;margin-top:20px;font-size:11px;color:#777}.cue{width:7px;height:7px;border-radius:50%;background:var(--ink);animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%,100%{box-shadow:0 0 0 0 rgba(22,22,22,.35)}50%{box-shadow:0 0 0 9px rgba(22,22,22,0)}}
+
+/* ---------- Descobrir: camadas do campo (rastro embaixo, rizoma transparente em cima) ---------- */
+.stage{position:absolute;inset:var(--top) 0 0;overflow:hidden;overflow:clip}
+.layer{position:absolute;inset:0}.layer canvas{display:block}
+#trailStage{pointer-events:none}
+#rizomaStage canvas{touch-action:none;-webkit-user-select:none;user-select:none}
+.copy{position:absolute;z-index:20;left:22px;top:20px;width:min(360px,46vw);pointer-events:none}.copy h1{margin:6px 0 10px;font-size:34px;text-transform:uppercase}
+.tools{position:absolute;z-index:22;right:18px;top:16px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;max-width:56vw}
+.chips,.row{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
+.tools button{border:1px solid #ccc;background:rgba(255,255,255,.92);padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.03em}.tools button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.tools button:disabled{opacity:.4;cursor:default}
+.group{display:inline-flex}.group button{border-radius:0}.group button+button{border-left:0}.group .mid{min-width:92px;text-align:center}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px}.chip i{width:7px;height:7px;border-radius:50%;background:var(--sw);opacity:.4}.chip.active{background:#fff!important;color:var(--ink)!important;border-color:var(--sw)!important}.chip.active i{opacity:1}.chip small{color:#888;font-size:8px}
+.final-btn{border-color:var(--ink)!important}
+.foot{position:absolute;z-index:20;left:20px;right:20px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;pointer-events:none}.foot p{margin:0;max-width:520px;font-size:9.5px;line-height:1.5;color:#888}.foot span{font-size:9px;font-weight:800;background:rgba(255,255,255,.9);border:1px solid #ddd;padding:6px 8px;white-space:nowrap}
+.guide{position:absolute;z-index:23;left:50%;bottom:76px;transform:translateX(-50%);max-width:min(560px,calc(100% - 40px));background:var(--ink);color:#fff;padding:9px 13px;font-size:10.5px;line-height:1.5;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s}.guide.show{opacity:1}
+.hover-tip{position:absolute;z-index:24;pointer-events:none;background:rgba(247,246,241,.96);border:1px solid #cfcfca;padding:8px 10px 10px;min-width:150px;max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translate(14px,-50%);font-size:10.5px;line-height:1.4}
+.hover-tip[hidden]{display:none}.hover-tip b{display:block;font-size:12px;letter-spacing:-.02em}.hover-tip span{display:block;color:#666;margin-top:3px}.hover-tip span:empty{display:none}
+.hover-tip i{display:block;height:2px;background:#ddd;margin-top:7px;position:relative;overflow:hidden}.hover-tip i::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--w,0%);background:var(--ink);transition:width .25s linear}
+body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{opacity:.35}
+/* estampa final */
+.final{position:absolute;z-index:60;inset:0;display:grid;place-items:center;padding:20px;background:rgba(247,246,241,.72);backdrop-filter:blur(3px)}.final[hidden]{display:none}
+.final-card{width:min(640px,100%);max-height:100%;overflow:auto;background:#fff;border:1px solid #cfcfca;padding:22px 24px;box-shadow:0 24px 70px rgba(0,0,0,.14)}
+.final-card h2{font-size:30px;text-transform:uppercase;margin:8px 0 6px}.final-card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
+.final-preview{border:1px solid #e3e1da;background:var(--paper);aspect-ratio:16/10;display:grid;place-items:center;overflow:hidden}.final-preview img{width:100%;height:100%;object-fit:cover;display:block}
+.final-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.final-note{font-size:10px;color:#999;margin:12px 0 0}
+
+/* ---------- prévia (ficha do nó): uma só para campo, indicadores e editais ---------- */
+.card{position:fixed;z-index:150;top:var(--top);right:0;bottom:0;width:min(380px,100%);background:rgba(247,246,241,.97);border-left:1px solid var(--line);padding:18px 20px 30px;overflow:auto;transform:translateX(104%);transition:transform .35s cubic-bezier(.2,.7,.2,1)}.card.open{transform:none}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}.card h2{margin:8px 0;font-size:30px;text-transform:uppercase}.card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
+.card .head{display:flex;gap:14px;align-items:flex-end;margin:10px 0 6px}
+.fact{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #e3e1da;padding:8px 0;font-size:11px}.fact span{color:#888}.fact b{text-align:right}.fact .missing{color:#aaa;font-weight:400}
+.card .primary{display:block;width:100%;margin:12px 0}
+.links{display:flex;flex-direction:column;gap:4px;margin:6px 0 14px}.links button{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid #e3e1da;background:#fff;padding:8px 10px;font-size:11px;text-align:left}.links button i{width:8px;height:8px;border-radius:50%;background:var(--sw);flex:none}.links button.pot i{background:transparent;border:1.5px solid var(--sw)}.links button small{color:#888;font-size:9px;white-space:nowrap}.links .empty{font-size:11px;color:#888;border:1px dashed #ccc;padding:10px}
+.sub{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777;margin-top:12px}
+.hidden-note{font-size:11px;line-height:1.5;color:#666;margin:6px 0 0}
+
+/* ---------- Indicadores ---------- */
+.ind{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(290px,.5fr);grid-template-rows:minmax(0,1fr);height:100%;overflow:hidden}
+.ind-main,.ind-side{min-height:0}
+.ind-main{overflow-y:auto;padding:30px 32px 80px}.ind-side{overflow-y:auto;border-left:1px solid var(--line);padding:26px 22px 60px}
+@media(min-width:781px){body.card-open .view{padding-right:min(380px,100%);transition:padding .35s cubic-bezier(.2,.7,.2,1)}} /* as páginas de leitura cedem lugar à ficha: nada fica atrás dela */
+.summary{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;background:rgba(247,246,241,.96);backdrop-filter:blur(6px);padding:10px 0;border-bottom:1px solid var(--line);margin:-10px 0 14px}
+.summary b{display:block;font-size:13px;letter-spacing:-.02em}
+.metric{display:flex;gap:5px;flex-wrap:wrap;margin:18px 0 20px}.metric button{border:1px solid #ccc;background:#fff;padding:9px 11px;font-size:9px;font-weight:900}.metric button.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.mech-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 14px}
+.mech-legend button{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;border:1px solid #e3e1da;background:#fff;padding:8px 10px;text-align:left}.mech-legend button b{font-size:11px}.mech-legend button small{display:block;font-size:9px;color:#888;line-height:1.35}.mech-legend button:hover,.mech-legend button.active{border-color:var(--ink)}.mech-legend .wall{grid-row:1/3}
+.chart{padding:22px 0 34px;border-top:1px solid var(--line)}.chart h2{margin:4px 0 4px;font-size:26px;text-transform:uppercase}.chart>p{margin:0 0 16px;font-size:10.5px;line-height:1.55;color:#888}
+.chart .kicker i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--acc);vertical-align:middle;margin-right:6px}
+.bars{display:grid;gap:6px}.bar{display:grid;grid-template-columns:125px 1fr 100px;align-items:center;gap:12px;width:100%;border:0;padding:5px 0;background:transparent;text-align:left}.bar:hover,.bar.active{background:rgba(255,255,255,.7)}.bar .lab{font-size:10px;font-weight:900}.track{height:22px;background:var(--soft)}.fill{display:block;height:100%;background:#9a9890;transition:width .55s ease}.bar:hover .fill,.bar.active .fill{background:var(--ink)}.bar .val{text-align:right;font-size:10px;font-weight:900}
+.years{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.year{border:1px solid var(--line);min-height:160px;background:rgba(255,255,255,.6);padding:9px;display:flex;flex-direction:column;justify-content:flex-end;text-align:left}.year:hover,.year.active{border-color:var(--ink)}.stack{height:90px;display:flex;flex-direction:column-reverse;gap:2px;margin:8px 0}.piece{min-height:5px;border:1px solid var(--ink);background:var(--c)}.year .n{font-family:var(--head);font-size:26px;font-weight:700;letter-spacing:-.02em}.year small{font-size:9px;color:#888}
+.walls{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:68px;gap:5px}.tile{border:1px solid var(--line);background:rgba(255,255,255,.6);padding:7px 8px;overflow:hidden;text-align:left;display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}.tile:hover,.tile.active{border-color:var(--ink);background:#fff}.tile b{display:block;font-size:10px;line-height:1.2}.tile span{display:block;margin-top:3px;font-size:9px;color:#888}
+.ind-side h3{margin:8px 0 6px;font-size:28px;text-transform:uppercase}.ind-side>p{font-size:10.5px;line-height:1.55;color:#888;margin:0 0 14px}
+.sp{border-top:1px solid var(--line)}.sp button{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;border:0;background:transparent;padding:11px 0;text-align:left;width:100%}.sp small{display:block;font-size:9px;color:#999}.sp b{display:block;font-size:13px;margin:3px 0;letter-spacing:-.01em}.sp strong{display:block;margin-top:4px;font-size:10px}.sp.current button{background:rgba(255,255,255,.8);outline:1px solid var(--ink);padding-left:8px;padding-right:8px}
+.empty{border:1px dashed #bbb;padding:14px;font-size:11px;line-height:1.6;color:#777}
+
+/* ---------- Editais ---------- */
+.mech-row{display:grid;grid-template-columns:auto minmax(0,1fr) 180px;gap:22px;align-items:start;padding:22px 0;border-top:1px solid var(--line)}
+.mech-row h2{font-size:30px;text-transform:uppercase}.mech-row p{margin:6px 0 10px;font-size:11.5px;line-height:1.6;color:#666}.mech-row .sum{text-align:right}.mech-row .sum b{display:block;font-family:var(--head);font-size:26px;font-weight:700;letter-spacing:-.01em}.mech-row .sum small{display:block;font-size:9px;color:#888;margin:2px 0 10px}
+.edital-chips{display:flex;flex-wrap:wrap;gap:5px}.edital-chips button{display:inline-flex;align-items:center;gap:6px;border:1px solid #ccc;background:#fff;padding:7px 10px;font-size:9.5px;font-weight:800;border-radius:999px}.edital-chips button i{width:7px;height:7px;border-radius:50%;background:var(--sw)}.edital-chips button:hover{border-color:var(--sw)}.edital-chips small{color:#888;font-size:8.5px}
+
+/* ---------- Projeto ---------- */
+.project .bar-top{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:22px 0}
+.phero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(320px,1.1fr);gap:40px;padding-bottom:50px;align-items:end}
+.picon{min-height:420px;border:1px solid var(--line);background:rgba(255,255,255,.5);display:grid;place-items:center;position:relative;overflow:hidden}
+.picon .wall{width:min(70%,320px);height:auto}.picon .lab{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.94);border:1px solid #ddd;padding:6px 8px;font-size:9px;color:#777}
+.picon .gridlines{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:100% 25%,25% 100%;opacity:.5}
+.pinfo h1{font-size:clamp(40px,5.4vw,78px);text-transform:uppercase;margin:10px 0 14px}.pinfo>p{font-size:13px;line-height:1.7;color:#666;margin:0 0 12px}
+.chipst{display:inline-block;border:1px solid #aaa;padding:6px 8px;font-size:9px;font-weight:900;margin-bottom:10px}
+.ptabs{position:sticky;z-index:50;top:0;background:rgba(247,246,241,.97);border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;overflow:auto;scrollbar-width:none}.ptabs::-webkit-scrollbar{display:none}.ptabs button{flex:0 0 auto;border:0;background:transparent;border-bottom:2px solid transparent;padding:13px 14px;font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:#888}.ptabs button:hover{color:var(--ink);border-color:var(--ink)}
+.psec{padding:56px 0;border-bottom:1px solid var(--line)}.pgrid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px}.pgrid h2{font-size:34px;text-transform:uppercase;margin-top:6px}.pbody{max-width:720px}.pbody p{margin:0 0 16px;font-size:13.5px;line-height:1.75;color:#5c5c5c}
+.gallery{display:grid;grid-template-columns:1.5fr .75fr;grid-template-rows:220px 220px;gap:8px}.gitem{position:relative;border:1px solid var(--line);background:rgba(255,255,255,.5);overflow:hidden;display:grid;place-items:center}.gitem:first-child{grid-row:1/3}.gitem .wall{width:46%;height:auto}.gitem .lab{position:absolute;left:9px;bottom:9px;background:#fff;border:1px solid #ddd;padding:5px 7px;font-size:9px;color:#777}
+.social{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}.social div{border-top:2px solid var(--ink);padding:12px 0}.social small{font-size:9px;color:#999}.social b{display:block;margin-top:6px;font-size:14px}
+#commentText{width:100%;min-height:100px;border:1px solid #bbb;background:#fff;padding:12px;resize:vertical;font:inherit}.comment{padding:14px 0;border-bottom:1px solid var(--line)}.comment small{font-size:9px;color:#999}.comment p{font-size:12px;margin:6px 0}.comment button{border:0;background:none;padding:0;text-decoration:underline;font-size:10px}
+.question{padding:16px 0;border-bottom:1px solid var(--line)}.question b{display:block;font-size:13px;margin-bottom:9px}.rating{display:flex;gap:5px}.rating button{width:36px;height:34px;border:1px solid #ccc;background:#fff}.rating button.selected{background:var(--ink);color:#fff}
+.source{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}.source h3{margin:0 0 4px;font-size:16px;text-transform:uppercase}.source p{margin:0!important;font-size:11px!important;color:#888!important}
+
+/* ---------- celular (≤780px): faixa curta no topo, ferramentas no pé, prévia como folha inferior ---------- */
+@media(max-width:780px){
+  :root{--top:84px}
+  .topbar{height:auto;min-height:84px;flex-wrap:wrap;gap:4px;padding:8px 10px 0;align-items:flex-start}.brand{width:100%;padding:4px 0 2px;font-size:13px}
+  .topbar nav{width:100%;margin:0 -10px;padding:0 10px;overflow-x:auto;scrollbar-width:none;gap:0}.topbar nav::-webkit-scrollbar{display:none}.topbar nav button{flex:none;padding:9px 9px}.status{display:none}
+  .intro{padding:14px 16px 20px}.intro-main{padding:14px 0;justify-content:flex-start}.intro-main h1{font-size:clamp(40px,14vw,80px);margin:10px 0 14px;overflow-wrap:anywhere}.intro-main p{font-size:12.5px}
+  .intro-actions{width:100%}.intro-actions .primary{width:100%}.intro-actions .doors{width:100%}.intro-actions .doors button{flex:1}
+  .topline span:last-child,.footline{display:none}
+  .content{width:calc(100% - 32px);padding:24px 0 70px}.hero h1{font-size:clamp(38px,12vw,56px)}.block{grid-template-columns:1fr;gap:8px;padding:18px 0 20px}.block h2{font-size:24px}
+  .copy{left:0;right:0;top:0;width:auto;padding:9px 118px 9px 14px;background:rgba(247,246,241,.92);border-bottom:1px solid #e6e4dc}.copy h1{font-size:19px;margin:3px 0 4px}.copy .legend{gap:4px 9px;font-size:8.5px}
+  .foot{top:8px;bottom:auto;left:auto;right:10px;display:block}.foot p{display:none}.foot span{display:inline-block;font-size:8.5px;max-width:104px;text-align:right;white-space:normal}
+  .tools{top:auto;bottom:0;left:0;right:0;max-width:none;align-items:stretch;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(247,246,241,.95);border-top:1px solid #e6e4dc}
+  .chips,.row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;margin:0 -10px;padding:0 10px}.chips::-webkit-scrollbar,.row::-webkit-scrollbar{display:none}.tools button{flex:none;padding:9px 10px;font-size:9.5px;white-space:nowrap}.group{flex:none}
+  .guide{bottom:112px}body.card-open .tools{display:none}body.card-open .copy{opacity:.3}.hover-tip{display:none!important}
+  .card{top:auto;bottom:0;height:72vh;width:100%;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(104%);padding:12px 16px calc(28px + env(safe-area-inset-bottom))}
+  .card::before{content:"";display:block;width:36px;height:4px;border-radius:2px;background:#ccc;margin:0 auto 10px}.card h2{font-size:24px}
+  .final{padding:10px;align-items:end}.final-card{padding:16px;border-radius:14px 14px 4px 4px}.final-card h2{font-size:24px}.final-preview{aspect-ratio:4/3}
+  .ind{display:block;overflow-y:auto;height:auto}.ind-main{padding:22px 16px 40px;overflow:visible}.ind-side{border-left:0;border-top:1px solid var(--line);overflow:visible;padding:22px 16px 70px}
+  .mech-legend{grid-template-columns:1fr;gap:6px}.bar{grid-template-columns:84px 1fr 74px;gap:7px}.years{grid-template-columns:repeat(3,1fr)}.year{min-height:140px}.walls{grid-template-columns:repeat(6,1fr);grid-auto-rows:62px}.tile{grid-template-columns:1fr}.tile .wall{display:none}
+  .mech-row{grid-template-columns:auto 1fr;gap:14px}.mech-row .sum{grid-column:1/-1;text-align:left}.mech-row .sum b{font-size:22px}
+  .phero{grid-template-columns:1fr;gap:20px;padding-bottom:26px}.picon{min-height:220px}.pinfo h1{font-size:38px}.psec{padding:34px 0}.pgrid{grid-template-columns:1fr;gap:16px}.pgrid h2{font-size:28px}.gallery{grid-template-columns:1fr;grid-template-rows:200px 130px 130px}.gitem:first-child{grid-row:auto}.social{grid-template-columns:1fr}
+}
+/* tela de toque: sem desfoque sobre o canvas animado */
+@media(pointer:coarse){.intro,.topbar,.summary,.final{backdrop-filter:none;-webkit-backdrop-filter:none}.intro{background:rgba(247,246,241,.9)}}
+@media(prefers-reduced-motion:reduce){.cue{animation:none}.card,.intro{transition:none}}
+</style>
+</head>
+<body class="intro-active">
+<header class="topbar">
+  <button class="brand" data-nav="discover">Cartografia<br>do Fomento</button>
+  <nav aria-label="Seções">
+    <button data-nav="discover" class="active">Descobrir</button>
+    <button data-nav="indicators">Indicadores</button>
+    <button data-nav="editais">Editais</button>
+    <button data-nav="research">Pesquisa</button>
+    <button data-nav="about">Sobre</button>
+  </nav>
+  <a class="status" href="lab-04-physarum.html" title="Voltar ao Lab 04">LAB 05 · SISTEMA ← LAB 04</a>
+</header>
+
+<!-- capa: o campo já vive atrás dela -->
+<section id="intro" class="intro" aria-label="Capa">
+  <div class="topline"><span>CARTOGRAFIA DO FOMENTO</span><span>TCC · DESIGN UFMG · LAB 05 · O SISTEMA NA LINGUAGEM DO PHYSARUM</span></div>
+  <div class="intro-main">
+    <div class="kicker">ARTE URBANA · FOMENTO CULTURAL · DESIGN DA INFORMAÇÃO</div>
+    <h1>Cartografia<br>do <em>Fomento</em></h1>
+    <p>Vinte projetos de grafite e muralismo realizados com fomento cultural em Belo Horizonte, 2017–2024. Cada projeto é um fragmento de muro; entre eles cresce um micélio que ninguém desenhou.</p>
+    <p>Não há mapa obrigatório nem raiz: qualquer ponto é uma entrada. Revele, ligue linhas de fuga, abra nós, leve a sua estampa.</p>
+    <div class="intro-actions"><button type="button" id="enterBtn" class="primary">ENTRAR NO CAMPO ↗</button><div class="doors"><button data-door="indicators">Indicadores</button><button data-door="editais">Editais</button><button data-door="about">Sobre</button></div></div>
+    <div class="legend" id="introLegend"></div>
+    <p class="intro-cue"><span class="cue"></span>O campo atrás desta capa já está vivo: vinte projetos à espera do seu gesto.</p>
+  </div>
+  <div class="footline"><span>ARTEFATO DIGITAL / TESTE DE INTERAÇÃO</span><span>MOVA · DESCUBRA · INVESTIGUE</span></div>
+</section>
+
+<main>
+<!-- 01 Descobrir: o campo do Lab 04 -->
+<section id="discover" class="stage" aria-label="Descobrir">
+  <div id="trailStage" class="layer" aria-hidden="true"></div>
+  <div id="rizomaStage" class="layer"></div>
+  <div class="copy" id="copy"><div class="kicker">01 / DESCOBRIR · RIZOMA + PHYSARUM</div><h1>Uma rede que<br>ninguém desenhou.</h1><div class="legend" id="fieldLegend"></div></div>
+  <div class="tools" id="tools">
+    <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
+    <div class="row">
+      <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
+      <span class="group" aria-label="Quantidade de agentes"><button id="lessBtn" title="Menos agentes">−</button><button id="countBtn" class="mid" title="Agentes ativos">0 agentes</button><button id="moreBtn" title="Mais agentes">+</button></span>
+      <button id="evapBtn" title="Tecla E">Evaporação · média</button>
+      <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
+      <button id="resetBtn" title="Tecla R">Recomeçar</button>
+      <button id="finalBtn" class="final-btn" title="Tecla M · congela o campo e gera a estampa da sua visita">Fechar meu mapa ↗</button>
+    </div>
+  </div>
+  <div class="foot" id="foot"><p>Os pontos que piscam são projetos escondidos: clique ou passe a mão para revelar. Cada nó revelado solta agentes que sentem o rastro e depositam ao passar; ligue uma linha de fuga e a rede cresce entre os nós que a compartilham. Posições cenográficas, não a cidade.</p><span id="counter">0 / 20 NÓS</span></div>
+  <div class="guide" id="guide"></div>
+  <div id="hoverTip" class="hover-tip" hidden><b id="htTitle"></b><span id="htMeta"></span><span id="htMore"></span><i id="htBar"></i></div>
+  <section id="final" class="final" hidden aria-label="Meu micélio">
+    <div class="final-card">
+      <div class="kicker">MEU MICÉLIO · ESTAMPA DESTA VISITA</div>
+      <h2 id="finalTitle"></h2>
+      <p id="finalText"></p>
+      <div class="final-preview"><img id="finalImg" alt="Estampa do micélio desta visita"></div>
+      <div class="final-actions"><a id="finalDownload" class="primary" download="meu-micelio.png" href="#">BAIXAR PNG ↗</a><button id="finalLast" class="ghost">ABRIR O ÚLTIMO PROJETO</button><button id="finalBack" class="ghost">CONTINUAR EXPLORANDO</button><button id="finalReset" class="ghost">RECOMEÇAR</button></div>
+      <p class="final-note">O mapa é seu: cada visita produz outro. Nada aqui é a localização real das obras.</p>
+    </div>
+  </section>
+</section>
+
+<!-- 02 Indicadores -->
+<section id="indicators" class="view hidden" aria-label="Indicadores">
+  <div class="ind">
+    <div class="ind-main">
+      <div class="summary" id="summary"><div><span class="kicker" id="sumKicker">CORPUS DO TCC</span><b id="sumTitle">Todos os projetos</b></div><div><button id="sumClear" class="ghost" hidden>LIMPAR RECORTE</button></div></div>
+      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1>O fomento<br>em movimento.</h1><p>Passe a mão nos gráficos para ver quais projetos formam cada resultado; clique para fixar um recorte. Cada projeto abre a mesma ficha do campo, com suas linhas. Os ícones são os mesmos nós do campo: empena alta = monumental, fachadas = capilar, cor = mecanismo, área = valor.</p></div>
+      <div class="metric" role="group" aria-label="Medida"><button data-metric="count" class="active">Quantidade de projetos</button><button data-metric="value">Valor registrado</button></div>
+      <div class="mech-legend" id="mechLegend"></div>
+      <section class="chart" style="--acc:rgb(200,170,255)"><div class="kicker"><i></i>REGIONAL · A LINHA "REGIONAL" DO CAMPO</div><h2>Onde os projetos aparecem?</h2><p>Só regionais individualmente verificadas entram. Por enquanto, nenhuma: o campo mostra o que falta, em vez de inferir.</p><div id="regionChart" class="bars"></div></section>
+      <section class="chart" style="--acc:rgb(255,210,63)"><div class="kicker"><i></i>ANO × MECANISMO · A LINHA "ANO"</div><h2>Quando e por qual forma de fomento?</h2><div id="yearChart" class="years"></div></section>
+      <section class="chart" style="--acc:rgb(120,255,150)"><div class="kicker"><i></i>ESCALA FINANCEIRA · A LINHA "ESCALA"</div><h2>Quanto aparece registrado?</h2><p>Cada muro ocupa área proporcional ao valor registrado. Clique para abrir a ficha.</p><div id="wallsChart" class="walls"></div></section>
+      <section class="chart"><div class="kicker">DADOS SOCIAIS</div><h2>Perfil dos proponentes.</h2><div class="empty">A base atual ainda não sustenta uma visualização quantitativa de gênero, raça, renda ou classe social. Esses dados devem ser autodeclarados e agregados, nunca inferidos a partir da localização.</div></section>
+    </div>
+    <aside class="ind-side" id="indSide"><div class="kicker" id="sideKicker">CORPUS DO TCC</div><h3 id="sideTitle">Todos os projetos</h3><p id="sideText">Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Tocar num projeto abre a ficha, sem sair daqui.</p><div id="sideList"></div></aside>
+  </div>
+</section>
+
+<!-- 03 Editais -->
+<section id="editais" class="view hidden" aria-label="Editais">
+  <div class="content">
+    <div class="hero" style="--acc:rgb(255,92,168)"><span class="mark"></span><div class="kicker">03 / MECANISMOS DE FOMENTO · A LINHA "EDITAL"</div><h1>Editais não são<br>só documentos.</h1><p>Três mecanismos atravessam o corpus. Cada um tem a sua cor no campo e nos ícones; cada edital é uma linha de fuga possível entre projetos. Abra um mecanismo nos indicadores ou entre por um edital.</p></div>
+    <div id="editalList"></div>
+  </div>
+</section>
+
+<!-- 04 Pesquisa -->
+<section id="research" class="view hidden" aria-label="Pesquisa">
+  <div class="content narrow">
+    <div class="hero"><span class="mark"></span><div class="kicker">04 / CAMADA SOCIAL</div><h1>Quem acessa<br>o fomento?</h1><p>A pesquisa com pessoas poderá complementar os registros documentais. Nada aqui é inferido: perguntas, não deduções.</p></div>
+    <div style="height:30px"></div>
+    <article class="block"><div><span class="kicker">01</span><h2>Experiência com editais</h2></div><p>Investigar se artistas e produtores já participaram, tentaram participar ou nunca submeteram propostas.</p></article>
+    <article class="block"><div><span class="kicker">02</span><h2>Barreiras percebidas</h2></div><p>Encontrar oportunidades, compreender regras, elaborar orçamento, reunir documentos e realizar prestação de contas.</p></article>
+    <article class="block"><div><span class="kicker">03</span><h2>Perfil dos respondentes</h2></div><p>Dados sociodemográficos precisam ser voluntários, autodeclarados e apresentados de forma agregada.</p></article>
+  </div>
+</section>
+
+<!-- 05 Sobre -->
+<section id="about" class="view hidden" aria-label="Sobre">
+  <div class="content narrow">
+    <div class="hero"><span class="mark"></span><div class="kicker">05 / PROJETO ACADÊMICO</div><h1>Uma cartografia<br>sem mapa obrigatório.</h1><p>O território continua nos dados e relatos, mas a experiência pode começar pelo muro, pelo valor, pelo ano ou pelo edital. O modelo conceitual é o rizoma de Deleuze e Guattari: conexões heterogêneas, sem raiz nem centro. A terceira ligação, o micélio, segue o modelo de Jones (2010) para as redes do <em>Physarum polycephalum</em>.</p></div>
+    <div style="height:30px"></div>
+    <article class="block"><div><span class="kicker">LINGUAGEM</span><h2>Papel, tinta e três cores</h2></div><div><p>Papel claro e tinta quase preta em todas as páginas; a cor só entra onde carrega informação: rosa para o Incentivo Fiscal, azul para o Fundo Municipal, verde para o Descentra, e uma cor por natureza de linha (ano, mecanismo, edital, escala, regional, curadoria). Títulos condensados, linhas finas, poucos elementos.</p><div class="legend" id="aboutLegend"></div></div></article>
+    <article class="block"><div><span class="kicker">O NÓ</span><h2>Fragmento de muro</h2></div><div><p>O projeto não é uma bolinha: é uma superfície. Circuito monumental = uma empena alta; circuito capilar = um conjunto de fachadas sobre um chão comum. A área cresce com o valor registrado; a cor é o mecanismo. O mesmo desenho que vive no campo vira ícone nos indicadores, nos editais e na página de cada projeto.</p><div id="aboutWalls" style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap"></div></div></article>
+    <article class="block"><div><span class="kicker">DESCOBRIR</span><h2>O gesto revela</h2></div><p>O campo começa com poucos nós. Projetos escondidos piscam como um radar; clicar ou passar a mão revela. Cada nó solta agentes que depositam rastro; ligar uma linha de fuga faz a rede crescer entre os nós que compartilham o atributo, e desligar deixa evaporar.</p></article>
+    <article class="block"><div><span class="kicker">SEGUIR LINHAS</span><h2>Uma só ficha</h2></div><p>No campo, nos indicadores ou nos editais, abrir um projeto abre a mesma ficha, com linhas ligadas, ligações possíveis e o que ainda está escondido. A página inteira do projeto só com "Explorar". Fechar devolve ao lugar de onde se veio, com a trilha preservada.</p></article>
+    <article class="block"><div><span class="kicker">FECHAR</span><h2>Meu micélio</h2></div><p>A visita termina quando a pessoa quiser: "Fechar meu mapa" congela o campo e gera a estampa (rastro, muros, linhas, trilha e data). Cada visita produz um mapa diferente. É o mapa, não o decalque.</p></article>
+    <article class="block"><div><span class="kicker">VERIFICAR</span><h2>O que falta fica visível</h2></div><p>Campos ainda não verificados aparecem como "A verificar" e nunca geram linhas. Regional, proponente e fotografias entram só com fonte.</p></article>
+  </div>
+</section>
+
+<!-- página de projeto -->
+<section id="project" class="view hidden project" aria-label="Projeto">
+  <div class="content">
+    <div class="bar-top"><button id="projectBack" class="ghost">← VOLTAR</button><span class="kicker">PROJETO / ARQUIVO EM CONSTRUÇÃO</span></div>
+    <div class="phero">
+      <div class="picon" id="projectIcon"></div>
+      <div class="pinfo"><span class="chipst" id="projectStatus"></span><div class="kicker" id="projectMeta"></div><h1 id="projectTitle"></h1><p id="projectSummary"></p><div id="projectFacts"></div></div>
+    </div>
+  </div>
+  <nav class="ptabs" aria-label="Seções do projeto"><button data-psec="gallery">Galeria</button><button data-psec="project">Projeto</button><button data-psec="lines">Linhas</button><button data-psec="territory">Território</button><button data-psec="funding">Fomento</button><button data-psec="community">Comunidade</button><button data-psec="survey">Questionário</button><button data-psec="sources">Fontes</button></nav>
+  <div class="content" style="padding-top:0">
+    <section id="psec-gallery" class="psec"><div class="pgrid"><div><span class="kicker">01</span><h2>Galeria.</h2></div><div class="pbody"><div id="projectGallery" class="gallery"></div><div class="note" style="margin-top:12px">As imagens desta versão são o próprio ícone do nó. Fotografias reais entram com origem, crédito, legenda e autorização de uso.</div></div></div></section>
+    <section id="psec-project" class="psec"><div class="pgrid"><div><span class="kicker">02</span><h2>O projeto.</h2></div><div id="projectNarrative" class="pbody"></div></div></section>
+    <section id="psec-lines" class="psec"><div class="pgrid"><div><span class="kicker">RIZOMA</span><h2>Seguir<br>uma linha.</h2></div><div class="pbody"><p>Este nó liga-se a outros por atributos de naturezas diferentes. O motivo de cada conexão aparece ao lado; ligações possíveis ainda não ligadas aparecem tracejadas.</p><div id="projectLines" class="links"></div><div id="projectTrail" class="note"></div></div></div></section>
+    <section id="psec-territory" class="psec"><div class="pgrid"><div><span class="kicker">03</span><h2>Território<br>e sociedade.</h2></div><div id="territoryContent" class="pbody"></div></div></section>
+    <section id="psec-funding" class="psec"><div class="pgrid"><div><span class="kicker">04</span><h2>Como foi<br>financiado?</h2></div><div id="fundingContent" class="pbody"></div></div></section>
+    <section id="psec-community" class="psec"><div class="pgrid"><div><span class="kicker">05</span><h2>Vozes<br>da rua.</h2></div><div class="pbody"><p>Este espaço recebe relatos sobre a relação das pessoas com a obra. Comentários não substituem documentação oficial.</p><textarea id="commentText" placeholder="Como você conhece esta obra ou projeto?"></textarea><div style="margin-top:10px"><button id="addComment" class="primary">ADICIONAR RELATO DE TESTE ↗</button></div><div id="commentList"></div></div></div></section>
+    <section id="psec-survey" class="psec"><div class="pgrid"><div><span class="kicker">06</span><h2>Entender<br>a informação.</h2></div><div class="pbody"><div class="question"><b>As informações ajudaram a compreender como este projeto foi financiado?</b><div class="rating" data-question="understanding"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div><div class="question"><b>A relação entre projeto, território e edital ficou clara?</b><div class="rating" data-question="territory"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div></div></div></section>
+    <section id="psec-sources" class="psec"><div class="pgrid"><div><span class="kicker">07</span><h2>Fontes<br>e evidências.</h2></div><div id="sourceContent" class="pbody"></div></div></section>
+  </div>
+</section>
+</main>
+
+<!-- a ficha: uma só, para campo, indicadores e editais -->
+<aside class="card" id="card" aria-live="polite" aria-label="Ficha do projeto">
+  <div class="top"><div class="kicker" id="cKicker">NÓ ABERTO</div><button class="ghost" id="cClose">FECHAR · A TRILHA FICA</button></div>
+  <div class="head"><span id="cIcon"></span><h2 id="cTitle"></h2></div><p id="cTrans"></p>
+  <div id="cFacts"></div>
+  <button class="primary" id="cOpen">EXPLORAR PROJETO ↗</button>
+  <div class="sub">AINDA ESCONDIDO</div><p id="cHidden" class="hidden-note"></p>
+  <div class="sub">LINHAS LIGADAS</div><div class="links" id="cLinks"></div>
+  <div class="sub">LIGAÇÕES POSSÍVEIS</div><div class="links" id="cPot"></div>
+  <div id="cTrail" class="note" style="margin-top:8px"></div>
+</aside>
+
+<script src="js/data.js?v=20261030-30"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
+<script src="js/rizoma.js?v=20261030-30"></script>
+<script>
+/* Lab 05 — Sistema: o site completo na linguagem do Lab 04.
+   Cartografia do Fomento · TCC Pedro H. F. Moreira (Design UFMG).
+
+   O campo (Descobrir) é o do Lab 04: motor js/rizoma.js em modo instância (nó "muro", linhas finas,
+   nós espaçados, foco que aproxima, sem spray, margens medidas nos elementos da interface) sobre o
+   micélio Physarum (modelo de agentes de Jones, 2010; referência didática Patt Vira, 2023; ver o
+   cabeçalho do script do Lab 04 para a adaptação completa). As outras páginas reaproveitam a lógica
+   de js/app.js (navegação, prévia única openPreview, indicadores com legenda por mecanismo, editais,
+   página de projeto) sem alterá-lo: este arquivo é separado, com CSS e script próprios.
+
+   Coesão: papel #f7f6f1, tinta #161616, cor por mecanismo (rosa IF, azul Fundo, verde Descentra),
+   cor por natureza de linha (Rizoma.LINES), títulos condensados, linhas finas; o nó como fragmento de
+   muro (empena = monumental, fachadas = capilar, área = valor) vira ícone SVG nos indicadores, editais,
+   ficha e página de projeto. Nada fica escondido atrás de outro elemento: as margens do campo são
+   medidas no texto, nas ferramentas, no contador e na ficha. */
+(() => {
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+if (typeof p5 === "undefined" || typeof Rizoma === "undefined" || !window.CARTOGRAFIA_DATA) { // aberto pelo arquivo (file://) ou sem rede
+  const g = $("#guide"); g.textContent = "O motor não carregou. Abra esta página por um servidor (http://…) ou pelo site publicado, não pelo arquivo: ela precisa de js/data.js, js/rizoma.js e do p5.js (CDN)."; g.classList.add("show"); g.style.background = "#b42318";
+  $("#intro").hidden = true; document.body.classList.remove("intro-active");
+  return;
+}
+const DATA = window.CARTOGRAFIA_DATA || [], REL = window.CARTOGRAFIA_RELATIONS || [];
+const IDX = {}; DATA.forEach((d, i) => IDX[d.id] = i);
+const TYPES = Object.keys(Rizoma.LINES);
+const MECHS = ["Incentivo Fiscal", "Fundo Municipal", "Descentra"];
+const MECH = { "Incentivo Fiscal": "#ff4f9a", "Fundo Municipal": "#31a8ff", "Descentra": "#65e77d" }; // mesma paleta do motor (nodeStyle "muro")
+const LC = t => `rgb(${Rizoma.LINES[t].color.join(",")})`;
+const touch = matchMedia("(pointer:coarse)").matches; if (touch) document.body.classList.add("touch");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const small = () => innerWidth <= 780;
+const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const money = Rizoma.money, shortMoney = v => v >= 1000000 ? `R$ ${(v / 1000000).toFixed(2).replace(".", ",")} mi` : v >= 1000 ? `R$ ${Math.round(v / 1000)} mil` : money(v);
+const fact = (k, v) => { const miss = v == null || v === ""; return `<div class="fact"><span>${k}</span><b class="${miss ? "missing" : ""}">${miss ? "A verificar" : esc(v)}</b></div>`; };
+const stage = $("#discover");
+let R = null, page = "discover", introOn = true;
+
+/* ---------- o nó como ícone: o mesmo fragmento de muro do campo (drawWall do motor), em SVG ---------- */
+const f1 = n => Math.round(n * 10) / 10;
+function wallIcon(d, size, cls) { // d: { mechanism, circuit, value }
+  const c = MECH[d.mechanism] || "#999", mon = d.circuit === "Monumental", v = d.value == null ? 60000 : d.value;
+  const a = 0.62 + 0.38 * Math.max(0, Math.min(1, (v - 19740) / (165000 - 19740))); // a área cresce com o valor
+  let body = "";
+  if (mon) { // uma empena: retângulo alto, platibanda e duas linhas de pavimento
+    const w = 16 * a, h = 30 * a, x = 20 - w / 2, y = 36 - h;
+    body = `<rect x="${f1(x)}" y="${f1(y)}" width="${f1(w)}" height="${f1(h)}" fill="${c}" fill-opacity=".85" stroke="#161616"/><line x1="${f1(x)}" y1="${f1(y + h * .22)}" x2="${f1(x + w)}" y2="${f1(y + h * .22)}" stroke="#161616" stroke-opacity=".55"/><line x1="${f1(x + 1.5)}" y1="${f1(y + h * .44)}" x2="${f1(x + w - 1.5)}" y2="${f1(y + h * .44)}" stroke="#fff" stroke-opacity=".55"/><line x1="${f1(x + 1.5)}" y1="${f1(y + h * .66)}" x2="${f1(x + w - 1.5)}" y2="${f1(y + h * .66)}" stroke="#fff" stroke-opacity=".55"/>`;
+  } else { // várias fachadas sobre um chão comum: 3 a 5 blocos, mais blocos para mais valor
+    const k = v > 100000 ? 5 : v > 30000 ? 4 : 3, bw = 6.2 * a, bh = 11 * a, gap = 1.6, total = k * bw + (k - 1) * gap, x0 = 20 - total / 2;
+    for (let i = 0; i < k; i++) { const hh = bh * (0.72 + ((i * 7) % 3) * 0.14), x = x0 + i * (bw + gap); body += `<rect x="${f1(x)}" y="${f1(36 - hh)}" width="${f1(bw)}" height="${f1(hh)}" fill="${c}" fill-opacity=".8" stroke="#161616"/>`; }
+    body += `<line x1="${f1(x0 - 2)}" y1="37" x2="${f1(x0 + total + 2)}" y2="37" stroke="#161616" stroke-opacity=".5"/>`;
+  }
+  return `<svg class="wall ${cls || ""}" viewBox="0 0 40 40" width="${size}" height="${size}" stroke-width="1" aria-hidden="true">${body}</svg>`;
+}
+const mechSample = m => ({ mechanism: m, circuit: m === "Incentivo Fiscal" ? "Monumental" : "Capilar", value: m === "Incentivo Fiscal" ? 150000 : m === "Fundo Municipal" ? 70000 : 30000 });
+const legendHTML = () => MECHS.map(m => `<span><i style="--c:${MECH[m]}"></i>${m}</span>`).join("") + `<span><b style="font-family:var(--head)">▮</b> empena = monumental</span><span><b style="font-family:var(--head)">▪▪▪</b> fachadas = capilar · área = valor</span>`;
+$("#introLegend").innerHTML = legendHTML(); $("#fieldLegend").innerHTML = legendHTML(); $("#aboutLegend").innerHTML = legendHTML() + TYPES.map(t => `<span><i style="--c:${LC(t)};border-radius:50%"></i>${Rizoma.LINES[t].label}</span>`).join("");
+$("#aboutWalls").innerHTML = DATA.filter(d => ["p05", "p09", "p17", "p11"].includes(d.id)).map(d => `<div style="text-align:center"><div>${wallIcon(d, 84)}</div><small style="font-size:9px;color:#777">${esc(Rizoma.shortTitle(d.title))}</small></div>`).join("");
+
+/* ---------- navegação ---------- */
+const PAGES = ["discover", "indicators", "editais", "research", "about"];
+let currentProject = null, previous = { page: "discover", selection: null }, metric = "count", selection = null, hoverSel = null, previewId = null, previewOrigin = "discover";
+function showPage(name) {
+  page = name; currentProject = null;
+  PAGES.forEach(id => $("#" + id).classList.toggle("hidden", id !== name)); $("#project").classList.add("hidden");
+  $$("[data-nav]").forEach(b => b.classList.toggle("active", b.dataset.nav === name));
+  setFieldVisible(name === "discover");
+  if (name === "indicators") renderIndicators();
+  if (name === "editais") renderEditais();
+  if ((name === "research" || name === "about") && R && R.state().focus) R.close(); // páginas de leitura fecham a ficha; a trilha fica
+  if (R) sync(R.state());
+}
+const whenLoaded = fn => document.readyState === "complete" ? fn() : window.addEventListener("load", fn, { once: true });
+function setFieldVisible(v) {
+  if (R) R.setVisible(v && !document.hidden);
+  if (trailP) { if (v && !document.hidden) { trailP.loop(); if (trail && (trailP.width !== stage.clientWidth || trailP.height !== stage.clientHeight)) trailP.windowResized(); } else trailP.noLoop(); } // a janela pode ter mudado enquanto o campo estava escondido
+  if (v) marginCache.at = 0;
+}
+$$("[data-nav]").forEach(b => b.onclick = () => { if (introOn) enter(); showPage(b.dataset.nav); });
+
+/* ---------- capa ---------- */
+function enter() {
+  if (!introOn) return; introOn = false; document.body.classList.remove("intro-active");
+  const i = $("#intro"); i.classList.add("leaving"); setTimeout(() => i.hidden = true, 750);
+  if (R) { R.setIntro(false); whenLoaded(() => setTimeout(() => { for (let k = 0; k < (touch ? 4 : 3); k++) R.revealOne(); }, 500)); } // já nasce com alguns nós: o micélio aparece antes do primeiro gesto (o p5 só inicia o sketch no load)
+  marginCache.at = 0;
+}
+$("#enterBtn").onclick = enter;
+$$("[data-door]").forEach(b => b.onclick = () => { enter(); showPage(b.dataset.door); });
+
+/* ---------- parâmetros do Physarum (copiados do Lab 04; 200 agentes e evaporação média por padrão) ---------- */
+const SCALE = 3;                                     // o mapa de rastro tem 1/3 da resolução do palco
+const INK = [170, 168, 162];                         // cor do rastro livre (sem linha): cinza bem claro, quase fundo
+const PH = {
+  on: !reduced,
+  count: 200, step: 100, min: 100, max: 6000, floor: 200, // o governador não desce abaixo de floor
+  evapLevels: [["lenta", 0.012, 1], ["média", 0.03, 1], ["rápida", 0.07, 2]], evap: 1, // [nome, fator do retângulo, decaimento linear]
+  sensorAngle: 0.5, sensorDist: 12, turn: 0.2, speed: 1.15, jitter: 0.06,   // curvas longas: o rastro vira veia, não ruído
+  deposit: 3, depositLinked: 22, bias: 0.09, biasFree: 0.03, biasLure: 0.16, mix: 0.35, life: [600, 1600], // bias: puxão rumo ao irmão ligado; biasFree: rumo a qualquer outro nó revelado; biasLure: rumo ao cursor
+  blur: (touch || small()) ? 1.6 : 2.4
+};
+let trail = null, tw = 0, th = 0, trailP = null;
+const A = { x: null, y: null, h: null, home: null, target: null, type: null, age: null, life: null };
+const pos = { x: new Float32Array(DATA.length), y: new Float32Array(DATA.length), on: new Uint8Array(DATA.length) }; // posição de tela (escala do rastro) de cada nó
+let sibs = DATA.map(() => []);                       // por nó: [{ j, t }] nós irmãos pela linha t ligada
+let spawnPool = [];                                  // índices dos nós revelados, com peso maior para os ligados
+let drawMs = 0, frameN = 0;                          // custo médio (ms) do quadro do micélio, para o governador
+let flush = 0;                                       // quadros de evaporação forte depois de desligar uma linha (ruptura)
+
+function alloc() {
+  const n = PH.max;
+  A.x = new Float32Array(n); A.y = new Float32Array(n); A.h = new Float32Array(n);
+  A.home = new Int16Array(n).fill(-1); A.target = new Int16Array(n).fill(-1); A.type = new Int8Array(n).fill(-1);
+  A.age = new Float32Array(n); A.life = new Float32Array(n).fill(0); // age >= life: renasce no próximo quadro
+}
+function makeTrail(p) {
+  tw = Math.max(8, Math.ceil(p.width / SCALE)); th = Math.max(8, Math.ceil(p.height / SCALE));
+  if (trail) trail.remove();
+  // o mapa é lido a cada quadro: o contexto 2D precisa nascer com willReadFrequently; getContext é interceptado só durante a criação
+  const orig = HTMLCanvasElement.prototype.getContext;
+  HTMLCanvasElement.prototype.getContext = function (t, o) { return orig.call(this, t, t === "2d" ? Object.assign({ willReadFrequently: true }, o || {}) : o); };
+  try { trail = p.createGraphics(tw, th); } finally { HTMLCanvasElement.prototype.getContext = orig; }
+  trail.pixelDensity(1); trail.noStroke(); trail.clear();
+  if (A.life) A.life.fill(0);
+}
+function rebuildSibs(active) { // nós irmãos por linha ligada: só quando o estado do rizoma muda
+  sibs = DATA.map(() => []);
+  for (const t of TYPES) {
+    if (!active[t]) continue;
+    const L = Rizoma.LINES[t], ti = TYPES.indexOf(t);
+    if (L.pair) { for (const r of REL) { const a = IDX[r.a], b = IDX[r.b]; if (a == null || b == null) continue; sibs[a].push({ j: b, t: ti }); sibs[b].push({ j: a, t: ti }); } continue; }
+    const groups = {};
+    DATA.forEach((d, i) => { const k = L.key(d); if (k != null) (groups[k] = groups[k] || []).push(i); });
+    for (const k in groups) { const g = groups[k]; if (g.length < 2) continue; for (const i of g) for (const j of g) if (i !== j) sibs[i].push({ j, t: ti }); }
+  }
+}
+const linkOf = i => { for (const s of sibs[i]) if (pos.on[s.j]) return s; return null; };
+function updateSources() {
+  pos.on.fill(0); spawnPool.length = 0;
+  for (const n of R.screen().nodes) { const i = IDX[n.id]; if (i == null) continue; pos.x[i] = n.x / SCALE; pos.y[i] = n.y / SCALE; pos.on[i] = 1; }
+  for (let i = 0; i < DATA.length; i++) { if (!pos.on[i]) continue; spawnPool.push(i); if (linkOf(i)) spawnPool.push(i, i); } // nós ligados recebem 3× mais agentes
+}
+function respawn(i) {
+  if (!spawnPool.length) return false;
+  const home = spawnPool[(Math.random() * spawnPool.length) | 0];
+  const opts = sibs[home].filter(s => pos.on[s.j]);
+  const pick = opts.length ? opts[(Math.random() * opts.length) | 0] : null;
+  const an = Math.random() * Math.PI * 2, rr = Math.random() * 2.5;
+  A.x[i] = pos.x[home] + Math.cos(an) * rr; A.y[i] = pos.y[home] + Math.sin(an) * rr; A.h[i] = Math.random() * Math.PI * 2;
+  let free = -1; if (!pick && spawnPool.length > 1) { for (let k = 0; k < 4; k++) { const j = spawnPool[(Math.random() * spawnPool.length) | 0]; if (j !== home) { free = j; break; } } }
+  A.home[i] = home; A.target[i] = pick ? pick.j : free; A.type[i] = pick ? pick.t : -1;
+  A.age[i] = 0; A.life[i] = PH.life[0] + Math.random() * (PH.life[1] - PH.life[0]);
+  return true;
+}
+
+/* ---------- camada 1: o micélio ---------- */
+new p5(p => {
+  trailP = p;
+  p.setup = () => { p.pixelDensity(1); const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("trailStage"); p.frameRate(60); alloc(); makeTrail(p); };
+  p.windowResized = () => { if (page !== "discover") return; p.resizeCanvas(stage.clientWidth, stage.clientHeight); makeTrail(p); };
+  p.draw = () => {
+    if (!PH.on || !R || introOn) { p.clear(); return; }
+    if (final.on) return; // congelado: a estampa fica como está
+    const t0 = performance.now();
+    updateSources();
+    let [, evapF, evapL] = PH.evapLevels[PH.evap];
+    if (flush > 0) { flush--; evapF = 0.09; evapL = 3; }
+    const ctx = trail.drawingContext;
+    ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = `rgba(0,0,0,${evapF})`; ctx.fillRect(0, 0, tw, th); ctx.globalCompositeOperation = "source-over";
+    for (let i = 0; i < DATA.length; i++) {
+      if (!pos.on[i]) continue;
+      const l = linkOf(i), c = l ? Rizoma.LINES[TYPES[l.t]].color : INK;
+      if (l) { trail.fill(c[0], c[1], c[2], 22); trail.circle(pos.x[i], pos.y[i], 7); }
+      else { trail.fill(c[0], c[1], c[2], 8); trail.circle(pos.x[i], pos.y[i], 6); }
+    }
+    trail.loadPixels();
+    const px = trail.pixels, n = PH.count, sa = PH.sensorAngle, sd = PH.sensorDist, ta = PH.turn, sp = PH.speed, jt = PH.jitter;
+    if (evapL) for (let k = 3, e = px.length; k < e; k += 4) px[k] = px[k] > evapL ? px[k] - evapL : 0;
+    const sense = (x, y) => (x < 0 || y < 0 || x >= tw || y >= th) ? -1 : px[(((y | 0) * tw + (x | 0)) << 2) + 3];
+    for (let i = 0; i < n; i++) {
+      if (A.age[i] >= A.life[i] || A.home[i] < 0 || !pos.on[A.home[i]]) { if (!respawn(i)) { A.life[i] = 0; continue; } }
+      let x = A.x[i], y = A.y[i], h = A.h[i];
+      const f = sense(x + Math.cos(h) * sd, y + Math.sin(h) * sd), l = sense(x + Math.cos(h - sa) * sd, y + Math.sin(h - sa) * sd), r = sense(x + Math.cos(h + sa) * sd, y + Math.sin(h + sa) * sd);
+      if (f > l && f > r) { } else if (f < l && f < r) h += Math.random() < 0.5 ? -ta : ta; else if (l > r) h -= ta; else if (r > l) h += ta;
+      const tg = A.target[i];
+      if (lure.on && A.home[i] === lure.home) { const dx = lure.x - x, dy = lure.y - y, d = Math.atan2(dy, dx) - h; h += Math.atan2(Math.sin(d), Math.cos(d)) * PH.biasLure; }
+      else if (tg >= 0 && pos.on[tg]) {
+        const dx = pos.x[tg] - x, dy = pos.y[tg] - y, dist = Math.hypot(dx, dy), d = Math.atan2(dy, dx) - h, linked = A.type[i] >= 0;
+        h += Math.atan2(Math.sin(d), Math.cos(d)) * (dist < 6 ? 0.5 : linked ? PH.bias : PH.biasFree);
+        if (dist < 3) { A.target[i] = A.home[i]; A.home[i] = tg; }
+      }
+      h += (Math.random() - 0.5) * jt;
+      x += Math.cos(h) * sp; y += Math.sin(h) * sp;
+      if (x < 1 || y < 1 || x >= tw - 1 || y >= th - 1) { A.life[i] = 0; continue; }
+      const k = (((y | 0) * tw + (x | 0)) << 2), t = A.type[i], c = t >= 0 ? Rizoma.LINES[TYPES[t]].color : INK, dep = t >= 0 ? PH.depositLinked : PH.deposit;
+      const m = PH.mix; px[k] += (c[0] - px[k]) * m; px[k + 1] += (c[1] - px[k + 1]) * m; px[k + 2] += (c[2] - px[k + 2]) * m; px[k + 3] = px[k + 3] + dep;
+      if (t >= 0) { const k2 = k + 4; if (k2 + 3 < px.length) { px[k2] += (c[0] - px[k2]) * m; px[k2 + 1] += (c[1] - px[k2 + 1]) * m; px[k2 + 2] += (c[2] - px[k2 + 2]) * m; px[k2 + 3] += dep >> 1; } }
+      A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
+    }
+    trail.updatePixels();
+    p.clear(); const dc = p.drawingContext; dc.filter = `blur(${PH.blur}px)`; p.image(trail, 0, 0, p.width, p.height); dc.filter = "none";
+    drawHints(p);
+    drawMs += (performance.now() - t0 - drawMs) * 0.05; if (++frameN % 180 === 0 && drawMs > 12 && PH.count > PH.floor) setCount(Math.max(PH.floor, PH.count - PH.step));
+  };
+  p.clearTrail = () => { if (trail) trail.clear(); };
+  window.Lab5Physarum = { PH, fps: () => p.frameRate(), drawMs: () => drawMs, trail: () => trail };
+});
+function setCount(n) { PH.count = Math.max(PH.min, Math.min(PH.max, n)); $("#countBtn").textContent = PH.on ? `${PH.count} agentes` : "sem agentes"; $("#lessBtn").disabled = !PH.on || PH.count <= PH.min; $("#moreBtn").disabled = !PH.on || PH.count >= PH.max; if (R) sync(R.state()); }
+function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.length; $("#evapBtn").textContent = `Evaporação · ${PH.evapLevels[PH.evap][0]}`; }
+
+/* margens do campo medidas nos elementos reais: o nó nunca fica por trás de texto, ferramentas, contador ou ficha */
+let marginCache = { t: 120, r: 60, b: 80, l: 60, at: 0 };
+function uiMargin() {
+  const now = performance.now(); if (now - marginCache.at < 400) return marginCache;
+  const sr = stage.getBoundingClientRect(), pad = 26, side = small() ? 24 : 56; // laterais: os nós não encostam na borda da tela
+  const rect = sel => { const el = $(sel); if (!el || el.hidden || getComputedStyle(el).display === "none") return null; const r = el.getBoundingClientRect(); return r.width && r.height ? r : null; };
+  let t = pad, b = pad, l = side, r = side;
+  const copy = rect("#copy"), tools = rect("#tools"), foot = rect("#foot span"), footP = small() ? null : rect("#foot p"), card = document.body.classList.contains("card-open") ? $("#card") : null;
+  for (const el of [copy, tools, foot, footP]) { if (!el) continue; // cada elemento ocupa uma faixa: a que menos rouba campo
+    const fromTop = el.bottom - sr.top, fromBottom = sr.bottom - el.top, fromLeft = el.right - sr.left, fromRight = sr.right - el.left;
+    const best = Math.min(fromTop, fromBottom, fromLeft, fromRight);
+    if (best === fromTop) t = Math.max(t, fromTop + pad); else if (best === fromBottom) b = Math.max(b, fromBottom + pad); else if (best === fromLeft) l = Math.max(l, fromLeft + pad); else r = Math.max(r, fromRight + pad);
+  }
+  if (card && !small()) r = Math.max(r, card.offsetWidth + pad); // a ficha desliza (transform): usa a largura, não o retângulo
+  marginCache = { t, r, b, l, at: now }; return marginCache;
+}
+
+/* ---------- camada 2: o rizoma (motor do protótipo, fundo transparente) ---------- */
+const chips = {};
+function mountField() {
+  R = Rizoma.mount({
+    container: "#rizomaStage", paper: true, depth: true, intro: true, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "muro", lineWeight: 0.55, spread: 1.45, focusZoom: true, spray: false,
+    margin: uiMargin, lineCycle: 2.2,
+    onChange: sync, onOpen: showPreview, onHover: onHover
+  });
+  window.Lab5Rizoma = R;
+  for (const t of TYPES) {
+    const L = Rizoma.LINES[t], b = document.createElement("button"); b.className = "chip"; b.style.setProperty("--sw", LC(t));
+    b.innerHTML = `<i></i><span>${L.label}</span><small>0</small>`; b.onclick = () => { R.toggleLine(t); if (R.state().focus) R.refresh(); }; $("#chips").appendChild(b); chips[t] = b;
+  }
+  sync(R.state());
+}
+let lastActiveKey = "", lastFocus = null, finalHinted = false;
+function sync(s) {
+  if (!s.paper) { R.setPaper(true); return; } // o campo é sempre papel: as camadas de baixo não têm modo escuro
+  if (s.mode !== "rizoma") { R.setMode("rizoma"); return; } // sem árvore neste lab: poucos elementos
+  const ak = TYPES.map(t => s.active[t] ? 1 : 0).join("");
+  if (ak !== lastActiveKey) { const removed = [...lastActiveKey].some((c, i) => c === "1" && ak[i] !== "1"); lastActiveKey = ak; rebuildSibs(s.active); if (A.life) { A.life.fill(0); A.type.fill(-1); A.target.fill(-1); } if (removed) flush = 70; }
+  for (const t in chips) { chips[t].classList.toggle("active", !!s.active[t]); chips[t].querySelector("small").textContent = s.linesByType ? s.linesByType[t] : 0; }
+  $("#depthBtn").classList.toggle("active", s.depth);
+  $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (PH.on ? ` · ${PH.count} AGENTES` : "");
+  document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
+  if (s.focus !== lastFocus) { lastFocus = s.focus; if (page === "indicators") renderSide(); marginCache.at = 0; }
+  if (page !== "discover" || introOn) return;
+  if (s.revealed >= s.total && !finalHinted) { finalHinted = true; guide("Todos os projetos revelados. Quer fechar o seu mapa? O botão congela o micélio e gera a estampa desta visita."); }
+  if (!PH.on) guide("O sistema pede menos movimento: o micélio fica desligado; nós e linhas continuam funcionando.");
+  else if (s.revealed < 3) guide(touch ? "Os pontos que piscam são projetos escondidos: toque num deles para revelar." : "Os pontos que piscam são projetos escondidos: clique num deles, ou passe a mão, para revelar.");
+  else if (!s.anyLine) guide("Ligue uma linha de fuga: os nós que a compartilham alimentam o micélio e a rede cresce entre eles.");
+  else guide("Desligue a linha para ver a rede evaporar; arraste o fundo para girar o campo e ver o rastro ficar para trás.");
+}
+let guideT = 0; function guide(t) { const g = $("#guide"); clearTimeout(guideT); if (!t || page !== "discover") { g.classList.remove("show"); return; } g.textContent = t; g.classList.add("show"); guideT = setTimeout(() => g.classList.remove("show"), 6000); }
+
+/* ---------- a ficha: uma só organização para abrir projetos (campo, indicadores e editais chamam openPreview) ---------- */
+function openPreview(id, origin) { previewOrigin = origin || page; R.open(id); }
+function showPreview(i) {
+  previewId = i.id;
+  const via = previewOrigin === "indicators" ? "VIA INDICADORES · " : previewOrigin === "editais" ? "VIA EDITAIS · " : "";
+  $("#cKicker").textContent = (via + (i.trailIndex > 1 ? `NÓ ${i.trailIndex} DA TRILHA · ` : "NÓ ABERTO · ") + i.circuit).toUpperCase();
+  $("#cIcon").innerHTML = wallIcon(DATA[IDX[i.id]], 54); $("#cTitle").textContent = i.title; $("#cTrans").textContent = i.translation;
+  $("#cFacts").innerHTML = fact("Ano", String(i.year)) + fact("Mecanismo", i.mechanism) + fact("Edital", i.edital) + fact("Valor registrado", i.valueText) + fact("Escala", i.scale) + fact("Regional", i.region) + (i.issue ? `<div class="note" style="margin-top:8px">${esc(i.issue)}</div>` : "");
+  const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${esc(Rizoma.shortTitle(c.title))}</span><small>${esc(c.why)}${c.regrown ? " · rebrotou" : ""} →</small></button>`).join("") : `<div class="empty">Nenhuma linha ligada chega aqui. Ligue uma linha de fuga nas ferramentas do campo.</div>`;
+  const hid = hiddenSiblings(IDX[i.id]); $("#cHidden").textContent = hid.length ? `${hid.length} nó(s) ligado(s) a este ainda escondido(s): ${hid.slice(0, 3).map(g => Rizoma.shortTitle(DATA[g].title)).join(", ")}${hid.length > 3 ? "…" : ""}. No campo, passe a mão por eles ou estique o micélio até lá.` : "Nenhum nó ligado a este continua escondido.";
+  const P = {}; for (const q of (i.potentials || [])) (P[q.type] = P[q.type] || []).push(q);
+  $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button class="pot" data-line="${t}" style="--sw:${LC(t)}"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} nó(s)</small></button>`).join("") : `<div class="empty">${L.length ? "Todas as ligações possíveis com os nós revelados já estão ligadas." : "Revele mais nós no campo para ver ligações possíveis."}</div>`;
+  $$("#cLinks [data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("#cPot [data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
+  $("#cTrail").innerHTML = i.trail.length > 1 ? `<strong>Sua trilha:</strong> ${i.trail.map(esc).join(" → ")}` : ""; $("#cTrail").hidden = i.trail.length <= 1;
+  $("#card").classList.add("open"); $("#card").scrollTop = 0;
+}
+$("#cClose").onclick = () => R.close();
+$("#cOpen").onclick = () => { if (previewId) openProject(previewId, previewOrigin === "indicators" || previewOrigin === "editais" ? previewOrigin : "discover"); };
+
+/* ---------- descoberta: o cursor é alimento; parar sobre o nó revela em camadas; os escondidos pulsam como radar ---------- */
+const lure = { on: false, home: -1, x: 0, y: 0, lastMove: 0 };
+let hover = { id: null, since: 0, x: 0, y: 0, tier: -1 };
+function hiddenSiblings(i) {
+  if (i == null) return []; const out = new Set();
+  for (const t of TYPES) { const L = Rizoma.LINES[t]; if (L.pair) { for (const r of REL) { if (r.a === DATA[i].id && !pos.on[IDX[r.b]]) out.add(IDX[r.b]); if (r.b === DATA[i].id && !pos.on[IDX[r.a]]) out.add(IDX[r.a]); } continue; }
+    const k = L.key(DATA[i]); if (k == null) continue; DATA.forEach((d, j) => { if (j !== i && !pos.on[j] && L.key(d) === k) out.add(j); }); }
+  return [...out];
+}
+function onHover(h) {
+  if (h && h.kind === "node") { if (hover.id !== h.id) { hover = { id: h.id, since: performance.now(), x: h.x, y: h.y, tier: -1 }; lure.on = true; lure.home = IDX[h.id]; lure.x = h.x / SCALE; lure.y = h.y / SCALE; lure.lastMove = performance.now(); } else { hover.x = h.x; hover.y = h.y; } }
+  else { hover = { id: null, since: 0, x: 0, y: 0, tier: -1 }; $("#hoverTip").hidden = true; }
+}
+stage.addEventListener("pointermove", e => {
+  if (!lure.on || touch || introOn) return; const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  lure.x = x / SCALE; lure.y = y / SCALE; lure.lastMove = performance.now();
+  if (R && !R.state().hover) { const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 34); if (g) { R.revealAt(x, y, 40, 1); guide(`${Rizoma.shortTitle(g.title)} se revelou pelo micélio.`); } }
+});
+setInterval(() => {
+  if (lure.on && performance.now() - lure.lastMove > 2500) lure.on = false;
+  if (!hover.id || touch || page !== "discover") return; const dwell = performance.now() - hover.since, i = R.info(hover.id); if (!i) return;
+  const tier = dwell > 2600 ? 3 : dwell > 1500 ? 2 : dwell > 700 ? 1 : dwell > 250 ? 0 : -1; if (tier < 0) return;
+  const tip = $("#hoverTip"); tip.hidden = false; tip.style.left = hover.x + "px"; tip.style.top = hover.y + "px";
+  $("#htTitle").textContent = Rizoma.shortTitle(i.title);
+  $("#htMeta").textContent = tier >= 1 ? `${i.year} · ${i.mechanism} · ${i.circuit}` : "";
+  const hid = hiddenSiblings(IDX[i.id]);
+  $("#htMore").textContent = tier >= 2 ? `${i.valueText || "valor a verificar"} · ${(i.potentials || []).length} ligação(ões) possível(is) · ${hid.length} escondida(s)` : "";
+  $("#htBar").style.setProperty("--w", Math.min(100, dwell / 30) + "%");
+  if (tier === 3 && hover.tier < 3 && hid.length) guide(`Fique: ${hid.length} nó(s) ligado(s) a este ainda está(ão) escondido(s). Eles pulsam no micélio.`);
+  hover.tier = tier;
+}, 120);
+function drawHints(p) { // radar: cada projeto ainda escondido pisca de leve onde está; os ligados ao nó em foco piscam mais forte
+  if (!R || final.on || introOn) return;
+  const gs = R.ghosts(); if (!gs.length) return;
+  const hid = hover.id && hover.tier >= 1 ? hiddenSiblings(IDX[hover.id]) : [], t = performance.now() / 700;
+  for (const g of gs) {
+    const i = IDX[g.id], strong = hid.includes(i), ph = (Math.sin(t * (strong ? 2.2 : 1) + i * 1.7) + 1) / 2;
+    p.noStroke(); p.fill(22, strong ? 150 + 80 * ph : 60 + 70 * ph); p.circle(g.x, g.y, strong ? 4.5 : 3.2);
+    p.noFill(); p.stroke(22, (strong ? 120 : 45) * (1 - ph)); p.strokeWeight(1); p.circle(g.x, g.y, 6 + ph * (strong ? 26 : 16));
+  }
+}
+stage.addEventListener("pointerdown", e => { // clicar ou tocar num ponto que pisca revela aquele projeto (nunca devolve false: os botões continuam clicáveis)
+  if (!R || final.on || introOn || e.target.closest("button,a")) return; const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 22); if (g) { R.revealAt(x, y, 26, 1); guide(`${Rizoma.shortTitle(g.title)} revelado.`); }
+}, { capture: true });
+
+/* ---------- interação final: Meu micélio ---------- */
+const final = { on: false };
+function composeFinal() {
+  const tc = $("#trailStage canvas"), rc = $("#rizomaStage canvas"); if (!tc || !rc) return null;
+  const W = rc.width, H = rc.height, out = document.createElement("canvas"); out.width = W; out.height = H + Math.round(H * .12); const g = out.getContext("2d");
+  g.fillStyle = "#f7f6f1"; g.fillRect(0, 0, out.width, out.height);
+  g.filter = `blur(${PH.blur * (W / stage.clientWidth)}px)`; g.drawImage(trail.elt, 0, 0, W, H); g.filter = "none"; g.drawImage(rc, 0, 0, W, H);
+  const s = R.state(), lines = TYPES.filter(t => s.active[t]).map(t => Rizoma.LINES[t].label), d = new Date(), pad = n => String(n).padStart(2, "0");
+  const title = `${s.revealed} projeto${s.revealed > 1 ? "s" : ""} · ${lines.length ? lines.join(" e ") : "sem linha ligada"} · ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+  g.fillStyle = "#161616"; const sc = W / 900; g.font = `700 ${Math.round(30 * sc)}px "Arial Narrow", Arial`; g.fillText("CARTOGRAFIA DO FOMENTO · MEU MICÉLIO", Math.round(24 * sc), H + Math.round(40 * sc));
+  g.font = `${Math.round(18 * sc)}px Arial`; g.fillStyle = "#666"; g.fillText(title + (s.trailTitles && s.trailTitles.length ? " · trilha: " + s.trailTitles.join(" → ") : ""), Math.round(24 * sc), H + Math.round(72 * sc));
+  return { url: out.toDataURL("image/png"), title, lines };
+}
+function openFinal() {
+  if (!R || page !== "discover" || introOn) return; final.on = true; R.setPaused(true); lure.on = false; $("#hoverTip").hidden = true;
+  const f = composeFinal(); if (!f) { final.on = false; R.setPaused(false); return; }
+  const s = R.state();
+  $("#finalTitle").textContent = f.title; $("#finalImg").src = f.url; $("#finalDownload").href = f.url; $("#finalDownload").download = `meu-micelio-${Date.now()}.png`;
+  $("#finalText").textContent = `Você revelou ${s.revealed} de ${s.total} projetos e abriu ${s.trail.length}. O micélio congelou do jeito que estava: este é o mapa que a sua visita desenhou, e nenhuma outra visita desenha o mesmo.`;
+  $("#finalLast").hidden = !s.trail.length;
+  $("#final").hidden = false;
+}
+function closeFinal(reset) { final.on = false; $("#final").hidden = true; R.setPaused(false); if (reset) { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); } }
+$("#finalBtn").onclick = openFinal; $("#finalBack").onclick = () => closeFinal(false); $("#finalReset").onclick = () => closeFinal(true);
+$("#finalLast").onclick = () => { const s = R.state(); closeFinal(false); if (s.trail.length) R.open(s.trail[s.trail.length - 1]); };
+
+/* ---------- ferramentas do campo ---------- */
+$("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
+$("#lessBtn").onclick = () => setCount(PH.count - PH.step);
+$("#moreBtn").onclick = () => setCount(PH.count + PH.step);
+$("#countBtn").onclick = () => setCount(200);
+$("#evapBtn").onclick = () => setEvap(PH.evap + 1);
+$("#clearBtn").onclick = () => trailP && trailP.clearTrail();
+$("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
+document.addEventListener("keydown", e => {
+  if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase();
+  if (e.key === "Escape") { if (final.on) closeFinal(false); else if (R && R.state().focus && page !== "discover") R.close(); return; } // no campo, o motor já fecha com Esc
+  if (page !== "discover" || introOn) return;
+  if (k === "e") setEvap(PH.evap + 1); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); }
+});
+window.addEventListener("resize", () => { if (R && page === "discover") R.resize(); marginCache.at = 0; });
+document.addEventListener("visibilitychange", () => setFieldVisible(page === "discover"));
+
+/* ---------- página de projeto ---------- */
+let comments = {}, answers = {};
+function openProject(id, from) {
+  const d = DATA[IDX[id]]; if (!d) return; previous = { page: from || page, selection }; currentProject = d;
+  if (R) R.open(id, true); // entra na trilha mesmo vindo dos gráficos ou editais
+  $("#card").classList.remove("open");
+  PAGES.forEach(p => $("#" + p).classList.add("hidden")); $("#project").classList.remove("hidden"); $("#project").scrollTop = 0;
+  $$("[data-nav]").forEach(b => b.classList.remove("active"));
+  setFieldVisible(false);
+  $("#projectBack").textContent = previous.page === "discover" ? "← FECHAR · A TRILHA FICA" : previous.page === "indicators" ? "← VOLTAR AOS INDICADORES" : previous.page === "editais" ? "← VOLTAR AOS EDITAIS" : "← VOLTAR";
+  renderProject(d);
+}
+function closeProject() { const back = previous.page || "discover"; currentProject = null; showPage(back); if (back === "indicators") { selection = previous.selection; renderIndicators(); } previewOrigin = back; if (R) R.refresh(); } // voltar reabre a ficha do mesmo nó
+$("#projectBack").onclick = closeProject;
+$$("[data-psec]").forEach(b => b.onclick = () => $("#psec-" + b.dataset.psec).scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }));
+function renderProject(d) {
+  $("#projectIcon").innerHTML = `<div class="gridlines"></div>${wallIcon(d, 320)}<div class="lab">ÍCONE DO NÓ · ${d.circuit.toUpperCase()} · FOTOGRAFIA REAL A INCORPORAR</div>`;
+  $("#projectStatus").textContent = d.issue ? "ATENÇÃO / DADO EM REVISÃO" : "REGISTRO PRESENTE NO TCC"; $("#projectStatus").style.borderColor = MECH[d.mechanism] || "#aaa";
+  $("#projectMeta").textContent = `${d.year} · ${d.mechanism.toUpperCase()} · ${d.circuit.toUpperCase()}`; $("#projectTitle").textContent = d.title;
+  $("#projectSummary").textContent = Rizoma.TRANSLATE[d.mechanism] || "";
+  $("#projectFacts").innerHTML = fact("Ano", String(d.year)) + fact("Mecanismo", d.mechanism) + fact("Edital", d.edital) + fact("Valor registrado", d.value == null ? null : money(d.value)) + fact("Escala", Rizoma.scaleOf(d.value)) + fact("Regional", d.region) + fact("Proponente", d.proponent) + fact("Situação", d.verification);
+  $("#projectGallery").innerHTML = ["OBRA / VISTA GERAL", "DETALHE", "TERRITÓRIO / CONTEXTO"].map((l, k) => `<div class="gitem">${wallIcon(d, 120)}<span class="lab">${l}</span></div>`).join("");
+  $("#projectNarrative").innerHTML = `<p>O projeto <strong>${esc(d.title)}</strong> integra o corpus da Cartografia do Fomento no recorte de <strong>${d.year}</strong>, pelo mecanismo <strong>${esc(d.mechanism)}</strong>, circuito ${esc(d.circuit.toLowerCase())}.</p><p>Textos interpretativos específicos devem ser preenchidos somente quando houver documentação suficiente.</p>${d.issue ? `<div class="note"><strong>Atenção documental:</strong><br>${esc(d.issue)}</div>` : ""}`;
+  renderProjectLines(d);
+  $("#territoryContent").innerHTML = `<p>Esta camada deverá reunir localização de execução, características do entorno, atividades abertas ao público e relatos associados ao projeto.</p><div class="social"><div><small>REGIONAL</small><b>${esc(d.region || "Ainda não verificada")}</b></div><div><small>PERFIL SOCIOECONÔMICO</small><b>Dados ainda não consolidados</b></div><div><small>RELAÇÃO COM A COMUNIDADE</small><b>A investigar</b></div></div><p>Renda, raça, gênero ou classe social não devem ser inferidos a partir do bairro ou da regional.</p>`;
+  $("#fundingContent").innerHTML = fact("Mecanismo", d.mechanism) + fact("Edital / fonte", d.edital) + fact("Valor registrado", d.value == null ? null : money(d.value)) + fact("Ano", String(d.year)) + fact("Situação documental", d.verification) + `<div class="note" style="margin-top:12px">Na versão final, diferencie valor solicitado, aprovado, captado, pago e executado sempre que os documentos permitirem.</div>`;
+  $("#sourceContent").innerHTML = `<div class="source"><div><h3>Tabela do corpus do TCC</h3><p>Fonte-base desta estrutura.</p></div><span class="kicker">BASE</span></div><div class="source"><div><h3>Resultado oficial do edital</h3><p>Vincular documento específico do projeto antes da publicação final.</p></div><span class="kicker">A VINCULAR</span></div><div class="source"><div><h3>Execução da obra</h3><p>Fotografia, endereço, créditos e evidência de realização.</p></div><span class="kicker">A COMPLETAR</span></div>`;
+  renderComments(); $$(".rating button").forEach(b => b.classList.toggle("selected", !!(answers[d.id] && answers[d.id][b.parentElement.dataset.question] === Number(b.textContent))));
+}
+function renderProjectLines(d) {
+  const cons = R ? R.connections(d.id) : [], pots = R ? R.potentials(d.id) : [], s = R ? R.state() : null;
+  $("#projectLines").innerHTML = (cons.length ? cons.map(c => `<button data-pl="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${esc(c.title)}</span><small>${esc(c.why)}${c.regrown ? " · rebrotou" : ""} →</small></button>`).join("") : `<div class="empty">Nenhuma linha ligada chega a este projeto. No campo, ligue uma linha de fuga (ano, mecanismo, edital, escala, regional, curadoria).</div>`)
+    + pots.slice(0, 8).map(q => `<button class="pot" data-pl="${q.id}" style="--sw:rgb(${q.color.join(",")})"><i></i><span>${esc(q.title)}</span><small>possível: ${esc(q.why)} →</small></button>`).join("");
+  $$("#projectLines [data-pl]").forEach(b => b.onclick = () => openProject(b.dataset.pl, previous.page));
+  $("#projectTrail").innerHTML = s && s.trailTitles.length > 1 ? `<strong>Sua trilha:</strong> ${s.trailTitles.map(esc).join(" → ")}` : ""; $("#projectTrail").hidden = !(s && s.trailTitles.length > 1);
+}
+$("#addComment").onclick = () => { if (!currentProject) return; const t = $("#commentText").value.trim(); if (!t) return; (comments[currentProject.id] ??= []).unshift({ id: Date.now(), text: t }); $("#commentText").value = ""; renderComments(); };
+function renderComments() { if (!currentProject) return; const list = comments[currentProject.id] || []; $("#commentList").innerHTML = list.length ? list.map(c => `<div class="comment"><small>RELATO DE TESTE / VISITANTE</small><p>${esc(c.text)}</p><button data-del="${c.id}">excluir</button></div>`).join("") : `<div class="note" style="margin-top:14px">Ainda não existem relatos nesta sessão.</div>`; $$("[data-del]").forEach(b => b.onclick = () => { comments[currentProject.id] = comments[currentProject.id].filter(c => c.id !== Number(b.dataset.del)); renderComments(); }); }
+$$(".rating").forEach(g => g.onclick = e => { const b = e.target.closest("button"); if (!b || !currentProject) return; (answers[currentProject.id] ??= {})[g.dataset.question] = Number(b.textContent); [...g.children].forEach(x => x.classList.toggle("selected", x === b)); });
+
+/* ---------- indicadores: mesma lógica do protótipo, com o nó-muro como ícone e a cor por mecanismo ---------- */
+$$("[data-metric]").forEach(b => b.onclick = () => { metric = b.dataset.metric; $$("[data-metric]").forEach(x => x.classList.toggle("active", x.dataset.metric === metric)); renderIndicators(); });
+function aggregate(list, keyFn) { const m = new Map(); list.forEach(p => { const k = keyFn(p); if (!m.has(k)) m.set(k, []); m.get(k).push(p); }); return [...m.entries()].map(([key, projects]) => ({ key, projects, count: projects.length, value: projects.reduce((s, p) => s + (p.value || 0), 0) })); }
+function selectedProjects(sel) { if (!sel) return DATA; if (sel.type === "region") return DATA.filter(p => (p.region || "Não verificada") === sel.key); if (sel.type === "year") return DATA.filter(p => String(p.year) === String(sel.key)); if (sel.type === "mechanism") return DATA.filter(p => p.mechanism === sel.key); if (sel.type === "edital") return DATA.filter(p => p.edital === sel.key); if (sel.type === "project") return DATA.filter(p => p.id === sel.key); return DATA; }
+function renderIndicators() { renderLegend(); renderRegion(); renderYears(); renderWalls(); renderSide(); }
+function renderLegend() { $("#mechLegend").innerHTML = MECHS.map(m => `<button data-leg="${m}" class="${selection?.type === "mechanism" && selection.key === m ? "active" : ""}">${wallIcon(mechSample(m), 34)}<b>${m}</b><small>${esc((Rizoma.TRANSLATE[m] || "").split(".")[0])}</small></button>`).join(""); $$("[data-leg]").forEach(b => b.onclick = () => { const m = b.dataset.leg; selection = selection && selection.type === "mechanism" && selection.key === m ? null : { type: "mechanism", key: m, label: m }; renderIndicators(); }); }
+function renderRegion() {
+  const groups = aggregate(DATA, p => p.region || "Não verificada").sort((a, b) => b[metric] - a[metric]), max = Math.max(1, ...groups.map(g => g[metric]));
+  $("#regionChart").innerHTML = groups.map(g => `<button class="bar ${selection?.type === "region" && selection.key === g.key ? "active" : ""}" data-ct="region" data-ck="${esc(g.key)}"><span class="lab">${esc(g.key)}</span><span class="track"><span class="fill" style="width:${Math.max(2, g[metric] / max * 100)}%"></span></span><span class="val">${metric === "count" ? g.count + " proj." : shortMoney(g.value)}</span></button>`).join(""); bindCharts();
+}
+function renderYears() {
+  const years = [...new Set(DATA.map(p => p.year))].sort();
+  $("#yearChart").innerHTML = years.map(y => { const ps = DATA.filter(p => p.year === y); const pieces = MECHS.map(m => { const list = ps.filter(p => p.mechanism === m); if (!list.length) return ""; const h = metric === "count" ? list.length * 18 : Math.max(5, list.reduce((s, p) => s + (p.value || 0), 0) / 1000000 * 90); return `<div class="piece" style="--c:${MECH[m]};height:${h}px" title="${m}: ${list.length}"></div>`; }).join(""); return `<button class="year ${selection?.type === "year" && String(selection.key) === String(y) ? "active" : ""}" data-ct="year" data-ck="${y}"><div class="stack">${pieces}</div><div class="n">${y}</div><small>${metric === "count" ? ps.length + " projeto(s)" : shortMoney(ps.reduce((s, p) => s + (p.value || 0), 0))}</small></button>`; }).join(""); bindCharts();
+}
+function renderWalls() { const max = Math.max(...DATA.map(p => p.value || 0)); $("#wallsChart").innerHTML = DATA.map(p => { const span = Math.max(2, Math.min(6, Math.round((p.value || 0) / max * 6))); return `<button class="tile ${R && R.state().focus === p.id ? "active" : ""}" style="grid-column:span ${span}" data-ct="project" data-ck="${p.id}">${wallIcon(p, 30)}<div><b>${esc(Rizoma.shortTitle(p.title))}</b><span>${money(p.value)}</span></div></button>`; }).join(""); bindCharts(); }
+function renderSide() {
+  const sel = hoverSel || selection, list = selectedProjects(sel), focus = R ? R.state().focus : null;
+  const kicker = sel ? (hoverSel ? "PRÉ-VISUALIZAÇÃO" : "RECORTE FIXADO") : "CORPUS DO TCC", title = sel ? (sel.label || sel.key) : "Todos os projetos";
+  $("#sideKicker").textContent = kicker; $("#sideTitle").textContent = title; $("#sumKicker").textContent = kicker; $("#sumTitle").textContent = `${title} · ${list.length} projeto(s)`; $("#sumClear").hidden = !selection;
+  $("#sideText").textContent = sel ? `${list.length} projeto(s) neste recorte. Toque num projeto para abrir a ficha.` : "Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Toque num projeto para abrir a ficha.";
+  $("#sideList").innerHTML = list.map(p => `<div class="sp ${focus === p.id ? "current" : ""}"><button data-side="${p.id}">${wallIcon(p, 40)}<div><small>${p.year} · ${esc(p.mechanism)} · ${esc(p.circuit)}</small><b>${esc(p.title)}</b><strong>${money(p.value)} · FICHA ↗</strong></div></button></div>`).join("");
+  $$("[data-side]").forEach(b => b.onclick = () => openPreview(b.dataset.side, "indicators"));
+}
+$("#sumClear").onclick = () => { selection = null; renderIndicators(); };
+function bindCharts() { $$("[data-ct]").forEach(el => { el.onmouseenter = () => { if (touch) return; hoverSel = { type: el.dataset.ct, key: el.dataset.ck, label: el.dataset.ct === "project" ? Rizoma.shortTitle(DATA[IDX[el.dataset.ck]].title) : el.dataset.ck }; renderSide(); }; el.onmouseleave = () => { hoverSel = null; renderSide(); }; el.onclick = () => { const type = el.dataset.ct, key = el.dataset.ck; if (type === "project") { openPreview(key, "indicators"); return; } selection = selection && selection.type === type && String(selection.key) === String(key) ? null : { type, key, label: key }; renderIndicators(); }; }); }
+
+/* ---------- editais ---------- */
+function renderEditais() {
+  $("#editalList").innerHTML = MECHS.map(m => { const list = DATA.filter(p => p.mechanism === m), total = list.reduce((s, p) => s + (p.value || 0), 0), eds = aggregate(list, p => p.edital).sort((a, b) => String(a.key).localeCompare(String(b.key)));
+    return `<div class="mech-row">${wallIcon(mechSample(m), 92)}<div><span class="kicker" style="color:${MECH[m]};filter:saturate(.8) brightness(.8)">${list.length} REGISTROS · ${list[0] ? list[0].circuit.toUpperCase() : ""}</span><h2>${m}</h2><p>${esc(Rizoma.TRANSLATE[m] || "")}</p><div class="edital-chips">${eds.map(e => `<button data-ed="${esc(e.key)}" style="--sw:${LC("edital")}" title="Abrir este edital nos indicadores"><i></i>${esc(e.key)}<small>${e.count} proj.</small></button>`).join("")}</div></div><div class="sum"><b>${money(total)}</b><small>soma dos valores registrados</small><button class="primary" data-mech="${m}">EXPLORAR NOS INDICADORES ↗</button></div></div>`; }).join("");
+  $$("[data-mech]").forEach(b => b.onclick = () => { selection = { type: "mechanism", key: b.dataset.mech, label: b.dataset.mech }; showPage("indicators"); });
+  $$("[data-ed]").forEach(b => b.onclick = () => { selection = { type: "edital", key: b.dataset.ed, label: "Edital " + b.dataset.ed }; showPage("indicators"); });
+}
+
+/* ---------- partida ---------- */
+setCount(PH.count); setEvap(PH.evap);
+mountField();
+renderIndicators(); renderEditais();
+})();
+</script>
+</body>
+</html>

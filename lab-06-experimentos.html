@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lab 06 — Experimentos: capa e indicadores fora da curva</title>
+<style>
+:root{--paper:#f7f6f1;--ink:#161616;--muted:#747474;--line:#d4d1c8;--if:#ff4f9a;--fundo:#31a8ff;--descentra:#65e77d}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+body.dark{--paper:#161616;--ink:#f7f6f1;--muted:#9a9a9a;--line:#3a3a38}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 20px}
+.brand{font-size:11px;font-weight:900;line-height:1;letter-spacing:-.04em;color:inherit;text-decoration:none}.topbar nav{margin-left:auto;display:flex;gap:4px}.topbar nav a{font-size:9px;font-weight:800;text-transform:uppercase;padding:9px;border-bottom:2px solid transparent;color:inherit;text-decoration:none;white-space:nowrap}.topbar nav a:hover,.topbar nav a.here{border-color:var(--ink)}.status{font-size:9px;color:#888;border:1px solid var(--line);padding:6px 8px;white-space:nowrap}
+/* fita de experimentos */
+.tabs{position:fixed;z-index:99;top:62px;left:0;right:0;height:44px;display:flex;gap:4px;align-items:center;padding:0 16px;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;border:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 11px;font-size:9px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;min-height:32px}.tabs button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.tabs button small{font-weight:400;color:var(--muted);margin-right:5px}
+.stage{position:fixed;z-index:1;inset:106px 0 0;overflow:hidden}.stage canvas{display:block;touch-action:none;-webkit-user-select:none;user-select:none}
+/* texto do experimento */
+.copy{position:absolute;z-index:20;left:20px;top:18px;width:min(340px,42vw);pointer-events:none}.copy .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:var(--muted)}
+.copy h1{font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;margin:6px 0 6px;font-size:clamp(26px,3.6vw,40px);line-height:.9;letter-spacing:-.06em}
+.copy p{margin:0;font-size:10.5px;line-height:1.55;color:var(--muted)}.copy .question{margin-top:8px;font-weight:900;color:var(--ink);font-size:9px;letter-spacing:.05em;line-height:1.5}
+.copy .credit{margin-top:8px;font-size:8.5px;line-height:1.5;color:var(--muted)}.copy .credit b{color:var(--ink)}.copy .break{margin-top:6px;font-size:8.5px;line-height:1.5;color:var(--muted);border-left:2px solid var(--line);padding-left:7px}.copy .break:empty{display:none}
+.legend{position:absolute;z-index:19;right:16px;top:16px;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:44vw;pointer-events:none}.legend span{display:inline-flex;align-items:center;gap:5px;background:color-mix(in srgb,var(--paper) 86%,transparent);border:1px solid var(--line);padding:5px 7px;font-size:7.5px;font-weight:900;letter-spacing:.04em}.legend i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+/* painel de controles, gerado por experimento */
+.controls{position:absolute;z-index:21;right:14px;bottom:14px;width:min(400px,calc(100% - 28px));background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);backdrop-filter:blur(10px);padding:9px 10px}
+.row{display:flex;align-items:center;gap:7px}.row+.row{margin-top:6px}.row label{font-size:8px;letter-spacing:.09em;font-weight:900;color:var(--muted);min-width:88px}.row input[type=range]{width:100%;accent-color:var(--ink);touch-action:pan-x}
+.row .seg{display:flex;gap:4px;flex-wrap:wrap}.row .seg button,.row .act{border:1px solid var(--line);background:transparent;color:var(--ink);padding:7px 9px;font-size:8px;font-weight:900;min-height:32px;letter-spacing:.03em}.row .seg button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.row .act.strong{border-color:var(--ink)}
+.readout{position:absolute;z-index:20;left:20px;bottom:14px;max-width:min(460px,calc(100% - 28px));font-size:10px;line-height:1.5;color:var(--muted);pointer-events:none}.readout b{color:var(--ink);font-size:11px;display:block;letter-spacing:-.02em}.readout:empty{display:none}
+.foot{position:absolute;z-index:18;left:20px;bottom:14px;font-size:8.5px;color:var(--muted);pointer-events:none;max-width:420px;line-height:1.5}.readout:not(:empty)+.foot{display:none}
+.hint{position:absolute;z-index:22;left:50%;bottom:120px;transform:translateX(-50%);font-size:8px;letter-spacing:.1em;font-weight:900;background:var(--ink);color:var(--paper);padding:7px 9px;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .4s}.hint.show{opacity:1}
+@media(max-width:780px){
+  .topbar{height:auto;min-height:84px;flex-wrap:wrap;gap:6px;padding:8px 10px 0}.brand{width:100%;padding:4px 0}.topbar nav{width:100%;margin:0 -10px;padding:0 10px;overflow-x:auto;scrollbar-width:none}.topbar nav::-webkit-scrollbar{display:none}.status{display:none}
+  .tabs{top:84px;height:42px;padding:0 10px}.tabs button{padding:6px 9px}
+  .stage{inset:126px 0 0}
+  .copy{left:0;right:0;top:0;width:auto;padding:8px 12px 7px;background:color-mix(in srgb,var(--paper) 90%,transparent);border-bottom:1px solid var(--line)}.copy h1{font-size:19px;margin:3px 0 3px}.copy p{display:none}.copy .question{margin-top:3px;font-size:8px}.copy .credit,.copy .break{display:none}
+  .legend{top:auto;left:10px;right:10px;bottom:calc(var(--panel-h,120px) + 20px);max-width:none;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.legend span{flex:none}
+  .controls{left:0;right:0;bottom:0;width:100%;border-left:0;border-right:0;border-bottom:0;padding:8px 10px calc(8px + env(safe-area-inset-bottom))}.row label{min-width:70px}.row .seg{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.row .seg button{flex:none}
+  .readout{left:10px;right:10px;max-width:none;bottom:calc(var(--panel-h,120px) + 52px);font-size:9.5px}.foot{display:none}.hint{bottom:calc(var(--panel-h,120px) + 56px);font-size:7px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">CARTOGRAFIA<br>DO FOMENTO</a>
+  <nav aria-label="Laboratórios"><a href="lab-identidade.html">Lab 01 · Identidade</a><a href="lab-outras-cartografias.html">Lab 02 · Outras cartografias</a><a href="lab-03-mescla.html">Lab 03 · Mescla</a><a href="lab-04-physarum.html">Lab 04 · Physarum</a><a href="lab-05-sistema.html">Lab 05 · Sistema</a><a href="lab-06-experimentos.html" class="here">Lab 06 · Experimentos</a><a href="index.html">Protótipo ↗</a></nav>
+  <span class="status">LAB 06 · OUTRA PEGADA</span>
+</header>
+<nav class="tabs" id="tabs" aria-label="Experimentos"></nav>
+
+<div class="stage" id="stage">
+  <aside class="copy">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="title"></h1>
+    <p id="text"></p>
+    <div class="question" id="question"></div>
+    <div class="credit" id="credit"></div>
+    <div class="break" id="break"></div>
+  </aside>
+  <div class="legend" id="legend"></div>
+  <div class="readout" id="readout"></div>
+  <div class="foot">Mesmos vinte projetos de <code>js/data.js</code>; posições cenográficas. Toque e arraste no campo.</div>
+  <div class="controls" id="controls"></div>
+  <div class="hint" id="hint"></div>
+</div>
+
+<script src="js/data.js?v=20261030-30"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
+<script src="js/rizoma.js?v=20261030-30"></script>
+<script>
+/* Lab 06 — Experimentos: outra pegada para a capa e para os Indicadores.
+   Cartografia do Fomento · TCC Pedro H. F. Moreira (Design UFMG).
+
+   Seis experimentos sobre os mesmos dados (js/data.js), todos em implementação própria,
+   sem código de terceiros. Algoritmos e referências (lista ABNT em rizoma/README-RIZOMA.md, seção 7):
+
+   01 CAMPO DE FLUXO (capa)      — ruído de Perlin (PERLIN, 1985) lido como campo vetorial; cada
+                                   projeto solta partículas em número proporcional ao valor, que seguem o
+                                   campo e deixam rastro. Técnica difundida por Shiffman (The Nature of Code,
+                                   2012/2024) e pelo ensaio "Flow Fields" de Tyler Hobbs (2020).
+   02 TIPOGRAFIA VIVA (capa)     — título amostrado em pixels (p5.Graphics + loadPixels) e ocupado por
+                                   partículas com comportamento de direção "arrive" (REYNOLDS, 1999);
+                                   cada partícula é uma fração do valor de um projeto; o dedo dispersa.
+   03 CÉLULAS DE VALOR (indic.)  — diagrama de Voronoi (VORONOI, 1908) e de potência (AURENHAMMER, 1987)
+                                   calculado por força bruta numa grade grossa; ajuste iterativo dos pesos
+                                   para que a área de cada célula se aproxime do valor do projeto, na
+                                   linha dos Voronoi treemaps (BALZER; DEUSSEN, 2005; NOCAJ; BRANDES, 2012).
+   04 MANCHA QUE CRESCE (indic.) — agregação limitada por difusão, DLA (WITTEN; SANDER, 1981): caminhantes
+                                   aleatórios grudam ao tocar o agregado de cada ano; a massa de cada
+                                   mancha é o valor somado do ano, a cor é o mecanismo de cada fração.
+   05 CORDAS (indic.)            — diagrama de cordas entre mecanismo e ano/escala/circuito, à maneira do
+                                   Circos (KRZYWINSKI et al., 2009); fitas por curvas quadráticas pelo centro.
+   06 RIO (indic.)               — streamgraph ano × mecanismo, com linha de base em silhueta
+                                   (HAVRE et al., 2000; BYRON; WATTENBERG, 2008).
+
+   Linguagem: papel #f7f6f1, tinta #161616, cor por mecanismo (rosa/azul/verde), cores de linha de
+   Rizoma.LINES, títulos condensados, poucos elementos. Rompe com ela em dois pontos, ditos no próprio
+   painel: o modo "asfalto" (fundo escuro, como Information is Beautiful e Negro Muro) e as células cheias
+   do Voronoi (área pintada em vez de linha). Mobile-first: handlers de toque do p5 só devolvem false
+   quando o evento nasce no canvas.
+*/
+(() => {
+const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
+const PROJECTS = (window.CARTOGRAFIA_DATA || []).slice();
+const R = window.Rizoma || null;
+const MECH = { "Incentivo Fiscal": [255, 79, 154], "Fundo Municipal": [49, 168, 255], "Descentra": [101, 231, 125] };
+const MECHS = Object.keys(MECH);
+const LINES = R && R.LINES ? R.LINES : { ano: { color: [255, 210, 63] }, mecanismo: { color: [64, 196, 255] }, edital: { color: [255, 92, 168] }, escala: { color: [120, 255, 150] }, territorio: { color: [200, 170, 255] }, curadoria: { color: [255, 150, 80] } };
+const YEARS = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+const PAPER = [247, 246, 241], INK = [22, 22, 22];
+const TOTAL = PROJECTS.reduce((s, d) => s + (Number(d.value) || 0), 0) || 1;
+const MAX = Math.max(1, ...PROJECTS.map(d => Number(d.value) || 0));
+const money = R && R.money ? R.money : v => "R$ " + Math.round(v).toLocaleString("pt-BR");
+const shortTitle = R && R.shortTitle ? R.shortTitle : t => String(t || "").split(" – ")[0].split(":")[0];
+const scaleOf = v => v <= 30000 ? "Micro" : v <= 100000 ? "Médio" : "Macro";
+const shortMoney = v => v >= 1e6 ? "R$ " + (v / 1e6).toFixed(2).replace(".", ",") + " mi" : "R$ " + Math.round(v / 1000) + " mil";
+const SCALES = ["Micro", "Médio", "Macro"], CIRCUITS = ["Monumental", "Capilar"];
+const mechColor = d => MECH[d.mechanism] || [120, 120, 120];
+const hash = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const mobile = () => innerWidth <= 780;
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const FONT = "Arial Narrow"; // p5 1.11 envolve o nome em aspas: uma família só (no Android cai na sans padrão)
+
+const state = { exp: "fluxo", dark: false, params: {}, pointer: { x: -1, y: -1, down: false, at: 0 } };
+const ctx = {
+  params: state.params, pointer: state.pointer, font: FONT,
+  get mobile() { return mobile(); }, get reduced() { return reduced; },
+  bg: () => state.dark ? INK : PAPER, ink: () => state.dark ? PAPER : INK, dark: () => state.dark,
+  readout: html => { $("#readout").innerHTML = html || ""; },
+  /* região útil para os gráficos: fora do painel de texto (esquerda/topo), da legenda e dos controles (embaixo) */
+  region: () => {
+    const cp = $(".copy"), ct = $("#controls"), lg = $("#legend"), st = $("#stage"), m = mobile();
+    const w = st.clientWidth, h = st.clientHeight;
+    if (m) return { x0: 10, y0: cp.offsetHeight + 10, x1: w - 10, y1: h - ct.offsetHeight - 20 - lg.offsetHeight - 72 };
+    return { x0: cp.offsetLeft + cp.offsetWidth + 24, y0: lg.offsetTop + lg.offsetHeight + 12, x1: w - 20, y1: h - ct.offsetHeight - 28 };
+  },
+  hint: txt => { const h = $("#hint"); h.textContent = txt; h.classList.add("show"); clearTimeout(h._t); h._t = setTimeout(() => h.classList.remove("show"), 2600); }
+};
+
+/* ---------- registro dos experimentos (texto, controles, fábrica) ---------- */
+const EXPS = {
+  fluxo: {
+    n: "01", tab: "Campo de fluxo", kicker: "01 / CAPA · CAMPO DE FLUXO", title: "A capa se desenha sozinha.",
+    text: "Um campo vetorial de ruído de Perlin atravessa a página. Cada projeto solta partículas em número proporcional ao valor financiado; elas seguem o campo, deixam rastro e morrem. O título fica parado no meio do movimento. A cada visita, outra capa.",
+    question: "A CAPA PODE SER FEITA PELOS PRÓPRIOS PROJETOS, DIFERENTE A CADA VISITA, SEM VIRAR DECALQUE?",
+    credit: "<b>Algoritmo:</b> campo vetorial de ruído de Perlin (PERLIN, 1985); técnica de partículas em flow field (SHIFFMAN, 2012; HOBBS, 2020). Implementação própria.",
+    legend: "mech",
+    controls: [
+      { id: "turb", label: "TURBULÊNCIA", type: "range", min: 0, max: 100, value: 38 },
+      { id: "rastro", label: "RASTRO", type: "range", min: 0, max: 100, value: 86 },
+      { type: "actions", items: [{ id: "reset", label: "RECOMEÇAR" }, { id: "theme", label: "PAPEL / ASFALTO" }] }
+    ],
+    breakText: "Rompe com a linguagem no modo asfalto: fundo preto como o Negro Muro e o Information is Beautiful, para testar a capa como constelação de luz, não como tinta sobre papel.",
+    make: expFluxo
+  },
+  tipo: {
+    n: "02", tab: "Tipografia viva", kicker: "02 / CAPA · TIPOGRAFIA VIVA", title: "O título é feito de dinheiro.",
+    text: "As letras do título são amostradas em pontos e ocupadas por partículas. Cada partícula é uma fração do valor de um projeto; a ordem das fatias segue o ano, o mecanismo ou o valor. Passe o dedo: as letras se dispersam e voltam. Toque num trecho para saber de que projeto ele é.",
+    question: "O TÍTULO DA CAPA PODE SER, ELE MESMO, O PRIMEIRO GRÁFICO DO TCC?",
+    credit: "<b>Algoritmo:</b> amostragem de texto em pixels (p5.Graphics + loadPixels) e comportamento de direção \"arrive\" (REYNOLDS, 1999; SHIFFMAN, 2012). Implementação própria.",
+    legend: "mech",
+    controls: [
+      { id: "disp", label: "DISPERSÃO", type: "range", min: 30, max: 220, value: 110 },
+      { id: "ordem", label: "FATIAS POR", type: "seg", options: [["ano", "ANO"], ["mecanismo", "MECANISMO"], ["valor", "VALOR"]], value: "ano" },
+      { type: "actions", items: [{ id: "reset", label: "RECOMEÇAR" }, { id: "theme", label: "PAPEL / ASFALTO" }] }
+    ],
+    breakText: "No modo asfalto o título vira constelação (Information is Beautiful); no papel, vira spray. Os dois cabem na mesma lógica.",
+    make: expTipo
+  },
+  voronoi: {
+    n: "03", tab: "Células de valor", kicker: "03 / INDICADORES · CÉLULAS DE VALOR", title: "Cada projeto ocupa um território.",
+    text: "Vinte sementes, uma por projeto: coluna pelo ano, faixa pelo mecanismo. O campo se divide em células pelo vizinho mais próximo (Voronoi). Com peso, projetos mais caros empurram a fronteira (diagrama de potência). Com ajuste, os pesos são corrigidos até a área de cada célula ser a fatia do valor total. Arraste uma semente; toque numa célula.",
+    question: "SE A ÁREA É O VALOR, O QUE O MAPA DO DINHEIRO MOSTRA QUE A BARRA NÃO MOSTRA?",
+    credit: "<b>Algoritmo:</b> Voronoi (VORONOI, 1908) e diagrama de potência (AURENHAMMER, 1987) por força bruta numa grade; ajuste iterativo de pesos como nos Voronoi treemaps (BALZER; DEUSSEN, 2005; NOCAJ; BRANDES, 2012). Implementação própria.",
+    legend: "mech",
+    controls: [
+      { id: "modo", label: "CÉLULAS", type: "seg", options: [["puro", "VIZINHANÇA"], ["peso", "PESO = VALOR"], ["area", "ÁREA = VALOR"]], value: "area" },
+      { id: "cheio", label: "PINTURA", type: "seg", options: [["cheio", "CHEIA"], ["linha", "SÓ LINHA"]], value: "cheio" },
+      { type: "actions", items: [{ id: "reset", label: "RECOMEÇAR" }, { id: "theme", label: "PAPEL / ASFALTO" }] }
+    ],
+    breakText: "Rompe com os \"poucos elementos\": a célula cheia pinta área, não linha. A opção \"só linha\" devolve a página à linguagem do Lab 04.",
+    make: expVoronoi
+  },
+  mancha: {
+    n: "04", tab: "Mancha que cresce", kicker: "04 / INDICADORES · MANCHA QUE CRESCE", title: "O fomento se acumula.",
+    text: "Uma semente por ano na linha do tempo. Caminhantes aleatórios nascem ao redor e grudam ao tocar o agregado (DLA). Cada ano recebe tantos caminhantes quanto o valor somado; a cor de cada fração é o mecanismo do projeto de onde ela vem. Anos sem projeto no corpus ficam só o traço.",
+    question: "COMO O FOMENTO SE ACUMULA: MANCHA QUE CRESCE OU PONTOS QUE SE SOMAM?",
+    credit: "<b>Algoritmo:</b> agregação limitada por difusão, DLA (WITTEN; SANDER, 1981), em grade de células. Implementação própria.",
+    legend: "mech",
+    controls: [
+      { id: "ate", label: "ATÉ O ANO", type: "range", min: 2017, max: 2024, value: 2024 },
+      { id: "vel", label: "VELOCIDADE", type: "range", min: 1, max: 100, value: 55 },
+      { type: "actions", items: [{ id: "reset", label: "RECOMEÇAR" }, { id: "theme", label: "PAPEL / ASFALTO" }] }
+    ],
+    breakText: "",
+    make: expMancha
+  },
+  cordas: {
+    n: "05", tab: "Cordas", kicker: "05 / INDICADORES · CORDAS", title: "De onde vem, para onde vai.",
+    text: "Mecanismos de um lado, anos (ou escalas, ou circuitos) do outro, em arcos proporcionais ao total. Cada fita leva o valor de um mecanismo até o ano em que foi aplicado. Toque num arco para seguir só as fitas dele.",
+    question: "ANO × MECANISMO COMO FLUXO, E NÃO COMO BARRAS EMPILHADAS: O QUE MUDA NA LEITURA?",
+    credit: "<b>Algoritmo:</b> diagrama de cordas, à maneira do Circos (KRZYWINSKI et al., 2009), fitas por curvas quadráticas pelo centro (cf. HOLTEN, 2006). Implementação própria.",
+    legend: "mech",
+    controls: [
+      { id: "lado", label: "CRUZAR COM", type: "seg", options: [["ano", "ANO"], ["escala", "ESCALA"], ["circuito", "CIRCUITO"]], value: "ano" },
+      { id: "medida", label: "MEDIDA", type: "seg", options: [["valor", "VALOR"], ["n", "CONTAGEM"]], value: "valor" },
+      { type: "actions", items: [{ id: "theme", label: "PAPEL / ASFALTO" }] }
+    ],
+    breakText: "",
+    make: expCordas
+  },
+  rio: {
+    n: "06", tab: "Rio", kicker: "06 / INDICADORES · RIO", title: "O dinheiro corre e seca.",
+    text: "Streamgraph: ano a ano, uma faixa por mecanismo, empilhadas sobre uma linha de base centrada. Onde o corpus não tem projeto, o rio seca até um fio. Toque num ano para ver quem o compõe.",
+    question: "O QUE A FORMA DE RIO DIZ SOBRE 2018 E 2020, QUE A BARRA VAZIA NÃO DIZ?",
+    credit: "<b>Algoritmo:</b> streamgraph com base em silhueta (HAVRE et al., 2000; BYRON; WATTENBERG, 2008). Implementação própria.",
+    legend: "mech",
+    controls: [
+      { id: "medida", label: "MEDIDA", type: "seg", options: [["valor", "VALOR"], ["n", "CONTAGEM"]], value: "valor" },
+      { id: "forma", label: "FORMA", type: "seg", options: [["suave", "SUAVE"], ["reta", "RETA"]], value: "suave" },
+      { type: "actions", items: [{ id: "theme", label: "PAPEL / ASFALTO" }] }
+    ],
+    breakText: "",
+    make: expRio
+  }
+};
+
+/* ---------- interface ---------- */
+let current = null, p5inst = null, stageEl = $("#stage");
+function buildTabs() {
+  $("#tabs").innerHTML = Object.keys(EXPS).map(k => `<button type="button" data-exp="${k}" class="${k === state.exp ? "active" : ""}"><small>${EXPS[k].n}</small>${EXPS[k].tab}</button>`).join("");
+  $$("[data-exp]").forEach(b => b.addEventListener("click", () => select(b.dataset.exp)));
+}
+function buildControls(def) {
+  const el = $("#controls");
+  el.innerHTML = def.controls.map(c => {
+    if (c.type === "range") return `<div class="row"><label for="c-${c.id}">${c.label}</label><input id="c-${c.id}" data-id="${c.id}" type="range" min="${c.min}" max="${c.max}" value="${c.value}"></div>`;
+    if (c.type === "seg") return `<div class="row"><label>${c.label}</label><div class="seg" data-id="${c.id}">${c.options.map(([v, l]) => `<button type="button" data-v="${v}" class="${v === c.value ? "active" : ""}">${l}</button>`).join("")}</div></div>`;
+    if (c.type === "actions") return `<div class="row"><label>AÇÕES</label><div class="seg">${c.items.map(a => `<button type="button" class="act ${a.id === "reset" ? "strong" : ""}" data-act="${a.id}">${a.label}</button>`).join("")}</div></div>`;
+    return "";
+  }).join("");
+  for (const c of def.controls) if (c.id) state.params[c.id] = c.value;
+  el.querySelectorAll("input[type=range]").forEach(i => i.addEventListener("input", () => { state.params[i.dataset.id] = Number(i.value); current && current.change && current.change(i.dataset.id); }));
+  el.querySelectorAll(".seg[data-id]").forEach(seg => seg.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { seg.querySelectorAll("button").forEach(x => x.classList.toggle("active", x === b)); state.params[seg.dataset.id] = b.dataset.v; current && current.change && current.change(seg.dataset.id); })));
+  el.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.act === "theme") { state.dark = !state.dark; document.body.classList.toggle("dark", state.dark); current && current.change && current.change("theme"); }
+    if (b.dataset.act === "reset") current && current.reset && current.reset();
+  }));
+  requestAnimationFrame(() => stageEl.style.setProperty("--panel-h", el.offsetHeight + "px"));
+}
+function select(key) {
+  const def = EXPS[key]; if (!def) return;
+  state.exp = key;
+  $$("[data-exp]").forEach(b => b.classList.toggle("active", b.dataset.exp === key));
+  $("#kicker").textContent = def.kicker; $("#title").textContent = def.title; $("#text").textContent = def.text; $("#question").textContent = def.question; $("#credit").innerHTML = def.credit; $("#break").textContent = def.breakText || "";
+  $("#legend").innerHTML = MECHS.map(m => `<span style="--c:rgb(${MECH[m].join(",")})"><i></i>${m.toUpperCase()}</span>`).join("");
+  ctx.readout("");
+  buildControls(def);
+  if (current && current.dispose) current.dispose();
+  current = null;
+  if (p5inst) { current = def.make(p5inst, ctx); current.setup(); }
+  if (history.replaceState) history.replaceState(null, "", "#" + key);
+}
+["pointerdown", "touchstart", "mousedown"].forEach(ev => { $(".topbar").addEventListener(ev, e => e.stopPropagation(), { passive: true }); $("#controls").addEventListener(ev, e => e.stopPropagation(), { passive: true }); $("#tabs").addEventListener(ev, e => e.stopPropagation(), { passive: true }); });
+
+/* ---------- hospedeiro p5 (modo instância): um canvas, um experimento por vez ---------- */
+function host(p) {
+  const size = () => [Math.max(10, stageEl.clientWidth), Math.max(10, stageEl.clientHeight)];
+  p.setup = () => {
+    const [w, h] = size(); const c = p.createCanvas(w, h); c.parent(stageEl);
+    p.pixelDensity(Math.min(2, window.devicePixelRatio || 1)); p.noiseDetail(4, 0.55); p.textFont(FONT);
+    p5inst = p; select(state.exp);
+  };
+  p.windowResized = () => { const [w, h] = size(); if (w !== p.width || h !== p.height) { p.resizeCanvas(w, h); current && current.resize && current.resize(); } };
+  p.draw = () => { if (!current) return; if (document.hidden) return; current.draw(); };
+  const isCanvasEvent = e => { const t = e && e.target; return !t || t.tagName === "CANVAS"; };
+  const rec = () => { const pt = state.pointer; if (p.touches && p.touches.length) { pt.x = p.touches[0].x; pt.y = p.touches[0].y; } else { pt.x = p.mouseX; pt.y = p.mouseY; } pt.at = p.millis(); };
+  p.mouseMoved = e => { if (!isCanvasEvent(e)) return; rec(); current && current.move && current.move(state.pointer.x, state.pointer.y); };
+  p.mouseDragged = e => { if (!isCanvasEvent(e)) return true; rec(); current && current.drag && current.drag(state.pointer.x, state.pointer.y); return false; };
+  p.mousePressed = e => { if (!isCanvasEvent(e)) return true; rec(); state.pointer.down = true; current && current.press && current.press(state.pointer.x, state.pointer.y); return false; };
+  p.mouseReleased = e => { if (!isCanvasEvent(e)) return true; state.pointer.down = false; current && current.release && current.release(state.pointer.x, state.pointer.y); return false; };
+  p.touchStarted = e => { if (!isCanvasEvent(e)) return true; rec(); state.pointer.down = true; current && current.press && current.press(state.pointer.x, state.pointer.y); return false; };
+  p.touchMoved = e => { if (!isCanvasEvent(e)) return true; rec(); current && current.drag && current.drag(state.pointer.x, state.pointer.y); return false; };
+  p.touchEnded = e => { if (!isCanvasEvent(e)) return true; state.pointer.down = false; current && current.release && current.release(state.pointer.x, state.pointer.y); return false; };
+}
+
+/* utilidades de desenho compartilhadas */
+const pointerLive = (p, ms) => p.millis() - state.pointer.at < (ms || 1500) && state.pointer.x >= 0;
+function title(p, lines, x, y, fs, align) {
+  p.push(); p.textFont(FONT); p.textStyle(p.BOLD); p.textSize(fs); p.textAlign(align || p.LEFT, p.BASELINE); p.noStroke();
+  const ink = ctx.ink(); p.fill(ink[0], ink[1], ink[2]);
+  lines.forEach((l, i) => p.text(l, x, y + i * fs * 0.9)); p.pop();
+}
+function small(p, txt, x, y, align, alpha, size) {
+  p.push(); p.textFont("Arial"); p.textStyle(p.BOLD); p.textSize(size || 8); p.textAlign(align || p.LEFT, p.CENTER); p.noStroke();
+  const ink = ctx.ink(); p.fill(ink[0], ink[1], ink[2], alpha == null ? 170 : alpha); p.text(txt, x, y); p.pop();
+}
+const xOfYear = (p, y, ml, mr) => p.map(y, 2017, 2024, ml, p.width - mr);
+
+/* ========== 01 CAMPO DE FLUXO ========== */
+function expFluxo(p, c) {
+  let g = null, parts = [], homes = [], t = 0;
+  const P = c.params;
+  function homesCalc() { homes = PROJECTS.map((d, i) => ({ x: xOfYear(p, d.year, p.width * 0.08, p.width * 0.08), y: p.height * (0.14 + 0.72 * hash(i * 3 + 1)), d })); }
+  function spawn(pt) { const h = homes[pt.h]; pt.x = h.x + p.randomGaussian(0, 26); pt.y = h.y + p.randomGaussian(0, 26); pt.px = pt.x; pt.py = pt.y; pt.life = p.random(100, 420); }
+  function build() {
+    if (g) g.remove(); g = p.createGraphics(p.width, p.height); g.pixelDensity(1); homesCalc();
+    let N = c.mobile ? 650 : 1500; if (c.reduced) N = Math.round(N / 3);
+    parts = [];
+    PROJECTS.forEach((d, i) => { const n = Math.max(8, Math.round(N * (Number(d.value) || 0) / TOTAL)); for (let k = 0; k < n; k++) { const pt = { h: i, col: mechColor(d) }; spawn(pt); parts.push(pt); } });
+    t = p.random(1000);
+  }
+  return {
+    setup: build, resize: build, reset: build, dispose() { if (g) g.remove(); g = null; },
+    change(id) { if (id === "theme") g.clear(); },
+    draw() {
+      const bg = c.bg(), ink = c.ink();
+      t += c.reduced ? 0.0008 : 0.0025;
+      const fade = p.map(P.rastro, 0, 100, 30, 0.9);
+      g.noStroke(); g.fill(bg[0], bg[1], bg[2], fade); g.rect(0, 0, g.width, g.height);
+      const sc = p.map(P.turb, 0, 100, 0.0009, 0.0055), live = pointerLive(p, 1200), px = state.pointer.x, py = state.pointer.y;
+      g.strokeWeight(c.mobile ? 0.9 : 1.15);
+      for (const pt of parts) {
+        let a = p.noise(pt.x * sc, pt.y * sc, t) * p.TWO_PI * 2.4;
+        if (live) { const dx = px - pt.x, dy = py - pt.y, d2 = dx * dx + dy * dy; if (d2 < 170 * 170) { const w = 1 - Math.sqrt(d2) / 170; a = p.lerp(a, Math.atan2(dy, dx) + p.HALF_PI, w * 0.85); } }
+        pt.px = pt.x; pt.py = pt.y; pt.x += Math.cos(a) * 1.5; pt.y += Math.sin(a) * 1.5; pt.life--;
+        if (pt.life < 0 || pt.x < 0 || pt.x > p.width || pt.y < 0 || pt.y > p.height) { spawn(pt); continue; }
+        g.stroke(pt.col[0], pt.col[1], pt.col[2], c.dark() ? 95 : 80); g.line(pt.px, pt.py, pt.x, pt.y);
+      }
+      p.background(bg[0], bg[1], bg[2]); p.image(g, 0, 0);
+      // título parado no meio do movimento
+      const fs = Math.min(p.width * 0.12, p.height * (c.mobile ? 0.11 : 0.18)), mx = p.width * 0.08, ty = p.height * (c.mobile ? 0.5 : 0.58);
+      p.push(); p.textFont(FONT); p.textStyle(p.BOLD); p.textSize(fs); p.textAlign(p.LEFT, p.BASELINE); p.noStroke();
+      p.fill(bg[0], bg[1], bg[2], 150); p.text("CARTOGRAFIA", mx + 2, ty + 2); p.text("DO FOMENTO", mx + 2, ty + fs * 0.9 + 2);
+      p.fill(ink[0], ink[1], ink[2]); p.text("CARTOGRAFIA", mx, ty); p.text("DO FOMENTO", mx, ty + fs * 0.9); p.pop();
+      small(p, c.mobile ? "20 PROJETOS · BH 2017–2024 · " + shortMoney(TOTAL).toUpperCase() : "20 PROJETOS · GRAFITE E MURALISMO · BELO HORIZONTE 2017–2024 · " + money(TOTAL).toUpperCase(), mx, ty + fs * 0.9 + 22, p.LEFT, 190, c.mobile ? 7.5 : 9);
+      // anos como marcas discretas no rodapé: a posição de nascimento das partículas segue o ano
+      const yb = p.height - $("#controls").offsetHeight - 30;
+      if (!c.mobile && yb > ty + fs * 0.9 + 40) for (const y of YEARS) { const x = xOfYear(p, y, p.width * 0.08, p.width * 0.08); p.stroke(ink[0], ink[1], ink[2], 60); p.line(x, yb - 16, x, yb - 9); small(p, String(y), x, yb, p.CENTER, 110, 7.5); }
+    }
+  };
+}
+
+/* ========== 02 TIPOGRAFIA VIVA ========== */
+function expTipo(p, c) {
+  let parts = [], sel = null, flash = 0;
+  const P = c.params;
+  function sample() {
+    const tg = p.createGraphics(p.width, p.height); tg.pixelDensity(1); tg.background(0); tg.fill(255); tg.noStroke(); tg.textFont(FONT); tg.textStyle(tg.BOLD); tg.textAlign(tg.CENTER, tg.CENTER);
+    let fs = Math.min(p.width * 0.19, p.height * 0.3); tg.textSize(fs);
+    while (tg.textWidth("CARTOGRAFIA") > p.width * 0.9 && fs > 12) { fs *= 0.95; tg.textSize(fs); }
+    const cy = p.height * 0.5; tg.text("CARTOGRAFIA", p.width / 2, cy - fs * 0.46); tg.text("DO FOMENTO", p.width / 2, cy + fs * 0.46);
+    tg.loadPixels(); const step = c.mobile ? 4 : (p.width > 900 ? 5 : 4), out = [];
+    for (let y = 0; y < p.height; y += step) for (let x = 0; x < p.width; x += step) { const i = 4 * (y * p.width + x); if (tg.pixels[i] > 128) out.push({ x: x + step / 2, y: y + step / 2 }); }
+    tg.remove(); return out;
+  }
+  function order() {
+    const o = P.ordem;
+    const list = PROJECTS.slice();
+    if (o === "ano") list.sort((a, b) => a.year - b.year || (b.value || 0) - (a.value || 0));
+    if (o === "mecanismo") list.sort((a, b) => MECHS.indexOf(a.mechanism) - MECHS.indexOf(b.mechanism) || a.year - b.year);
+    if (o === "valor") list.sort((a, b) => (b.value || 0) - (a.value || 0));
+    return list;
+  }
+  function build(keep) {
+    const targets = sample().sort((a, b) => a.x - b.x || a.y - b.y);
+    const list = order(); let k = 0; const n = targets.length; const next = [];
+    list.forEach((d, idx) => {
+      const share = Math.round(n * (Number(d.value) || 0) / TOTAL);
+      const end = idx === list.length - 1 ? n : Math.min(n, k + share);
+      for (; k < end; k++) { const tg = targets[k]; const old = keep && parts[k]; next.push({ tx: tg.x, ty: tg.y, x: old ? old.x : p.random(p.width), y: old ? old.y : p.random(p.height), vx: 0, vy: 0, d, col: mechColor(d) }); }
+    });
+    parts = next; sel = null; c.readout(caption());
+  }
+  function caption() {
+    const o = P.ordem === "ano" ? "Lido da esquerda para a direita, o título é a linha do tempo: 2017 → 2024." : P.ordem === "mecanismo" ? "Fatias por mecanismo: Incentivo Fiscal, Fundo Municipal, Descentra." : "Fatias do maior para o menor valor.";
+    return `<b>Cada ponto ≈ ${money(TOTAL / Math.max(1, parts.length))}</b>${o} Toque num trecho para saber de que projeto ele é.`;
+  }
+  function pick(x, y) {
+    let best = null, bd = 30 * 30; for (const pt of parts) { const dx = pt.tx - x, dy = pt.ty - y, d2 = dx * dx + dy * dy; if (d2 < bd) { bd = d2; best = pt; } }
+    if (best) { sel = best.d; flash = p.millis(); const share = (Number(best.d.value) || 0) / TOTAL * 100; c.readout(`<b>${shortTitle(best.d.title)}</b>${best.d.year} · ${best.d.mechanism} · ${money(best.d.value)} · ${share.toFixed(1).replace(".", ",")}% do título`); }
+  }
+  return {
+    setup() { build(false); }, resize() { build(true); }, reset() { build(false); },
+    change(id) { if (id === "ordem") build(true); },
+    press: pick, drag() { }, dispose() { },
+    draw() {
+      const bg = c.bg(), ink = c.ink();
+      p.background(bg[0], bg[1], bg[2]);
+      const live = pointerLive(p, 900) || state.pointer.down, px = state.pointer.x, py = state.pointer.y, Rr = P.disp;
+      const maxS = 6, dim = sel && p.millis() - flash < 2500;
+      p.strokeWeight(c.mobile ? 2.4 : 2.6);
+      for (const pt of parts) {
+        let dx = pt.tx - pt.x, dy = pt.ty - pt.y; const d = Math.sqrt(dx * dx + dy * dy) || 1e-6;
+        const sp = Math.min(maxS, d * 0.14); let sx = dx / d * sp - pt.vx, sy = dy / d * sp - pt.vy;
+        if (live) { const ex = pt.x - px, ey = pt.y - py, e2 = ex * ex + ey * ey; if (e2 < Rr * Rr) { const e = Math.sqrt(e2) || 1e-6, w = (1 - e / Rr); sx += ex / e * w * 5.5; sy += ey / e * w * 5.5; } }
+        pt.vx = (pt.vx + sx * 0.35) * 0.86; pt.vy = (pt.vy + sy * 0.35) * 0.86; pt.x += pt.vx; pt.y += pt.vy;
+        const a = dim ? (pt.d === sel ? 255 : 40) : (c.dark() ? 235 : 215);
+        p.stroke(pt.col[0], pt.col[1], pt.col[2], a); p.point(pt.x, pt.y);
+      }
+      if (sel && p.millis() - flash > 5000) { sel = null; c.readout(caption()); }
+    }
+  };
+}
+
+/* ========== 03 CÉLULAS DE VALOR (Voronoi / potência / área = valor) ========== */
+function expVoronoi(p, c) {
+  const cs = c.mobile ? 5 : 4; let gw = 1, gh = 1, owner = null, img = null, eg = null, seeds = [], areas = null, iter = 0, drag = -1, sel = null, dirty = true;
+  const P = c.params; let Rg = { x0: 0, y0: 0, x1: 1, y1: 1 };
+  const xYear = y => p.map(y, 2017, 2024, Rg.x0 + 34, Rg.x1 - 34), yRow = r => p.map(r, 0, 3, Rg.y0 + 24, Rg.y1 - 36);
+  function layout() {
+    Rg = c.region(); gw = Math.ceil(p.width / cs); gh = Math.ceil(p.height / cs); owner = new Int16Array(gw * gh); areas = new Float32Array(PROJECTS.length);
+    img = p.createImage(gw, gh); img.loadPixels(); if (eg) eg.remove(); eg = p.createGraphics(p.width, p.height);
+    seeds = PROJECTS.map((d, i) => { const row = MECHS.indexOf(d.mechanism); return { x: xYear(d.year) + (hash(i * 5 + 1) - 0.5) * 36, y: yRow(row + 0.5 + (hash(i * 7 + 3) - 0.5) * 0.75), d, w: 0 }; });
+    iter = 0; dirty = true; weightsInit();
+  }
+  function weightsInit() { const L2 = Math.min(p.width, p.height) ** 2; for (const s of seeds) s.w = P.modo === "puro" ? 0 : (Number(s.d.value) || 0) / MAX * L2 * 0.045; iter = 0; dirty = true; }
+  function compute() {
+    const n = seeds.length; areas.fill(0);
+    for (let gy = 0; gy < gh; gy++) { const y = (gy + 0.5) * cs; for (let gx = 0; gx < gw; gx++) { const x = (gx + 0.5) * cs; let best = 0, bd = Infinity; for (let i = 0; i < n; i++) { const s = seeds[i]; const dx = x - s.x, dy = y - s.y; const dd = dx * dx + dy * dy - s.w; if (dd < bd) { bd = dd; best = i; } } owner[gy * gw + gx] = best; areas[best]++; } }
+    if (P.modo === "area" && iter < 90) { const total = gw * gh, L2 = Math.min(p.width, p.height) ** 2; for (let i = 0; i < n; i++) { const target = total * (Number(seeds[i].d.value) || 0) / TOTAL; seeds[i].w += (target - areas[i]) / total * L2 * 0.6; } iter++; dirty = true; } else dirty = false;
+    paint();
+  }
+  function paint() {
+    const bg = c.bg(), ink = c.ink(), full = P.cheio === "cheio";
+    for (let k = 0; k < gw * gh; k++) { const s = seeds[owner[k]]; const col = mechColor(s.d); const mix = full ? (s.d === sel ? 0.75 : (c.dark() ? 0.42 : 0.34)) : (s.d === sel ? 0.5 : 0); const o = k * 4; img.pixels[o] = bg[0] + (col[0] - bg[0]) * mix; img.pixels[o + 1] = bg[1] + (col[1] - bg[1]) * mix; img.pixels[o + 2] = bg[2] + (col[2] - bg[2]) * mix; img.pixels[o + 3] = 255; }
+    img.updatePixels();
+    eg.clear(); eg.stroke(ink[0], ink[1], ink[2], full ? 120 : 170); eg.strokeWeight(full ? 1 : 1.2);
+    for (let gy = 0; gy < gh; gy++) for (let gx = 0; gx < gw; gx++) { const k = gy * gw + gx; if (gx < gw - 1 && owner[k] !== owner[k + 1]) eg.line((gx + 1) * cs, gy * cs, (gx + 1) * cs, (gy + 1) * cs); if (gy < gh - 1 && owner[k] !== owner[k + gw]) eg.line(gx * cs, (gy + 1) * cs, (gx + 1) * cs, (gy + 1) * cs); }
+  }
+  function nearestSeed(x, y, r) { let best = -1, bd = r * r; seeds.forEach((s, i) => { const dx = s.x - x, dy = s.y - y, d2 = dx * dx + dy * dy; if (d2 < bd) { bd = d2; best = i; } }); return best; }
+  function cellAt(x, y) { const gx = Math.floor(x / cs), gy = Math.floor(y / cs); if (gx < 0 || gy < 0 || gx >= gw || gy >= gh) return null; return seeds[owner[gy * gw + gx]]; }
+  function showSel() {
+    if (!sel) { c.readout(""); return; }
+    const i = seeds.findIndex(s => s.d === sel), area = areas[i] / (gw * gh) * 100, val = (Number(sel.value) || 0) / TOTAL * 100;
+    c.readout(`<b>${shortTitle(sel.title)}</b>${sel.year} · ${sel.mechanism} · ${money(sel.value)} · ${area.toFixed(1).replace(".", ",")}% da área para ${val.toFixed(1).replace(".", ",")}% do valor`);
+  }
+  return {
+    setup() { layout(); }, resize() { layout(); }, reset() { sel = null; c.readout(""); layout(); },
+    change(id) { if (id === "modo") weightsInit(); else dirty = true; },
+    press(x, y) { drag = nearestSeed(x, y, 22); if (drag < 0) { const s = cellAt(x, y); sel = s ? s.d : null; showSel(); dirty = true; } else { sel = seeds[drag].d; showSel(); } },
+    drag(x, y) { if (drag >= 0) { seeds[drag].x = x; seeds[drag].y = y; dirty = true; } },
+    release() { if (drag >= 0 && P.modo === "area") iter = Math.min(iter, 50); drag = -1; }, dispose() { if (eg) eg.remove(); eg = null; },
+    draw() {
+      if (dirty) compute();
+      const bg = c.bg(), ink = c.ink();
+      p.background(bg[0], bg[1], bg[2]);
+      p.push(); p.noSmooth(); p.image(img, 0, 0, gw * cs, gh * cs); p.pop(); p.smooth();
+      p.image(eg, 0, 0);
+      // eixos discretos: anos embaixo (acima dos controles), mecanismos na borda direita
+      for (const y of YEARS) small(p, String(y), xYear(y), Rg.y1 - 10, p.CENTER, 150, c.mobile ? 7 : 8);
+      if (!c.mobile) MECHS.forEach((m, r) => { p.push(); p.translate(Rg.x1 - 6, yRow(r + 0.5)); p.rotate(-p.HALF_PI); small(p, m.toUpperCase(), 0, 0, p.CENTER, 120, 7.5); p.pop(); });
+      // sementes e rótulos (só nas células grandes o bastante)
+      const minArea = (c.mobile ? 7000 : 9000) / (cs * cs);
+      seeds.forEach((s, i) => {
+        const col = mechColor(s.d), r = 3 + Math.sqrt((Number(s.d.value) || 0) / MAX) * (c.mobile ? 7 : 9);
+        p.noStroke(); p.fill(col[0], col[1], col[2]); p.circle(s.x, s.y, r * 2); p.noFill(); p.stroke(ink[0], ink[1], ink[2], 160); p.strokeWeight(1); p.circle(s.x, s.y, r * 2);
+        if (areas[i] > minArea || s.d === sel) { small(p, shortTitle(s.d.title).toUpperCase(), s.x, s.y + r + 8, p.CENTER, 200, c.mobile ? 7 : 8); small(p, money(s.d.value), s.x, s.y + r + 18, p.CENTER, 120, c.mobile ? 6.5 : 7.5); }
+      });
+      if (P.modo === "area" && iter < 90) small(p, "AJUSTANDO ÁREAS · " + iter + "/90", Rg.x1 - 16, Rg.y0 + 8, p.RIGHT, 120, 7.5);
+    }
+  };
+}
+
+/* ========== 04 MANCHA QUE CRESCE (DLA por ano) ========== */
+function expMancha(p, c) {
+  const cs = c.mobile ? 3 : 2; let gw = 1, gh = 1, grid = null, img = null, years = [], done = false, vertical = false, hot = -1, Rg = null, caption = "";
+  const P = c.params;
+  function layout() {
+    vertical = c.mobile; Rg = c.region(); gw = Math.ceil(p.width / cs); gh = Math.ceil(p.height / cs); grid = new Uint8Array(gw * gh); img = p.createImage(gw, gh);
+    const K = (vertical ? 0.06 : 0.085) * (Rg.x1 - Rg.x0) * (Rg.y1 - Rg.y0) / (cs * cs), midY = (Rg.y0 + Rg.y1) / 2, midX = (Rg.x0 + Rg.x1) / 2;
+    years = YEARS.map((y, k) => {
+      const ps = PROJECTS.filter(d => d.year === y), v = ps.reduce((s, d) => s + (Number(d.value) || 0), 0);
+      const cx = vertical ? Math.round((midX + (k % 2 ? 1 : -1) * (Rg.x1 - Rg.x0) * 0.16) / cs) : Math.round(p.map(y, 2017, 2024, Rg.x0 + 40, Rg.x1 - 40) / cs);
+      const cy = vertical ? Math.round(p.map(k, 0, 7, Rg.y0 + 56, Rg.y1 - 40) / cs) : Math.round((midY + (k % 2 ? 1 : -1) * (Rg.y1 - Rg.y0) * 0.07) / cs);
+      return { y, ps, v, cx, cy, budget: Math.round(K * v / TOTAL), placed: 0, r: 2, walkers: [], active: false, weights: ps.map(d => Number(d.value) || 0) };
+    });
+    for (const Y of years) if (Y.budget > 0) { grid[Y.cy * gw + Y.cx] = 1 + MECHS.indexOf(Y.ps[0].mechanism); Y.placed = 1; }
+    img.loadPixels(); for (let k = 0; k < gw * gh * 4; k++) img.pixels[k] = 0; img.updatePixels(); done = false; hot = -1;
+    caption = `<b>Cada célula ≈ ${money(TOTAL / Math.max(1, years.reduce((s, Y) => s + Y.budget, 0)))}</b>Caminhantes aleatórios grudam ao tocar a mancha do seu ano. ${c.mobile ? "Toque" : "Passe"} num ano para ver quem o compõe.`; c.readout(caption);
+  }
+  function pickMech(Y) { let r = Math.random() * Y.v; for (let i = 0; i < Y.ps.length; i++) { r -= Y.weights[i]; if (r <= 0) return 1 + MECHS.indexOf(Y.ps[i].mechanism); } return 1 + MECHS.indexOf(Y.ps[Y.ps.length - 1].mechanism); }
+  function spawn(Y) { const a = Math.random() * Math.PI * 2, rr = Y.r + 4; return { x: Math.round(Y.cx + Math.cos(a) * rr), y: Math.round(Y.cy + Math.sin(a) * rr), m: pickMech(Y) }; }
+  function step() {
+    const speed = P.vel, perFrame = Math.round(p.map(speed, 1, 100, 6, 70)) * (c.mobile ? 0.6 : 1);
+    let any = false;
+    years.forEach((Y, k) => {
+      if (Y.budget <= 0 || Y.y > P.ate) return;
+      const prev = years.slice(0, k).filter(z => z.budget > 0 && z.y <= P.ate).pop();
+      Y.active = !prev || prev.placed >= prev.budget * 0.55;
+      if (!Y.active || Y.placed >= Y.budget) return;
+      any = true;
+      while (Y.walkers.length < 24) Y.walkers.push(spawn(Y));
+      let stuck = 0;
+      for (let round = 0; round < 8 && stuck < perFrame; round++) for (let w = 0; w < Y.walkers.length && stuck < perFrame; w++) {
+        const wk = Y.walkers[w];
+        for (let s = 0; s < 80; s++) {
+          const dir = Math.random() * 4 | 0; wk.x += dir === 0 ? 1 : dir === 1 ? -1 : 0; wk.y += dir === 2 ? 1 : dir === 3 ? -1 : 0;
+          const dx = wk.x - Y.cx, dy = wk.y - Y.cy;
+          if (wk.x <= 0 || wk.y <= 0 || wk.x >= gw - 1 || wk.y >= gh - 1 || dx * dx + dy * dy > (Y.r + 14) ** 2) { Y.walkers[w] = spawn(Y); break; }
+          const k0 = wk.y * gw + wk.x;
+          if (grid[k0 - 1] || grid[k0 + 1] || grid[k0 - gw] || grid[k0 + gw]) {
+            grid[k0] = wk.m; Y.placed++; stuck++; const d = Math.sqrt(dx * dx + dy * dy); if (d > Y.r) Y.r = d;
+            const o = k0 * 4, col = MECH[MECHS[wk.m - 1]]; img.pixels[o] = col[0]; img.pixels[o + 1] = col[1]; img.pixels[o + 2] = col[2]; img.pixels[o + 3] = 255;
+            Y.walkers[w] = spawn(Y); break;
+          }
+        }
+      }
+    });
+    if (any) { img.updatePixels(); }
+    done = !any;
+  }
+  function pickYear(x, y) { if (!Rg || x < Rg.x0 || x > Rg.x1 || y < Rg.y0 || y > Rg.y1) return -1; let best = -1, bd = 1e9; years.forEach((Y, k) => { const dx = Y.cx * cs - x, dy = Y.cy * cs - y, d2 = vertical ? dy * dy : dx * dx; if (d2 < bd) { bd = d2; best = k; } }); return best; }
+  function show(k) { hot = k; const Y = years[k]; if (!Y) { c.readout(caption); return; } c.readout(Y.ps.length ? `<b>${Y.y} · ${Y.ps.length} projeto(s) · ${money(Y.v)}</b>${Y.ps.map(d => shortTitle(d.title)).join(" · ")}` : `<b>${Y.y}</b>Nenhum projeto de grafite ou muralismo do corpus neste ano.`); }
+  return {
+    setup() { layout(); }, resize() { layout(); }, reset() { layout(); }, dispose() { },
+    change(id) { if (id === "ate") { if (years.some(Y => Y.placed > 1 && Y.y > P.ate)) layout(); done = false; } },
+    press(x, y) { show(pickYear(x, y)); }, move(x, y) { if (!c.mobile) show(pickYear(x, y)); },
+    draw() {
+      if (!done) step();
+      const bg = c.bg(), ink = c.ink();
+      p.background(bg[0], bg[1], bg[2]);
+      // linha do tempo
+      p.stroke(ink[0], ink[1], ink[2], 70); p.strokeWeight(1);
+      const midY = (Rg.y0 + Rg.y1) / 2, midX = (Rg.x0 + Rg.x1) / 2;
+      if (vertical) p.line(midX, Rg.y0 + 40, midX, Rg.y1 - 24); else p.line(Rg.x0 + 16, midY, Rg.x1 - 16, midY);
+      p.push(); p.noSmooth(); p.image(img, 0, 0, gw * cs, gh * cs); p.pop(); p.smooth();
+      years.forEach((Y, k) => {
+        const x = Y.cx * cs, y = Y.cy * cs, on = Y.y <= P.ate;
+        p.stroke(ink[0], ink[1], ink[2], on ? 200 : 70); p.strokeWeight(k === hot ? 2 : 1);
+        if (vertical) { p.line(midX - 6, y, midX + 6, y); small(p, String(Y.y), midX + (k % 2 ? -14 : 14), y, k % 2 ? p.RIGHT : p.LEFT, on ? 200 : 90, 8); }
+        else { p.line(x, midY - 6, x, midY + 6); small(p, String(Y.y), x, Rg.y1 - 20, p.CENTER, on ? 200 : 90, k === hot ? 9 : 8); if (Y.budget > 0 && on) small(p, shortMoney(Y.v), x, Rg.y1 - 8, p.CENTER, 110, 7); }
+      });
+    }
+  };
+}
+
+/* ========== 05 CORDAS ========== */
+function expCordas(p, c) {
+  const P = c.params; let groups = [], ribbons = [], hot = -1;
+  function rightGroups() { return P.lado === "ano" ? YEARS.map(String) : P.lado === "escala" ? SCALES : CIRCUITS; }
+  function keyOf(d) { return P.lado === "ano" ? String(d.year) : P.lado === "escala" ? scaleOf(Number(d.value) || 0) : (d.circuit || "?"); }
+  function measure(d) { return P.medida === "valor" ? (Number(d.value) || 0) : 1; }
+  function build() {
+    const right = rightGroups(); const F = MECHS.map(() => right.map(() => 0));
+    for (const d of PROJECTS) { const i = MECHS.indexOf(d.mechanism), j = right.indexOf(keyOf(d)); if (i >= 0 && j >= 0) F[i][j] += measure(d); }
+    const L = MECHS.map((m, i) => ({ name: m, tot: F[i].reduce((a, b) => a + b, 0), col: MECH[m], side: "L", i }));
+    const Rg = right.map((k, j) => ({ name: k, tot: F.reduce((a, row) => a + row[j], 0), col: null, side: "R", j }));
+    const all = L.concat(Rg.slice().reverse()).filter(g => g.tot > 0); const sum = all.reduce((a, g) => a + g.tot, 0) || 1;
+    const gap = 0.035, span = Math.PI * 2 - gap * all.length; let a = -Math.PI / 2 + 0.25;
+    for (const g of all) { g.a0 = a; g.a1 = a + span * g.tot / sum; g.cursor = g.a0; a = g.a1 + gap; }
+    groups = all; ribbons = [];
+    for (const g of L) for (let j = 0; j < right.length; j++) { const v = F[g.i][j]; if (!v) continue; const h = all.find(x => x.side === "R" && x.j === j); if (!h) continue;
+      const ga = g.cursor, gb = g.cursor + (g.a1 - g.a0) * v / g.tot; g.cursor = gb; const ha = h.cursor, hb = h.cursor + (h.a1 - h.a0) * v / h.tot; h.cursor = hb;
+      ribbons.push({ g, h, ga, gb, ha, hb, v, col: g.col }); }
+    hot = -1; c.readout(caption());
+  }
+  function caption() { return `<b>${P.medida === "valor" ? "Arcos = valor somado" : "Arcos = número de projetos"}</b>Fitas ligam cada mecanismo a ${P.lado === "ano" ? "cada ano" : P.lado === "escala" ? "cada escala de valor (micro até R$ 30 mil, médio até R$ 100 mil, macro acima)" : "cada circuito (monumental ou capilar)"}. ${c.mobile ? "Toque" : "Passe"} num arco para seguir só as fitas dele.`; }
+  function geo() { const g = c.region(); const cx = (g.x0 + g.x1) / 2, cy = (g.y0 + g.y1) / 2, r = Math.max(60, Math.min(g.x1 - g.x0, g.y1 - g.y0) / 2 - (c.mobile ? 34 : 44)); return { cx, cy, r }; }
+  function arcPts(cx, cy, r, a0, a1) { const n = Math.max(2, Math.ceil(Math.abs(a1 - a0) / 0.08)); const out = []; for (let i = 0; i <= n; i++) { const a = p.lerp(a0, a1, i / n); out.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]); } return out; }
+  function pickGroup(x, y) { const { cx, cy, r } = geo(); const dx = x - cx, dy = y - cy, d = Math.sqrt(dx * dx + dy * dy); if (d < r * 0.55 || d > r + 40) return -1; let a = Math.atan2(dy, dx); for (let i = 0; i < groups.length; i++) { const g = groups[i]; let aa = a; while (aa < g.a0 - 0.01) aa += Math.PI * 2; while (aa > g.a0 + Math.PI * 2) aa -= Math.PI * 2; if (aa >= g.a0 - 0.01 && aa <= g.a1 + 0.01) return i; } return -1; }
+  function show(i) { hot = i; const g = groups[i]; if (!g) { c.readout(caption()); return; } const fmt = v => P.medida === "valor" ? money(v) : v + " projeto(s)"; const parts = ribbons.filter(rb => rb.g === g || rb.h === g).map(rb => (rb.g === g ? rb.h.name : rb.g.name) + " " + fmt(rb.v)); c.readout(`<b>${g.name} · ${fmt(g.tot)}</b>${parts.join(" · ")}`); }
+  return {
+    setup: build, resize() { }, reset: build, dispose() { },
+    change(id) { if (id !== "theme") build(); },
+    press(x, y) { show(pickGroup(x, y)); }, move(x, y) { if (!c.mobile) { const i = pickGroup(x, y); if (i !== hot) show(i); } },
+    draw() {
+      const bg = c.bg(), ink = c.ink(), { cx, cy, r } = geo();
+      p.background(bg[0], bg[1], bg[2]);
+      const hg = hot >= 0 ? groups[hot] : null;
+      for (const rb of ribbons) {
+        const on = !hg || rb.g === hg || rb.h === hg; const ri = r - 6;
+        p.noStroke(); p.fill(rb.col[0], rb.col[1], rb.col[2], on ? (hg ? 200 : 120) : 22);
+        p.beginShape(); const A = arcPts(cx, cy, ri, rb.ga, rb.gb), B = arcPts(cx, cy, ri, rb.ha, rb.hb);
+        A.forEach((q, i) => i ? p.vertex(q[0], q[1]) : p.vertex(q[0], q[1])); p.quadraticVertex(cx, cy, B[0][0], B[0][1]); B.slice(1).forEach(q => p.vertex(q[0], q[1])); p.quadraticVertex(cx, cy, A[0][0], A[0][1]); p.endShape(p.CLOSE);
+      }
+      groups.forEach((g, i) => {
+        const col = g.col || ink; p.push(); p.noFill(); p.stroke(col[0], col[1], col[2], hg && g !== hg ? 70 : 255); p.strokeWeight(i === hot ? 10 : 7); p.strokeCap(p.SQUARE);
+        p.arc(cx, cy, r * 2, r * 2, g.a0, g.a1); p.pop();
+        const am = (g.a0 + g.a1) / 2, lx = cx + Math.cos(am) * (r + 16), ly = cy + Math.sin(am) * (r + 16);
+        const label = g.side === "L" ? g.name.toUpperCase() : (P.lado === "escala" ? g.name.toUpperCase() : g.name);
+        small(p, label, lx, ly, Math.cos(am) < -0.2 ? p.RIGHT : Math.cos(am) > 0.2 ? p.LEFT : p.CENTER, hg && g !== hg ? 90 : 220, c.mobile ? 7.5 : 9);
+      });
+    }
+  };
+}
+
+/* ========== 06 RIO (streamgraph) ========== */
+function expRio(p, c) {
+  const P = c.params; let series = [], tot = [], hot = -1;
+  let Rg = { x0: 0, y0: 0, x1: 1, y1: 1 };
+  const ML = () => Rg.x0 + 26, MR = () => p.width - Rg.x1 + 26, top = () => Rg.y0 + 30, bottom = () => p.height - Rg.y1 + 34;
+  function caption() { return `<b>Largura do rio = ${P.medida === "valor" ? "valor somado do ano" : "número de projetos do ano"}</b>${c.mobile ? "Toque" : "Passe"} num ano para ver quem o compõe.`; }
+  function build() {
+    series = MECHS.map(m => YEARS.map(y => PROJECTS.filter(d => d.year === y && d.mechanism === m).reduce((s, d) => s + (P.medida === "valor" ? (Number(d.value) || 0) : 1), 0)));
+    tot = YEARS.map((_, k) => series.reduce((s, row) => s + row[k], 0)); hot = -1; c.readout(caption());
+  }
+  function yScale() { const H = p.height - top() - bottom(); return H / Math.max(1, ...tot); }
+  function show(k) { hot = k; const y = YEARS[k]; if (y == null) { c.readout(caption()); return; } const ps = PROJECTS.filter(d => d.year === y); c.readout(ps.length ? `<b>${y} · ${ps.length} projeto(s) · ${money(ps.reduce((s, d) => s + (Number(d.value) || 0), 0))}</b>${ps.map(d => shortTitle(d.title) + " (" + d.mechanism.split(" ")[0] + ")").join(" · ")}` : `<b>${y}</b>O rio seca: nenhum projeto do corpus neste ano.`); }
+  function pickYear(x, y) { if (y != null && (y < Rg.y0 - 20 || y > Rg.y1 + 20)) return -1; let best = -1, bd = 1e9; YEARS.forEach((y, k) => { const d = Math.abs(xOfYear(p, y, ML(), MR()) - x); if (d < bd) { bd = d; best = k; } }); return best; }
+  return {
+    setup: build, resize() { }, reset: build, dispose() { },
+    change(id) { if (id === "medida") build(); },
+    press(x, y) { show(pickYear(x, y)); }, move(x, y) { if (!c.mobile) { const k = pickYear(x, y); if (k !== hot) show(k); } },
+    draw() {
+      Rg = c.region();
+      const bg = c.bg(), ink = c.ink(), s = yScale(), mid = top() + (p.height - top() - bottom()) / 2, smooth = P.forma === "suave";
+      p.background(bg[0], bg[1], bg[2]);
+      const base = YEARS.map((_, k) => mid + tot[k] * s / 2); // silhueta: base centrada
+      const tops = []; let prev = base.slice();
+      series.forEach((row, i) => { const cur = row.map((v, k) => prev[k] - v * s); tops.push({ lo: prev, hi: cur, col: MECH[MECHS[i]], m: MECHS[i] }); prev = cur; });
+      for (const layer of tops) {
+        p.noStroke(); p.fill(layer.col[0], layer.col[1], layer.col[2], c.dark() ? 200 : 170);
+        p.beginShape();
+        const V = (x, y) => smooth ? p.curveVertex(x, y) : p.vertex(x, y);
+        const xs = YEARS.map(y => xOfYear(p, y, ML(), MR()));
+        if (smooth) V(xs[0], layer.hi[0]); xs.forEach((x, k) => V(x, layer.hi[k])); if (smooth) V(xs[7], layer.hi[7]);
+        if (smooth) V(xs[7], layer.lo[7]); for (let k = 7; k >= 0; k--) V(xs[k], layer.lo[k]); if (smooth) V(xs[0], layer.lo[0]);
+        p.endShape(p.CLOSE);
+      }
+      YEARS.forEach((y, k) => {
+        const x = xOfYear(p, y, ML(), MR()); p.stroke(ink[0], ink[1], ink[2], k === hot ? 200 : 50); p.strokeWeight(k === hot ? 1.5 : 1); p.line(x, top() - 10, x, p.height - bottom() + 10);
+        small(p, String(y), x, p.height - bottom() + 24, p.CENTER, k === hot ? 230 : 140, k === hot ? 9.5 : 8);
+        if (tot[k]) small(p, P.medida === "valor" ? shortMoney(tot[k]) : tot[k] + " PROJ.", x, top() - 20, p.CENTER, 110, c.mobile ? 6.5 : 7.5); else small(p, "SECA", x, mid, p.CENTER, 90, 7);
+      });
+    }
+  };
+}
+
+/* ---------- arranque ---------- */
+const fromHash = location.hash.replace("#", ""); if (EXPS[fromHash]) state.exp = fromHash;
+buildTabs();
+if (typeof window.p5 === "function") new p5(host);
+else { select(state.exp); $("#hint").textContent = "MOTOR VISUAL NÃO CARREGOU · OS TEXTOS E CONTROLES CONTINUAM"; $("#hint").classList.add("show"); }
+window.Lab6 = { state, EXPS, select, get current() { return current; }, get p() { return p5inst; } };
+})();
+</script>
+</body>
+</html>

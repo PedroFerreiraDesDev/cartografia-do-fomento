@@ -111,3 +111,12 @@ O laboratório é exploratório: suas decisões visuais não devem ser tratadas 
 - Linguagem estendida às outras páginas: papel `#f7f6f1`, tinta `#161616`, cor por mecanismo (rosa Incentivo Fiscal, azul Fundo Municipal, verde Descentra), cor por natureza de linha (`Rizoma.LINES`) nos acentos dos gráficos e dos editais, títulos condensados (Arial Narrow), linhas finas, poucos elementos. O nó-muro (empena = monumental, fachadas = capilar, área = valor) vira ícone SVG na legenda, no gráfico de escala, na lista lateral, nos editais, na ficha e na página de projeto.
 - Uma só ficha (`openPreview`) para campo, indicadores e editais; "Explorar projeto" abre a página inteira; voltar reabre a ficha onde se estava. Mobile-first: faixa curta no topo, ferramentas no pé, ficha como folha inferior.
 - Decisões de coesão registradas em `rizoma/PROPOSTAS-LAB04.md`, seção 12.
+
+## Lab 06 — Experimentos
+
+- `lab-06-experimentos.html` — laboratório com outra pegada: seis experimentos sobre os mesmos dados (`js/data.js`), com outros algoritmos além do rizoma de força e do Physarum, em abas, um canvas p5.js (modo instância) por vez:
+  - para a capa: **Campo de fluxo** (ruído de Perlin como campo vetorial; os projetos soltam partículas proporcionais ao valor e a capa se desenha sozinha) e **Tipografia viva** (o título amostrado em pontos e ocupado por partículas, cada uma uma fração do valor de um projeto; o dedo dispersa, as letras voltam);
+  - para os Indicadores: **Células de valor** (Voronoi, diagrama de potência e ajuste iterativo de pesos até a área ser o valor), **Mancha que cresce** (DLA por ano na linha do tempo), **Cordas** (mecanismo × ano, escala ou circuito) e **Rio** (streamgraph ano × mecanismo, onde 2018 e 2020 secam).
+- Cada experimento tem nome, pergunta de pesquisa em uma linha, controles mínimos e crédito ao algoritmo de referência (lista ABNT em `rizoma/README-RIZOMA.md`, seção 7). Implementação própria, sem código de terceiros.
+- Pesquisa das referências (Negro Muro, Arte Fora do Museu, Information is Beautiful, Prosas, Mapa Cultural BH, OpenProcessing, exemplos do p5.js), o que cada experimento sugere para o protótipo e uma recomendação: `rizoma/PROPOSTAS-LAB06.md`.
+- Mobile-first: os handlers de toque do p5 só devolvem `false` quando o evento nasce no canvas; abaixo de 780px o texto vira uma faixa no topo e os controles vão para o rodapé.

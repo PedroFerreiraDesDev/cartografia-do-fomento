@@ -207,6 +207,34 @@ OPENPROCESSING. **OpenProcessing**: creative coding community. Disponível em: h
 
 VIRA, Patt. **Slime Molds (Physarum)**: coding tutorial. [S. l.]: Patt Vira, 2023. 1 vídeo. Disponível em: https://youtu.be/VyXxSNcgDtg e https://www.pattvira.com/. Acesso em: 30 out. 2026. (referência didática do Lab 04; nenhum código do tutorial foi copiado)
 
+Referências dos algoritmos do Lab 06 (`lab-06-experimentos.html`; todas as implementações são próprias, nenhum código de terceiros foi copiado):
+
+AURENHAMMER, Franz. Power diagrams: properties, algorithms and applications. **SIAM Journal on Computing**, v. 16, n. 1, p. 78-96, 1987. (células de valor: diagrama de potência)
+
+BALZER, Michael; DEUSSEN, Oliver. Voronoi treemaps. In: IEEE SYMPOSIUM ON INFORMATION VISUALIZATION (INFOVIS), 2005, Minneapolis. **Proceedings** [...]. Los Alamitos: IEEE, 2005. p. 49-56. (células de valor: área proporcional ao valor)
+
+BYRON, Lee; WATTENBERG, Martin. Stacked graphs: geometry & aesthetics. **IEEE Transactions on Visualization and Computer Graphics**, v. 14, n. 6, p. 1245-1252, 2008. (rio: streamgraph)
+
+HAVRE, Susan; HETZLER, Beth; NOWELL, Lucy. ThemeRiver: visualizing theme changes over time. In: IEEE SYMPOSIUM ON INFORMATION VISUALIZATION (INFOVIS), 2000, Salt Lake City. **Proceedings** [...]. Los Alamitos: IEEE, 2000. p. 115-123. (rio)
+
+HOBBS, Tyler. **Flow fields**. [S. l.], 2020. Disponível em: https://www.tylerxhobbs.com/words/flow-fields. Acesso em: 30 out. 2026. (campo de fluxo: ensaio sobre a técnica)
+
+HOLTEN, Danny. Hierarchical edge bundles: visualization of adjacency relations in hierarchical data. **IEEE Transactions on Visualization and Computer Graphics**, v. 12, n. 5, p. 741-748, 2006. (cordas: fitas curvas pelo centro)
+
+KRZYWINSKI, Martin et al. Circos: an information aesthetic for comparative genomics. **Genome Research**, v. 19, n. 9, p. 1639-1645, 2009. (cordas)
+
+NOCAJ, Arlind; BRANDES, Ulrik. Computing Voronoi treemaps: faster, simpler, and resolution-independent. **Computer Graphics Forum**, v. 31, n. 3, p. 855-864, 2012. (células de valor: ajuste iterativo dos pesos)
+
+REYNOLDS, Craig W. Steering behaviors for autonomous characters. In: GAME DEVELOPERS CONFERENCE, 1999, San Jose. **Proceedings** [...]. San Francisco: Miller Freeman, 1999. p. 763-782. (tipografia viva: comportamento "arrive")
+
+SHIFFMAN, Daniel. **The nature of code**: simulating natural systems with JavaScript. 2. ed. San Francisco: No Starch Press, 2024. (campo de fluxo e partículas; edição de 2012 disponível em https://natureofcode.com/)
+
+VORONOI, Georges. Nouvelles applications des paramètres continus à la théorie des formes quadratiques. **Journal für die reine und angewandte Mathematik**, v. 134, p. 198-287, 1908. (células de valor)
+
+WITTEN, Thomas A.; SANDER, Leonard M. Diffusion-limited aggregation, a kinetic critical phenomenon. **Physical Review Letters**, v. 47, n. 19, p. 1400-1403, 1981. (mancha que cresce: DLA)
+
+Referências de projeto consultadas para o Lab 06 (sites, acesso em 30 out. 2026): NEGRO MURO. Disponível em: https://negromuro.com.br/. ARTE FORA DO MUSEU. Disponível em: https://arteforadomuseu.com.br/. INFORMATION IS BEAUTIFUL. Disponível em: https://informationisbeautiful.net/. PROSAS. Disponível em: https://prosas.com.br/. MAPA CULTURAL BH. Fundação Municipal de Cultura de Belo Horizonte. Disponível em: https://mapaculturalbh.pbh.gov.br/. PROCESSING FOUNDATION. **p5.js Examples**. Disponível em: https://p5js.org/examples/.
+
 ---
 
 ## 8. Próximos passos sugeridos

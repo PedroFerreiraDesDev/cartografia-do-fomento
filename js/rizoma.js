@@ -737,7 +737,8 @@
       };
       q.touchEnded = function (e) {
         const wasPinch=!!pinch;if(!q.touches||q.touches.length<2)pinch=null;
-        if(wasPinch||!touchGesture||!shown()||!onCanvas(e)){touchGesture=null;return false;}
+        if(!shown()||!onCanvas(e)){touchGesture=null;return;} // fora do canvas, NUNCA devolver false: o p5 escuta o toque na janela inteira e `false` cancela o clique dos botões (Android)
+        if(wasPinch||!touchGesture){touchGesture=null;return false;}
         const g=touchGesture;touchGesture=null;
         if(g.move>12||p.millis()-g.t>520)return false;
         const n=pickNode(g.x,g.y);

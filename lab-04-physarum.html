@@ -37,6 +37,8 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch
 .final-preview{border:1px solid #e3e1da;background:var(--paper);aspect-ratio:16/10;display:grid;place-items:center;overflow:hidden}.final-preview img{width:100%;height:100%;object-fit:cover;display:block}
 .final-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.final-actions .primary{display:inline-block;width:auto;margin:0;padding:11px 14px}.final-note{font-size:10px;color:#999;margin:12px 0 0}
 @media(max-width:780px){.final{padding:10px;align-items:end}.final-card{padding:16px;border-radius:14px 14px 4px 4px}.final-card h2{font-size:21px}.final-preview{aspect-ratio:4/3}.hover-tip{display:none!important}}
+.legend{display:flex;flex-wrap:wrap;gap:4px 10px;margin:4px 0 8px;font-size:9px;font-weight:800;color:#555;pointer-events:none}.legend[hidden]{display:none}.legend span{display:inline-flex;align-items:center;gap:5px}.legend i{width:9px;height:9px;border-radius:2px;background:var(--c)}.legend b{font-size:9px;letter-spacing:-.1em;color:#222}
+@media(max-width:780px){.legend{display:none}}
 /* ficha do nó aberto */
 .card{position:absolute;z-index:30;top:0;right:0;bottom:0;width:min(380px,100%);background:rgba(247,246,241,.97);border-left:1px solid var(--line);padding:18px 20px 30px;overflow:auto;transform:translateX(104%);transition:transform .35s cubic-bezier(.2,.7,.2,1)}.card.open{transform:none}
 .card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}.card .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.card h2{margin:8px 0;font-size:24px;letter-spacing:-.05em;line-height:1.05}.card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
@@ -67,12 +69,13 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div id="trailStage" class="layer" aria-hidden="true"></div>
   <div id="rizomaStage" class="layer"></div>
 
-  <div class="copy"><div class="kicker">LAB 04 / PHYSARUM, A TERCEIRA LIGAÇÃO</div><h1>Uma rede que ninguém desenhou.</h1><p>Cada nó revelado solta agentes que sentem o rastro à frente, à esquerda e à direita, viram para o mais forte e depositam ao passar. Ligue uma linha de fuga: os nós que compartilham aquele atributo alimentam o micélio com mais força, e a rede cresce entre eles. Desligue, e ela evapora.</p></div>
+  <div class="copy"><div class="kicker">LAB 04 / PHYSARUM, A TERCEIRA LIGAÇÃO</div><h1>Uma rede que ninguém desenhou.</h1><div id="mechLegend" class="legend"><span><i style="--c:#ff4f9a"></i>Incentivo Fiscal</span><span><i style="--c:#31a8ff"></i>Fundo Municipal</span><span><i style="--c:#65e77d"></i>Descentra</span><span class="shape"><b>▮</b>empena = monumental</span><span class="shape"><b>▪▪▪</b>fachadas = capilar · área = valor</span></div><p>Cada nó revelado solta agentes que sentem o rastro à frente, à esquerda e à direita, viram para o mais forte e depositam ao passar. Ligue uma linha de fuga: os nós que compartilham aquele atributo alimentam o micélio com mais força, e a rede cresce entre eles. Desligue, e ela evapora.</p></div>
 
   <div class="tools">
     <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
     <div class="row">
       <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
+      <button id="shapeBtn" title="Tecla N · compara as duas formas do nó">Nó · muro</button>
       <span class="group" aria-label="Quantidade de agentes"><button id="lessBtn" title="Menos agentes">−</button><button id="countBtn" class="mid" title="Agentes ativos">0 agentes</button><button id="moreBtn" title="Mais agentes">+</button></span>
       <button id="evapBtn" title="Tecla E">Evaporação · média</button>
       <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
@@ -291,7 +294,7 @@ function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.lengt
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 2.4,
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 2.4, nodeStyle: "muro",
     treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
     onChange: sync, onOpen: openCard, onHover: onHover
   });
@@ -302,7 +305,7 @@ function mountField() {
   }
   sync(R.state());
 }
-let lastActiveKey = "";
+let lastActiveKey = "", lastNodeStyle = "";
 function sync(s) {
   const ak = TYPES.map(t => s.active[t] ? 1 : 0).join("");
   if (ak !== lastActiveKey) { // o conjunto de linhas mudou: todos os agentes renascem; se uma linha saiu, a rede dela evapora depressa
@@ -313,6 +316,8 @@ function sync(s) {
   }
   for (const t in chips) { chips[t].classList.toggle("active", !!s.active[t]); chips[t].querySelector("small").textContent = s.linesByType ? s.linesByType[t] : 0; }
   $("#depthBtn").classList.toggle("active", s.depth);
+  $("#shapeBtn").textContent = s.nodeStyle === "muro" ? "Nó · muro" : "Nó · círculo"; $("#shapeBtn").classList.toggle("active", s.nodeStyle === "muro"); $("#mechLegend").hidden = s.nodeStyle !== "muro";
+  if (s.nodeStyle !== lastNodeStyle) { lastNodeStyle = s.nodeStyle; if (small() && s.nodeStyle === "muro") guide("Rosa = Incentivo Fiscal · azul = Fundo Municipal · verde = Descentra · empena alta = monumental · fachadas = capilar · área = valor."); }
   $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (PH.on ? ` · ${PH.count} AGENTES` : "");
   document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
   if (s.revealed >= s.total && !finalHinted) { finalHinted = true; guide("Todos os projetos revelados. Quer fechar o seu mapa? O botão congela o micélio e gera a estampa desta visita."); }
@@ -404,13 +409,14 @@ let finalHinted = false;
 
 /* ---------- ferramentas ---------- */
 $("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
+$("#shapeBtn").onclick = () => R.setNodeStyle(R.state().nodeStyle === "muro" ? "circulo" : "muro");
 $("#lessBtn").onclick = () => setCount(PH.count - PH.step);
 $("#moreBtn").onclick = () => setCount(PH.count + PH.step);
 $("#countBtn").onclick = () => setCount((touch || small()) ? 700 : 2500);
 $("#evapBtn").onclick = () => setEvap(PH.evap + 1);
 $("#clearBtn").onclick = () => trailP && trailP.clearTrail();
 $("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
-document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
+document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "n") $("#shapeBtn").click(); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
 window.addEventListener("resize", () => R && R.resize());
 document.addEventListener("visibilitychange", () => { const hid = document.hidden; if (trailP) hid ? trailP.noLoop() : trailP.loop(); if (R) R.setVisible(!hid); }); // aba oculta: tudo pausa
 

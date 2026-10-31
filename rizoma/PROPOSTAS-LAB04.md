@@ -72,3 +72,12 @@ Recomendação: 1 + 2 + 4 juntos. O 1 muda o gesto (arrastar o micélio), o 2 re
 - **Descoberta** (seção 4, itens 1 + 2 + 4): o cursor é alimento (os agentes do nó em foco seguem a mão por até 2,5 s depois do último movimento e, se a mão chega a 34 px de um nó escondido, ele se revela "pelo micélio"); parar sobre um nó revela em camadas (0,25 s título; 0,7 s ano, mecanismo, circuito; 1,5 s valor, ligações possíveis e quantas escondidas; 2,6 s os escondidos ligados pulsam no micélio); a ficha ganhou "Ainda escondido", com os nomes.
 - **Interação final** (seção 2, proposta A): botão "Fechar meu mapa" (tecla M) congela o campo e o micélio, compõe rastro + rizoma num PNG com título gerado ("12 projetos · Mecanismo · data" e a trilha) e abre o painel "Meu micélio" com baixar, abrir o último projeto, continuar ou recomeçar; ao revelar os 20, o guia sugere fechar.
 - Ainda não feitos: forma do nó (seção 3), muro coletivo (2B), pistas de direção (4.3) e sementes (4.5). As propostas ficam registradas para a próxima rodada.
+
+## 7. Forma do nó implementada (31/10, terceira passagem)
+
+Seção 3, proposta 2, agora no motor (`js/rizoma.js`, opção `nodeStyle: "muro"`, API `R.setNodeStyle`) e no Lab 04 com o botão "Nó · muro / círculo" (tecla N) para comparar:
+- **Monumental** = uma empena: retângulo alto, com platibanda e duas linhas de pavimento; a área cresce com o valor.
+- **Capilar** = conjunto de fachadas: 3, 4 ou 5 blocos pequenos de alturas desiguais (micro, médio, macro) sobre um chão comum; a unidade nasce do conjunto.
+- **Cor = mecanismo** (rosa Incentivo Fiscal, azul Fundo Municipal, verde Descentra), a mesma paleta dos Labs 01–03; nó aberto fica em tinta cheia; foco e hover ganham um quadro.
+- O micélio continua nascendo do centro da forma; o protótipo principal segue com círculos até o autor decidir.
+- Fica para depois: fotografia por cima da forma (proposta 5) quando houver acervo.

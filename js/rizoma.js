@@ -22,7 +22,7 @@
    API: Rizoma.mount({ container, data, relations, lines, paper, reduced, depth, intro,
                        treeTop, panelWidth, onOpen, onChange, onStarted, onHover })
         R.toggleLine(t) R.setLine(t,on) R.setMode("rizoma"|"arvore") R.setDepth(v)
-        R.setIntro(v) R.setCutting(v) R.setPaused(v) R.setPaper(v) R.setReduced(v)
+        R.setIntro(v) R.setCutting(v) R.setPaused(v) R.setPaper(v) R.setReduced(v) R.setNodeStyle("circulo"|"muro")
         R.open(id, silent) R.close() R.connections(id) R.potentials(id) R.info(id)
         R.state() R.save(name) R.reset() R.resize() R.setVisible(v) R.refresh()      */
 (function () {
@@ -57,7 +57,8 @@
     const relations = opts.relations || window.CARTOGRAFIA_RELATIONS || [];
     const active = Object.assign({}, DEFAULT_ACTIVE, opts.lines || {});
     const cb = { open: opts.onOpen || function () {}, change: opts.onChange || function () {}, started: opts.onStarted || function () {}, hover: opts.onHover || null };
-    const S = { mode: "rizoma", depth: !!opts.depth, intro: !!opts.intro, cutting: false, paused: false, paper: !!opts.paper, reduced: !!opts.reduced, focus: null, hover: null, hoverEdge: null, trail: [], started: false, cutKeys: new Set(), visible: true };
+    const MECH_COLOR = { "Incentivo Fiscal": [255, 79, 154], "Fundo Municipal": [49, 168, 255], "Descentra": [101, 231, 125] }; // mesma paleta dos labs
+    const S = { nodeStyle: opts.nodeStyle === "muro" ? "muro" : "circulo", mode: "rizoma", depth: !!opts.depth, intro: !!opts.intro, cutting: false, paused: false, paper: !!opts.paper, reduced: !!opts.reduced, focus: null, hover: null, hoverEdge: null, trail: [], started: false, cutKeys: new Set(), visible: true };
     const view = { rx: -0.35, ry: 0.45, lastDrag: 0, zoom: S.intro ? 0.72 : 1, zoomTarget: S.intro ? 0.72 : 1, px: 0, py: 0, pxT: 0, pyT: 0 };
     const ZOOM_MIN = 0.5, ZOOM_MAX = 3.2;
     const coarsePointer = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
@@ -516,6 +517,26 @@
       p.pop();
     }
 
+    function drawWall(n, r, mon, ease, dim, ghost, isF, lit) { // o projeto como superfície: empena (monumental) ou fachadas (capilar)
+      const c = MECH_COLOR[n.p.mechanism] || [120, 120, 120], a = 255 * dim * (ghost ? 0.5 : 1);
+      const ink = S.paper ? 30 : 240;
+      if (!S.paper) { p.blendMode(p.ADD); p.noStroke(); p.fill(c[0], c[1], c[2], 22 * ease * dim); p.circle(0, 0, r * 4); p.blendMode(p.BLEND); }
+      else { p.noStroke(); p.fill(c[0], c[1], c[2], 18 * ease * dim); p.circle(0, 0, r * 3); }
+      p.stroke(ink, a); p.strokeWeight(1);
+      if (mon) { // uma empena: retângulo alto, a área cresce com o valor
+        const w = r * 0.95, h = r * 1.75;
+        p.fill(isF ? ink : c[0], isF ? ink : c[1], isF ? ink : c[2], isF ? a : a * (S.paper ? 0.75 : 0.9)); p.rect(-w / 2, -h / 2, w, h);
+        p.stroke(ink, a * 0.55); p.line(-w / 2, -h / 2 + h * 0.22, w / 2, -h / 2 + h * 0.22); // platibanda
+        if (S.paper) { p.stroke(255, a * 0.5); for (let i = 1; i < 3; i++) p.line(-w / 2 + 2, -h / 2 + h * (0.22 + i * 0.22), w / 2 - 2, -h / 2 + h * (0.22 + i * 0.22)); }
+      } else { // várias fachadas: 3 a 5 blocos pequenos, mais blocos para mais valor
+        const k = (n.p.value || 0) > 100000 ? 5 : (n.p.value || 0) > 30000 ? 4 : 3, bw = r * 0.62, bh = r * 0.8, gap = r * 0.14;
+        const total = k * bw + (k - 1) * gap, x0 = -total / 2;
+        for (let i = 0; i < k; i++) { const hh = bh * (0.72 + ((i * 7) % 3) * 0.14), x = x0 + i * (bw + gap);
+          p.fill(isF ? ink : c[0], isF ? ink : c[1], isF ? ink : c[2], isF ? a : a * (S.paper ? 0.7 : 0.9)); p.rect(x, bh / 2 - hh, bw, hh); }
+        p.stroke(ink, a * 0.5); p.line(x0 - 2, bh / 2 + 1, -x0 + 2, bh / 2 + 1); // o chão comum: a unidade nasce do conjunto
+      }
+      if (lit || isF) { p.noFill(); p.stroke(ink, 200); p.strokeWeight(1); p.rect(-r * 1.1, -r * 1.1, r * 2.2, r * 2.2, 3); }
+    }
     function drawNode(n) {
       const ghost = !n.revealed; // só na capa
       const age = ghost ? 1 : Math.min(1, (p.millis() - n.born) / 600);
@@ -530,7 +551,8 @@
       const dim = (anchor && !isF && !isH && !edgeEnd && !relatedToAnchor ? (S.mode==="arvore"?0.24:0.45) : 1) * fog * (ghost ? 0.35 : 1);
       p.push();
       p.translate(n.scr.x, n.scr.y);
-      if (!S.paper) {
+      if (S.nodeStyle === "muro") drawWall(n, r, mon, ease, dim, ghost, isF, isH || edgeEnd);
+      else if (!S.paper) {
         p.blendMode(p.ADD);
         p.noStroke();
         p.fill(mon ? 255 : 120, mon ? 200 : 200, mon ? 90 : 255, (mon ? 26 : 18) * ease * dim);
@@ -657,7 +679,7 @@
         zoom: view.zoomTarget, revealed: nodes.filter(n => n.revealed).length, total: nodes.length,
         lines: edges.filter(e => e.a.revealed && e.b.revealed).length, linesByType, cuts: S.cutKeys.size,
         trail: S.trail.map(t => t.p.id), trailTitles: S.trail.map(t => shortTitle(t.p.title)),
-        mode: S.mode, depth: S.depth, intro: S.intro, cutting: S.cutting, paused: S.paused, paper: S.paper, reduced: S.reduced,
+        nodeStyle: S.nodeStyle, mode: S.mode, depth: S.depth, intro: S.intro, cutting: S.cutting, paused: S.paused, paper: S.paper, reduced: S.reduced,
         active: Object.assign({}, active), anyLine: Object.keys(active).some(k => active[k]), focus: S.focus ? S.focus.p.id : null, started: S.started
       };
     }
@@ -789,6 +811,7 @@
       setCutting(v) { S.cutting = !!v; cb.change(state()); },
       setPaused(v) { S.paused = !!v; cb.change(state()); },
       setPaper(v) { S.paper = !!v; if (spray) spray.clear(); cb.change(state()); },
+      setNodeStyle(v) { S.nodeStyle = v === "muro" ? "muro" : "circulo"; cb.change(state()); },
       setReduced(v) { S.reduced = !!v; if (S.reduced) { for (const e of edges) e.growth = 1; if (spray) spray.clear(); view.zoom = view.zoomTarget; } cb.change(state()); },
       open(id, silent) { openNode(byId(id), silent); },
       close() { S.focus = null; touchInspect=null; cb.change(state()); },

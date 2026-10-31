@@ -33,11 +33,14 @@ const ONBOARD_KEY="cartografia:onboarding-v5";
 let onboardingHandled=false;
 function hasSeenOnboarding(){try{return localStorage.getItem(ONBOARD_KEY)==="1"}catch(_){return false}}
 function markOnboardingSeen(){try{localStorage.setItem(ONBOARD_KEY,"1")}catch(_){}}
+let onboardingTimer=0;
 function showOnboarding(){
   if(!onboarding||hasSeenOnboarding())return;
   onboarding.hidden=false;
-  onboarding.classList.add("show");
+  requestAnimationFrame(()=>onboarding.classList.add("show"));
+  clearTimeout(onboardingTimer);onboardingTimer=setTimeout(closeOnboarding,14000); // some sozinho; nunca bloqueia
 }
+document.addEventListener("pointerdown",e=>{if(onboarding&&!onboarding.hidden&&!e.target.closest(".onboarding-card"))closeOnboarding()},{capture:true,passive:true}); // o primeiro gesto fora do aviso já o dispensa
 function closeOnboarding(){
   if(!onboarding)return;
   markOnboardingSeen();

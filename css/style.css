@@ -205,104 +205,27 @@ body.preview-open .indicator-side{opacity:.35;transition:opacity .3s}body.previe
 @media(max-width:780px){.project-search{order:-1;min-width:0;max-width:none;width:100%}.project-search input{height:36px;font-size:11px}.search-results{left:0;right:0;width:100%}.discover-tools .chip.suggested::after{display:none}}
 
 
-/* ---------- onboarding estrutural — neutro, antes da identidade final ---------- */
-.interaction-onboarding{position:fixed;inset:0;z-index:260;display:grid;place-items:center;padding:20px;background:rgba(247,246,241,.82);backdrop-filter:blur(8px);opacity:0;transition:opacity .26s ease}
-.interaction-onboarding[hidden]{display:none}.interaction-onboarding.show{opacity:1}
-.onboarding-card{width:min(560px,100%);background:#fff;border:1px solid #cfcfca;padding:28px;box-shadow:0 22px 70px rgba(0,0,0,.12);transform:translateY(8px);transition:transform .26s ease}
-.interaction-onboarding.show .onboarding-card{transform:none}
-.onboarding-card h2{font-size:30px;line-height:1.02;letter-spacing:-.045em;margin:7px 0 22px}
-.onboarding-steps{display:grid;gap:0;border-top:1px solid #ddd}
-.onboarding-steps>div{display:grid;grid-template-columns:38px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid #ddd}
-.onboarding-steps b{font-size:11px;border:1px solid #222;width:28px;height:28px;border-radius:50%;display:grid;place-items:center}
-.onboarding-steps span{display:flex;flex-direction:column;gap:3px}.onboarding-steps strong{font-size:13px}.onboarding-steps small{font-size:11px;color:#777;line-height:1.45}
-.onboarding-card>p{font-size:10.5px;color:#777;line-height:1.5;margin:16px 0 0}
-.onboarding-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-@media(max-width:780px){.interaction-onboarding{align-items:end;padding:10px}.onboarding-card{padding:20px 18px calc(20px + env(safe-area-inset-bottom));border-radius:14px 14px 4px 4px}.onboarding-card h2{font-size:25px}.onboarding-actions .primary{flex:1;justify-content:center}}
-
-
-/* ---------- refinamento mobile: intenção antes da abertura ---------- */
-html,body{min-height:100%;min-height:100dvh}
-.view{height:100vh;height:100dvh}
-.intro{height:100vh;height:100dvh}
-@media(max-width:780px){
-  body{min-height:100dvh;overscroll-behavior:none}
-  .view{height:100dvh;min-height:100svh}
-  .discover-view{height:100dvh;min-height:100svh}
-  .discover-tools{
-    bottom:0!important;
-    max-height:min(40dvh,300px);
-    padding-bottom:max(10px,env(safe-area-inset-bottom))!important;
-  }
-  .project-search{width:100%;flex:none}
-  .search-results{
-    top:auto!important;
-    bottom:calc(100% + 7px)!important;
-    max-height:min(42dvh,330px);
-    overflow-y:auto;
-    overscroll-behavior:contain;
-  }
-  .hover-card{display:none!important}
-  .preview{height:auto;max-height:62dvh;min-height:44dvh}
-  .rizoma-stage{bottom:0}
-  .guide{bottom:calc(116px + env(safe-area-inset-bottom))}
-  .line-chips .chip{min-height:38px}
-  .tools-secondary>button,.zoom-group button,.more-menu>button{min-height:38px}
-}
-
-/* onboarding interaction hardening */
-.interaction-onboarding{pointer-events:auto;touch-action:manipulation}
-.onboarding-card{pointer-events:auto}
-.onboarding-actions button{position:relative;z-index:2;touch-action:manipulation;min-height:44px}
-.interaction-onboarding[hidden]{display:none!important;pointer-events:none!important}
-
-
-/* ---------- onboarding v5: orientação não bloqueante ---------- */
-.interaction-onboarding{
-  position:fixed!important;
-  inset:auto 14px auto auto!important;
-  top:78px!important;
-  z-index:90!important;
-  width:min(360px,calc(100vw - 28px))!important;
-  display:block;
-  padding:0!important;
-  background:transparent!important;
-  backdrop-filter:none!important;
-  opacity:1!important;
-  pointer-events:none!important;
-  transition:none!important;
-}
+/* ---------- onboarding: um aviso de canto, nunca por cima das ferramentas nem do campo ----------
+   desktop: canto inferior esquerdo, acima do rodapé; celular: faixa acima da barra de ferramentas.
+   Some ao primeiro gesto fora dele, em "Começar"/"Pular", em Esc ou sozinho depois de 14 s (app.js). */
+.interaction-onboarding{position:fixed;z-index:40;left:20px;bottom:96px;width:min(340px,calc(100vw - 40px));pointer-events:none;opacity:0;transform:translateY(8px);transition:opacity .26s ease,transform .26s ease}
+.interaction-onboarding.show{opacity:1;transform:none}
 .interaction-onboarding[hidden]{display:none!important}
-.interaction-onboarding .onboarding-card{
-  width:100%!important;
-  background:rgba(255,255,255,.97)!important;
-  border:1px solid #cfcfca!important;
-  padding:18px!important;
-  box-shadow:0 14px 36px rgba(0,0,0,.12)!important;
-  transform:none!important;
-  pointer-events:auto!important;
-}
-.interaction-onboarding .onboarding-card h2{font-size:22px!important;margin:5px 0 14px!important}
-.interaction-onboarding .onboarding-steps>div{padding:9px 0!important}
-.interaction-onboarding .onboarding-actions{margin-top:12px!important}
-.interaction-onboarding .onboarding-actions button{min-height:42px;touch-action:manipulation}
+.onboarding-card{pointer-events:auto;background:rgba(255,255,255,.97);border:1px solid #cfcfca;padding:16px 18px;box-shadow:0 14px 36px rgba(0,0,0,.12)}
+.onboarding-card h2{font-size:20px;line-height:1.04;letter-spacing:-.04em;margin:5px 0 12px}
+.onboarding-steps{display:grid;border-top:1px solid #ddd}
+.onboarding-steps>div{display:grid;grid-template-columns:30px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid #ddd;align-items:center}
+.onboarding-steps b{font-size:10px;border:1px solid #222;width:24px;height:24px;border-radius:50%;display:grid;place-items:center}
+.onboarding-steps span{display:flex;flex-direction:column;gap:2px}.onboarding-steps strong{font-size:12px}.onboarding-steps small{font-size:10.5px;color:#777;line-height:1.4}
+.onboarding-card>p{font-size:10px;color:#777;line-height:1.5;margin:10px 0 0}
+.onboarding-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.onboarding-actions button{min-height:40px;touch-action:manipulation}
 @media(max-width:780px){
-  .interaction-onboarding{
-    top:96px!important;
-    right:8px!important;
-    left:8px!important;
-    width:auto!important;
-  }
-  .interaction-onboarding .onboarding-card{
-    max-height:42dvh;
-    overflow:auto;
-    border-radius:10px!important;
-    padding:14px!important;
-  }
-  .interaction-onboarding .onboarding-card h2{font-size:20px!important}
-  .interaction-onboarding .onboarding-steps{display:grid;grid-template-columns:1fr!important}
-  .interaction-onboarding .onboarding-steps>div{grid-template-columns:30px 1fr!important;padding:7px 0!important}
+  .interaction-onboarding{left:8px;right:8px;width:auto;bottom:calc(var(--mobile-tools-space,136px) + 8px)}
+  .onboarding-card{max-height:40dvh;overflow:auto;border-radius:10px;padding:12px 14px}
+  .onboarding-card h2{font-size:18px}.onboarding-steps>div{padding:6px 0}
 }
-
+/* tela de toque: nada de desfoque de fundo sobre o canvas animado (pesa em celulares e trava o toque) */
+@media(pointer:coarse){.intro-overlay{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.93)}.topbar,.filter-summary,.more-panel{backdrop-filter:none;-webkit-backdrop-filter:none}}
 
 /* ---------- mobile preview + ferramentas coexistem ---------- */
 :root{--mobile-tools-space:136px}

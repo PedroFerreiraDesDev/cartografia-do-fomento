@@ -666,7 +666,7 @@
     const sketch = function (q) {
       p = q;
       q.setup = function () {
-        q.pixelDensity(Math.min(2, q.displayDensity()));
+        q.pixelDensity(Math.min(coarsePointer ? 1.5 : 2, q.displayDensity())); // celular: menos pixels, mais quadros
         cnv = q.createCanvas(W(), H());
         q.frameRate(60);
         q.randomSeed(Date.now() % 100000);   // cada visita entra por outro lugar

@@ -13,7 +13,7 @@ button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch
 /* camadas do campo: cidade desfocada → manchas → rizoma (transparente) → carimbos → lupa */
 .stage{position:absolute;inset:62px 0 0;overflow:hidden;cursor:crosshair}
 .layer{position:absolute;inset:0}.layer canvas{display:block}
-#cityStage{filter:blur(7px) saturate(.6);opacity:.85;transform:scale(1.04)}
+#cityStage{filter:blur(14px);opacity:.9;transform:scale(1.06)}@media(pointer:coarse){#cityStage{filter:blur(8px)}}
 #stainStage{mix-blend-mode:multiply;opacity:.85;pointer-events:none}
 #rizomaStage canvas{touch-action:none;-webkit-user-select:none;user-select:none}
 #stamps{pointer-events:none;z-index:5;overflow:hidden}
@@ -65,20 +65,20 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div id="stamps" class="layer" aria-hidden="true"></div>
   <div id="lens" style="--d:220px"><div id="lensCanvas"></div><span class="lens-tag" id="lensTag">MIRANTE · 0 À VISTA</span></div>
 
-  <div class="copy"><div class="kicker">LAB 03 / MESCLA DE INTERAÇÕES</div><h1>Rizoma sobre a cidade.</h1><p>O campo rizomático continua o principal: nós, ligações por linhas de fuga e giro em 3D. Por baixo, a cidade desfocada; por cima, a mancha que segue o seu gesto, o palimpsesto que carimba o que você abre e o mirante, uma lupa que mostra o que ainda está escondido.</p></div>
+  <div class="copy"><div class="kicker">LAB 03 / MESCLA DE INTERAÇÕES</div><h1>Rizoma sobre a cidade.</h1><p>O campo rizomático continua o principal: nós, ligações por linhas de fuga e giro em 3D. Por baixo, a mancha de contexto: um campo de pressão onde cada projeto pesa pelo valor e pelo mecanismo. Por cima, o rastro: cada projeto por onde a mão passa deixa uma mancha do tamanho da informação em foco, ligada à anterior; o palimpsesto carimba o que você abre; o mirante é a lupa do que ainda está escondido.</p></div>
 
   <div class="tools">
     <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
     <div class="row">
       <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
       <button id="lensBtn" title="Tecla L">Mirante (lupa)</button>
-      <button id="stainBtn" class="active">Mancha</button>
+      <button id="stainBtn" class="active">Rastro</button>
       <button id="stampBtn" class="active">Palimpsesto</button>
       <button id="clearBtn" title="Limpa manchas e carimbos">Limpar camadas</button>
       <button id="resetBtn" title="Tecla R">Recomeçar</button>
     </div>
   </div>
-  <div class="foot"><p>Cidade, manchas e carimbos são camadas cenográficas: não representam a localização real das obras. Os dados vêm de <code>js/data.js</code>; as ligações e o 3D vêm do mesmo motor do protótipo (<code>js/rizoma.js</code>).</p><span id="counter">0 / 20 NÓS</span></div>
+  <div class="foot"><p>Campo de pressão, manchas e carimbos são camadas cenográficas: não representam a localização real das obras; o contexto territorial entra quando o campo regional do corpus for verificado. Os dados vêm de <code>js/data.js</code>; as ligações e o 3D vêm do mesmo motor do protótipo (<code>js/rizoma.js</code>).</p><span id="counter">0 / 20 NÓS</span></div>
   <div class="guide" id="guide"></div>
 
   <aside class="card" id="card" aria-live="polite">
@@ -104,48 +104,71 @@ const stage = $("#stage");
 const flags = { lens: false, stain: true, stamp: true };
 let R = null;
 
-/* ---------- camada 1: cidade desfocada (grade + horizonte, como no Lab 01) ---------- */
+/* ---------- camada 1: a mancha por trás — campo de pressão (Lab 02) redesenhado devagar, desfocado pelo CSS.
+   Hoje a pressão vem do valor e do mecanismo de cada projeto revelado; quando o campo `region` do corpus for
+   verificado, é aqui que entra o contexto territorial/demográfico. ---------- */
+let fieldP = null, fieldDirty = true;
 new p5(p => {
-  p.setup = () => { const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("cityStage"); p.frameRate(18); p.noiseDetail(4, .55); };
-  p.windowResized = () => p.resizeCanvas(stage.clientWidth, stage.clientHeight);
+  fieldP = p;
+  p.setup = () => { const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("cityStage"); p.pixelDensity(1); p.noiseDetail(3, .5); p.frameRate(4); };
+  p.windowResized = () => { p.resizeCanvas(stage.clientWidth, stage.clientHeight); fieldDirty = true; };
   p.draw = () => {
-    p.clear(); const t = p.frameCount * .002, step = 64;
-    p.stroke(50, 50, 46, 34); p.strokeWeight(1); p.noFill();
-    for (let x = -step; x < p.width + step; x += step) { p.beginShape(); for (let y = 0; y < p.height + step; y += step / 2) p.vertex(x + (p.noise(x * .01, y * .01, t) - .5) * 16, y); p.endShape(); }
-    for (let y = 0; y < p.height + step; y += step) p.line(0, y, p.width, y);
-    p.strokeWeight(1.3); p.stroke(70, 26); for (let x = -p.height; x < p.width + p.height; x += step * 4) p.line(x, 0, x + p.height, p.height);
-    const base = p.height * .78; p.stroke(32, 80); p.strokeWeight(1.6); p.beginShape();
-    for (let x = 0; x <= p.width + 20; x += 18) p.vertex(x, base - (p.noise(x * .003, t * .2) - .45) * 120 - Math.sin(x * .008) * 18); p.endShape();
-    // blocos da massa construída: proporções, não ilustração
-    p.noStroke(); p.fill(50, 50, 46, 14); for (let i = 0; i < 9; i++) { const w = 40 + (i * 37) % 90, h = 60 + (i * 53) % 170, x = (i * 173 + Math.sin(t + i) * 10) % (p.width + 100) - 50; p.rect(x, base - h, w, h); }
+    if (!R || (!fieldDirty && p.frameCount % 2)) return; fieldDirty = false;
+    p.clear(); const nodes = R.screen().nodes.map(n => Object.assign({ info: R.info(n.id) }, n)); if (!nodes.length) return;
+    const max = Math.max(1, ...nodes.map(n => n.info.value || 0)), step = touch ? 30 : 24, t = p.frameCount * .02;
+    p.noStroke();
+    for (let y = 0; y < p.height; y += step) for (let x = 0; x < p.width; x += step) {
+      let v = 0, rr = 0, gg = 0, bb = 0;
+      for (const n of nodes) { const dx = x - n.x, dy = y - n.y, d2 = dx * dx + dy * dy + 900; const w = (n.info.value || 12000) / max * 9000 / d2; const c = mechColor(n.info.mechanism); v += w; rr += c[0] * w; gg += c[1] * w; bb += c[2] * w; }
+      if (!v) continue; const a = p.constrain(v * 70 * (.8 + p.noise(x * .006, y * .006, t) * .5), 0, 150);
+      p.fill(rr / v, gg / v, bb / v, a); p.rect(x, y, step + 1, step + 1);
+    }
+    p.noFill(); p.stroke(22, 40); p.strokeWeight(1);
+    for (let k = 0; k < 4; k++) { p.beginShape(); for (let x = 0; x <= p.width + 20; x += 24) p.vertex(x, p.height * (.25 + k * .17) + (p.noise(x * .004, k * 3, t) - .5) * 60); p.endShape(); }
   };
 });
+setInterval(() => { fieldDirty = true; }, 700);
 
-/* ---------- camada 2: manchas que seguem o gesto e tomam a cor do nó mais próximo ---------- */
+/* ---------- camada 2: rastro/palimpsesto de tinta — só nasce quando a mão passa num projeto.
+   Tamanho = a informação em foco (valor por padrão; com uma linha ligada, o quanto esse projeto pesa nela);
+   cor = natureza da linha ligada (ou mecanismo, sem linha); cada mancha se liga à anterior por um traço:
+   contínuo se os dois projetos se relacionam pela linha ligada, pontilhado se não. ---------- */
 let stainP = null;
-const stains = [];
+const stains = [], trail = []; let lastStained = null;
 new p5(p => {
   stainP = p;
-  p.setup = () => { const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("stainStage"); p.noiseDetail(3, .5); p.clear(); };
+  p.setup = () => { const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("stainStage"); p.pixelDensity(touch ? 1 : Math.min(2, p.displayDensity())); p.noiseDetail(3, .5); p.clear(); };
   p.windowResized = () => p.resizeCanvas(stage.clientWidth, stage.clientHeight);
-  p.draw = () => { // desenha as manchas pendentes e deixa tudo esmaecer bem devagar (palimpsesto de tinta)
-    while (stains.length) { const s = stains.shift(); blob(p, s.x, s.y, s.r, s.c, s.a); }
-    if (p.frameCount % 6 === 0) { p.noStroke(); p.fill(247, 246, 241, 2); p.rect(0, 0, p.width, p.height); }
+  p.draw = () => {
+    while (stains.length) { const s = stains.shift(); if (s.from) link(p, s.from, s, s.related, s.c); blob(p, s.x, s.y, s.r, s.c, s.a); label(p, s); }
+    if (p.frameCount % 8 === 0) { p.noStroke(); p.fill(247, 246, 241, 2); p.rect(0, 0, p.width, p.height); } // esmaece devagar: palimpsesto
   };
-  p.stainClear = () => p.clear();
+  p.stainClear = () => { p.clear(); trail.length = 0; lastStained = null; };
 });
 function blob(p, x, y, r, c, a) {
   const ph = Math.random() * 1000; p.noStroke(); p.fill(c[0], c[1], c[2], a); p.beginShape();
-  for (let an = 0; an < p.TWO_PI; an += p.TWO_PI / 22) { const n = p.noise(ph + Math.cos(an) * .9, Math.sin(an) * .9); const rr = r * (.7 + n * .6); p.vertex(x + Math.cos(an) * rr, y + Math.sin(an) * rr); }
+  for (let an = 0; an < p.TWO_PI; an += p.TWO_PI / 26) { const n = p.noise(ph + Math.cos(an) * .9, Math.sin(an) * .9); const rr = r * (.72 + n * .56); p.vertex(x + Math.cos(an) * rr, y + Math.sin(an) * rr); }
   p.endShape(p.CLOSE);
-  for (let i = 0; i < 4; i++) { const an = Math.random() * p.TWO_PI, d = r * (1 + Math.random()); p.circle(x + Math.cos(an) * d, y + Math.sin(an) * d, 1 + Math.random() * 3); }
+  for (let i = 0; i < 5; i++) { const an = Math.random() * p.TWO_PI, d = r * (1 + Math.random() * .8); p.circle(x + Math.cos(an) * d, y + Math.sin(an) * d, 1 + Math.random() * 3); }
 }
-function nearestNode(x, y, maxD) { if (!R) return null; let best = null, bd = maxD; for (const n of R.screen().nodes) { const d = Math.hypot(n.x - x, n.y - y); if (d < bd) { bd = d; best = n; } } return best; }
-let lastStain = { x: -99, y: -99, t: 0 };
-function stainAt(x, y, big) {
-  if (!flags.stain || !R) return;
-  const n = nearestNode(x, y, 130), c = n ? mechColor(R.info(n.id).mechanism) : [110, 110, 110];
-  stains.push({ x, y, r: big ? 26 + Math.random() * 14 : 5 + Math.random() * 9, c, a: big ? 70 : (n ? 34 : 16) });
+function link(p, A, B, related, c) { // traço entre a mancha anterior e a nova
+  p.noFill(); p.stroke(c[0], c[1], c[2], related ? 150 : 70); p.strokeWeight(related ? 2.2 : 1);
+  const mx = (A.x + B.x) / 2 + (B.y - A.y) * .18, my = (A.y + B.y) / 2 - (B.x - A.x) * .18, steps = 28; let prev = null;
+  for (let i = 0; i <= steps; i++) { const t = i / steps, x = (1 - t) * (1 - t) * A.x + 2 * (1 - t) * t * mx + t * t * B.x, y = (1 - t) * (1 - t) * A.y + 2 * (1 - t) * t * my + t * t * B.y; if (prev && (related || i % 2 === 0)) p.line(prev[0], prev[1], x, y); prev = [x, y]; }
+}
+function label(p, s) { p.noStroke(); p.fill(22, 200); p.textSize(Math.max(8, Math.min(13, s.r * .3))); p.textAlign(p.CENTER, p.TOP); p.text(s.txt, s.x, s.y + s.r + 4); }
+const MAXV = Math.max(1, ...(window.CARTOGRAFIA_DATA || []).map(d => Number(d.value) || 0));
+function activeLine() { if (!R) return null; const st = R.state(); for (const t in st.active) if (st.active[t]) return t; return null; }
+function stainProject(i, big) { // i = info do projeto (com x, y na tela)
+  if (!flags.stain || !R || !i) return;
+  const line = activeLine(), L = line ? Rizoma.LINES[line] : null;
+  const weight = Math.sqrt((i.value || 0) / MAXV); // a informação em foco: valor (escala)
+  let r = 8 + 42 * weight, txt = i.valueText || "valor a verificar";
+  if (line) { const n = (i.connections || []).filter(c => c.type === line).length; r = 8 + 42 * weight * (0.6 + Math.min(1, n / 4) * 0.8); txt = `${L.label.toUpperCase()} · ${n} ligação(ões) · ${i.valueText || "valor a verificar"}`; }
+  const c = L ? L.color : mechColor(i.mechanism);
+  const related = !!(lastStained && line && (i.connections || []).some(k => k.id === lastStained.id && k.type === line));
+  const s = { id: i.id, x: i.x, y: i.y, r: big ? r * 1.25 : r, c, a: big ? 95 : 60, txt, from: lastStained && lastStained.id !== i.id ? lastStained : null, related };
+  stains.push(s); trail.push(s); if (trail.length > 40) trail.shift(); lastStained = s;
 }
 
 /* ---------- camada 3: o rizoma (motor do protótipo, fundo transparente) ---------- */
@@ -154,7 +177,7 @@ function mountField() {
   R = Rizoma.mount({
     container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, panelWidth: 380,
     treeTop: () => innerWidth <= 780 ? 100 : 170, treeBottom: () => innerWidth <= 780 ? 120 : 50,
-    onChange: sync, onOpen: openCard, onHover: h => { if (h && h.kind === "node") stainAt(h.x, h.y, false); }
+    onChange: sync, onOpen: openCard, onHover: h => { if (h && h.kind === "node") stainProject(h, false); }
   });
   window.Lab3Rizoma = R;
   for (const t in Rizoma.LINES) {
@@ -181,7 +204,7 @@ function stamp(i) {
   const el = document.createElement("div"); el.className = "stamp"; const c = mechColor(i.mechanism);
   el.style.cssText = `left:${i.x}px;top:${i.y + 34}px;--rot:${(Math.random() * 10 - 5).toFixed(1)}deg;--c:rgba(${c.join(",")},.9);--op:.85`;
   el.innerHTML = `${Rizoma.shortTitle(i.title)}<small>${i.year} · ${i.mechanism.toUpperCase()}</small>`; el.onclick = () => R.open(i.id); layer.appendChild(el);
-  stainAt(i.x, i.y, true);
+  stainProject(i, true);
 }
 
 /* ---------- camada 5: mirante — a lupa mostra os nós ainda escondidos e os revela ao toque ---------- */
@@ -198,14 +221,13 @@ new p5(p => {
 });
 function moveLens(x, y) { lensPos = { x, y }; lens.style.left = x + "px"; lens.style.top = y + "px"; }
 function setLens(on) { flags.lens = on; document.body.classList.toggle("lens-on", on); $("#lensBtn").classList.toggle("active", on); if (on && touch) moveLens(stage.clientWidth / 2, stage.clientHeight * .45); if (on) guide(touch ? "Arraste a lupa; toque nela para revelar o que ela mostra." : "Passe a lupa pelo campo; clique para revelar o que ela mostra."); }
-stage.addEventListener("pointermove", e => { const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top; if (!touch) { if (flags.lens) moveLens(x, y); if (Math.hypot(x - lastStain.x, y - lastStain.y) > 22) { lastStain = { x, y }; stainAt(x, y, false); } } });
+stage.addEventListener("pointermove", e => { if (touch || !flags.lens) return; const r = stage.getBoundingClientRect(); moveLens(e.clientX - r.left, e.clientY - r.top); });
 stage.addEventListener("pointerdown", e => { if (!flags.lens || !R || touch) return; const r = stage.getBoundingClientRect(); const n = R.revealAt(e.clientX - r.left, e.clientY - r.top, lensR, 8); if (n) guide(`${n} nó(s) revelado(s) pelo mirante.`); });
 // no toque, a lupa é um objeto: arrasta-se com o dedo; um toque curto revela
 let lensDrag = null;
 lens.addEventListener("pointerdown", e => { if (!touch) return; lensDrag = { x: e.clientX, y: e.clientY, moved: 0 }; lens.setPointerCapture(e.pointerId); });
 lens.addEventListener("pointermove", e => { if (!lensDrag) return; const dx = e.clientX - lensDrag.x, dy = e.clientY - lensDrag.y; lensDrag.x = e.clientX; lensDrag.y = e.clientY; lensDrag.moved += Math.abs(dx) + Math.abs(dy); moveLens(lensPos.x + dx, lensPos.y + dy); });
 lens.addEventListener("pointerup", () => { if (lensDrag && lensDrag.moved < 8 && R) { const n = R.revealAt(lensPos.x, lensPos.y, lensR, 8); guide(`${n} nó(s) revelado(s) pelo mirante.`); } lensDrag = null; });
-stage.addEventListener("touchmove", e => { if (!R) return; for (const t of e.touches) { const r = stage.getBoundingClientRect(); stainAt(t.clientX - r.left, t.clientY - r.top, false); } }, { passive: true });
 
 /* ---------- ficha ---------- */
 function openCard(i) {

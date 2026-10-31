@@ -22,7 +22,20 @@ O Lab 01 (seção 03) propôs: base grotesca neutra, condensada quando possível
 
 Por que assim, pelas leis de UX (ver seção 4): Prägnanz (a palavra que assenta dá ao olho a forma estável que ele procura), Doherty (o primeiro quadro já está na tela, nada espera a animação), Von Restorff (a letra isolada), efeito estética–usabilidade (a tensão é identidade, mas não toca o que a pessoa precisa ler com precisão).
 
-Para decidir depois: a fonte. Hoje é `Arial Narrow` com fallbacks (`Helvetica Neue Condensed`, `Roboto Condensed`, `Liberation Sans Narrow`) e `font-stretch: condensed`. Uma condensada livre com eixos variáveis (largura e peso) permitiria tensionar a própria forma da letra, não só a sua posição; candidatas a avaliar com o autor, nenhuma testada ainda.
+**Ajuste de 31/10 (pedido do autor, com o pôster do Lab 01 como exemplo).** A marca passou a ser só `CARTOGRAFIA / FOMENTO`, como no pôster: entreletra fechada (−0,09 em), entrelinha 0,76, letras de FOMENTO coladas e sobrepostas (margem negativa), e a tensão corre pela palavra inteira (fator 2,6 contra 0,35 em CARTOGRAFIA); a letra colorida também desce um pouco, como o E rosa do pôster.
+
+**Experimento tipográfico na capa** (painel no rodapé da capa; a escolha fica só no navegador, em `localStorage`, para comparar; a decisão é do autor):
+
+| Fonte | Tipo | Por que entrou | Licença |
+|---|---|---|---|
+| Arial Narrow | grotesca condensada do sistema | é a base do Lab 01; fallbacks `Helvetica Neue Condensed`, `Roboto Condensed`, `Liberation Sans Narrow` | sistema |
+| Anton | display condensada muito pesada (Vernon Adams) | o peso do pôster do Lab 01; sem eixo variável | SIL OFL |
+| Oswald | grotesca condensada, peso variável 200–700 (Vernon Adams; releitura da Alternate Gothic) | permite "brincar com pesos" na mesma família | SIL OFL |
+| Archivo | grotesca variável em peso 100–900 **e largura 62–125** (Omnibus-Type) | a única em que a tensão pode deformar a própria letra (largura e peso por letra), não só a posição | SIL OFL |
+| Bebas Neue | caixa-alta condensada (Dharma Type) | a condensada mais usada em cartazes; referência de leitura rápida | SIL OFL |
+| Big Shoulders Display | condensada, peso variável 100–900 (Patric King), desenhada a partir da sinalização industrial de Chicago | peso variável com desenho de rua, próximo do letreiro | SIL OFL |
+
+Controles: peso (−/+ em passos de 100, dentro do eixo da fonte), **pesos por letra** (em fontes variáveis cada letra recebe um peso e, na Archivo, uma largura diferentes, derivados da mesma semente da tensão: `font-variation-settings`), **fundo papel / tinta** (para comparar com o pôster escuro do Lab 01; o resto do site segue em papel). Todas as fontes vêm do Google Fonts (uma só folha de estilo, `display=swap`); a marca da barra e os títulos de seção seguem a fonte escolhida, para avaliar o sistema inteiro, não só a capa.
 
 ## 3. Defesa das cores
 

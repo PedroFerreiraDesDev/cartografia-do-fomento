@@ -123,6 +123,22 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .ind-side h3{margin:8px 0 6px;font-size:28px;text-transform:uppercase}.ind-side>p{font-size:10.5px;line-height:1.55;color:#888;margin:0 0 14px}
 .sp{border-top:1px solid var(--line)}.sp button{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;border:0;background:transparent;padding:11px 0;text-align:left;width:100%}.sp small{display:block;font-size:9px;color:#999}.sp b{display:block;font-size:13px;margin:3px 0;letter-spacing:-.01em}.sp strong{display:block;margin-top:4px;font-size:10px}.sp.current button{background:rgba(255,255,255,.8);outline:1px solid var(--ink);padding-left:8px;padding-right:8px}
 .empty{border:1px dashed #bbb;padding:14px;font-size:11px;line-height:1.6;color:#777}
+/* gráficos do Lab 06, seleção compartilhada e pop-over (só nesta página) */
+.legend-note{margin:0 0 6px;font-size:10px;line-height:1.55;color:#777}.legend-note b{color:var(--ink)}
+.help{display:inline-grid;place-items:center;width:22px;height:22px;margin-left:8px;border:1px solid #bbb;border-radius:50%;background:#fff;color:var(--ink);font-size:11px;font-weight:900;line-height:1;vertical-align:middle;padding:0;letter-spacing:0}.help:hover,.help:focus-visible{border-color:var(--ink);background:var(--ink);color:#fff;outline:none}
+.chart h2{cursor:help}
+.help-pop{position:fixed;z-index:200;width:min(330px,calc(100vw - 32px));background:rgba(247,246,241,.98);border:1px solid var(--ink);padding:14px 16px 16px;box-shadow:0 14px 36px rgba(0,0,0,.14);font-size:11px;line-height:1.55;color:#555;outline:none}.help-pop[hidden]{display:none}
+.help-pop .top{display:flex;justify-content:space-between;align-items:center;gap:10px}.help-pop h4{margin:8px 0 8px;font-family:var(--head);font-size:22px;line-height:1;text-transform:uppercase;letter-spacing:-.01em;color:var(--ink);font-weight:700}
+.help-pop p{margin:0 0 8px}.help-pop p:last-child{margin-bottom:0}.help-pop p b{display:block;color:var(--ink);font-size:8.5px;letter-spacing:.12em;font-weight:900;margin-bottom:1px}
+.help-pop .arrow{position:absolute;width:10px;height:10px;background:#f7f6f1;border-left:1px solid var(--ink);border-top:1px solid var(--ink);transform:rotate(45deg);top:-6px;left:var(--ax,22px)}.help-pop.up .arrow{top:auto;bottom:-6px;transform:rotate(225deg)}
+.help-scrim{position:fixed;z-index:199;inset:0;background:rgba(22,22,22,.18)}.help-scrim[hidden]{display:none}
+#indicators [data-ct],#indicators [data-leg]{transition:opacity .18s}#indicators.hl [data-ct].dim,#indicators.hl [data-leg].dim{opacity:.22}
+.year-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:12px;align-items:start}.year-row .years{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}.year-row .year{padding:7px 6px;min-height:150px;min-width:0}.year-row .year .n{font-size:21px}.year-row .year small{font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mancha{border:1px solid var(--line);background:rgba(255,255,255,.55);padding:8px 8px 6px}.mancha canvas{display:block;width:100%;height:auto;cursor:pointer}.mancha-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;font-size:9px;line-height:1.4;color:#888}.mancha-foot .ghost{flex:none}
+.cordas svg{max-width:540px;margin:0 auto}.cordas .ribbon{transition:opacity .18s}.cordas .ribbon:hover{fill-opacity:.85}#indicators.hl .cordas .ribbon.dim{opacity:.07}
+.cells svg{display:block;width:100%;height:auto}.cells polygon{stroke:#161616;stroke-width:1;stroke-linejoin:round;transition:fill-opacity .18s}.cells [data-ct]:hover polygon,.cells [data-ct].active polygon{fill-opacity:.8}.cells text{pointer-events:none}
+.card-lines{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 12px}.card-lines button{display:inline-flex;align-items:center;gap:6px;border:1px solid #ccc;background:#fff;padding:7px 10px;font-size:9.5px;font-weight:800;border-radius:999px}.card-lines button i{width:7px;height:7px;border-radius:50%;background:var(--sw)}.card-lines button:hover{border-color:var(--sw)}.card-lines button small{color:#888;font-size:8.5px}
+#cSel{display:none;margin:6px 0 0;font-size:9px;font-weight:900;letter-spacing:.08em;padding:6px 8px;border:1px solid var(--ink)}#cSel.in{display:inline-block;background:var(--ink);color:#fff}#cSel.out{display:inline-block;color:#888;border-color:#bbb}
 
 /* ---------- Editais ---------- */
 .mech-row{display:grid;grid-template-columns:auto minmax(0,1fr) 180px;gap:22px;align-items:start;padding:22px 0;border-top:1px solid var(--line)}
@@ -166,6 +182,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   .card::before{content:"";display:block;width:36px;height:4px;border-radius:2px;background:#ccc;margin:0 auto 10px}.card h2{font-size:24px}
   .final{padding:10px;align-items:end}.final-card{padding:16px;border-radius:14px 14px 4px 4px}.final-card h2{font-size:24px}.final-preview{aspect-ratio:4/3}
   .ind{display:block;overflow-y:auto;height:auto}.ind-main{padding:22px 16px 40px;overflow:visible}.ind-side{border-left:0;border-top:1px solid var(--line);overflow:visible;padding:22px 16px 70px}
+  .year-row{grid-template-columns:1fr}.year-row .years{grid-template-columns:repeat(3,minmax(0,1fr))}.help{width:28px;height:28px}.help-pop{left:0!important;right:0;top:auto!important;bottom:0;width:auto;max-height:64vh;overflow:auto;border-left:0;border-right:0;border-radius:14px 14px 0 0;padding-bottom:calc(16px + env(safe-area-inset-bottom))}.help-pop .arrow{display:none}.help-pop::before{content:"";display:block;width:36px;height:4px;border-radius:2px;background:#ccc;margin:0 auto 10px}
   .mech-legend{grid-template-columns:1fr;gap:6px}.bar{grid-template-columns:84px 1fr 74px;gap:7px}.years{grid-template-columns:repeat(3,1fr)}.year{min-height:140px}.walls{grid-template-columns:repeat(6,1fr);grid-auto-rows:62px}.tile{grid-template-columns:1fr}.tile .wall{display:none}
   .mech-row{grid-template-columns:auto 1fr;gap:14px}.mech-row .sum{grid-column:1/-1;text-align:left}.mech-row .sum b{font-size:22px}
   .phero{grid-template-columns:1fr;gap:20px;padding-bottom:26px}.picon{min-height:220px}.pinfo h1{font-size:38px}.psec{padding:34px 0}.pgrid{grid-template-columns:1fr;gap:16px}.pgrid h2{font-size:28px}.gallery{grid-template-columns:1fr;grid-template-rows:200px 130px 130px}.gitem:first-child{grid-row:auto}.social{grid-template-columns:1fr}
@@ -248,20 +265,22 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <section id="indicators" class="view hidden" aria-label="Indicadores">
   <div class="ind">
     <div class="ind-main">
-      <div class="summary" id="summary"><div><span class="kicker" id="sumKicker">CORPUS DO TCC</span><b id="sumTitle">Todos os projetos</b></div><div><button id="sumClear" class="ghost" hidden>LIMPAR RECORTE</button></div></div>
-      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1>O fomento<br>em movimento.</h1><p>Passe a mão nos gráficos para ver quais projetos formam cada resultado; clique para fixar um recorte. Cada projeto abre a mesma ficha do campo, com suas linhas. Os ícones são os mesmos nós do campo: empena alta = monumental, fachadas = capilar, cor = mecanismo, área = valor.</p></div>
+      <div class="summary" id="summary"><div><span class="kicker" id="sumKicker">CORPUS DO TCC</span><b id="sumTitle">Todos os projetos</b></div><div><button id="sumClear" class="ghost" hidden>LIMPAR SELEÇÃO</button></div></div>
+      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1>O fomento<br>em movimento.</h1><p>Passe a mão em qualquer gráfico para ver quais projetos formam aquele resultado: o mesmo conjunto acende em todos os outros gráficos e na lista ao lado, e o resto esmaece. Clique para fixar a seleção; cada projeto abre a mesma ficha do campo. O "?" de cada gráfico diz, em três frases, o que ele mostra e por que importa. Os ícones são os mesmos nós do campo: empena alta = monumental, fachadas = capilar, cor = mecanismo, área = valor.</p></div>
       <div class="metric" role="group" aria-label="Medida"><button data-metric="count" class="active">Quantidade de projetos</button><button data-metric="value">Valor registrado</button></div>
       <div class="mech-legend" id="mechLegend"></div>
-      <section class="chart" style="--acc:rgb(200,170,255)"><div class="kicker"><i></i>REGIONAL · A LINHA "REGIONAL" DO CAMPO</div><h2>Onde os projetos aparecem?</h2><p>Só regionais individualmente verificadas entram. Por enquanto, nenhuma: o campo mostra o que falta, em vez de inferir.</p><div id="regionChart" class="bars"></div></section>
-      <section class="chart" style="--acc:rgb(255,210,63)"><div class="kicker"><i></i>ANO × MECANISMO · A LINHA "ANO"</div><h2>Quando e por qual forma de fomento?</h2><div id="yearChart" class="years"></div></section>
-      <section class="chart" style="--acc:rgb(120,255,150)"><div class="kicker"><i></i>ESCALA FINANCEIRA · A LINHA "ESCALA"</div><h2>Quanto aparece registrado?</h2><p>Cada muro ocupa área proporcional ao valor registrado. Clique para abrir a ficha.</p><div id="wallsChart" class="walls"></div></section>
-      <section class="chart" style="--acc:rgb(120,255,150)"><div class="kicker"><i></i>RÉGUA DE VALORES · POSIÇÃO, NÃO ÁREA</div><h2>Quem chega ao teto?</h2><p>Cada muro na posição do seu valor registrado, por mecanismo. As linhas tracejadas são os limites de escala do campo (R$ 30 mil e R$ 100 mil); a cheia é o teto do Incentivo Fiscal em 2023 (R$ 165 mil, TCC seção 5.1). Posição ao longo de uma régua é a codificação que o olho lê com mais precisão (Cleveland e McGill, 1984).</p><div id="dotChart" class="svgchart"></div></section>
-      <section class="chart"><div class="kicker">CONCENTRAÇÃO · CURVA DE LORENZ</div><h2>Poucos projetos, quase todo o dinheiro.</h2><p>Projetos em ordem de valor no eixo horizontal, soma acumulada no vertical (Lorenz, 1905). Quanto mais a curva se afasta da diagonal, mais concentrado o fomento; o índice de Gini resume a distância.</p><div id="lorenzChart" class="svgchart"></div></section>
-      <section class="chart"><div class="kicker">MATRIZ DE RELAÇÕES · AS SEIS LINHAS DE FUGA</div><h2>Quem se liga a quem, e por quê?</h2><p>Cada célula conta as naturezas que dois projetos compartilham; com uma só, a célula tem a cor daquela linha; com várias, fica mais escura. Reordenar as linhas faz os blocos aparecerem (a matriz reordenável de Bertin, 1967).</p><div class="metric" id="matrixOrder" role="group" aria-label="Ordem da matriz"><button data-order="mecanismo" class="active">Por mecanismo</button><button data-order="ano">Por ano</button><button data-order="valor">Por valor</button></div><div id="matrixChart" class="matrix"></div></section>
-      <section class="chart" style="--acc:rgb(255,210,63)"><div class="kicker"><i></i>DECLIVE · 2017–2021 → 2022–2024</div><h2>O que cresceu e o que secou?</h2><p>Cada mecanismo é uma linha entre dois períodos, na medida escolhida acima (gráfico de declive, Tufte, 2001).</p><div id="slopeChart" class="svgchart"></div></section>
-      <section class="chart"><div class="kicker">DADOS SOCIAIS</div><h2>Perfil dos proponentes.</h2><div class="empty">A base atual ainda não sustenta uma visualização quantitativa de gênero, raça, renda ou classe social. Esses dados devem ser autodeclarados e agregados, nunca inferidos a partir da localização.</div></section>
+      <p class="legend-note"><b>Monumental</b> e <b>capilar</b> são construções analíticas do autor (TCC, cap. 5), não categorias dos editais. Os valores são os <b>tetos aprovados</b> nas listas de homologação (DOM-BH, 2017–2024), não o que cada projeto captou. 2018 e 2020 aparecem vazios pelo recorte do corpus, não por falta de edital.</p>
+      <section class="chart" data-chart="region" style="--acc:rgb(200,170,255)"><div class="kicker"><i></i>REGIONAL · A LINHA "REGIONAL" DO CAMPO <button type="button" class="help" data-help="region" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Onde os projetos aparecem?</h2><p>Só regionais individualmente verificadas entram. Por enquanto, nenhuma: o campo mostra o que falta, em vez de inferir.</p><div id="regionChart" class="bars"></div></section>
+      <section class="chart" data-chart="years" style="--acc:rgb(255,210,63)"><div class="kicker"><i></i>ANO × MECANISMO · A LINHA "ANO" <button type="button" class="help" data-help="years" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quando e por qual forma de fomento?</h2><p>À esquerda, as colunas comparam ano a ano. À direita, o fomento se acumula: uma mancha por ano cresce até a área do valor somado, na cor dos mecanismos que o compõem (agregação limitada por difusão, Witten e Sander, 1981; experimento 04 do Lab 06). A mancha é abertura, não medida: a forma muda a cada vez; para comparar, use as colunas.</p><div class="year-row"><div id="yearChart" class="years"></div><div class="mancha" id="mancha"><canvas id="manchaCanvas" role="img" aria-label="Mancha que cresce: uma mancha por ano, área proporcional ao valor somado, cor por mecanismo"></canvas><div class="mancha-foot"><span id="manchaCap"></span><button type="button" id="manchaAgain" class="ghost">CRESCER DE NOVO</button></div></div></div></section>
+      <section class="chart" data-chart="cordas" style="--acc:rgb(255,210,63)"><div class="kicker"><i></i>CORDAS · DE ONDE VEM, PARA ONDE VAI <button type="button" class="help" data-help="cordas" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Cada mecanismo escoa para onde?</h2><p>Os arcos da esquerda são os mecanismos; os da direita, os anos, as escalas de valor ou os circuitos. Cada fita liga um mecanismo ao que ele alimentou, na medida escolhida acima (diagrama de cordas à maneira do Circos, Krzywinski et al., 2009; experimento 05 do Lab 06). Passe a mão numa fita ou num arco para ver os projetos; clique para fixar.</p><div class="metric" id="cordasSide" role="group" aria-label="Cruzar mecanismo com"><button data-lado="ano" class="active">× ano</button><button data-lado="escala">× escala</button><button data-lado="circuito">× circuito</button></div><div id="cordasChart" class="svgchart cordas"></div></section>
+      <section class="chart" data-chart="walls" style="--acc:rgb(120,255,150)"><div class="kicker"><i></i>ESCALA FINANCEIRA · A LINHA "ESCALA" <button type="button" class="help" data-help="walls" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quanto aparece registrado?</h2><p id="wallsNote">Cada muro ocupa área proporcional ao valor registrado. Clique para abrir a ficha.</p><div class="metric" id="wallsMode" role="group" aria-label="Forma do gráfico de escala"><button data-walls="muros" class="active">Muros</button><button data-walls="celulas">Células de valor</button></div><div id="wallsChart" class="walls"></div></section>
+      <section class="chart" data-chart="dots" style="--acc:rgb(120,255,150)"><div class="kicker"><i></i>RÉGUA DE VALORES · POSIÇÃO, NÃO ÁREA <button type="button" class="help" data-help="dots" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quem chega ao teto?</h2><p>Cada muro na posição do seu valor registrado, por mecanismo. As linhas tracejadas são os limites de escala do campo (R$ 30 mil e R$ 100 mil); a cheia é o teto do Incentivo Fiscal em 2023 (R$ 165 mil, TCC seção 5.1). Posição ao longo de uma régua é a codificação que o olho lê com mais precisão (Cleveland e McGill, 1984).</p><div id="dotChart" class="svgchart"></div></section>
+      <section class="chart" data-chart="lorenz"><div class="kicker">CONCENTRAÇÃO · CURVA DE LORENZ <button type="button" class="help" data-help="lorenz" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Poucos projetos, quase todo o dinheiro.</h2><p>Projetos em ordem de valor no eixo horizontal, soma acumulada no vertical (Lorenz, 1905). Quanto mais a curva se afasta da diagonal, mais concentrado o fomento; o índice de Gini resume a distância.</p><div id="lorenzChart" class="svgchart"></div></section>
+      <section class="chart" data-chart="matrix"><div class="kicker">MATRIZ DE RELAÇÕES · AS SEIS LINHAS DE FUGA <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quem se liga a quem, e por quê?</h2><p>Cada célula conta as naturezas que dois projetos compartilham; com uma só, a célula tem a cor daquela linha; com várias, fica mais escura. Reordenar as linhas faz os blocos aparecerem (a matriz reordenável de Bertin, 1967).</p><div class="metric" id="matrixOrder" role="group" aria-label="Ordem da matriz"><button data-order="mecanismo" class="active">Por mecanismo</button><button data-order="ano">Por ano</button><button data-order="valor">Por valor</button></div><div id="matrixChart" class="matrix"></div></section>
+      <section class="chart" data-chart="slope" style="--acc:rgb(255,210,63)"><div class="kicker"><i></i>DECLIVE · 2017–2021 → 2022–2024 <button type="button" class="help" data-help="slope" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O que cresceu e o que secou?</h2><p>Cada mecanismo é uma linha entre dois períodos, na medida escolhida acima (gráfico de declive, Tufte, 2001).</p><div id="slopeChart" class="svgchart"></div></section>
+      <section class="chart" data-chart="social"><div class="kicker">DADOS SOCIAIS <button type="button" class="help" data-help="social" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Perfil dos proponentes.</h2><div class="empty">A base atual ainda não sustenta uma visualização quantitativa de gênero, raça, renda ou classe social. Esses dados devem ser autodeclarados e agregados, nunca inferidos a partir da localização.</div></section>
     </div>
-    <aside class="ind-side" id="indSide"><div class="kicker" id="sideKicker">CORPUS DO TCC</div><h3 id="sideTitle">Todos os projetos</h3><p id="sideText">Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Tocar num projeto abre a ficha, sem sair daqui.</p><div id="sideList"></div></aside>
+    <aside class="ind-side" id="indSide"><div class="kicker" id="sideKicker">CORPUS DO TCC</div><h3 id="sideTitle">Todos os projetos</h3><p id="sideText">Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Tocar num projeto abre a ficha, sem sair daqui.</p><button id="sideClear" class="ghost" hidden>LIMPAR SELEÇÃO</button><div id="sideList"></div></aside>
   </div>
 </section>
 
@@ -323,6 +342,12 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 </main>
 
 <!-- a ficha: uma só, para campo, indicadores e editais -->
+<div class="help-scrim" id="helpScrim" hidden></div>
+<div class="help-pop" id="helpPop" role="dialog" aria-labelledby="helpTitle" aria-describedby="helpBody" hidden tabindex="-1"><i class="arrow"></i>
+  <div class="top"><div class="kicker" id="helpKicker">O QUE ESTE GRÁFICO MOSTRA</div><button type="button" class="ghost" id="helpClose" aria-label="Fechar explicação">FECHAR</button></div>
+  <h4 id="helpTitle"></h4>
+  <div id="helpBody"></div>
+</div>
 <aside class="card" id="card" aria-live="polite" aria-label="Ficha do projeto">
   <div class="top"><div class="kicker" id="cKicker">NÓ ABERTO</div><button class="ghost" id="cClose">FECHAR · A TRILHA FICA</button></div>
   <div class="head"><span id="cIcon"></span><h2 id="cTitle"></h2></div><p id="cTrans"></p>
@@ -366,6 +391,9 @@ const TYPES = Object.keys(Rizoma.LINES);
 const MECHS = ["Incentivo Fiscal", "Fundo Municipal", "Descentra"];
 const MECH = { "Incentivo Fiscal": "#ff4f9a", "Fundo Municipal": "#31a8ff", "Descentra": "#65e77d" }; // mesma paleta do motor (nodeStyle "muro")
 const LC = t => `rgb(${Rizoma.LINES[t].color.join(",")})`;
+const YEARS = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], CIRCUITS = ["Monumental", "Capilar"], SCALES = [1, 50000, 150000].map(v => Rizoma.scaleOf(v)); // escalas com o rótulo do motor
+const TOTAL = DATA.reduce((s, p) => s + (p.value || 0), 0) || 1;
+const hash = n => { const v = Math.sin(n * 12.9898) * 43758.5453; return v - Math.floor(v); }; // semente determinística, como no Lab 06
 const touch = matchMedia("(pointer:coarse)").matches; if (touch) document.body.classList.add("touch");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const small = () => innerWidth <= 780;
@@ -751,7 +779,8 @@ function showPage(name) {
   PAGES.forEach(id => $("#" + id).classList.toggle("hidden", id !== name)); $("#project").classList.add("hidden");
   $$("[data-nav]").forEach(b => b.classList.toggle("active", b.dataset.nav === name));
   setFieldVisible(name === "discover");
-  if (name === "indicators") renderIndicators();
+  closeHelp();
+  if (name === "indicators") { renderIndicators(); startMancha(); }
   if (name === "editais") renderEditais();
   if ((name === "research" || name === "about") && R && R.state().focus) R.close(); // páginas de leitura fecham a ficha; a trilha fica
   if (typeof closeSearch === "function") closeSearch();
@@ -966,7 +995,8 @@ function showPreview(i) {
   $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button class="pot" data-line="${t}" style="--sw:${LC(t)}"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} nó(s)</small></button>`).join("") : `<div class="empty">${L.length ? "Todas as ligações possíveis com os nós revelados já estão ligadas." : "Revele mais nós no campo para ver ligações possíveis."}</div>`;
   $$("#cLinks [data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("#cPot [data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
   $("#cTrail").innerHTML = i.trail.length > 1 ? `<strong>Sua trilha:</strong> ${i.trail.map(esc).join(" → ")}` : ""; $("#cTrail").hidden = i.trail.length <= 1;
-  $("#card").classList.add("open"); $("#card").scrollTop = 0;
+  renderCardLines(DATA[IDX[i.id]]);
+  $("#card").classList.add("open"); $("#card").scrollTop = 0; applyHighlight();
 }
 $("#cClose").onclick = () => R.close();
 $("#cOpen").onclick = () => { if (previewId) openProject(previewId, previewOrigin === "indicators" || previewOrigin === "editais" ? previewOrigin : "discover"); };
@@ -1127,8 +1157,8 @@ $$(".rating").forEach(g => g.onclick = e => { const b = e.target.closest("button
 /* ---------- indicadores: mesma lógica do protótipo, com o nó-muro como ícone e a cor por mecanismo ---------- */
 $$("[data-metric]").forEach(b => b.onclick = () => { metric = b.dataset.metric; $$("[data-metric]").forEach(x => x.classList.toggle("active", x.dataset.metric === metric)); renderIndicators(); });
 function aggregate(list, keyFn) { const m = new Map(); list.forEach(p => { const k = keyFn(p); if (!m.has(k)) m.set(k, []); m.get(k).push(p); }); return [...m.entries()].map(([key, projects]) => ({ key, projects, count: projects.length, value: projects.reduce((s, p) => s + (p.value || 0), 0) })); }
-function selectedProjects(sel) { if (!sel) return DATA; if (sel.type === "region") return DATA.filter(p => (p.region || "Não verificada") === sel.key); if (sel.type === "year") return DATA.filter(p => String(p.year) === String(sel.key)); if (sel.type === "mechanism") return DATA.filter(p => p.mechanism === sel.key); if (sel.type === "edital") return DATA.filter(p => p.edital === sel.key); if (sel.type === "project") return DATA.filter(p => p.id === sel.key); if (sel.type === "pair") { const [a, b] = sel.key.split("|"); return DATA.filter(p => p.id === a || p.id === b); } return DATA; }
-function renderIndicators() { renderLegend(); renderRegion(); renderYears(); renderWalls(); renderDots(); renderLorenz(); renderMatrix(); renderSlope(); renderSide(); }
+function selectedProjects(sel) { if (!sel) return DATA; if (sel.type === "region") return DATA.filter(p => (p.region || "Não verificada") === sel.key); if (sel.type === "year") return DATA.filter(p => String(p.year) === String(sel.key)); if (sel.type === "mechanism") return DATA.filter(p => p.mechanism === sel.key); if (sel.type === "edital") return DATA.filter(p => p.edital === sel.key); if (sel.type === "project") return DATA.filter(p => p.id === sel.key); if (sel.type === "pair") { const [a, b] = sel.key.split("|"); return DATA.filter(p => p.id === a || p.id === b); } if (sel.type === "scale") return DATA.filter(p => Rizoma.scaleOf(p.value) === sel.key); if (sel.type === "circuit") return DATA.filter(p => p.circuit === sel.key); if (sel.type === "cross") { const [m, t, k] = sel.key.split("|"); return selectedProjects({ type: t, key: k }).filter(p => p.mechanism === m); } return DATA; }
+function renderIndicators() { renderLegend(); renderRegion(); renderYears(); renderCordas(); renderWalls(); renderDots(); renderLorenz(); renderMatrix(); renderSlope(); renderSide(); }
 /* ---------- gráficos novos (propostos no Lab 05; wireframe em wireframes-svg/12-identidade-e-novos-graficos.svg) ---------- */
 const svgOpen = (w, h, label) => `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">`;
 function renderDots() { // régua de valores: posição numa escala comum (Cleveland e McGill, 1984) com linhas de referência (Few, 2006)
@@ -1174,7 +1204,7 @@ function renderMatrix() { // matriz reordenável (Bertin, 1967): a ordem das lin
     }
   }
   $("#matrixChart").innerHTML = h; bindCharts();
-  $$("[data-order]").forEach(b => { b.classList.toggle("active", b.dataset.order === matrixOrder); b.onclick = () => { matrixOrder = b.dataset.order; renderMatrix(); }; });
+  $$("[data-order]").forEach(b => { b.classList.toggle("active", b.dataset.order === matrixOrder); b.onclick = () => { matrixOrder = b.dataset.order; renderMatrix(); applyHighlight(); }; });
 }
 function renderSlope() { // declive (Tufte, 2001): dois períodos, uma linha por mecanismo
   const W = 480, H = 270, P = 34, xA = 150, xB = W - 150, per = [["2017–2021", p => p.year <= 2021], ["2022–2024", p => p.year >= 2022]];
@@ -1196,17 +1226,205 @@ function renderYears() {
   const years = [...new Set(DATA.map(p => p.year))].sort();
   $("#yearChart").innerHTML = years.map(y => { const ps = DATA.filter(p => p.year === y); const pieces = MECHS.map(m => { const list = ps.filter(p => p.mechanism === m); if (!list.length) return ""; const h = metric === "count" ? list.length * 18 : Math.max(5, list.reduce((s, p) => s + (p.value || 0), 0) / 1000000 * 90); return `<div class="piece" style="--c:${MECH[m]};height:${h}px" title="${m}: ${list.length}"></div>`; }).join(""); return `<button class="year ${selection?.type === "year" && String(selection.key) === String(y) ? "active" : ""}" data-ct="year" data-ck="${y}"><div class="stack">${pieces}</div><div class="n">${y}</div><small>${metric === "count" ? ps.length + " projeto(s)" : shortMoney(ps.reduce((s, p) => s + (p.value || 0), 0))}</small></button>`; }).join(""); bindCharts();
 }
-function renderWalls() { const max = Math.max(...DATA.map(p => p.value || 0)); $("#wallsChart").innerHTML = DATA.map(p => { const span = Math.max(2, Math.min(6, Math.round((p.value || 0) / max * 6))); return `<button class="tile ${R && R.state().focus === p.id ? "active" : ""}" style="grid-column:span ${span}" data-ct="project" data-ck="${p.id}">${wallIcon(p, 30)}<div><b>${esc(Rizoma.shortTitle(p.title))}</b><span>${money(p.value)}</span></div></button>`; }).join(""); bindCharts(); }
+let wallsMode = "muros", cellsCache = null;
+function renderWalls() {
+  if (wallsMode === "celulas") renderCells();
+  else { const max = Math.max(...DATA.map(p => p.value || 0)); const el = $("#wallsChart"); el.className = "walls"; el.innerHTML = DATA.map(p => { const span = Math.max(2, Math.min(6, Math.round((p.value || 0) / max * 6))); return `<button class="tile ${R && R.state().focus === p.id ? "active" : ""}" style="grid-column:span ${span}" data-ct="project" data-ck="${p.id}">${wallIcon(p, 30)}<div><b>${esc(Rizoma.shortTitle(p.title))}</b><span>${money(p.value)}</span></div></button>`; }).join(""); }
+  $("#wallsNote").textContent = wallsMode === "celulas" ? "Coluna = ano (largura = valor somado do ano), faixa = mecanismo, célula = projeto: só a área é dado. A posição de cada célula dentro da faixa é cenográfica, não geográfica. 2018 e 2020 são só o traço. Clique para abrir a ficha." : "Cada muro ocupa área proporcional ao valor registrado. Clique para abrir a ficha.";
+  bindCharts();
+  $$("[data-walls]").forEach(b => { b.classList.toggle("active", b.dataset.walls === wallsMode); b.onclick = () => { wallsMode = b.dataset.walls; renderWalls(); applyHighlight(); }; });
+}
+/* Células de valor: adaptado do experimento 03 do Lab 06 (expVoronoi, lab-06-experimentos.html). Lá: vinte sementes soltas,
+   dono de cada célula por força bruta numa grade de 4 px e pesos corrigidos por 90 iterações. Aqui: o plano é cortado por
+   níveis como no Voronoi treemap (Balzer e Deussen, 2005): coluna = ano, faixa = mecanismo, ambas exatas; só dentro da faixa
+   entra o diagrama de potência (Aurenhammer, 1987), calculado como polígono exato (interseção de semiplanos), com pesos
+   ajustados até área = valor e sementes relaxadas ao centroide (Nocaj e Brandes, 2012). Sem grade, cabe em qualquer tela
+   e é calculado uma vez. */
+function clipHalf(poly, a, b, c) { const out = []; for (let k = 0; k < poly.length; k++) { const P = poly[k], Q = poly[(k + 1) % poly.length], dp = a * P[0] + b * P[1] - c, dq = a * Q[0] + b * Q[1] - c; if (dp <= 0) out.push(P); if ((dp < 0 && dq > 0) || (dp > 0 && dq < 0)) { const t = dp / (dp - dq); out.push([P[0] + (Q[0] - P[0]) * t, P[1] + (Q[1] - P[1]) * t]); } } return out; }
+function polyArea(poly) { let a = 0; for (let k = 0; k < poly.length; k++) { const [x1, y1] = poly[k], [x2, y2] = poly[(k + 1) % poly.length]; a += x1 * y2 - x2 * y1; } return Math.abs(a) / 2; }
+function polyCentroid(poly) { let a = 0, cx = 0, cy = 0; for (let k = 0; k < poly.length; k++) { const [x1, y1] = poly[k], [x2, y2] = poly[(k + 1) % poly.length], cr = x1 * y2 - x2 * y1; a += cr; cx += (x1 + x2) * cr; cy += (y1 + y2) * cr; } return Math.abs(a) < 1e-9 ? null : [cx / (3 * a), cy / (3 * a)]; }
+function powerBand(ps, rect, v) {
+  const [x0, y0, x1, y1] = rect, w = x1 - x0, h = y1 - y0, A = w * h, n = ps.length, L2 = Math.min(w, h) ** 2;
+  const seeds = ps.map((p, k) => { const j = (hash(k * 7 + 3) - .5) * .3; return w >= h ? { p, x: x0 + w * (k + .5) / n, y: y0 + h * (.5 + j), w: 0 } : { p, x: x0 + w * (.5 + j), y: y0 + h * (k + .5) / n, w: 0 }; });
+  let cells = [];
+  for (let it = 0; it < (n > 1 ? 80 : 1); it++) {
+    cells = seeds.map((s, i) => { let poly = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]; seeds.forEach((t, j) => { if (j !== i && poly.length) poly = clipHalf(poly, 2 * (t.x - s.x), 2 * (t.y - s.y), t.x * t.x + t.y * t.y - s.x * s.x - s.y * s.y + s.w - t.w); }); return poly; });
+    if (n === 1) break;
+    seeds.forEach((s, i) => { s.w += ((s.p.value || 0) / v - polyArea(cells[i]) / A) * L2 * .6; const c = polyCentroid(cells[i]); if (c) { s.x += (c[0] - s.x) * .5; s.y += (c[1] - s.y) * .5; } });
+    seeds.forEach((s, i) => { let lo = -Infinity; seeds.forEach((t, j) => { if (j !== i) lo = Math.max(lo, t.w - ((s.x - t.x) ** 2 + (s.y - t.y) ** 2)); }); if (s.w < lo + 1) s.w = lo + 1; }); // a semente nunca sai da própria célula
+  }
+  return seeds.map((s, i) => { const xs = cells[i].map(q => q[0]), ys = cells[i].map(q => q[1]); return { p: s.p, poly: cells[i], x: s.x, y: s.y, area: polyArea(cells[i]), bw: Math.max(...xs) - Math.min(...xs), bh: Math.max(...ys) - Math.min(...ys) }; });
+}
+function computeCells() {
+  const W = 820, H = 300, GAP = 6, THIN = 8, cells = [], cols = [], totYear = {};
+  YEARS.forEach(y => totYear[y] = DATA.filter(p => p.year === y).reduce((s, p) => s + (p.value || 0), 0));
+  const usable = W - GAP * (YEARS.length - 1) - THIN * YEARS.filter(y => !totYear[y]).length; let x = 0;
+  for (const y of YEARS) {
+    const w = totYear[y] ? usable * totYear[y] / TOTAL : THIN; cols.push({ y, x, w, v: totYear[y] });
+    if (totYear[y]) { let yy = 0; for (const m of MECHS) { const ps = DATA.filter(p => p.year === y && p.mechanism === m); if (!ps.length) continue; const v = ps.reduce((s, p) => s + (p.value || 0), 0), h = H * v / totYear[y]; cells.push(...powerBand(ps, [x, yy, x + w, yy + h], v)); yy += h; } }
+    x += w + GAP;
+  }
+  return { W, H, cols, cells };
+}
+function renderCells() {
+  const C = cellsCache || (cellsCache = computeCells()), focus = R ? R.state().focus : null, el = $("#wallsChart");
+  let s = svgOpen(C.W, C.H + 28, "Células de valor: colunas por ano, faixas por mecanismo, área por valor");
+  C.cols.forEach(c => { const xm = f1(c.x + c.w / 2); s += c.v ? `<text x="${xm}" y="${C.H + 13}" text-anchor="middle" class="lab">${c.y}</text><text x="${xm}" y="${C.H + 24}" text-anchor="middle">${shortMoney(c.v)}</text>` : `<line x1="${xm}" y1="0" x2="${xm}" y2="${C.H}" stroke="#161616" stroke-opacity=".35" stroke-dasharray="2 3"/><text transform="rotate(-90 ${xm} ${C.H / 2})" x="${xm}" y="${f1(C.H / 2 + 3)}" text-anchor="middle">${c.y} · só o traço</text>`; });
+  C.cells.forEach(c => { const p = c.p, name = Rizoma.shortTitle(p.title), title = c.bw >= name.length * 7.2 + 14 && c.bh >= 30, val = c.bw >= 50 && c.bh >= 16, icon = title && c.bh >= 70;
+    let lab = ""; if (icon) lab += `<svg x="${f1(c.x - 11)}" y="${f1(c.y - 30)}" width="22" height="22" viewBox="0 0 40 40" stroke-width="1.4">${wallBody(p)}</svg>`;
+    if (title) lab += `<text x="${f1(c.x)}" y="${f1(c.y - (val ? 2 : -3))}" text-anchor="middle" class="lab">${esc(Rizoma.shortTitle(p.title)).toUpperCase()}</text>`;
+    if (val) lab += `<text x="${f1(c.x)}" y="${f1(c.y + (title ? 10 : 3))}" text-anchor="middle">${shortMoney(p.value)}</text>`;
+    s += `<g data-ct="project" data-ck="${p.id}" data-label="${esc(Rizoma.shortTitle(p.title))}" class="${focus === p.id ? "active" : ""}"><polygon points="${c.poly.map(q => f1(q[0]) + "," + f1(q[1])).join(" ")}" fill="${MECH[p.mechanism]}" fill-opacity=".4"/>${lab}<title>${esc(p.title)} · ${money(p.value)} · ${p.year} · ${esc(p.mechanism)} · ${(c.area / (C.W * C.H) * 100).toFixed(1).replace(".", ",")}% da área</title></g>`; });
+  el.className = "cells"; el.innerHTML = s + "</svg>";
+}
+/* Cordas: adaptado do experimento 05 do Lab 06 (expCordas): diagrama de cordas à maneira do Circos (Krzywinski et al., 2009),
+   fitas como feixes (Holten, 2006). Lá era canvas p5 com arcos por pontos; aqui é SVG com arcos nativos e curvas quadráticas
+   pelo centro, e cada fita e cada arco carregam data-ct/data-ck para a seleção compartilhada e a ficha. */
+let cordasSide = "ano";
+function renderCordas() {
+  const lado = cordasSide, right = lado === "ano" ? YEARS.map(String) : lado === "escala" ? SCALES : CIRCUITS, rtype = lado === "ano" ? "year" : lado === "escala" ? "scale" : "circuit";
+  const keyOf = p => lado === "ano" ? String(p.year) : lado === "escala" ? Rizoma.scaleOf(p.value) : p.circuit, meas = p => metric === "count" ? 1 : (p.value || 0), short = k => lado === "escala" ? k.split(" ")[0].toUpperCase() : k;
+  const F = MECHS.map(() => right.map(() => 0)); DATA.forEach(p => { const i = MECHS.indexOf(p.mechanism), j = right.indexOf(keyOf(p)); if (i >= 0 && j >= 0) F[i][j] += meas(p); });
+  const L = MECHS.map((m, i) => ({ name: m, tot: F[i].reduce((a, b) => a + b, 0), col: MECH[m], side: "L", i, type: "mechanism", key: m }));
+  const Rg = right.map((k, j) => ({ name: short(k), tot: F.reduce((a, row) => a + row[j], 0), col: null, side: "R", j, type: rtype, key: k }));
+  const all = L.concat(Rg.slice().reverse()).filter(g => g.tot > 0), sum = all.reduce((a, g) => a + g.tot, 0) || 1;
+  const gap = 0.035, span = Math.PI * 2 - gap * all.length; let a = -Math.PI / 2 + 0.25;
+  for (const g of all) { g.a0 = a; g.a1 = a + span * g.tot / sum; g.cursor = g.a0; a = g.a1 + gap; }
+  const ribbons = [];
+  for (const g of L) for (let j = 0; j < right.length; j++) { const v = F[g.i][j]; if (!v) continue; const h = all.find(x => x.side === "R" && x.j === j); if (!h) continue; const ga = g.cursor, gb = g.cursor + (g.a1 - g.a0) * v / g.tot; g.cursor = gb; const ha = h.cursor, hb = h.cursor + (h.a1 - h.a0) * v / h.tot; h.cursor = hb; ribbons.push({ g, h, ga, gb, ha, hb, v }); }
+  const W = 540, H = 470, cx = W / 2, cy = H / 2 + 4, r = 172, ri = r - 8, pt = (rad, ang) => [f1(cx + Math.cos(ang) * rad), f1(cy + Math.sin(ang) * rad)];
+  const arc = (rad, a0, a1) => { const [x0, y0] = pt(rad, a0), [x1, y1] = pt(rad, a1); return `M${x0} ${y0}A${rad} ${rad} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${x1} ${y1}`; };
+  const fmt = v => metric === "count" ? `${v} projeto(s)` : shortMoney(v);
+  let s = svgOpen(W, H, "Diagrama de cordas: mecanismo por " + lado);
+  for (const rb of ribbons) { const [ax0, ay0] = pt(ri, rb.ga), [ax1, ay1] = pt(ri, rb.gb), [bx0, by0] = pt(ri, rb.ha), [bx1, by1] = pt(ri, rb.hb), lab = `${rb.g.name} × ${rb.h.name}`;
+    s += `<path class="ribbon" d="M${ax0} ${ay0}A${ri} ${ri} 0 ${rb.gb - rb.ga > Math.PI ? 1 : 0} 1 ${ax1} ${ay1}Q${cx} ${cy} ${bx0} ${by0}A${ri} ${ri} 0 ${rb.hb - rb.ha > Math.PI ? 1 : 0} 1 ${bx1} ${by1}Q${cx} ${cy} ${ax0} ${ay0}Z" fill="${rb.g.col}" fill-opacity=".55" stroke="#161616" stroke-opacity=".3" data-ct="cross" data-ck="${esc(rb.g.key)}|${rtype}|${esc(rb.h.key)}" data-label="${esc(lab)}"><title>${esc(lab)} · ${fmt(rb.v)}</title></path>`; }
+  all.forEach(g => { const col = g.col || "#161616", am = (g.a0 + g.a1) / 2, [lx, ly] = pt(r + 19, am), anchor = Math.cos(am) < -0.25 ? "end" : Math.cos(am) > 0.25 ? "start" : "middle";
+    s += `<g class="arc" data-ct="${g.type}" data-ck="${esc(g.key)}" data-label="${esc(g.name)}"><path class="halo" d="${arc(r + 8, g.a0, g.a1)}" fill="none" stroke="#161616" stroke-width="2"/><path d="${arc(r, g.a0, g.a1)}" fill="none" stroke="${col}" stroke-width="9"/><text x="${lx}" y="${f1(ly + 3)}" text-anchor="${anchor}" class="lab">${esc(g.side === "L" ? g.name.toUpperCase() : g.name)}</text><title>${esc(g.name)} · ${fmt(g.tot)}</title></g>`; });
+  $("#cordasChart").innerHTML = s + "</svg>"; bindCharts();
+  $$("[data-lado]").forEach(b => { b.classList.toggle("active", b.dataset.lado === cordasSide); b.onclick = () => { cordasSide = b.dataset.lado; renderCordas(); applyHighlight(); }; });
+}
+/* Mancha que cresce: adaptado do experimento 04 do Lab 06 (expMancha): agregação limitada por difusão (Witten e Sander, 1981).
+   Lá era um experimento inteiro em p5 com velocidade e "até o ano"; aqui é a abertura animada da seção, num canvas 2D sem p5,
+   ao lado das colunas (que são a medida). Uma mancha por ano, orçamento de células proporcional ao valor somado, cor do
+   mecanismo sorteado pelo valor dentro do ano; 2018 e 2020 só o traço. Repetível pelo botão; prefers-reduced-motion mostra
+   o estado final de uma vez. A grade guarda o ano de cada célula para a seleção compartilhada esmaecer o resto. */
+const MAN = { cs: 3, W: 400, H: 230, grid: null, yearOf: null, gw: 0, gh: 0, years: [], done: true, raf: 0, hot: -1, hl: null, ctx: null, off: null, img: null, dpr: 1, midY: 0 };
+function manchaLayout() {
+  const cv = $("#manchaCanvas"); MAN.dpr = Math.min(2, devicePixelRatio || 1); cv.width = MAN.W * MAN.dpr; cv.height = MAN.H * MAN.dpr; MAN.ctx = cv.getContext("2d");
+  MAN.gw = Math.ceil(MAN.W / MAN.cs); MAN.gh = Math.ceil(MAN.H / MAN.cs); MAN.grid = new Uint8Array(MAN.gw * MAN.gh); MAN.yearOf = new Uint8Array(MAN.gw * MAN.gh);
+  MAN.off = MAN.off || document.createElement("canvas"); MAN.off.width = MAN.gw; MAN.off.height = MAN.gh; MAN.img = MAN.off.getContext("2d").createImageData(MAN.gw, MAN.gh);
+  const x0 = 26, x1 = MAN.W - 26, midY = MAN.midY = MAN.H / 2 - 10, K = 0.17 * (x1 - x0) * (MAN.H - 56) / (MAN.cs * MAN.cs);
+  MAN.years = YEARS.map((y, k) => { const ps = DATA.filter(p => p.year === y), v = ps.reduce((s, p) => s + (p.value || 0), 0); return { y, k, ps, v, cx: Math.round((x0 + (x1 - x0) * k / 7) / MAN.cs), cy: Math.round((midY + (k % 2 ? 1 : -1) * 13) / MAN.cs), budget: Math.round(K * v / TOTAL), placed: 0, r: 2, walkers: [], weights: ps.map(p => p.value || 0) }; });
+  for (const Y of MAN.years) if (Y.budget > 0) { const k0 = Y.cy * MAN.gw + Y.cx; MAN.grid[k0] = 1 + MECHS.indexOf(Y.ps[0].mechanism); MAN.yearOf[k0] = Y.k + 1; Y.placed = 1; }
+  MAN.done = false; MAN.hot = -1;
+  $("#manchaCap").textContent = `Cada célula ≈ ${money(Math.round(TOTAL / Math.max(1, MAN.years.reduce((s, Y) => s + Y.budget, 0)) / 10) * 10)} · uma mancha por ano, cor por mecanismo · ${touch ? "toque" : "passe"} num ano para ver quem o compõe`;
+}
+function manchaStep(dt) { // dt em segundos: a cota de células por passo segue o tempo, não o quadro (a animação dura o mesmo a 60 ou a 10 fps)
+  const { grid, yearOf, gw, gh } = MAN, quota = Math.min(160, Math.max(4, Math.round(420 * dt))), deadline = performance.now() + 10; let any = false;
+  const pickMech = Y => { let r = Math.random() * Y.v; for (let i = 0; i < Y.ps.length; i++) { r -= Y.weights[i]; if (r <= 0) return 1 + MECHS.indexOf(Y.ps[i].mechanism); } return 1 + MECHS.indexOf(Y.ps[Y.ps.length - 1].mechanism); };
+  const spawn = Y => { const a = Math.random() * Math.PI * 2, rr = Y.r + 3; return { x: Math.round(Y.cx + Math.cos(a) * rr), y: Math.round(Y.cy + Math.sin(a) * rr), m: pickMech(Y) }; };
+  MAN.years.forEach((Y, k) => {
+    if (Y.budget <= 0) return;
+    const prev = MAN.years.slice(0, k).filter(z => z.budget > 0).pop(); // cada ano começa quando o anterior está pela metade: o acúmulo lê-se da esquerda para a direita
+    if ((prev && prev.placed < prev.budget * 0.55) || Y.placed >= Y.budget) return;
+    any = true; while (Y.walkers.length < 24) Y.walkers.push(spawn(Y));
+    let stuck = 0;
+    while (stuck < quota && Y.placed < Y.budget && performance.now() < deadline) for (let w = 0; w < Y.walkers.length && stuck < quota && Y.placed < Y.budget; w++) {
+      const wk = Y.walkers[w];
+      for (let s = 0; s < 120; s++) {
+        const dir = Math.random() * 4 | 0; wk.x += dir === 0 ? 1 : dir === 1 ? -1 : 0; wk.y += dir === 2 ? 1 : dir === 3 ? -1 : 0;
+        const dx = wk.x - Y.cx, dy = wk.y - Y.cy;
+        if (wk.x <= 0 || wk.y <= 0 || wk.x >= gw - 1 || wk.y >= gh - 1 || dx * dx + dy * dy > (Y.r + 12) ** 2) { Y.walkers[w] = spawn(Y); break; }
+        const k0 = wk.y * gw + wk.x;
+        if (grid[k0 - 1] || grid[k0 + 1] || grid[k0 - gw] || grid[k0 + gw]) { grid[k0] = wk.m; yearOf[k0] = Y.k + 1; Y.placed++; stuck++; const d = Math.sqrt(dx * dx + dy * dy); if (d > Y.r) Y.r = d; Y.walkers[w] = spawn(Y); break; }
+      }
+    }
+  });
+  MAN.done = !any;
+}
+const RGB = { "Incentivo Fiscal": [255, 79, 154], "Fundo Municipal": [49, 168, 255], "Descentra": [101, 231, 125] };
+function paintMancha() {
+  const { ctx, dpr, W, H, cs, gw, gh, grid, yearOf, img, hl, midY } = MAN; if (!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  ctx.strokeStyle = "rgba(22,22,22,.35)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(14, midY + .5); ctx.lineTo(W - 14, midY + .5); ctx.stroke();
+  const d = img.data; for (let k = 0; k < gw * gh; k++) { const o = k * 4, m = grid[k]; if (!m) { d[o + 3] = 0; continue; } const col = RGB[MECHS[m - 1]], on = !hl || hl.has(`${YEARS[yearOf[k] - 1]}|${MECHS[m - 1]}`); d[o] = col[0]; d[o + 1] = col[1]; d[o + 2] = col[2]; d[o + 3] = on ? 255 : 48; }
+  MAN.off.getContext("2d").putImageData(img, 0, 0); ctx.imageSmoothingEnabled = false; ctx.drawImage(MAN.off, 0, 0, gw * cs, gh * cs);
+  ctx.textAlign = "center"; ctx.font = "9px Arial, Helvetica, sans-serif";
+  MAN.years.forEach((Y, k) => { const x = Y.cx * cs, on = !hl || Y.ps.some(p => hl.has(`${Y.y}|${p.mechanism}`)), hot = k === MAN.hot;
+    ctx.strokeStyle = `rgba(22,22,22,${on ? .8 : .25})`; ctx.lineWidth = hot ? 2 : 1; ctx.beginPath(); ctx.moveTo(x + .5, midY - 5); ctx.lineTo(x + .5, midY + 5); ctx.stroke();
+    ctx.fillStyle = `rgba(22,22,22,${on ? (hot ? 1 : .8) : .3})`; ctx.font = `${hot ? "900 " : ""}9px Arial, Helvetica, sans-serif`; ctx.fillText(String(Y.y), x, H - 17);
+    if (Y.budget > 0) { ctx.fillStyle = `rgba(22,22,22,${on ? .5 : .2})`; ctx.font = "8px Arial, Helvetica, sans-serif"; ctx.fillText(shortMoney(Y.v), x, H - 5); } });
+}
+function manchaTick() { if (page !== "indicators") { MAN.raf = 0; return; } const now = performance.now(), dt = Math.min(0.4, (now - (MAN.last || now)) / 1000); MAN.last = now; manchaStep(dt); paintMancha(); MAN.raf = MAN.done ? 0 : requestAnimationFrame(manchaTick); }
+function startMancha() { cancelAnimationFrame(MAN.raf); MAN.raf = 0; manchaLayout(); MAN.last = 0; if (reduced) { let guard = 0; while (!MAN.done && guard++ < 4000) manchaStep(0.4); paintMancha(); return; } MAN.raf = requestAnimationFrame(manchaTick); }
+function highlightMancha(ids) { MAN.hl = ids ? new Set(DATA.filter(p => ids.has(p.id)).map(p => `${p.year}|${p.mechanism}`)) : null; if (MAN.ctx) paintMancha(); }
+(() => { const cv = $("#manchaCanvas"), pick = e => { const r = cv.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * MAN.W; let best = -1, bd = 1e9; MAN.years.forEach((Y, k) => { const d = Math.abs(Y.cx * MAN.cs - x); if (d < bd) { bd = d; best = k; } }); return best; };
+  cv.onmousemove = e => { if (touch) return; const k = pick(e); if (k === MAN.hot) return; MAN.hot = k; const Y = MAN.years[k]; hoverSel = Y ? { type: "year", key: String(Y.y), label: String(Y.y) } : null; renderSide(); };
+  cv.onmouseleave = () => { if (MAN.hot < 0) return; MAN.hot = -1; hoverSel = null; renderSide(); };
+  cv.onclick = e => { const Y = MAN.years[pick(e)]; if (!Y) return; selection = selection && selection.type === "year" && String(selection.key) === String(Y.y) ? null : { type: "year", key: String(Y.y), label: String(Y.y) }; renderIndicators(); };
+  $("#manchaAgain").onclick = () => startMancha(); })();
+
 function renderSide() {
   const sel = hoverSel || selection, list = selectedProjects(sel), focus = R ? R.state().focus : null;
   const kicker = sel ? (hoverSel ? "PRÉ-VISUALIZAÇÃO" : "RECORTE FIXADO") : "CORPUS DO TCC", title = sel ? (sel.label || sel.key) : "Todos os projetos";
-  $("#sideKicker").textContent = kicker; $("#sideTitle").textContent = title; $("#sumKicker").textContent = kicker; $("#sumTitle").textContent = `${title} · ${list.length} projeto(s)`; $("#sumClear").hidden = !selection;
+  $("#sideKicker").textContent = kicker; $("#sideTitle").textContent = title; $("#sumKicker").textContent = kicker; $("#sumTitle").textContent = `${title} · ${list.length} projeto(s)`; $("#sumClear").hidden = !selection; $("#sideClear").hidden = !selection;
   $("#sideText").textContent = sel ? `${list.length} projeto(s) neste recorte. Toque num projeto para abrir a ficha.` : "Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Toque num projeto para abrir a ficha.";
   $("#sideList").innerHTML = list.map(p => `<div class="sp ${focus === p.id ? "current" : ""}"><button data-side="${p.id}">${wallIcon(p, 40)}<div><small>${p.year} · ${esc(p.mechanism)} · ${esc(p.circuit)}</small><b>${esc(p.title)}</b><strong>${money(p.value)} · FICHA ↗</strong></div></button></div>`).join("");
   $$("[data-side]").forEach(b => b.onclick = () => openPreview(b.dataset.side, "indicators"));
+  applyHighlight();
 }
-$("#sumClear").onclick = () => { selection = null; renderIndicators(); };
-function bindCharts() { $$("[data-ct]").forEach(el => { const lab = () => el.dataset.label || (el.dataset.ct === "project" ? Rizoma.shortTitle(DATA[IDX[el.dataset.ck]].title) : el.dataset.ck); el.onmouseenter = () => { if (touch) return; hoverSel = { type: el.dataset.ct, key: el.dataset.ck, label: lab() }; renderSide(); }; el.onmouseleave = () => { hoverSel = null; renderSide(); }; el.onclick = () => { const type = el.dataset.ct, key = el.dataset.ck; if (type === "project") { openPreview(key, "indicators"); return; } selection = selection && selection.type === type && String(selection.key) === String(key) ? null : { type, key, label: lab() }; renderIndicators(); }; }); }
+$("#sumClear").onclick = $("#sideClear").onclick = () => { selection = null; renderIndicators(); };
+/* ---------- seleção compartilhada: brushing and linking (Becker e Cleveland, 1987) ----------
+   Uma só seleção (hoverSel ao passar, selection ao clicar) vale para todos os gráficos: o conjunto de projetos que ela
+   define acende em cada um e o resto esmaece, na lista lateral e na ficha. Cada elemento declara o que representa em
+   data-ct/data-ck, então um só realce serve a todos os gráficos em DOM/SVG; a mancha (canvas) tem o seu. */
+function highlightIds() { const sel = hoverSel || selection; return sel ? new Set(selectedProjects(sel).map(p => p.id)) : null; }
+function applyHighlight() { const ids = highlightIds(), root = $("#indicators"); root.classList.toggle("hl", !!ids); highlightDom(root, ids); highlightMancha(ids); highlightCard(ids); }
+function highlightDom(root, ids) { root.querySelectorAll("[data-ct],[data-leg]").forEach(el => { if (!ids) { el.classList.remove("on", "dim"); return; } const type = el.dataset.leg ? "mechanism" : el.dataset.ct, key = el.dataset.leg || el.dataset.ck, on = selectedProjects({ type, key }).some(p => ids.has(p.id)); el.classList.toggle("on", on); el.classList.toggle("dim", !on); }); }
+const CARD_LINES = [["ano", "year", p => String(p.year)], ["mecanismo", "mechanism", p => p.mechanism], ["edital", "edital", p => p.edital], ["escala", "scale", p => Rizoma.scaleOf(p.value)], ["territorio", "region", p => p.region]];
+function renderCardLines(d) { // os chips das linhas de fuga na ficha também criam a seleção dos indicadores
+  let box = $("#cLines"); if (!box) { box = document.createElement("div"); box.id = "cLines"; box.className = "card-lines"; const sub = document.createElement("div"); sub.className = "sub"; sub.textContent = "VER NOS INDICADORES"; $("#cOpen").after(sub, box); const sel = document.createElement("div"); sel.id = "cSel"; $("#cTrans").after(sel); }
+  box.innerHTML = CARD_LINES.filter(([t, , key]) => key(d) != null).map(([t, type, key]) => `<button type="button" data-cl="${type}" data-ck="${esc(key(d))}" data-lab="${esc(Rizoma.LINES[t].label + " " + String(key(d)).split(" (")[0])}" style="--sw:${LC(t)}"><i></i>${Rizoma.LINES[t].label}<small>${esc(String(key(d)).split(" (")[0])}</small></button>`).join("");
+  $$("#cLines [data-cl]").forEach(b => b.onclick = () => { selection = { type: b.dataset.cl, key: b.dataset.ck, label: b.dataset.lab }; if (page !== "indicators") showPage("indicators"); else renderIndicators(); });
+}
+function highlightCard(ids) { const sel = $("#cSel"); if (!sel) return; const s = hoverSel || selection; if (!ids || !previewId || !$("#card").classList.contains("open")) { sel.className = ""; sel.textContent = ""; return; } const inSel = ids.has(previewId); sel.className = inSel ? "in" : "out"; sel.textContent = (inSel ? "NA SELEÇÃO · " : "FORA DA SELEÇÃO · ") + (s.label || s.key).toUpperCase(); $$("#cLinks [data-go]").forEach(b => b.style.opacity = ids.has(b.dataset.go) ? "" : ".35"); }
+/* ---------- explicação breve em pop-over: um "?" por gráfico (alvo redondo de 22–28 px, lei de Fitts) e toque longo ou clique no título ---------- */
+const SRC = "DOM-BH e listas de homologação 2017–2024; valores aprovados (tetos), não captados.";
+const HELP = {
+  region: { t: "Onde os projetos aparecem?", o: "Uma barra por regional, com quantidade ou valor. Hoje todas caem em \"não verificada\".", q: "O TCC afirma que o monumental se concentra no centro e o capilar nas bordas; sem regional verificada, o gráfico mostra a lacuna em vez de inferir." },
+  years: { t: "Quando e por qual forma de fomento?", o: "Colunas por ano empilhadas por mecanismo; ao lado, uma mancha por ano cresce até a área do valor somado.", q: "A série mostra o Incentivo Fiscal (monumental) chegando em blocos de alto valor e o Descentra (capilar) em muitos projetos pequenos; 2018 e 2020 são o recorte, não o vazio.", c: "Mancha: agregação limitada por difusão (Witten e Sander, 1981); experimento 04 do Lab 06." },
+  cordas: { t: "Cada mecanismo escoa para onde?", o: "Arcos proporcionais ao total; cada fita liga um mecanismo a um ano, a uma escala de valor ou a um circuito.", q: "É a tese em uma figura: o Incentivo Fiscal escoa inteiro para o circuito monumental e para a escala macro; Fundo e Descentra alimentam o capilar.", c: "Diagrama de cordas à maneira do Circos (Krzywinski et al., 2009), fitas como feixes (Holten, 2006); experimento 05 do Lab 06." },
+  walls: { t: "Quanto aparece registrado?", o: "Área = valor aprovado. Em \"muros\", cada projeto é um ladrilho; em \"células\", o plano é cortado por ano, por mecanismo e por projeto.", q: "Um projeto monumental vale vários capilares: a área torna visível a assimetria que a tabela só lista.", c: "Células: Voronoi treemap (Balzer e Deussen, 2005), diagrama de potência (Aurenhammer, 1987) e ajuste de pesos (Nocaj e Brandes, 2012); experimento 03 do Lab 06." },
+  dots: { t: "Quem chega ao teto?", o: "Cada projeto na posição do seu valor, numa régua comum por mecanismo, com os limites de escala e o teto do edital.", q: "Os monumentais se encostam no teto do Incentivo Fiscal; os capilares ficam abaixo de R$ 100 mil: duas economias na mesma régua.", c: "Posição numa escala comum (Cleveland e McGill, 1984); linhas de referência do bullet graph (Few, 2006)." },
+  lorenz: { t: "Quão concentrado é o fomento?", o: "Projetos do menor ao maior valor; a curva acumula o valor e o Gini mede a distância da igualdade.", q: "Cinco projetos monumentais somam quase metade do dinheiro: a concentração que o TCC descreve vira um número.", c: "Curva de Lorenz (1905) e índice de Gini (1912)." },
+  matrix: { t: "Quem se liga a quem?", o: "Vinte por vinte: cada célula conta as naturezas (ano, mecanismo, edital, escala, regional, curadoria) que dois projetos compartilham.", q: "Reordenada por mecanismo, a matriz mostra dois blocos quase sem contato: monumental e capilar raramente dividem edital ou escala.", c: "Matriz reordenável (Bertin, 1967)." },
+  slope: { t: "O que cresceu e o que secou?", o: "Uma linha por mecanismo entre 2017–2021 e 2022–2024, na medida escolhida.", q: "Depois de 2022 o Descentra e o Fundo ganham projetos enquanto o Incentivo Fiscal concentra valor: o capilar se multiplica, o monumental engorda.", c: "Gráfico de declive (Tufte, 2001)." },
+  social: { t: "Perfil dos proponentes", o: "Ainda vazio: gênero, raça, renda e classe social só entram autodeclarados e agregados.", q: "Inferir perfil pela regional seria a cartografia que o TCC critica; a lacuna é mostrada, não preenchida." }
+};
+let helpOpener = null, pressT = 0, pressed = false;
+function openHelp(key, opener, ev) {
+  const h = HELP[key]; if (!h) return; const pop = $("#helpPop");
+  $("#helpTitle").textContent = h.t; $("#helpBody").innerHTML = `<p><b>O QUE MOSTRA</b>${esc(h.o)}</p><p><b>POR QUE IMPORTA</b>${esc(h.q)}</p><p><b>FONTE DOS DADOS</b>${esc(SRC)}</p>${h.c ? `<p><b>ALGORITMO</b>${esc(h.c)}</p>` : ""}`;
+  helpOpener = opener || null; pop.hidden = false; pop.classList.remove("up"); $("#helpScrim").hidden = !small();
+  if (!small()) { // ancorado onde se clicou (desktop); no celular é folha inferior, pelo CSS
+    const r = opener ? opener.getBoundingClientRect() : null, px = ev && ev.clientX ? ev.clientX : r ? r.left + r.width / 2 : innerWidth / 2, py = ev && ev.clientY ? ev.clientY : r ? r.bottom : innerHeight / 2;
+    const w = pop.offsetWidth, ph = pop.offsetHeight; let left = Math.max(12, Math.min(innerWidth - w - 12, px - 22)), top = py + 14;
+    if (top + ph > innerHeight - 12) { top = Math.max(12, py - 14 - ph); pop.classList.add("up"); }
+    pop.style.left = left + "px"; pop.style.top = top + "px"; pop.style.setProperty("--ax", Math.max(10, Math.min(w - 20, px - left - 5)) + "px");
+  }
+  pop.focus({ preventScroll: true });
+}
+function closeHelp() { const pop = $("#helpPop"); if (!pop || pop.hidden) return; pop.hidden = true; $("#helpScrim").hidden = true; if (helpOpener && helpOpener.focus) helpOpener.focus({ preventScroll: true }); helpOpener = null; }
+$("#helpClose").onclick = () => closeHelp(); $("#helpScrim").onclick = () => closeHelp();
+$$(".help[data-help]").forEach(b => b.onclick = e => { e.stopPropagation(); if (!$("#helpPop").hidden && helpOpener === b) { closeHelp(); return; } openHelp(b.dataset.help, b, e); });
+$$(".chart[data-chart] h2").forEach(h2 => { const key = h2.closest("[data-chart]").dataset.chart; // clique ou toque longo no título
+  h2.onclick = e => { if (pressed) { pressed = false; return; } openHelp(key, h2.closest("[data-chart]").querySelector(".help"), e); };
+  h2.onpointerdown = e => { clearTimeout(pressT); pressed = false; pressT = setTimeout(() => { pressed = true; openHelp(key, h2.closest("[data-chart]").querySelector(".help"), e); }, 480); };
+  h2.onpointerup = h2.onpointercancel = h2.onpointerleave = () => clearTimeout(pressT); h2.oncontextmenu = e => { if (touch) e.preventDefault(); }; });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#helpPop").hidden) { e.stopPropagation(); closeHelp(); } }, true);
+document.addEventListener("pointerdown", e => { const pop = $("#helpPop"); if (pop.hidden || pop.contains(e.target) || (helpOpener && helpOpener.contains(e.target))) return; closeHelp(); }, true);
+$("#indicators .ind-main").addEventListener("scroll", () => { if (!small()) closeHelp(); }, { passive: true });
+function bindCharts() { $$("[data-ct]").forEach(el => { const lab = () => el.dataset.label || (el.dataset.ct === "project" ? Rizoma.shortTitle(DATA[IDX[el.dataset.ck]].title) : el.dataset.ck); el.onmouseenter = () => { if (touch) return; hoverSel = { type: el.dataset.ct, key: el.dataset.ck, label: lab() }; renderSide(); }; el.onmouseleave = () => { hoverSel = null; renderSide(); }; el.onclick = () => { const type = el.dataset.ct, key = el.dataset.ck; if (type === "project") { openPreview(key, "indicators"); return; } const inCordas = !!el.closest(".cordas"); selection = selection && selection.type === type && String(selection.key) === String(key) ? null : { type, key, label: lab() }; renderIndicators(); if (selection && inCordas) { const one = selectedProjects(selection); if (one.length === 1) openPreview(one[0].id, "indicators"); } }; }); } // nas cordas, uma fita ou um arco com um só projeto abre a ficha direto
 
 /* ---------- editais ---------- */
 function renderEditais() {

@@ -90,3 +90,7 @@ Três opções novas de montagem no motor, usadas só pelo Lab 04 por enquanto (
 - `spread: 1.45`: repulsão entre nós ×2,1, molas 45% mais longas, atração ao centro 30% menor, então o campo ocupa a tela em vez de se aglomerar no meio;
 - `focusZoom: true`: abrir um nó aproxima a câmera 18% em torno dele (sem acumular ao trocar de nó), traz o nó para a frente no 3D e o desenha 30% maior; os nós ligados a ele crescem 10%; fechar devolve a câmera de onde estava.
 Medido no navegador do app: zoom 1 → 1,18 ao abrir → 1 ao fechar; nós espalhados por ~500 px numa janela de 724 px.
+
+## 9. Menos elementos (31/10, quinta passagem)
+
+"Ainda acho muito elemento; as bolinhas no fundo não estão legais." As bolinhas eram o spray do gesto (a textura cinza que o motor deixa onde a mão passa). O motor ganhou `spray: false` e o Lab 04 usa; o micélio livre (sem linha) ficou quase da cor do papel e deposita menos (3 em vez de 5). Sobram só muros, linhas finas e o micélio colorido das linhas ligadas. O protótipo principal mantém o spray, que ali é a metáfora de revelar.

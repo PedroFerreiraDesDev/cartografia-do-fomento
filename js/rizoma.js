@@ -707,7 +707,7 @@
         q.noiseDetail(3, 0.5);
         q.textFont("Arial");
         q.strokeCap(q.ROUND);
-        spray = q.createGraphics(q.width, q.height); spray.noStroke();
+        if (opts.spray !== false) { spray = q.createGraphics(q.width, q.height); spray.noStroke(); } // spray:false desliga as bolinhas que o gesto deixa no fundo (Lab 04)
         q.describe("Campo rizomático: vinte projetos de grafite e muralismo financiados em Belo Horizonte aparecem como nós. Ao pairar num nó, linhas pontilhadas mostram com quem ele poderia se ligar; ao ligar uma linha de fuga (ano, mecanismo, edital, escala, regional ou curadoria), os nós se puxam e as linhas nascem. A pessoa revela os nós movendo o mouse, abre prévias, corta linhas, gira o campo em 3D e alterna entre o modo rizoma e o modo árvore.");
         buildNodes();
         buildEdges();
@@ -854,7 +854,7 @@
       resize() {
         if (!p || !cnv) return;
         const w = W(), h = H(); if (w === p.width && h === p.height) return;
-        p.resizeCanvas(w, h); const s = p.createGraphics(w, h); s.noStroke(); if (spray) s.image(spray, 0, 0); spray = s;
+        p.resizeCanvas(w, h); if (opts.spray !== false) { const s = p.createGraphics(w, h); s.noStroke(); if (spray) s.image(spray, 0, 0); spray = s; }
       },
       setVisible(v) { S.visible = !!v; if (!p) return; if (S.visible) { api.resize(); p.loop(); } else p.noLoop(); },
       tick(n) { for (let i = 0; i < (n || 1); i++) p.redraw(); }, // avança quadros à mão (testes; quando o rAF está parado)

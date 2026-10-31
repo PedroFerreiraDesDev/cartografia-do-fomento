@@ -748,7 +748,7 @@ function playLiving(el, opts) {
   const bleed = Math.round(Math.max(24, fs * 0.3)), r0 = el.getBoundingClientRect(), W = Math.ceil(r0.width) + 2 * bleed, H = Math.ceil(r0.height) + 2 * bleed;
   const cont = document.createElement("div"); cont.className = "mark-live"; cont.style.cssText = `position:fixed;z-index:${opts.z || 90};pointer-events:none;left:${r0.left - bleed}px;top:${r0.top - bleed}px;transition:opacity .5s`; document.body.appendChild(cont);
   const F = FONTS[TYPO.font], same = fam === firstFamily(F.family);
-  const spec = { fs, family: fam, weight, vary: false, wght: same ? F.wght : null, wdth: null, ls: parseFloat(cs.letterSpacing) || 0, lineH: parseFloat(cs.lineHeight) || fs * 1.1, words, seed: +(el.dataset.seed || 0) + 3, left: bleed, top: bleed, minStep: Math.max(2, Math.round(fs / 22)), maxStep: 6, budget: opts.budget || 1400, accK: 0, ampK: opts.amp == null ? 1 : opts.amp, order: opts.order || TYPO.order || "ano", disp: 0, maxS: Math.max(4, fs / 9) };
+  const spec = { fs, family: fam, weight, vary: false, wght: same ? F.wght : null, wdth: null, ls: parseFloat(cs.letterSpacing) || 0, lineH: parseFloat(cs.lineHeight) || fs * 1.1, words, seed: opts.seed != null ? opts.seed : +(el.dataset.seed || 0) + 3, left: bleed, top: bleed, minStep: Math.max(2, Math.round(fs / 22)), maxStep: 6, budget: opts.budget || 1400, accK: 0, ampK: opts.amp == null ? 1 : opts.amp, order: opts.order || TYPO.order || "ano", disp: 0, maxS: Math.max(4, fs / 9) };
   const E = liveEngine(cont, { ink: () => "#161616", color: (pt, ink) => opts.color === "mechanism" ? MECH[pt.d.mechanism] : ink });
   const prev = el.style.visibility; let alive = true, settledAt = 0, t0 = performance.now(), resolve; const done = new Promise(r => resolve = r);
   const finish = ok => { if (!alive) return; alive = false; cont.style.opacity = "0"; el.style.visibility = prev; setTimeout(() => { E.dispose(); cont.remove(); resolve(ok); }, 520); };
@@ -761,6 +761,34 @@ function playLiving(el, opts) {
   return { stop: () => finish(false), done, engine: E };
 }
 window.Lab5Living = { play: playLiving, stats: () => COVER.stats(), engine: COVER, pose, sample: sampleText };
+/* abertura dos Indicadores (31/10, noite): ao abrir a página, o título "O fomento em movimento." chega em partículas, cor por
+   mecanismo e fatias na ordem escolhida para a marca, com a mesma pose em tensão do título em HTML (mesma semente), para a troca
+   canvas -> HTML não saltar. Depois que ele assenta, cada título de gráfico (h2) forma-se em tinta uma única vez, quando entra
+   inteiro na tela (IntersectionObserver), sem tensão, porque os títulos dos gráficos ficam estáveis (a tensão é só da marca e
+   dos títulos de página). Por que uma vez só e só ao entrar: o surgimento captura a atenção de forma involuntária (YANTIS;
+   JONIDES, 1984), então serve como abertura e atrapalharia se repetisse enquanto se lê (HEAD, 2016). prefers-reduced-motion:
+   play() devolve sem animar. Sair da página interrompe a abertura em curso. */
+const OPEN = { hero: null, playing: false, last: -1e9, io: null, seen: new WeakSet() }; // last: quando o título da página abriu pela última vez (não repete em menos de 15 s)
+const heroSeed = h => { const all = $$(".hero h1, #copy h1"), k = all.indexOf(h); return +(h.dataset.seed || 0) + 3 + (k < 0 ? 0 : k * 7); }; // a semente que tense() usa para o mesmo título
+function openIndicators() {
+  if (reduced) return; // no celular também abre: 900 pontos, ~0,5 ms por quadro
+  const h = $("#indicators .hero h1"); if (!h) return;
+  const now = performance.now(); if (OPEN.playing || now - OPEN.last < 15000) { watchChartTitles(); return; } OPEN.last = now;
+  OPEN.playing = true;
+  OPEN.hero = playLiving(h, { color: "mechanism", order: TYPO.order || "ano", seed: heroSeed(h), budget: small() ? 900 : 1600, hold: 700 });
+  OPEN.hero.done.then(() => { OPEN.playing = false; if (page === "indicators") watchChartTitles(); });
+}
+function watchChartTitles() {
+  if (OPEN.io || reduced) return;
+  OPEN.io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting || OPEN.seen.has(e.target) || page !== "indicators") return;
+    OPEN.seen.add(e.target); OPEN.io.unobserve(e.target);
+    OPEN.titles = (OPEN.titles || []).filter(t => t.alive); const t = playLiving(e.target, { color: "ink", amp: 0, budget: small() ? 500 : 700, hold: 450, max: 3200 }); t.alive = true; t.done.then(() => t.alive = false); OPEN.titles.push(t);
+  }), { threshold: 0.95 });
+  $$("#indicators .chart h2").forEach(h2 => OPEN.io.observe(h2));
+}
+window.Lab5Living.opening = OPEN; // inspeção
+function stopOpening() { if (OPEN.hero) { OPEN.hero.stop(); OPEN.hero = null; OPEN.playing = false; } (OPEN.titles || []).forEach(t => t.stop()); OPEN.titles = []; }
 /* voltar à capa: o inverso de enter(); a ficha fecha, o campo volta ao estado de intro e os pulsos seguem */
 function reopenIntro() {
   if (introOn) return; introOn = true; document.body.classList.add("intro-active");
@@ -780,7 +808,7 @@ function showPage(name) {
   $$("[data-nav]").forEach(b => b.classList.toggle("active", b.dataset.nav === name));
   setFieldVisible(name === "discover");
   closeHelp();
-  if (name === "indicators") { renderIndicators(); startMancha(); }
+  if (name === "indicators") { renderIndicators(); startMancha(); setTimeout(() => { if (page === "indicators") openIndicators(); }, 220); } else stopOpening(); // 220 ms: o layout da página assenta antes de medir o título
   if (name === "editais") renderEditais();
   if ((name === "research" || name === "about") && R && R.state().focus) R.close(); // páginas de leitura fecham a ficha; a trilha fica
   if (typeof closeSearch === "function") closeSearch();

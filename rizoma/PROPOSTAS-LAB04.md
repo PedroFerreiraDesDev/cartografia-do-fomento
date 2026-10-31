@@ -125,3 +125,12 @@ Decisões de coesão:
 - **Mobile-first**: ≤780 px, faixa curta no topo (kicker, título, legenda), contador no canto, ferramentas em fita rolável no pé, ficha como folha de 72 vh que esconde as ferramentas enquanto está aberta. Indicadores empilhados, editais em duas colunas, página de projeto em uma coluna. Os handlers de toque fora do canvas nunca devolvem `false` (os botões continuam clicáveis no Android).
 
 Fora deste lab, por decisão de escopo: busca, árvore/decalque e corte com botão. Ficam disponíveis no protótipo principal.
+
+### 12.1. Segunda passagem do Lab 05 (31/10): identidade do Lab 01, fidelidade ao Lab 04 e ao protótipo, gráficos novos
+
+Pedido do autor: manter o Lab 04 como base; trazer a tensão tipográfica do Lab 01 para a identidade; defender as três cores; registrar as leis de UX; propor outros gráficos no site e em wireframe; referenciar tudo.
+
+- **Tipografia em tensão** (função do Lab 01, `updateType`) em todos os títulos do Lab 05: capa animada (chega com amplitude 1,5, assenta em 1,4 s, respira; toque = outra tensão; uma letra em cor de mecanismo), marca da barra, título do Descobrir e heróis das páginas. Dados, fichas e textos ficam estáveis.
+- **Fidelidade**: o Descobrir voltou a ter o texto do Lab 04 no canto, o botão "Nó · muro / círculo" e as mesmas ferramentas; do protótipo voltaram busca (`/`), árvore/decalque (A), cortar linha (C) e trilha clicável. Na árvore o micélio descansa.
+- **Gráficos novos** nos Indicadores: régua de valores (Cleveland e McGill, 1984; Few, 2006), curva de Lorenz com Gini (Lorenz, 1905; Gini, 1912), matriz reordenável das seis linhas de fuga (Bertin, 1967), declive 2017–2021 → 2022–2024 (Tufte, 2001). Wireframe: `wireframes-svg/12-identidade-e-novos-graficos.svg`.
+- **Documento**: `rizoma/IDENTIDADE-COESAO-LAB05.md` (tipografia, defesa das cores, tabela de leis de UX com onde cada uma está, gráficos, o que saiu e voltou, referências ABNT).

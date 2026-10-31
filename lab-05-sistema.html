@@ -24,6 +24,11 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid va
 .wall{display:inline-block;vertical-align:middle;flex:none}
 .rule{border:0;border-top:1px solid var(--line);margin:0}
 
+/* identidade: tipografia em tensão (Lab 01): deslocamento, micro-rotação e pressão por letra; nunca uma "fonte grafite". Só títulos tensionam; dados e textos ficam estáveis */
+.tense .w{display:inline-block;white-space:nowrap}.tense i{display:inline-block;font-style:normal;transform-origin:50% 70%;transition:transform .45s cubic-bezier(.2,.7,.25,1),color .45s}.tense i.sp{width:.26em}h1.tense{display:block}
+.mark{cursor:pointer;-webkit-tap-highlight-color:transparent}.mark .tense i{transition:color .6s}.mark .dim{color:#9a9890}
+@media(prefers-reduced-motion:reduce){.tense i{transition:none}}
+
 /* ---------- barra ---------- */
 .topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:var(--top);background:rgba(247,246,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 20px}
 .brand{border:0;background:none;padding:0;font-size:15px;line-height:.92;text-align:left;text-transform:uppercase}
@@ -58,13 +63,17 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid va
 .layer{position:absolute;inset:0}.layer canvas{display:block}
 #trailStage{pointer-events:none}
 #rizomaStage canvas{touch-action:none;-webkit-user-select:none;user-select:none}
-.copy{position:absolute;z-index:20;left:22px;top:20px;width:min(360px,46vw);pointer-events:none}.copy h1{margin:6px 0 10px;font-size:34px;text-transform:uppercase}
+.copy{position:absolute;z-index:20;left:22px;top:20px;width:min(340px,46vw);pointer-events:none}.copy h1{margin:6px 0 8px;font-size:32px;text-transform:uppercase}.copy p{margin:8px 0 0;font-size:11px;line-height:1.55;color:#666;background:rgba(247,246,241,.7)}
 .tools{position:absolute;z-index:22;right:18px;top:16px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;max-width:56vw}
 .chips,.row{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
 .tools button{border:1px solid #ccc;background:rgba(255,255,255,.92);padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.03em}.tools button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.tools button:disabled{opacity:.4;cursor:default}
 .group{display:inline-flex}.group button{border-radius:0}.group button+button{border-left:0}.group .mid{min-width:92px;text-align:center}
 .chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px}.chip i{width:7px;height:7px;border-radius:50%;background:var(--sw);opacity:.4}.chip.active{background:#fff!important;color:var(--ink)!important;border-color:var(--sw)!important}.chip.active i{opacity:1}.chip small{color:#888;font-size:8px}
 .final-btn{border-color:var(--ink)!important}
+/* busca (porta direta do protótipo) e trilha clicável */
+.search{position:relative;width:min(300px,100%)}.search input{width:100%;height:32px;border:1px solid #ccc;background:rgba(255,255,255,.92);padding:0 30px 0 10px;font:inherit;font-size:10px;color:var(--ink);outline:none}.search input:focus{border-color:var(--ink)}.search::after{content:"/";position:absolute;right:9px;top:8px;font-size:9px;color:#aaa;border:1px solid #ddd;padding:0 4px;border-radius:3px;pointer-events:none}
+.results{position:absolute;z-index:50;top:calc(100% + 4px);right:0;width:min(340px,80vw);background:#fff;border:1px solid #ccc;box-shadow:0 12px 28px rgba(0,0,0,.1);padding:4px;text-align:left}.results[hidden]{display:none}.tools .results button{display:flex;align-items:center;gap:8px;width:100%;border:0;border-bottom:1px solid #eee;background:#fff;padding:8px 9px;font-weight:400;letter-spacing:0;text-align:left;border-radius:0}.tools .results button:last-child{border-bottom:0}.tools .results button:hover{background:#f3f2ec}.results small{display:block;font-size:8px;color:#999;margin-bottom:2px}.results b{display:block;font-size:11px}.results .none{padding:10px;font-size:10px;color:#888}
+.foot-left{display:flex;flex-direction:column;max-width:520px}.trail{display:flex;flex-wrap:wrap;align-items:center;gap:4px;pointer-events:auto;margin-bottom:8px}.trail[hidden]{display:none}.trail button{border:1px solid #ddd;background:#fff;padding:5px 8px;font-size:9.5px;font-weight:700}.trail button.current{background:var(--ink);color:#fff;border-color:var(--ink)}.trail i{font-style:normal;color:#999;font-size:10px}
 .foot{position:absolute;z-index:20;left:20px;right:20px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;pointer-events:none}.foot p{margin:0;max-width:520px;font-size:9.5px;line-height:1.5;color:#888}.foot span{font-size:9px;font-weight:800;background:rgba(255,255,255,.9);border:1px solid #ddd;padding:6px 8px;white-space:nowrap}
 .guide{position:absolute;z-index:23;left:50%;bottom:76px;transform:translateX(-50%);max-width:min(560px,calc(100% - 40px));background:var(--ink);color:#fff;padding:9px 13px;font-size:10.5px;line-height:1.5;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s}.guide.show{opacity:1}
 .hover-tip{position:absolute;z-index:24;pointer-events:none;background:rgba(247,246,241,.96);border:1px solid #cfcfca;padding:8px 10px 10px;min-width:150px;max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translate(14px,-50%);font-size:10.5px;line-height:1.4}
@@ -102,6 +111,9 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .chart .kicker i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--acc);vertical-align:middle;margin-right:6px}
 .bars{display:grid;gap:6px}.bar{display:grid;grid-template-columns:125px 1fr 100px;align-items:center;gap:12px;width:100%;border:0;padding:5px 0;background:transparent;text-align:left}.bar:hover,.bar.active{background:rgba(255,255,255,.7)}.bar .lab{font-size:10px;font-weight:900}.track{height:22px;background:var(--soft)}.fill{display:block;height:100%;background:#9a9890;transition:width .55s ease}.bar:hover .fill,.bar.active .fill{background:var(--ink)}.bar .val{text-align:right;font-size:10px;font-weight:900}
 .years{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.year{border:1px solid var(--line);min-height:160px;background:rgba(255,255,255,.6);padding:9px;display:flex;flex-direction:column;justify-content:flex-end;text-align:left}.year:hover,.year.active{border-color:var(--ink)}.stack{height:90px;display:flex;flex-direction:column-reverse;gap:2px;margin:8px 0}.piece{min-height:5px;border:1px solid var(--ink);background:var(--c)}.year .n{font-family:var(--head);font-size:26px;font-weight:700;letter-spacing:-.02em}.year small{font-size:9px;color:#888}
+.svgchart svg{width:100%;height:auto;display:block;overflow:visible}.svgchart text{font-family:Arial,Helvetica,sans-serif;font-size:9px;fill:#777}.svgchart text.lab{font-weight:900;fill:var(--ink)}.svgchart [data-ct]{cursor:pointer}.svgchart [data-ct] .halo{opacity:0;transition:opacity .2s}.svgchart [data-ct]:hover .halo,.svgchart [data-ct].active .halo{opacity:1}
+.matrix{display:grid;grid-template-columns:118px repeat(20,minmax(0,1fr));gap:2px;align-items:end;margin-top:6px}.matrix .ch{writing-mode:vertical-rl;transform:rotate(180deg);font-size:7.5px;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:76px;justify-self:center}.matrix .rl{font-size:8.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:5px;align-self:center}.matrix .cell{aspect-ratio:1;width:100%;border:1px solid var(--line);background:var(--c,transparent);padding:0;border-radius:0;display:block}.matrix .cell.diag{background:repeating-linear-gradient(45deg,#d4d1c8 0 1px,transparent 1px 4px)}.matrix .cell:hover,.matrix .cell.active{outline:1.5px solid var(--ink);outline-offset:-1px}
+.chart .metric{margin:0 0 12px}
 .walls{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:68px;gap:5px}.tile{border:1px solid var(--line);background:rgba(255,255,255,.6);padding:7px 8px;overflow:hidden;text-align:left;display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}.tile:hover,.tile.active{border-color:var(--ink);background:#fff}.tile b{display:block;font-size:10px;line-height:1.2}.tile span{display:block;margin-top:3px;font-size:9px;color:#888}
 .ind-side h3{margin:8px 0 6px;font-size:28px;text-transform:uppercase}.ind-side>p{font-size:10.5px;line-height:1.55;color:#888;margin:0 0 14px}
 .sp{border-top:1px solid var(--line)}.sp button{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;border:0;background:transparent;padding:11px 0;text-align:left;width:100%}.sp small{display:block;font-size:9px;color:#999}.sp b{display:block;font-size:13px;margin:3px 0;letter-spacing:-.01em}.sp strong{display:block;margin-top:4px;font-size:10px}.sp.current button{background:rgba(255,255,255,.8);outline:1px solid var(--ink);padding-left:8px;padding-right:8px}
@@ -137,7 +149,9 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   .intro-actions{width:100%}.intro-actions .primary{width:100%}.intro-actions .doors{width:100%}.intro-actions .doors button{flex:1}
   .topline span:last-child,.footline{display:none}
   .content{width:calc(100% - 32px);padding:24px 0 70px}.hero h1{font-size:clamp(38px,12vw,56px)}.block{grid-template-columns:1fr;gap:8px;padding:18px 0 20px}.block h2{font-size:24px}
-  .copy{left:0;right:0;top:0;width:auto;padding:9px 118px 9px 14px;background:rgba(247,246,241,.92);border-bottom:1px solid #e6e4dc}.copy h1{font-size:19px;margin:3px 0 4px}.copy .legend{gap:4px 9px;font-size:8.5px}
+  .copy{left:0;right:0;top:0;width:auto;padding:9px 118px 9px 14px;background:rgba(247,246,241,.92);border-bottom:1px solid #e6e4dc}.copy h1{font-size:19px;margin:3px 0 4px}.copy .legend{gap:4px 9px;font-size:8.5px}.copy p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:9.5px;background:none;margin-top:5px}
+  .trail{display:none}.search{width:100%}.results{top:auto;bottom:calc(100% + 6px);left:0;right:0;width:auto}
+  .matrix{grid-template-columns:60px repeat(20,minmax(0,1fr));gap:1px}.matrix .ch{display:none}.matrix .rl{font-size:7px}
   .foot{top:8px;bottom:auto;left:auto;right:10px;display:block}.foot p{display:none}.foot span{display:inline-block;font-size:8.5px;max-width:104px;text-align:right;white-space:normal}
   .tools{top:auto;bottom:0;left:0;right:0;max-width:none;align-items:stretch;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(247,246,241,.95);border-top:1px solid #e6e4dc}
   .chips,.row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;margin:0 -10px;padding:0 10px}.chips::-webkit-scrollbar,.row::-webkit-scrollbar{display:none}.tools button{flex:none;padding:9px 10px;font-size:9.5px;white-space:nowrap}.group{flex:none}
@@ -157,7 +171,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 </head>
 <body class="intro-active">
 <header class="topbar">
-  <button class="brand" data-nav="discover">Cartografia<br>do Fomento</button>
+  <button class="brand" data-nav="discover"><span class="tense" data-seed="3" data-amp=".6">CARTOGRAFIA</span><br><span class="tense" data-seed="8" data-amp=".6">DO FOMENTO</span></button>
   <nav aria-label="Seções">
     <button data-nav="discover" class="active">Descobrir</button>
     <button data-nav="indicators">Indicadores</button>
@@ -173,12 +187,12 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="topline"><span>CARTOGRAFIA DO FOMENTO</span><span>TCC · DESIGN UFMG · LAB 05 · O SISTEMA NA LINGUAGEM DO PHYSARUM</span></div>
   <div class="intro-main">
     <div class="kicker">ARTE URBANA · FOMENTO CULTURAL · DESIGN DA INFORMAÇÃO</div>
-    <h1>Cartografia<br>do <em>Fomento</em></h1>
+    <h1 class="mark" id="mark" title="Toque: outra tensão"><span class="tense" data-seed="1">CARTOGRAFIA</span><br><span class="tense dim" data-seed="5" data-accent="1">DO FOMENTO</span></h1>
     <p>Vinte projetos de grafite e muralismo realizados com fomento cultural em Belo Horizonte, 2017–2024. Cada projeto é um fragmento de muro; entre eles cresce um micélio que ninguém desenhou.</p>
     <p>Não há mapa obrigatório nem raiz: qualquer ponto é uma entrada. Revele, ligue linhas de fuga, abra nós, leve a sua estampa.</p>
     <div class="intro-actions"><button type="button" id="enterBtn" class="primary">ENTRAR NO CAMPO ↗</button><div class="doors"><button data-door="indicators">Indicadores</button><button data-door="editais">Editais</button><button data-door="about">Sobre</button></div></div>
     <div class="legend" id="introLegend"></div>
-    <p class="intro-cue"><span class="cue"></span>O campo atrás desta capa já está vivo: vinte projetos à espera do seu gesto.</p>
+    <p class="intro-cue"><span class="cue"></span>O campo atrás desta capa já está vivo. O título sofre a cidade: toque nele para outra tensão.</p>
   </div>
   <div class="footline"><span>ARTEFATO DIGITAL / TESTE DE INTERAÇÃO</span><span>MOVA · DESCUBRA · INVESTIGUE</span></div>
 </section>
@@ -188,11 +202,15 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <section id="discover" class="stage" aria-label="Descobrir">
   <div id="trailStage" class="layer" aria-hidden="true"></div>
   <div id="rizomaStage" class="layer"></div>
-  <div class="copy" id="copy"><div class="kicker">01 / DESCOBRIR · RIZOMA + PHYSARUM</div><h1>Uma rede que<br>ninguém desenhou.</h1><div class="legend" id="fieldLegend"></div></div>
+  <div class="copy" id="copy"><div class="kicker">01 / DESCOBRIR · RIZOMA + PHYSARUM</div><h1 data-seed="11">Uma rede que<br>ninguém desenhou.</h1><div class="legend" id="fieldLegend"></div><p>Cada nó revelado solta agentes que sentem o rastro à frente, à esquerda e à direita, viram para o mais forte e depositam ao passar. Ligue uma linha de fuga: os nós que compartilham aquele atributo alimentam o micélio com mais força, e a rede cresce entre eles. Desligue, e ela evapora.</p></div>
   <div class="tools" id="tools">
+    <div class="search"><input id="search" type="search" autocomplete="off" placeholder="Buscar projeto, ano ou mecanismo…" aria-label="Buscar no corpus"><div id="results" class="results" hidden></div></div>
     <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
     <div class="row">
       <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
+      <button id="treeBtn" title="Tecla A · a hierarquia oficial: mecanismo → ano → projeto">Árvore / decalque</button>
+      <button id="cutBtn" title="Tecla C · arraste sobre uma linha para cortá-la; outra rebrota">Cortar linha</button>
+      <button id="shapeBtn" class="active" title="Tecla N · compara as duas formas do nó">Nó · muro</button>
       <span class="group" aria-label="Quantidade de agentes"><button id="lessBtn" title="Menos agentes">−</button><button id="countBtn" class="mid" title="Agentes ativos">0 agentes</button><button id="moreBtn" title="Mais agentes">+</button></span>
       <button id="evapBtn" title="Tecla E">Evaporação · média</button>
       <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
@@ -200,7 +218,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
       <button id="finalBtn" class="final-btn" title="Tecla M · congela o campo e gera a estampa da sua visita">Fechar meu mapa ↗</button>
     </div>
   </div>
-  <div class="foot" id="foot"><p>Os pontos que piscam são projetos escondidos: clique ou passe a mão para revelar. Cada nó revelado solta agentes que sentem o rastro e depositam ao passar; ligue uma linha de fuga e a rede cresce entre os nós que a compartilham. Posições cenográficas, não a cidade.</p><span id="counter">0 / 20 NÓS</span></div>
+  <div class="foot" id="foot"><div class="foot-left"><div id="trail" class="trail" hidden></div><p>O micélio é cenográfico: os agentes seguem o algoritmo de Jones (2010) sobre as posições dos nós na tela, não sobre a cidade. Os pontos que piscam são projetos escondidos: clique ou passe a mão para revelar. Roda do mouse ou pinça aproximam; shift + arrastar desloca.</p></div><span id="counter">0 / 20 NÓS</span></div>
   <div class="guide" id="guide"></div>
   <div id="hoverTip" class="hover-tip" hidden><b id="htTitle"></b><span id="htMeta"></span><span id="htMore"></span><i id="htBar"></i></div>
   <section id="final" class="final" hidden aria-label="Meu micélio">
@@ -226,6 +244,10 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
       <section class="chart" style="--acc:rgb(200,170,255)"><div class="kicker"><i></i>REGIONAL · A LINHA "REGIONAL" DO CAMPO</div><h2>Onde os projetos aparecem?</h2><p>Só regionais individualmente verificadas entram. Por enquanto, nenhuma: o campo mostra o que falta, em vez de inferir.</p><div id="regionChart" class="bars"></div></section>
       <section class="chart" style="--acc:rgb(255,210,63)"><div class="kicker"><i></i>ANO × MECANISMO · A LINHA "ANO"</div><h2>Quando e por qual forma de fomento?</h2><div id="yearChart" class="years"></div></section>
       <section class="chart" style="--acc:rgb(120,255,150)"><div class="kicker"><i></i>ESCALA FINANCEIRA · A LINHA "ESCALA"</div><h2>Quanto aparece registrado?</h2><p>Cada muro ocupa área proporcional ao valor registrado. Clique para abrir a ficha.</p><div id="wallsChart" class="walls"></div></section>
+      <section class="chart" style="--acc:rgb(120,255,150)"><div class="kicker"><i></i>RÉGUA DE VALORES · POSIÇÃO, NÃO ÁREA</div><h2>Quem chega ao teto?</h2><p>Cada muro na posição do seu valor registrado, por mecanismo. As linhas tracejadas são os limites de escala do campo (R$ 30 mil e R$ 100 mil); a cheia é o teto do Incentivo Fiscal em 2023 (R$ 165 mil, TCC seção 5.1). Posição ao longo de uma régua é a codificação que o olho lê com mais precisão (Cleveland e McGill, 1984).</p><div id="dotChart" class="svgchart"></div></section>
+      <section class="chart"><div class="kicker">CONCENTRAÇÃO · CURVA DE LORENZ</div><h2>Poucos projetos, quase todo o dinheiro.</h2><p>Projetos em ordem de valor no eixo horizontal, soma acumulada no vertical (Lorenz, 1905). Quanto mais a curva se afasta da diagonal, mais concentrado o fomento; o índice de Gini resume a distância.</p><div id="lorenzChart" class="svgchart"></div></section>
+      <section class="chart"><div class="kicker">MATRIZ DE RELAÇÕES · AS SEIS LINHAS DE FUGA</div><h2>Quem se liga a quem, e por quê?</h2><p>Cada célula conta as naturezas que dois projetos compartilham; com uma só, a célula tem a cor daquela linha; com várias, fica mais escura. Reordenar as linhas faz os blocos aparecerem (a matriz reordenável de Bertin, 1967).</p><div class="metric" id="matrixOrder" role="group" aria-label="Ordem da matriz"><button data-order="mecanismo" class="active">Por mecanismo</button><button data-order="ano">Por ano</button><button data-order="valor">Por valor</button></div><div id="matrixChart" class="matrix"></div></section>
+      <section class="chart" style="--acc:rgb(255,210,63)"><div class="kicker"><i></i>DECLIVE · 2017–2021 → 2022–2024</div><h2>O que cresceu e o que secou?</h2><p>Cada mecanismo é uma linha entre dois períodos, na medida escolhida acima (gráfico de declive, Tufte, 2001).</p><div id="slopeChart" class="svgchart"></div></section>
       <section class="chart"><div class="kicker">DADOS SOCIAIS</div><h2>Perfil dos proponentes.</h2><div class="empty">A base atual ainda não sustenta uma visualização quantitativa de gênero, raça, renda ou classe social. Esses dados devem ser autodeclarados e agregados, nunca inferidos a partir da localização.</div></section>
     </div>
     <aside class="ind-side" id="indSide"><div class="kicker" id="sideKicker">CORPUS DO TCC</div><h3 id="sideTitle">Todos os projetos</h3><p id="sideText">Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Tocar num projeto abre a ficha, sem sair daqui.</p><div id="sideList"></div></aside>
@@ -256,7 +278,8 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="content narrow">
     <div class="hero"><span class="mark"></span><div class="kicker">05 / PROJETO ACADÊMICO</div><h1>Uma cartografia<br>sem mapa obrigatório.</h1><p>O território continua nos dados e relatos, mas a experiência pode começar pelo muro, pelo valor, pelo ano ou pelo edital. O modelo conceitual é o rizoma de Deleuze e Guattari: conexões heterogêneas, sem raiz nem centro. A terceira ligação, o micélio, segue o modelo de Jones (2010) para as redes do <em>Physarum polycephalum</em>.</p></div>
     <div style="height:30px"></div>
-    <article class="block"><div><span class="kicker">LINGUAGEM</span><h2>Papel, tinta e três cores</h2></div><div><p>Papel claro e tinta quase preta em todas as páginas; a cor só entra onde carrega informação: rosa para o Incentivo Fiscal, azul para o Fundo Municipal, verde para o Descentra, e uma cor por natureza de linha (ano, mecanismo, edital, escala, regional, curadoria). Títulos condensados, linhas finas, poucos elementos.</p><div class="legend" id="aboutLegend"></div></div></article>
+    <article class="block"><div><span class="kicker">LINGUAGEM</span><h2>Papel, tinta e três cores</h2></div><div><p>O papel claro é o cimento do muro; a tinta quase preta é o traço, como no pixo, que é monocromático. A cor só entra onde carrega informação, e as três cores vêm do spray: rosa, azul e verde de alta saturação, as que o grafite usa para vencer o cinza da cidade. Rosa é o Incentivo Fiscal (o projeto que precisa de patrocínio e visibilidade, a cor mais publicitária); azul é o Fundo Municipal (a cor convencional do público e institucional); verde é o Descentra (território, periferia, o que cresce de baixo). Uma cor por natureza de linha completa o sistema. A defesa está em <code>rizoma/IDENTIDADE-COESAO-LAB05.md</code>.</p><div class="legend" id="aboutLegend"></div></div></article>
+    <article class="block"><div><span class="kicker">TIPOGRAFIA</span><h2>A letra sofre a cidade</h2></div><p>Títulos em condensada, tensionados como no Lab 01: cada letra é deslocada, levemente girada e comprimida por uma pressão que varia. Na capa a palavra chega tensionada e assenta em pouco mais de um segundo (o olho busca a forma estável), e volta a tensionar ao toque. Dados, fichas e textos de leitura ficam sempre estáveis: só o título pode sofrer.</p></article>
     <article class="block"><div><span class="kicker">O NÓ</span><h2>Fragmento de muro</h2></div><div><p>O projeto não é uma bolinha: é uma superfície. Circuito monumental = uma empena alta; circuito capilar = um conjunto de fachadas sobre um chão comum. A área cresce com o valor registrado; a cor é o mecanismo. O mesmo desenho que vive no campo vira ícone nos indicadores, nos editais e na página de cada projeto.</p><div id="aboutWalls" style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap"></div></div></article>
     <article class="block"><div><span class="kicker">DESCOBRIR</span><h2>O gesto revela</h2></div><p>O campo começa com poucos nós. Projetos escondidos piscam como um radar; clicar ou passar a mão revela. Cada nó solta agentes que depositam rastro; ligar uma linha de fuga faz a rede crescer entre os nós que compartilham o atributo, e desligar deixa evaporar.</p></article>
     <article class="block"><div><span class="kicker">SEGUIR LINHAS</span><h2>Uma só ficha</h2></div><p>No campo, nos indicadores ou nos editais, abrir um projeto abre a mesma ficha, com linhas ligadas, ligações possíveis e o que ainda está escondido. A página inteira do projeto só com "Explorar". Fechar devolve ao lugar de onde se veio, com a trilha preservada.</p></article>
@@ -343,7 +366,7 @@ let R = null, page = "discover", introOn = true;
 
 /* ---------- o nó como ícone: o mesmo fragmento de muro do campo (drawWall do motor), em SVG ---------- */
 const f1 = n => Math.round(n * 10) / 10;
-function wallIcon(d, size, cls) { // d: { mechanism, circuit, value }
+function wallBody(d) { // d: { mechanism, circuit, value }; o desenho dentro de um viewBox 0 0 40 40
   const c = MECH[d.mechanism] || "#999", mon = d.circuit === "Monumental", v = d.value == null ? 60000 : d.value;
   const a = 0.62 + 0.38 * Math.max(0, Math.min(1, (v - 19740) / (165000 - 19740))); // a área cresce com o valor
   let body = "";
@@ -355,12 +378,57 @@ function wallIcon(d, size, cls) { // d: { mechanism, circuit, value }
     for (let i = 0; i < k; i++) { const hh = bh * (0.72 + ((i * 7) % 3) * 0.14), x = x0 + i * (bw + gap); body += `<rect x="${f1(x)}" y="${f1(36 - hh)}" width="${f1(bw)}" height="${f1(hh)}" fill="${c}" fill-opacity=".8" stroke="#161616"/>`; }
     body += `<line x1="${f1(x0 - 2)}" y1="37" x2="${f1(x0 + total + 2)}" y2="37" stroke="#161616" stroke-opacity=".5"/>`;
   }
-  return `<svg class="wall ${cls || ""}" viewBox="0 0 40 40" width="${size}" height="${size}" stroke-width="1" aria-hidden="true">${body}</svg>`;
+  return body;
 }
+const wallIcon = (d, size, cls) => `<svg class="wall ${cls || ""}" viewBox="0 0 40 40" width="${size}" height="${size}" stroke-width="1" aria-hidden="true">${wallBody(d)}</svg>`;
 const mechSample = m => ({ mechanism: m, circuit: m === "Incentivo Fiscal" ? "Monumental" : "Capilar", value: m === "Incentivo Fiscal" ? 150000 : m === "Fundo Municipal" ? 70000 : 30000 });
 const legendHTML = () => MECHS.map(m => `<span><i style="--c:${MECH[m]}"></i>${m}</span>`).join("") + `<span><b style="font-family:var(--head)">▮</b> empena = monumental</span><span><b style="font-family:var(--head)">▪▪▪</b> fachadas = capilar · área = valor</span>`;
 $("#introLegend").innerHTML = legendHTML(); $("#fieldLegend").innerHTML = legendHTML(); $("#aboutLegend").innerHTML = legendHTML() + TYPES.map(t => `<span><i style="--c:${LC(t)};border-radius:50%"></i>${Rizoma.LINES[t].label}</span>`).join("");
 $("#aboutWalls").innerHTML = DATA.filter(d => ["p05", "p09", "p17", "p11"].includes(d.id)).map(d => `<div style="text-align:center"><div>${wallIcon(d, 84)}</div><small style="font-size:9px;color:#777">${esc(Rizoma.shortTitle(d.title))}</small></div>`).join("");
+
+/* ---------- identidade: tipografia em tensão (do Lab 01, updateType) ----------
+   Cada letra vira um <i> deslocado, girado e comprimido por uma pressão que varia com uma semente.
+   Regra do Lab 01: títulos podem tensionar; dados e textos ficam estáveis. Na capa a palavra chega
+   tensionada e assenta (lei de Prägnanz: o olho busca a forma mais simples e estável); toque = outra tensão.
+   A única cor fora do papel na capa é a de um mecanismo, numa letra isolada (efeito Von Restorff). */
+const TENSE = { seed: 1 + Math.floor(Math.random() * 89), accent: Math.floor(Math.random() * 3), raf: 0, t0: 0 };
+const REST = 0.42; // tensão de repouso: a letra nunca fica totalmente "limpa" (0,42 = pouco menos da metade da pressão do Lab 01 a 100%)
+function tenseWrap(el) {
+  if (el.dataset.ready) return; const frag = document.createDocumentFragment();
+  [...el.childNodes].forEach(nd => { // palavras ficam inteiras (span.w); só entre palavras pode quebrar linha
+    if (nd.nodeType !== 3) { frag.appendChild(nd.cloneNode(true)); return; }
+    let w = null; for (const ch of nd.textContent) { if (ch === " ") { const i = document.createElement("i"); i.className = "sp"; i.innerHTML = "&nbsp;"; frag.appendChild(i); w = null; continue; } if (!w) { w = document.createElement("span"); w.className = "w"; frag.appendChild(w); } const i = document.createElement("i"); i.textContent = ch; w.appendChild(i); }
+  });
+  el.innerHTML = ""; el.appendChild(frag); el.dataset.ready = "1";
+}
+function tense(el, amp, seed) {
+  tenseWrap(el); const kids = el.querySelectorAll("i"), fs = parseFloat(getComputedStyle(el).fontSize) / 148; // as medidas do Lab 01 valem para 148 px; aqui escalam com o corpo
+  kids.forEach((c, i) => {
+    const n = Math.sin(seed * 1.71 + i * 2.13), m = Math.cos(seed + i * 1.31);
+    const y = n * 9 * amp * fs, x = m * 5 * amp * fs, r = n * 3.2 * amp, sy = 1 + Math.abs(n) * .12 * amp, sx = 1 - Math.abs(m) * .06 * amp;
+    c.style.transform = `translate(${x.toFixed(2)}px,${y.toFixed(2)}px) rotate(${r.toFixed(2)}deg) scale(${sx.toFixed(3)},${sy.toFixed(3)})`;
+    if (el.dataset.accent) c.style.color = i === ((seed + 2) % kids.length) ? MECH[MECHS[TENSE.accent % 3]] : "";
+  });
+}
+function coverTension(restart) { // capa: chega com amplitude 1,1 e assenta em 1,4 s (easeOutCubic); depois respira de leve
+  const words = $$("#mark .tense"); if (!words.length) return;
+  if (restart) { TENSE.seed += 7; TENSE.accent++; TENSE.t0 = performance.now(); }
+  if (reduced) { words.forEach((w, k) => tense(w, REST, TENSE.seed + k * 5)); return; }
+  cancelAnimationFrame(TENSE.raf); if (!TENSE.t0) TENSE.t0 = performance.now();
+  const step = () => {
+    const t = (performance.now() - TENSE.t0) / 1400, e = t >= 1 ? 1 : 1 - Math.pow(1 - t, 3), breathe = t >= 1 ? 0.1 * Math.sin(performance.now() / 1700) : 0;
+    const amp = 1.5 - (1.5 - REST) * e + breathe;
+    words.forEach((w, k) => tense(w, amp * (k === 1 ? 1 : 0.6), TENSE.seed + k * 5)); // "DO FOMENTO" sofre mais que "CARTOGRAFIA" (Lab 01)
+    if (introOn) TENSE.raf = requestAnimationFrame(step);
+  };
+  step();
+}
+function initTension() {
+  $$(".brand .tense").forEach(w => tense(w, +(w.dataset.amp || REST), +(w.dataset.seed || 1) + TENSE.seed));
+  $$(".hero h1, #copy h1").forEach((h, k) => { h.classList.add("tense"); tense(h, REST, +(h.dataset.seed || 0) + 3 + k * 7); });
+  coverTension(false);
+  $("#mark").addEventListener("click", e => { e.stopPropagation(); coverTension(true); });
+}
 
 /* ---------- navegação ---------- */
 const PAGES = ["discover", "indicators", "editais", "research", "about"];
@@ -373,6 +441,7 @@ function showPage(name) {
   if (name === "indicators") renderIndicators();
   if (name === "editais") renderEditais();
   if ((name === "research" || name === "about") && R && R.state().focus) R.close(); // páginas de leitura fecham a ficha; a trilha fica
+  if (typeof closeSearch === "function") closeSearch();
   if (R) sync(R.state());
 }
 const whenLoaded = fn => document.readyState === "complete" ? fn() : window.addEventListener("load", fn, { once: true });
@@ -464,7 +533,7 @@ new p5(p => {
   p.setup = () => { p.pixelDensity(1); const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("trailStage"); p.frameRate(60); alloc(); makeTrail(p); };
   p.windowResized = () => { if (page !== "discover") return; p.resizeCanvas(stage.clientWidth, stage.clientHeight); makeTrail(p); };
   p.draw = () => {
-    if (!PH.on || !R || introOn) { p.clear(); return; }
+    if (!PH.on || !R || introOn || treeMode) { p.clear(); return; }
     if (final.on) return; // congelado: a estampa fica como está
     const t0 = performance.now();
     updateSources();
@@ -520,7 +589,7 @@ function uiMargin() {
   const sr = stage.getBoundingClientRect(), pad = 26, side = small() ? 24 : 56; // laterais: os nós não encostam na borda da tela
   const rect = sel => { const el = $(sel); if (!el || el.hidden || getComputedStyle(el).display === "none") return null; const r = el.getBoundingClientRect(); return r.width && r.height ? r : null; };
   let t = pad, b = pad, l = side, r = side;
-  const copy = rect("#copy"), tools = rect("#tools"), foot = rect("#foot span"), footP = small() ? null : rect("#foot p"), card = document.body.classList.contains("card-open") ? $("#card") : null;
+  const copy = rect("#copy"), tools = rect("#tools"), foot = rect("#foot span"), footP = small() ? null : rect("#foot .foot-left"), card = document.body.classList.contains("card-open") ? $("#card") : null;
   for (const el of [copy, tools, foot, footP]) { if (!el) continue; // cada elemento ocupa uma faixa: a que menos rouba campo
     const fromTop = el.bottom - sr.top, fromBottom = sr.bottom - el.top, fromLeft = el.right - sr.left, fromRight = sr.right - el.left;
     const best = Math.min(fromTop, fromBottom, fromLeft, fromRight);
@@ -536,6 +605,7 @@ function mountField() {
   R = Rizoma.mount({
     container: "#rizomaStage", paper: true, depth: true, intro: true, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "muro", lineWeight: 0.55, spread: 1.45, focusZoom: true, spray: false,
     margin: uiMargin, lineCycle: 2.2,
+    treeTop: () => uiMargin().t, treeBottom: () => uiMargin().b, // a árvore (decalque) respeita as mesmas faixas da interface
     onChange: sync, onOpen: showPreview, onHover: onHover
   });
   window.Lab5Rizoma = R;
@@ -545,15 +615,19 @@ function mountField() {
   }
   sync(R.state());
 }
-let lastActiveKey = "", lastFocus = null, finalHinted = false;
+let lastActiveKey = "", lastFocus = null, finalHinted = false, treeMode = false;
 function sync(s) {
   if (!s.paper) { R.setPaper(true); return; } // o campo é sempre papel: as camadas de baixo não têm modo escuro
-  if (s.mode !== "rizoma") { R.setMode("rizoma"); return; } // sem árvore neste lab: poucos elementos
+  treeMode = s.mode === "arvore"; // na árvore o micélio descansa: as posições são a hierarquia, não o campo
+  $("#treeBtn").classList.toggle("active", treeMode); $("#treeBtn").textContent = treeMode ? "Voltar ao rizoma" : "Árvore / decalque";
+  $("#cutBtn").classList.toggle("active", s.cutting); $("#cutBtn").textContent = s.cutting ? "Cortando… (arraste sobre uma linha)" : "Cortar linha"; $("#cutBtn").disabled = !s.lines && !s.cutting;
+  $("#shapeBtn").textContent = s.nodeStyle === "muro" ? "Nó · muro" : "Nó · círculo"; $("#shapeBtn").classList.toggle("active", s.nodeStyle === "muro"); $("#fieldLegend").hidden = s.nodeStyle !== "muro";
+  renderTrail(s);
   const ak = TYPES.map(t => s.active[t] ? 1 : 0).join("");
   if (ak !== lastActiveKey) { const removed = [...lastActiveKey].some((c, i) => c === "1" && ak[i] !== "1"); lastActiveKey = ak; rebuildSibs(s.active); if (A.life) { A.life.fill(0); A.type.fill(-1); A.target.fill(-1); } if (removed) flush = 70; }
   for (const t in chips) { chips[t].classList.toggle("active", !!s.active[t]); chips[t].querySelector("small").textContent = s.linesByType ? s.linesByType[t] : 0; }
   $("#depthBtn").classList.toggle("active", s.depth);
-  $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (PH.on ? ` · ${PH.count} AGENTES` : "");
+  $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (s.cuts ? ` · ${s.cuts} CORTES` : "") + (PH.on ? ` · ${PH.count} AGENTES` : "");
   document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
   if (s.focus !== lastFocus) { lastFocus = s.focus; if (page === "indicators") renderSide(); marginCache.at = 0; }
   if (page !== "discover" || introOn) return;
@@ -616,7 +690,7 @@ setInterval(() => {
   hover.tier = tier;
 }, 120);
 function drawHints(p) { // radar: cada projeto ainda escondido pisca de leve onde está; os ligados ao nó em foco piscam mais forte
-  if (!R || final.on || introOn) return;
+  if (!R || final.on || introOn || treeMode) return;
   const gs = R.ghosts(); if (!gs.length) return;
   const hid = hover.id && hover.tier >= 1 ? hiddenSiblings(IDX[hover.id]) : [], t = performance.now() / 700;
   for (const g of gs) {
@@ -658,6 +732,28 @@ $("#finalLast").onclick = () => { const s = R.state(); closeFinal(false); if (s.
 
 /* ---------- ferramentas do campo ---------- */
 $("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
+$("#treeBtn").onclick = () => { const next = R.state().mode === "arvore" ? "rizoma" : "arvore"; R.setMode(next); guide(next === "arvore" ? "Árvore / decalque: os mesmos projetos pela hierarquia oficial, mecanismo → ano → projeto. Passe a mão num nó para ver as relações transversais que a árvore esconde." : "De volta ao rizoma: os projetos deixam a hierarquia e voltam a se relacionar por linhas de fuga."); };
+$("#cutBtn").onclick = () => R.setCutting(!R.state().cutting);
+$("#shapeBtn").onclick = () => R.setNodeStyle(R.state().nodeStyle === "muro" ? "circulo" : "muro");
+function renderTrail(s) { // trilha clicável do protótipo: os últimos nós abertos, para voltar sem perder a referência
+  const bar = $("#trail"), ids = s.trail.slice(-5), titles = s.trailTitles.slice(-5); bar.hidden = !ids.length; if (!ids.length) return;
+  bar.innerHTML = `<span class="kicker">SUA TRILHA</span>` + ids.map((id, k) => `<button data-trail="${id}" class="${id === s.focus ? "current" : ""}">${esc(titles[k])}</button>`).join(`<i>→</i>`);
+  $$("[data-trail]").forEach(b => b.onclick = () => R.open(b.dataset.trail));
+}
+/* busca: uma porta direta sem substituir a exploração (do protótipo) */
+const norm = s => String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const searchEl = $("#search"), resultsEl = $("#results");
+function closeSearch() { resultsEl.hidden = true; resultsEl.innerHTML = ""; }
+function renderSearch() {
+  const q = norm(searchEl.value.trim()); if (q.length < 2) { closeSearch(); return; }
+  const list = DATA.filter(p => norm([p.title, p.year, p.mechanism, p.edital, p.circuit, p.region].filter(Boolean).join(" ")).includes(q)).slice(0, 8);
+  resultsEl.innerHTML = list.length ? list.map(p => `<button type="button" data-sid="${p.id}">${wallIcon(p, 26)}<span><small>${p.year} · ${esc(p.mechanism)} · ${esc(p.circuit)}</small><b>${esc(p.title)}</b></span></button>`).join("") : `<div class="none">Nenhum projeto encontrado.</div>`;
+  resultsEl.hidden = false;
+  $$("[data-sid]").forEach(b => b.onclick = () => { const id = b.dataset.sid; closeSearch(); searchEl.value = ""; searchEl.blur(); openPreview(id, "discover"); });
+}
+searchEl.addEventListener("input", renderSearch);
+searchEl.addEventListener("keydown", e => { if (e.key === "Escape") { closeSearch(); searchEl.blur(); } if (e.key === "Enter") { const f = resultsEl.querySelector("[data-sid]"); if (f) f.click(); } });
+document.addEventListener("click", e => { if (!e.target.closest(".search")) closeSearch(); });
 $("#lessBtn").onclick = () => setCount(PH.count - PH.step);
 $("#moreBtn").onclick = () => setCount(PH.count + PH.step);
 $("#countBtn").onclick = () => setCount(200);
@@ -668,6 +764,8 @@ document.addEventListener("keydown", e => {
   if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase();
   if (e.key === "Escape") { if (final.on) closeFinal(false); else if (R && R.state().focus && page !== "discover") R.close(); return; } // no campo, o motor já fecha com Esc
   if (page !== "discover" || introOn) return;
+  if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); searchEl.focus(); return; }
+  if (k === "n") $("#shapeBtn").click();
   if (k === "e") setEvap(PH.evap + 1); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); }
 });
 window.addEventListener("resize", () => { if (R && page === "discover") R.resize(); marginCache.at = 0; });
@@ -716,8 +814,66 @@ $$(".rating").forEach(g => g.onclick = e => { const b = e.target.closest("button
 /* ---------- indicadores: mesma lógica do protótipo, com o nó-muro como ícone e a cor por mecanismo ---------- */
 $$("[data-metric]").forEach(b => b.onclick = () => { metric = b.dataset.metric; $$("[data-metric]").forEach(x => x.classList.toggle("active", x.dataset.metric === metric)); renderIndicators(); });
 function aggregate(list, keyFn) { const m = new Map(); list.forEach(p => { const k = keyFn(p); if (!m.has(k)) m.set(k, []); m.get(k).push(p); }); return [...m.entries()].map(([key, projects]) => ({ key, projects, count: projects.length, value: projects.reduce((s, p) => s + (p.value || 0), 0) })); }
-function selectedProjects(sel) { if (!sel) return DATA; if (sel.type === "region") return DATA.filter(p => (p.region || "Não verificada") === sel.key); if (sel.type === "year") return DATA.filter(p => String(p.year) === String(sel.key)); if (sel.type === "mechanism") return DATA.filter(p => p.mechanism === sel.key); if (sel.type === "edital") return DATA.filter(p => p.edital === sel.key); if (sel.type === "project") return DATA.filter(p => p.id === sel.key); return DATA; }
-function renderIndicators() { renderLegend(); renderRegion(); renderYears(); renderWalls(); renderSide(); }
+function selectedProjects(sel) { if (!sel) return DATA; if (sel.type === "region") return DATA.filter(p => (p.region || "Não verificada") === sel.key); if (sel.type === "year") return DATA.filter(p => String(p.year) === String(sel.key)); if (sel.type === "mechanism") return DATA.filter(p => p.mechanism === sel.key); if (sel.type === "edital") return DATA.filter(p => p.edital === sel.key); if (sel.type === "project") return DATA.filter(p => p.id === sel.key); if (sel.type === "pair") { const [a, b] = sel.key.split("|"); return DATA.filter(p => p.id === a || p.id === b); } return DATA; }
+function renderIndicators() { renderLegend(); renderRegion(); renderYears(); renderWalls(); renderDots(); renderLorenz(); renderMatrix(); renderSlope(); renderSide(); }
+/* ---------- gráficos novos (propostos no Lab 05; wireframe em wireframes-svg/12-identidade-e-novos-graficos.svg) ---------- */
+const svgOpen = (w, h, label) => `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">`;
+function renderDots() { // régua de valores: posição numa escala comum (Cleveland e McGill, 1984) com linhas de referência (Few, 2006)
+  const W = 820, rowH = 64, H = rowH * 3 + 46, x = v => 52 + (v / 172000) * (W - 72), focus = R ? R.state().focus : null;
+  let s = svgOpen(W, H, "Régua de valores por mecanismo");
+  [[30000, "R$ 30 mil", "micro | médio"], [100000, "R$ 100 mil", "médio | macro"], [165000, "R$ 165 mil", "teto IF 2023"]].forEach(([v, l, sub]) => { const X = f1(x(v)); s += `<line x1="${X}" y1="6" x2="${X}" y2="${H - 30}" stroke="#161616" stroke-opacity="${v === 165000 ? .7 : .3}" ${v === 165000 ? "" : 'stroke-dasharray="2 3"'}/><text x="${X}" y="${H - 18}" text-anchor="middle" class="lab">${l}</text><text x="${X}" y="${H - 7}" text-anchor="middle">${sub}</text>`; });
+  MECHS.forEach((m, i) => {
+    const y0 = 14 + i * rowH, yb = y0 + 40; s += `<text x="0" y="${y0 + 4}" class="lab" font-size="8">${m.toUpperCase()}</text><line x1="52" y1="${yb}" x2="${W - 20}" y2="${yb}" stroke="#d4d1c8"/>`;
+    const list = DATA.filter(p => p.mechanism === m).sort((a, b) => (a.value || 0) - (b.value || 0)), placed = [];
+    list.forEach(p => { const cx = x(p.value || 0); let lvl = 0; while (placed.some(q => Math.abs(q.cx - cx) < 16 && q.lvl === lvl)) lvl++; placed.push({ cx, lvl }); const cy = yb - 11 - lvl * 14;
+      s += `<g data-ct="project" data-ck="${p.id}" data-label="${esc(Rizoma.shortTitle(p.title))}" class="${focus === p.id ? "active" : ""}"><circle class="halo" cx="${f1(cx)}" cy="${f1(cy)}" r="13" fill="#161616" fill-opacity=".1"/><svg x="${f1(cx - 11)}" y="${f1(cy - 11)}" width="22" height="22" viewBox="0 0 40 40" stroke-width="1.4">${wallBody(p)}</svg><title>${esc(p.title)} · ${money(p.value)}</title></g>`; });
+  });
+  $("#dotChart").innerHTML = s + "</svg>"; bindCharts();
+}
+function renderLorenz() { // concentração: curva de Lorenz (1905) e índice de Gini (1912)
+  const vals = DATA.map(p => ({ p, v: p.value || 0 })).sort((a, b) => a.v - b.v), tot = vals.reduce((a, o) => a + o.v, 0) || 1;
+  const W = 480, H = 330, P = 40, X = t => P + t * (W - 2 * P), Y = t => H - P - t * (H - 2 * P);
+  let cum = 0; const pts = [[0, 0, null]]; vals.forEach((o, i) => { cum += o.v; pts.push([(i + 1) / vals.length, cum / tot, o.p]); });
+  let area = 0; for (let i = 1; i < pts.length; i++) area += (pts[i][0] - pts[i - 1][0]) * (pts[i][1] + pts[i - 1][1]) / 2; const gini = 1 - 2 * area;
+  const top5 = vals.slice(-5).reduce((a, o) => a + o.v, 0) / tot, low10 = vals.slice(0, 10).reduce((a, o) => a + o.v, 0) / tot;
+  let s = svgOpen(W, H, "Curva de Lorenz dos valores registrados");
+  s += `<line x1="${P}" y1="${H - P}" x2="${W - P}" y2="${H - P}" stroke="#161616"/><line x1="${P}" y1="${P}" x2="${P}" y2="${H - P}" stroke="#161616"/>`;
+  [0, .5, 1].forEach(t => { s += `<text x="${f1(X(t))}" y="${H - P + 12}" text-anchor="middle">${Math.round(t * 100)}%</text><text x="${P - 6}" y="${f1(Y(t) + 3)}" text-anchor="end">${Math.round(t * 100)}%</text>`; });
+  s += `<text x="${f1(X(.5))}" y="${H - 8}" text-anchor="middle">projetos, do menor ao maior valor</text><text transform="rotate(-90 11 ${f1(Y(.5))})" x="11" y="${f1(Y(.5))}" text-anchor="middle">valor acumulado</text>`;
+  s += `<line x1="${X(0)}" y1="${Y(0)}" x2="${X(1)}" y2="${Y(1)}" stroke="#161616" stroke-opacity=".35" stroke-dasharray="3 3"/><text x="${f1(X(.62))}" y="${f1(Y(.66))}" text-anchor="end">igualdade perfeita</text>`;
+  s += `<path d="M${pts.map(q => `${f1(X(q[0]))} ${f1(Y(q[1]))}`).join("L")}Z" fill="rgba(22,22,22,.07)" stroke="#161616" stroke-width="1.2"/>`;
+  pts.slice(1).forEach(q => { const cx = f1(X(q[0])), cy = f1(Y(q[1])), p = q[2]; s += `<g data-ct="project" data-ck="${p.id}" data-label="${esc(Rizoma.shortTitle(p.title))}"><circle class="halo" cx="${cx}" cy="${cy}" r="9" fill="#161616" fill-opacity=".12"/><circle cx="${cx}" cy="${cy}" r="3.4" fill="${MECH[p.mechanism]}" stroke="#161616"/><title>${esc(p.title)} · ${money(p.value)}</title></g>`; });
+  s += `<text x="${f1(X(.06))}" y="${f1(Y(.92))}" class="lab">Gini ${gini.toFixed(2)}</text><text x="${f1(X(.06))}" y="${f1(Y(.92)) + 13}">os 5 maiores (25% dos projetos) somam ${Math.round(top5 * 100)}% do valor</text><text x="${f1(X(.06))}" y="${f1(Y(.92)) + 25}">os 10 menores (50%) somam ${Math.round(low10 * 100)}%</text>`;
+  $("#lorenzChart").innerHTML = s + "</svg>"; bindCharts();
+}
+let matrixOrder = "mecanismo";
+function relationsOf(a, b) { const out = []; for (const t of TYPES) { const L = Rizoma.LINES[t]; if (L.pair) { if (REL.some(r => (r.a === a.id && r.b === b.id) || (r.a === b.id && r.b === a.id))) out.push(t); continue; } const ka = L.key(a), kb = L.key(b); if (ka != null && kb != null && ka === kb) out.push(t); } return out; }
+function renderMatrix() { // matriz reordenável (Bertin, 1967): a ordem das linhas revela blocos
+  const orders = { mecanismo: (a, b) => MECHS.indexOf(a.mechanism) - MECHS.indexOf(b.mechanism) || a.year - b.year || (b.value || 0) - (a.value || 0), ano: (a, b) => a.year - b.year || MECHS.indexOf(a.mechanism) - MECHS.indexOf(b.mechanism), valor: (a, b) => (b.value || 0) - (a.value || 0) };
+  const order = [...DATA].sort(orders[matrixOrder] || orders.mecanismo), sel = selection && selection.type === "pair" ? selection.key : null;
+  let h = `<div class="ch"></div>` + order.map(p => `<div class="ch" title="${esc(p.title)}">${esc(Rizoma.shortTitle(p.title))}</div>`).join(""); // o canto vazio some junto com os cabeçalhos no celular
+  for (const a of order) {
+    h += `<div class="rl" title="${esc(a.title)}" style="border-left:3px solid ${MECH[a.mechanism]}">${esc(Rizoma.shortTitle(a.title))}</div>`;
+    for (const b of order) {
+      if (a === b) { h += `<div class="cell diag"></div>`; continue; }
+      const r = relationsOf(a, b), c = r.length === 0 ? "transparent" : r.length === 1 ? LC(r[0]) : `rgba(22,22,22,${(0.22 + 0.13 * r.length).toFixed(2)})`, key = `${a.id}|${b.id}`, lab = `${Rizoma.shortTitle(a.title)} ↔ ${Rizoma.shortTitle(b.title)} · ${r.length ? r.map(t => Rizoma.LINES[t].label).join(", ") : "nada em comum"}`;
+      h += `<button class="cell ${sel === key ? "active" : ""}" style="--c:${c}" data-ct="pair" data-ck="${key}" data-label="${esc(lab)}" title="${esc(lab)}" aria-label="${esc(lab)}"></button>`;
+    }
+  }
+  $("#matrixChart").innerHTML = h; bindCharts();
+  $$("[data-order]").forEach(b => { b.classList.toggle("active", b.dataset.order === matrixOrder); b.onclick = () => { matrixOrder = b.dataset.order; renderMatrix(); }; });
+}
+function renderSlope() { // declive (Tufte, 2001): dois períodos, uma linha por mecanismo
+  const W = 480, H = 270, P = 34, xA = 150, xB = W - 150, per = [["2017–2021", p => p.year <= 2021], ["2022–2024", p => p.year >= 2022]];
+  const val = list => metric === "count" ? list.length : list.reduce((a, p) => a + (p.value || 0), 0), fmt = v => metric === "count" ? `${v} proj.` : shortMoney(v);
+  const rows = MECHS.map(m => { const l = DATA.filter(p => p.mechanism === m); return { m, a: val(l.filter(per[0][1])), b: val(l.filter(per[1][1])) }; });
+  const max = Math.max(1, ...rows.flatMap(r => [r.a, r.b])), Y = v => H - P - (v / max) * (H - 2 * P - 14);
+  const spread = key => { const o = [...rows].sort((p, q) => q[key] - p[key]); let last = -1e9; for (const r of o) { let y = Y(r[key]); if (y - last < 15) y = last + 15; r[key + "y"] = y; last = y; } }; spread("a"); spread("b");
+  let s = svgOpen(W, H, "Declive por mecanismo entre dois períodos");
+  s += `<line x1="${xA}" y1="${P}" x2="${xA}" y2="${H - P}" stroke="#d4d1c8"/><line x1="${xB}" y1="${P}" x2="${xB}" y2="${H - P}" stroke="#d4d1c8"/><text x="${xA}" y="${P - 14}" text-anchor="middle" class="lab">${per[0][0]}</text><text x="${xB}" y="${P - 14}" text-anchor="middle" class="lab">${per[1][0]}</text>`;
+  rows.forEach(r => { const ya = f1(Y(r.a)), yb = f1(Y(r.b)); s += `<g data-ct="mechanism" data-ck="${r.m}" data-label="${r.m}" class="${selection?.type === "mechanism" && selection.key === r.m ? "active" : ""}"><line class="halo" x1="${xA}" y1="${ya}" x2="${xB}" y2="${yb}" stroke="#161616" stroke-opacity=".12" stroke-width="10"/><line x1="${xA}" y1="${ya}" x2="${xB}" y2="${yb}" stroke="${MECH[r.m]}" stroke-width="2.2"/><circle cx="${xA}" cy="${ya}" r="4" fill="${MECH[r.m]}" stroke="#161616"/><circle cx="${xB}" cy="${yb}" r="4" fill="${MECH[r.m]}" stroke="#161616"/><text x="${xA - 10}" y="${f1(r.ay + 3)}" text-anchor="end" class="lab">${fmt(r.a)}</text><text x="${xA - 10}" y="${f1(r.ay + 13)}" text-anchor="end">${r.m}</text><text x="${xB + 10}" y="${f1(r.by + 3)}" class="lab">${fmt(r.b)}</text><title>${r.m}: ${fmt(r.a)} → ${fmt(r.b)}</title></g>`; });
+  $("#slopeChart").innerHTML = s + "</svg>"; bindCharts();
+}
 function renderLegend() { $("#mechLegend").innerHTML = MECHS.map(m => `<button data-leg="${m}" class="${selection?.type === "mechanism" && selection.key === m ? "active" : ""}">${wallIcon(mechSample(m), 34)}<b>${m}</b><small>${esc((Rizoma.TRANSLATE[m] || "").split(".")[0])}</small></button>`).join(""); $$("[data-leg]").forEach(b => b.onclick = () => { const m = b.dataset.leg; selection = selection && selection.type === "mechanism" && selection.key === m ? null : { type: "mechanism", key: m, label: m }; renderIndicators(); }); }
 function renderRegion() {
   const groups = aggregate(DATA, p => p.region || "Não verificada").sort((a, b) => b[metric] - a[metric]), max = Math.max(1, ...groups.map(g => g[metric]));
@@ -737,7 +893,7 @@ function renderSide() {
   $$("[data-side]").forEach(b => b.onclick = () => openPreview(b.dataset.side, "indicators"));
 }
 $("#sumClear").onclick = () => { selection = null; renderIndicators(); };
-function bindCharts() { $$("[data-ct]").forEach(el => { el.onmouseenter = () => { if (touch) return; hoverSel = { type: el.dataset.ct, key: el.dataset.ck, label: el.dataset.ct === "project" ? Rizoma.shortTitle(DATA[IDX[el.dataset.ck]].title) : el.dataset.ck }; renderSide(); }; el.onmouseleave = () => { hoverSel = null; renderSide(); }; el.onclick = () => { const type = el.dataset.ct, key = el.dataset.ck; if (type === "project") { openPreview(key, "indicators"); return; } selection = selection && selection.type === type && String(selection.key) === String(key) ? null : { type, key, label: key }; renderIndicators(); }; }); }
+function bindCharts() { $$("[data-ct]").forEach(el => { const lab = () => el.dataset.label || (el.dataset.ct === "project" ? Rizoma.shortTitle(DATA[IDX[el.dataset.ck]].title) : el.dataset.ck); el.onmouseenter = () => { if (touch) return; hoverSel = { type: el.dataset.ct, key: el.dataset.ck, label: lab() }; renderSide(); }; el.onmouseleave = () => { hoverSel = null; renderSide(); }; el.onclick = () => { const type = el.dataset.ct, key = el.dataset.ck; if (type === "project") { openPreview(key, "indicators"); return; } selection = selection && selection.type === type && String(selection.key) === String(key) ? null : { type, key, label: lab() }; renderIndicators(); }; }); }
 
 /* ---------- editais ---------- */
 function renderEditais() {
@@ -751,6 +907,7 @@ function renderEditais() {
 setCount(PH.count); setEvap(PH.evap);
 mountField();
 renderIndicators(); renderEditais();
+initTension();
 })();
 </script>
 </body>

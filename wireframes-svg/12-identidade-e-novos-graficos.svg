@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1024" viewBox="0 0 1440 1024" font-family="Arial, Helvetica, sans-serif">
+  <title>12 · Identidade (tipografia em tensão) e novos gráficos dos Indicadores · Lab 05</title>
+  <desc>Wireframe estrutural, 1440×1024. Papel #f7f6f1, tinta #161616, cor só por mecanismo (rosa IF #ff4f9a, azul Fundo #31a8ff, verde Descentra #65e77d) e por natureza de linha. Os gráficos estão implementados em lab-05-sistema.html, seção Indicadores. Referências: Cleveland e McGill (1984), Few (2006), Lorenz (1905), Gini (1912), Bertin (1967), Tufte (2001); leis de UX em rizoma/IDENTIDADE-COESAO-LAB05.md.</desc>
+  <defs>
+    <style>
+      .paper{fill:#f7f6f1}.ink{fill:#161616}.muted{fill:#777}.line{stroke:#d4d1c8;stroke-width:1}
+      .kicker{font-size:9px;letter-spacing:1.3px;font-weight:900;fill:#777}
+      .h1{font-family:'Arial Narrow',Arial,sans-serif;font-weight:700;fill:#161616}
+      .note{font-size:9.5px;fill:#555}
+      .ref{font-size:8.5px;fill:#777;font-style:italic}
+    </style>
+  </defs>
+  <rect id="paper" class="paper" width="1440" height="1024"/>
+
+  <!-- barra -->
+  <g id="nav">
+    <rect x="0" y="0" width="1440" height="62" fill="#f7f6f1" stroke="#d4d1c8"/>
+    <text x="24" y="28" class="h1" font-size="13">CARTOGRAFIA</text><text x="24" y="42" class="h1" font-size="13">DO FOMENTO</text>
+    <text x="700" y="36" font-size="9" font-weight="800" fill="#777" letter-spacing="1">DESCOBRIR · <tspan fill="#161616">INDICADORES</tspan> · EDITAIS · PESQUISA · SOBRE</text>
+    <rect x="1240" y="21" width="176" height="20" fill="none" stroke="#d4d1c8"/><text x="1328" y="34" text-anchor="middle" font-size="8" fill="#888">LAB 05 · SISTEMA ← LAB 04</text>
+    <text x="24" y="56" font-size="7" fill="#999">a marca na barra também está tensionada (amplitude 0,6): mesma letra, mesma pressão, corpo menor</text>
+  </g>
+
+  <!-- 1. identidade: tipografia em tensão -->
+  <g id="logo_tension">
+    <text x="40" y="100" class="kicker">01 / IDENTIDADE · TIPOGRAFIA EM TENSÃO (LAB 01 → CAPA DO LAB 05)</text>
+    <text x="40" y="128" class="h1" font-size="22">A letra sofre a cidade: chega tensionada, assenta, respira.</text>
+    <!-- quadro 1: t = 0 ms, amplitude 1,5 -->
+    <g id="frame_0">
+      <rect x="40" y="146" width="300" height="150" fill="#fff" stroke="#d4d1c8"/>
+      <text x="52" y="162" class="kicker">T = 0 MS · AMPLITUDE 1,5</text>
+      <g class="h1" font-size="44" fill="#161616">
+        <text x="56" y="222" transform="rotate(-3 56 222)">C</text><text x="86" y="214" transform="rotate(2 86 214) scale(1,1.12)">A</text><text x="114" y="226">R</text><text x="142" y="212" transform="rotate(-2 142 212)">T</text><text x="166" y="224" transform="rotate(3 166 224)">O</text><text x="198" y="214">G</text><text x="230" y="228" transform="rotate(-3 230 228) scale(1,1.1)">R</text><text x="258" y="216">A</text><text x="286" y="226" transform="rotate(2 286 226)">F</text><text x="306" y="214">I</text><text x="318" y="226">A</text>
+      </g>
+      <g class="h1" font-size="44" fill="#9a9890">
+        <text x="56" y="276" fill="#ff4f9a" transform="rotate(4 56 276)">D</text><text x="88" y="266" transform="rotate(-3 88 266)">O</text><text x="134" y="280" transform="scale(1,1.1)">F</text><text x="158" y="266" transform="rotate(3 158 266)">O</text><text x="190" y="278">M</text><text x="228" y="268" transform="rotate(-4 228 268)">E</text><text x="256" y="280" transform="rotate(2 256 280)">N</text><text x="288" y="266">T</text><text x="312" y="278" transform="rotate(-2 312 278)">O</text>
+      </g>
+    </g>
+    <!-- quadro 2: t = 700 ms -->
+    <g id="frame_1">
+      <rect x="356" y="146" width="300" height="150" fill="#fff" stroke="#d4d1c8"/>
+      <text x="368" y="162" class="kicker">T ≈ 700 MS · ASSENTANDO (EASE-OUT CÚBICO)</text>
+      <g class="h1" font-size="44" fill="#161616"><text x="372" y="222" transform="rotate(-1 372 222)">CARTOGRAFIA</text></g>
+      <g class="h1" font-size="44" fill="#9a9890"><text x="372" y="276" transform="rotate(1 372 276)"><tspan fill="#ff4f9a">D</tspan>O FOMENTO</text></g>
+    </g>
+    <!-- quadro 3: repouso -->
+    <g id="frame_2">
+      <rect x="672" y="146" width="300" height="150" fill="#fff" stroke="#d4d1c8"/>
+      <text x="684" y="162" class="kicker">T ≥ 1400 MS · REPOUSO 0,42 + RESPIRAÇÃO ±0,1</text>
+      <g class="h1" font-size="44" fill="#161616"><text x="688" y="222">CARTOGRAFIA</text></g>
+      <g class="h1" font-size="44" fill="#9a9890"><text x="688" y="276"><tspan fill="#ff4f9a">D</tspan>O FOMENTO</text></g>
+      <text x="684" y="290" font-size="8" fill="#777">toque no título = nova semente, nova letra isolada, outra cor de mecanismo</text>
+    </g>
+    <g id="logo_notes">
+      <text x="990" y="162" class="kicker">POR QUE ASSIM (LEIS DE UX)</text>
+      <text x="990" y="180" class="note">Prägnanz: o olho busca a forma mais simples; a palavra que assenta dá esse alívio.</text>
+      <text x="990" y="194" class="note">Doherty (&lt; 400 ms): o primeiro quadro já está na tela; nada espera a animação.</text>
+      <text x="990" y="208" class="note">Von Restorff: uma letra isolada em cor de mecanismo é lembrada; o resto é tinta.</text>
+      <text x="990" y="222" class="note">Efeito estética–usabilidade: a tensão é identidade, mas dados e textos ficam estáveis.</text>
+      <text x="990" y="236" class="note">Movimento reduzido: a palavra nasce em repouso, sem animação.</text>
+      <text x="990" y="256" class="ref">Lab 01, seção 03 (updateType); Wertheimer (1923); Doherty e Thadani (1982); Von Restorff (1933); Kurosu e Kashimura (1995); Yablonski (2020).</text>
+      <text x="990" y="276" class="note">Regra: títulos podem tensionar (capa, barra, títulos de seção). Fichas, gráficos, valores e textos acadêmicos nunca.</text>
+    </g>
+  </g>
+
+  <line x1="40" y1="316" x2="1400" y2="316" class="line"/>
+
+  <!-- 2. régua de valores -->
+  <g id="chart_dots">
+    <text x="40" y="340" class="kicker"><tspan fill="#78ff96">●</tspan> 02 / RÉGUA DE VALORES · POSIÇÃO, NÃO ÁREA</text>
+    <text x="40" y="366" class="h1" font-size="22">QUEM CHEGA AO TETO?</text>
+    <text x="40" y="382" class="note">Cada muro na posição do valor registrado, por mecanismo; linhas de referência: R$ 30 mil, R$ 100 mil (escalas do campo) e R$ 165 mil (teto IF 2023).</text>
+    <!-- eixo -->
+    <line x1="120" y1="400" x2="120" y2="560" stroke="#161616" stroke-opacity=".3" stroke-dasharray="2 3"/><text x="120" y="574" text-anchor="middle" font-size="8" font-weight="900" fill="#161616">R$ 30 mil</text>
+    <line x1="340" y1="400" x2="340" y2="560" stroke="#161616" stroke-opacity=".3" stroke-dasharray="2 3"/><text x="340" y="574" text-anchor="middle" font-size="8" font-weight="900" fill="#161616">R$ 100 mil</text>
+    <line x1="545" y1="400" x2="545" y2="560" stroke="#161616" stroke-opacity=".7"/><text x="545" y="574" text-anchor="middle" font-size="8" font-weight="900" fill="#161616">R$ 165 mil · teto</text>
+    <!-- linhas -->
+    <text x="40" y="424" font-size="8" font-weight="900" fill="#161616">INCENTIVO FISCAL</text><line x1="100" y1="446" x2="640" y2="446" class="line"/>
+    <g fill="#ff4f9a" fill-opacity=".85" stroke="#161616">
+      <rect x="368" y="422" width="9" height="20"/><rect x="368" y="398" width="9" height="20"/><rect x="326" y="422" width="9" height="20"/><rect x="520" y="422" width="9" height="20"/><rect x="536" y="422" width="9" height="20"/><rect x="541" y="398" width="9" height="20"/><rect x="541" y="374" width="9" height="20"/><rect x="536" y="398" width="9" height="20" fill-opacity=".5"/>
+    </g>
+    <text x="40" y="472" font-size="8" font-weight="900" fill="#161616">FUNDO MUNICIPAL</text><line x1="100" y1="494" x2="640" y2="494" class="line"/>
+    <g fill="#31a8ff" fill-opacity=".85" stroke="#161616">
+      <rect x="116" y="482" width="4" height="10"/><rect x="121" y="480" width="4" height="12"/><rect x="126" y="483" width="4" height="9"/>
+      <rect x="192" y="480" width="4" height="12"/><rect x="197" y="478" width="4" height="14"/><rect x="202" y="481" width="4" height="11"/><rect x="207" y="479" width="4" height="13"/>
+      <rect x="218" y="480" width="4" height="12"/><rect x="223" y="478" width="4" height="14"/><rect x="228" y="481" width="4" height="11"/><rect x="233" y="479" width="4" height="13"/>
+      <rect x="262" y="480" width="4" height="12"/><rect x="267" y="478" width="4" height="14"/><rect x="272" y="481" width="4" height="11"/><rect x="277" y="479" width="4" height="13"/>
+      <rect x="306" y="480" width="4" height="12"/><rect x="311" y="478" width="4" height="14"/><rect x="316" y="481" width="4" height="11"/><rect x="321" y="479" width="4" height="13"/>
+      <rect x="316" y="464" width="4" height="12"/><rect x="321" y="462" width="4" height="14"/><rect x="326" y="465" width="4" height="11"/><rect x="331" y="463" width="4" height="13"/>
+    </g>
+    <text x="40" y="520" font-size="8" font-weight="900" fill="#161616">DESCENTRA</text><line x1="100" y1="542" x2="640" y2="542" class="line"/>
+    <g fill="#65e77d" fill-opacity=".85" stroke="#161616">
+      <rect x="94" y="531" width="4" height="9"/><rect x="99" y="529" width="4" height="11"/><rect x="104" y="532" width="4" height="8"/>
+      <rect x="94" y="515" width="4" height="9"/><rect x="99" y="513" width="4" height="11"/><rect x="104" y="516" width="4" height="8"/>
+      <rect x="94" y="499" width="4" height="9"/><rect x="99" y="497" width="4" height="11"/><rect x="104" y="500" width="4" height="8"/>
+      <rect x="140" y="530" width="4" height="10"/><rect x="145" y="528" width="4" height="12"/><rect x="150" y="531" width="4" height="9"/><rect x="155" y="529" width="4" height="11"/>
+      <rect x="144" y="514" width="4" height="10"/><rect x="149" y="512" width="4" height="12"/><rect x="154" y="515" width="4" height="9"/><rect x="159" y="513" width="4" height="11"/>
+      <rect x="144" y="498" width="4" height="10"/><rect x="149" y="496" width="4" height="12"/><rect x="154" y="499" width="4" height="9"/><rect x="159" y="497" width="4" height="11"/>
+    </g>
+    <text x="40" y="596" class="note">Interação: pairar = pré-visualiza o projeto na lista lateral; clicar = abre a ficha (a mesma do campo). Valores iguais empilham para cima.</text>
+    <text x="40" y="610" class="ref">Cleveland e McGill (1984): posição numa escala comum é a codificação mais precisa. Few (2006): linhas de referência do bullet graph. Dados: Tabelas 1 e 2 do TCC; teto na seção 5.1.</text>
+  </g>
+
+  <!-- 3. lorenz -->
+  <g id="chart_lorenz" transform="translate(700,316)">
+    <text x="0" y="24" class="kicker">03 / CONCENTRAÇÃO · CURVA DE LORENZ</text>
+    <text x="0" y="50" class="h1" font-size="22">POUCOS PROJETOS, QUASE TODO O DINHEIRO.</text>
+    <line x1="40" y1="260" x2="300" y2="260" stroke="#161616"/><line x1="40" y1="70" x2="40" y2="260" stroke="#161616"/>
+    <line x1="40" y1="260" x2="300" y2="70" stroke="#161616" stroke-opacity=".35" stroke-dasharray="3 3"/><text x="230" y="130" font-size="8" fill="#777" text-anchor="end">igualdade perfeita</text>
+    <path d="M40 260 L53 258 L66 256 L79 254 L92 252 L105 249 L118 246 L131 242 L144 238 L157 233 L170 228 L183 221 L196 213 L209 204 L222 193 L235 180 L248 164 L261 142 L274 118 L287 94 L300 70 Z" fill="rgba(22,22,22,.07)" stroke="#161616" stroke-width="1.2"/>
+    <g stroke="#161616"><circle cx="53" cy="258" r="3" fill="#65e77d"/><circle cx="92" cy="252" r="3" fill="#65e77d"/><circle cx="144" cy="238" r="3" fill="#31a8ff"/><circle cx="196" cy="213" r="3" fill="#31a8ff"/><circle cx="248" cy="164" r="3" fill="#ff4f9a"/><circle cx="300" cy="70" r="3" fill="#ff4f9a"/></g>
+    <text x="170" y="282" text-anchor="middle" font-size="8" fill="#777">projetos, do menor ao maior valor</text>
+    <text x="22" y="165" font-size="8" fill="#777" text-anchor="middle" transform="rotate(-90 22 165)">valor acumulado</text>
+    <text x="60" y="96" font-size="9" font-weight="900" fill="#161616">Gini 0,xx (calculado dos dados)</text>
+    <text x="60" y="108" font-size="8" fill="#777">os 5 maiores (25%) somam …% · os 10 menores (50%) somam …%</text>
+    <text x="0" y="300" class="note">Interação: cada ponto é um projeto (cor = mecanismo); pairar pré-visualiza, clicar abre a ficha.</text>
+    <text x="0" y="314" class="ref">Lorenz (1905); Gini (1912). Mostra o que a Tabela 1 e a Tabela 2 do TCC dizem juntas: circuito monumental concentra o valor.</text>
+  </g>
+
+  <line x1="40" y1="640" x2="1400" y2="640" class="line"/>
+
+  <!-- 4. matriz -->
+  <g id="chart_matrix" transform="translate(40,656)">
+    <text x="0" y="12" class="kicker">04 / MATRIZ DE RELAÇÕES · AS SEIS LINHAS DE FUGA (REORDENÁVEL)</text>
+    <text x="0" y="38" class="h1" font-size="22">QUEM SE LIGA A QUEM, E POR QUÊ?</text>
+    <g font-size="8" font-weight="900" fill="#161616"><rect x="0" y="48" width="86" height="18" fill="#161616"/><text x="43" y="60" text-anchor="middle" fill="#fff">POR MECANISMO</text><rect x="92" y="48" width="56" height="18" fill="none" stroke="#ccc"/><text x="120" y="60" text-anchor="middle">POR ANO</text><rect x="154" y="48" width="60" height="18" fill="none" stroke="#ccc"/><text x="184" y="60" text-anchor="middle">POR VALOR</text></g>
+    <!-- grade 20×20 esquemática (8×8 aqui) -->
+    <g id="matrix_grid" transform="translate(110,80)">
+      <g font-size="7.5" fill="#161616" font-weight="800" text-anchor="end">
+        <text x="-6" y="12">CURA 2017</text><text x="-6" y="30">TAU</text><text x="-6" y="48">Graffitinerante</text><text x="-6" y="66">CURA 2021</text><text x="-6" y="84">ALA</text><text x="-6" y="102">Real Grapixo</text><text x="-6" y="120">Traço</text><text x="-6" y="138">Delas</text>
+      </g>
+      <g stroke="#d4d1c8" fill="none">
+        <rect x="0" y="0" width="144" height="144"/>
+        <path d="M18 0V144M36 0V144M54 0V144M72 0V144M90 0V144M108 0V144M126 0V144M0 18H144M0 36H144M0 54H144M0 72H144M0 90H144M0 108H144M0 126H144"/>
+      </g>
+      <!-- bloco IF: ano+mecanismo+edital+escala -> escuro -->
+      <g fill="rgba(22,22,22,.74)"><rect x="18" y="0" width="18" height="18"/><rect x="36" y="0" width="18" height="18"/><rect x="0" y="18" width="18" height="18"/><rect x="36" y="18" width="18" height="18"/><rect x="0" y="36" width="18" height="18"/><rect x="18" y="36" width="18" height="18"/></g>
+      <!-- CURA 2017 ↔ CURA 2021: mecanismo+escala+curadoria -->
+      <g fill="rgba(22,22,22,.61)"><rect x="54" y="0" width="18" height="18"/><rect x="0" y="54" width="18" height="18"/></g>
+      <!-- só mecanismo (azul) -->
+      <g fill="#40c4ff"><rect x="90" y="72" width="18" height="18"/><rect x="72" y="90" width="18" height="18"/></g>
+      <!-- só ano (amarelo) -->
+      <g fill="#ffd23f"><rect x="72" y="0" width="18" height="18" fill-opacity=".9"/><rect x="0" y="72" width="18" height="18" fill-opacity=".9"/></g>
+      <!-- Traço ↔ Delas: edital+ano+mecanismo+escala+curadoria -->
+      <g fill="rgba(22,22,22,.87)"><rect x="126" y="108" width="18" height="18"/><rect x="108" y="126" width="18" height="18"/></g>
+      <!-- diagonal -->
+      <g fill="url(#diag)"><rect x="0" y="0" width="18" height="18" fill="#e9e7df"/><rect x="18" y="18" width="18" height="18" fill="#e9e7df"/><rect x="36" y="36" width="18" height="18" fill="#e9e7df"/><rect x="54" y="54" width="18" height="18" fill="#e9e7df"/><rect x="72" y="72" width="18" height="18" fill="#e9e7df"/><rect x="90" y="90" width="18" height="18" fill="#e9e7df"/><rect x="108" y="108" width="18" height="18" fill="#e9e7df"/><rect x="126" y="126" width="18" height="18" fill="#e9e7df"/></g>
+      <text x="72" y="160" text-anchor="middle" font-size="7.5" fill="#777">… 20 × 20 no site; cabeçalhos das colunas em vertical</text>
+    </g>
+    <g transform="translate(300,80)" font-size="9" fill="#555">
+      <text x="0" y="12" class="kicker">LEGENDA</text>
+      <rect x="0" y="22" width="10" height="10" fill="#ffd23f"/><text x="16" y="31">1 natureza: cor da linha (aqui, Ano)</text>
+      <rect x="0" y="38" width="10" height="10" fill="#40c4ff"/><text x="16" y="47">1 natureza: Mecanismo</text>
+      <rect x="0" y="54" width="10" height="10" fill="rgba(22,22,22,.48)"/><text x="16" y="63">2 naturezas</text>
+      <rect x="0" y="70" width="10" height="10" fill="rgba(22,22,22,.87)"/><text x="16" y="79">5 naturezas (Traço ↔ Delas)</text>
+      <text x="0" y="104" class="note">Interação: pairar numa célula mostra os dois projetos e as naturezas na lista lateral;</text>
+      <text x="0" y="117" class="note">clicar fixa o par. Reordenar por mecanismo/ano/valor muda só a ordem das linhas e colunas.</text>
+      <text x="0" y="137" class="ref">Bertin (1967): a matriz reordenável; a ordem é a variável visual que faz os blocos aparecerem.</text>
+      <text x="0" y="150" class="ref">As cores são as de Rizoma.LINES (as mesmas das linhas de fuga no campo).</text>
+    </g>
+  </g>
+
+  <!-- 5. declive -->
+  <g id="chart_slope" transform="translate(700,656)">
+    <text x="0" y="12" class="kicker"><tspan fill="#ffd23f">●</tspan> 05 / DECLIVE · 2017–2021 → 2022–2024</text>
+    <text x="0" y="38" class="h1" font-size="22">O QUE CRESCEU E O QUE SECOU?</text>
+    <line x1="120" y1="70" x2="120" y2="250" class="line"/><line x1="380" y1="70" x2="380" y2="250" class="line"/>
+    <text x="120" y="62" text-anchor="middle" font-size="9" font-weight="900" fill="#161616">2017–2021</text><text x="380" y="62" text-anchor="middle" font-size="9" font-weight="900" fill="#161616">2022–2024</text>
+    <g stroke-width="2.2"><line x1="120" y1="100" x2="380" y2="100" stroke="#ff4f9a"/><line x1="120" y1="190" x2="380" y2="100" stroke="#31a8ff"/><line x1="120" y1="150" x2="380" y2="150" stroke="#65e77d"/></g>
+    <g stroke="#161616"><circle cx="120" cy="100" r="4" fill="#ff4f9a"/><circle cx="380" cy="100" r="4" fill="#ff4f9a"/><circle cx="120" cy="190" r="4" fill="#31a8ff"/><circle cx="380" cy="100" r="4" fill="#31a8ff"/><circle cx="120" cy="150" r="4" fill="#65e77d"/><circle cx="380" cy="150" r="4" fill="#65e77d"/></g>
+    <g font-size="9" fill="#161616" font-weight="900" text-anchor="end"><text x="110" y="103">4 proj.</text><text x="110" y="153">3 proj.</text><text x="110" y="193">2 proj.</text></g>
+    <g font-size="8" fill="#777" text-anchor="end"><text x="110" y="114">Incentivo Fiscal</text><text x="110" y="164">Descentra</text><text x="110" y="204">Fundo Municipal</text></g>
+    <g font-size="9" fill="#161616" font-weight="900"><text x="390" y="96">4 proj.</text><text x="390" y="111">4 proj.</text><text x="390" y="153">3 proj.</text></g>
+    <text x="0" y="280" class="note">Interação: a medida (quantidade / valor) é a mesma dos outros gráficos; pairar numa linha pré-visualiza o mecanismo, clicar fixa o recorte.</text>
+    <text x="0" y="294" class="note">Rótulos que coincidem são afastados 15 px, nunca sobrepostos.</text>
+    <text x="0" y="314" class="ref">Tufte (2001): o gráfico de declive (slopegraph) compara duas datas sem eixo decorativo. Períodos: antes e depois do teto de 2023 ficar documentado.</text>
+  </g>
+
+  <!-- rodapé -->
+  <g id="footer">
+    <line x1="40" y1="988" x2="1400" y2="988" class="line"/>
+    <text x="40" y="1006" font-size="8" fill="#888">CARTOGRAFIA DO FOMENTO · WIREFRAME 12 · LAB 05 · implementado em lab-05-sistema.html (Indicadores) · defesa das cores, tipografia e leis de UX em rizoma/IDENTIDADE-COESAO-LAB05.md · desktop 1440 × 1024; no celular os gráficos empilham e a matriz perde os cabeçalhos de coluna</text>
+  </g>
+</svg>

@@ -124,3 +124,12 @@ O laboratório é exploratório: suas decisões visuais não devem ser tratadas 
 - Cada experimento tem nome, pergunta de pesquisa em uma linha, controles mínimos e crédito ao algoritmo de referência (lista ABNT em `rizoma/README-RIZOMA.md`, seção 7). Implementação própria, sem código de terceiros.
 - Pesquisa das referências (Negro Muro, Arte Fora do Museu, Information is Beautiful, Prosas, Mapa Cultural BH, OpenProcessing, exemplos do p5.js), o que cada experimento sugere para o protótipo e uma recomendação: `rizoma/PROPOSTAS-LAB06.md`.
 - Mobile-first: os handlers de toque do p5 só devolvem `false` quando o evento nasce no canvas; abaixo de 780px o texto vira uma faixa no topo e os controles vão para o rodapé.
+
+## Lab 07 — Letra brasileira, cor com fundamento
+
+- `lab-07-letra-brasileira.html` — parte do Lab 04 e muda quatro coisas (12/11/2026), em três abas:
+  - **Campo**: os nós voltam a ser bolinhas (`nodeStyle: "bolinha"` no motor: cor = mecanismo, tamanho = valor, contorno = circuito); as linhas de fuga ficam pretas; o rastro do Physarum leva a tinta do mecanismo do nó de origem e mistura como pigmento (violeta, vermelho e verde nos encontros); a ficha explica o projeto em frases e mostra uma régua de valores com os 20 projetos.
+  - **Letras**: títulos em fontes vernaculares brasileiras, mutáveis (`js/letreiro.js`): mão por palavra, balanço, aperto no fim da linha, repintura com névoa de spray, vazada → cheia; letreiro de teste com controles e análise das seis fontes.
+  - **Cores**: as três tintas (magenta `#C9186A`, azul `#1273C9`, amarelo `#E0A500`), as misturas, as regras, o teste da paleta e a comparação com a paleta anterior (tecla C).
+- Fontes: Tipografia Vernacular 0800, de Gi Favetta (Creative Commons), em `assets/fontes/vernacular-0800/` (ver `LEIA-ME.md` da pasta). O aperto no fim da linha vem do Brasilêro Profiça, de Crystian Cruz (ideia, sem código nem arquivo).
+- Análise das formas, gramática da mutação, fundamento e teste das cores, alternativas descartadas e referências ABNT: `rizoma/PROPOSTAS-LAB07.md`.

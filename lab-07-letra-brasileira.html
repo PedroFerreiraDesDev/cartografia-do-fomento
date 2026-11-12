@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lab 07 — Letra brasileira, cor com fundamento</title>
+<style>
+:root{--paper:#f7f6f1;--ink:#161616;--muted:#747474;--line:#d4d1c8;--if:#C9186A;--fundo:#1273C9;--desc:#E0A500}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rgba(247,246,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 20px}
+.brand{font-size:19px;line-height:1;color:inherit;text-decoration:none;width:196px;flex:none}.tabs{margin-left:auto;display:flex;gap:4px}.tabs button{border:0;background:none;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:9px;border-bottom:2px solid transparent;color:inherit}.tabs button:hover{border-color:#bbb}.tabs button.active{border-color:var(--ink)}.status{font-size:9px;color:#888;border:1px solid var(--line);padding:6px 8px;white-space:nowrap}
+/* camadas do campo: rastro do Physarum (embaixo) → rizoma transparente (em cima) */
+.stage{position:absolute;inset:62px 0 0;overflow:hidden;overflow:clip}
+.layer{position:absolute;inset:0}.layer canvas{display:block}
+#trailStage{pointer-events:none}
+#rizomaStage canvas{touch-action:none;-webkit-user-select:none;user-select:none}
+/* texto e ferramentas */
+.copy{position:absolute;z-index:20;left:22px;top:22px;width:min(330px,46vw);pointer-events:none}.copy .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.copy h1{margin:8px 0 8px;font-size:38px;line-height:1}.copy p{margin:0;font-size:11px;line-height:1.55;color:#666;background:rgba(247,246,241,.7)}
+.tools{position:absolute;z-index:22;right:18px;top:16px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;max-width:60vw}
+.chips,.row{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
+.tools button{border:1px solid #ccc;background:rgba(255,255,255,.92);padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.03em}.tools button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.tools button:disabled{opacity:.4;cursor:default}
+.group{display:inline-flex}.group button{border-radius:0}.group button+button{border-left:0}.group button:first-child{border-radius:3px 0 0 3px}.group button:last-child{border-radius:0 3px 3px 0}.group .mid{min-width:96px;text-align:center}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px}.chip i{width:7px;height:7px;border-radius:50%;background:var(--sw);opacity:.4}.chip.active{background:#fff!important;color:var(--ink)!important;border-color:var(--sw)!important}.chip.active i{opacity:1}.chip small{color:#888;font-size:8px}
+.foot{position:absolute;z-index:20;left:20px;right:20px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;pointer-events:none}.foot p{margin:0;max-width:460px;font-size:9px;line-height:1.5;color:#888}.foot span{font-size:9px;font-weight:800;background:rgba(255,255,255,.9);border:1px solid #ddd;padding:6px 8px;white-space:nowrap}
+.guide{position:absolute;z-index:23;left:50%;bottom:80px;transform:translateX(-50%);max-width:min(560px,calc(100% - 40px));background:#161616;color:#fff;padding:9px 13px;font-size:10.5px;line-height:1.5;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s}.guide.show{opacity:1}
+/* pista por permanência: o nó conta mais quanto mais tempo a mão fica nele */
+.hover-tip{position:absolute;z-index:24;pointer-events:none;background:rgba(247,246,241,.96);border:1px solid #cfcfca;padding:8px 10px 10px;min-width:150px;max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translate(14px,-50%);font-size:10.5px;line-height:1.4}
+.hover-tip[hidden]{display:none}.hover-tip b{display:block;font-size:12px;letter-spacing:-.02em}.hover-tip span{display:block;color:#666;margin-top:3px}.hover-tip span:empty{display:none}
+.hover-tip i{display:block;height:2px;background:#ddd;margin-top:7px;position:relative;overflow:hidden}.hover-tip i::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--w,0%);background:var(--ink);transition:width .25s linear}
+.hidden-note{font-size:11px;line-height:1.5;color:#666;margin:6px 0 0}
+.final-btn{border-color:var(--ink)!important}
+/* estampa final */
+.final{position:absolute;z-index:60;inset:0;display:grid;place-items:center;padding:20px;background:rgba(247,246,241,.72);backdrop-filter:blur(3px)}.final[hidden]{display:none}
+.final-card{width:min(640px,100%);max-height:100%;overflow:auto;background:#fff;border:1px solid #cfcfca;padding:22px 24px;box-shadow:0 24px 70px rgba(0,0,0,.14)}
+.final-card .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.final-card h2{font-size:26px;letter-spacing:-.05em;line-height:1.05;margin:8px 0 6px}.final-card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
+.final-preview{border:1px solid #e3e1da;background:var(--paper);aspect-ratio:16/10;display:grid;place-items:center;overflow:hidden}.final-preview img{width:100%;height:100%;object-fit:cover;display:block}
+.final-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.final-actions .primary{display:inline-block;width:auto;margin:0;padding:11px 14px}.final-note{font-size:10px;color:#999;margin:12px 0 0}
+@media(max-width:780px){.final{padding:10px;align-items:end}.final-card{padding:16px;border-radius:14px 14px 4px 4px}.final-card h2{font-size:21px}.final-preview{aspect-ratio:4/3}.hover-tip{display:none!important}}
+.legend{display:flex;flex-wrap:wrap;gap:4px 10px;margin:4px 0 8px;font-size:9px;font-weight:800;color:#555;pointer-events:none}.legend[hidden]{display:none}.legend span{display:inline-flex;align-items:center;gap:5px}.legend i{width:10px;height:10px;border-radius:50%;background:var(--c);border:1px solid var(--ink);flex:none}.legend b{font-size:9px;letter-spacing:-.1em;color:#222}
+@media(max-width:780px){.legend{margin:2px 0;gap:2px 8px;font-size:8.5px}.legend .shape{display:none}}
+/* ficha do nó aberto */
+.card{position:absolute;z-index:30;top:0;right:0;bottom:0;width:min(380px,100%);background:rgba(247,246,241,.97);border-left:1px solid var(--line);padding:18px 20px 30px;overflow:auto;transform:translateX(104%);transition:transform .35s cubic-bezier(.2,.7,.2,1)}.card.open{transform:none}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:10px}.card .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}.card h2{margin:12px 0 8px;font-size:32px;line-height:1.02}.card p{font-size:12px;line-height:1.6;color:#666;margin:0 0 12px}
+.fact{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #e3e1da;padding:8px 0;font-size:11px}.fact span{color:#888}.fact b{text-align:right}
+.ghost{border:1px solid #bbb;background:#fff;padding:8px 10px;font-size:9px;font-weight:900}.primary{display:block;width:100%;margin:12px 0;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:11px;font-size:9px;font-weight:900;letter-spacing:.05em;text-align:center;text-decoration:none}
+.links{display:flex;flex-direction:column;gap:4px;margin:6px 0 14px}.links button{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid #e3e1da;background:#fff;padding:8px 10px;font-size:11px;text-align:left}.links button i{width:8px;height:8px;border-radius:50%;background:var(--sw);flex:none}.links button small{color:#888;font-size:9px;white-space:nowrap}.links .empty{font-size:11px;color:#888;border:1px dashed #ccc;padding:10px}
+.sub{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777;margin-top:12px}
+body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{opacity:.35}
+@media(max-width:780px){
+  .topbar{height:auto;min-height:84px;flex-wrap:wrap;gap:6px;padding:8px 10px 0}.brand{width:100%;padding:4px 0}.tabs{width:100%;margin:0}.tabs button{flex:1;padding:8px 4px}.status{display:none}
+  .stage{inset:84px 0 0}.card{top:auto;bottom:0;height:70vh;width:100%;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(104%)}
+  .copy{left:0;right:0;top:0;width:auto;padding:9px 118px 9px 14px;background:rgba(247,246,241,.9);border-bottom:1px solid #e6e4dc}.copy h1{font-size:21px;margin:3px 0 2px}.copy p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:9.5px;background:none}
+  .foot{top:8px;bottom:auto;left:auto;right:10px;display:block}.foot p{display:none}.foot span{display:inline-block;font-size:8.5px;max-width:104px;text-align:right;white-space:normal}
+  .tools{top:auto;bottom:0;left:0;right:0;max-width:none;align-items:stretch;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(247,246,241,.95);border-top:1px solid #e6e4dc}
+  .chips,.row{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;margin:0 -10px;padding:0 10px}.chips::-webkit-scrollbar,.row::-webkit-scrollbar{display:none}.tools button{flex:none;padding:9px 10px;font-size:9.5px;white-space:nowrap}.group{flex:none}
+  .guide{bottom:112px}body.card-open .tools{display:none}body.card-open .copy{opacity:.3}
+}
+/* ---------- Lab 07: ficha explicativa ---------- */
+.mech{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;margin:0 0 10px}.mech i{width:11px;height:11px;border-radius:50%;background:var(--c);border:1px solid var(--ink);flex:none}
+.ex{border-top:1px solid #e3e1da;padding:9px 0 2px}.ex b{font-size:9px;letter-spacing:.14em;color:#777}.ex p{margin:4px 0 8px;font-size:12px;line-height:1.6;color:#333}
+.ex .rel{display:flex;flex-direction:column;gap:4px;margin:6px 0 10px}.ex .rel button{border:1px solid #e3e1da;background:#fff;padding:8px 10px;font-size:11px;line-height:1.45;text-align:left}.ex .rel button small{display:block;color:#777;font-size:10px}
+.regua{display:block;width:100%;height:auto;margin:2px 0 8px;overflow:visible}.regua text{font:8px Arial,Helvetica,sans-serif;fill:#777}.regua .me{font-weight:700;fill:#161616}.regua circle[data-go]{cursor:pointer}
+/* ---------- Lab 07: abas Letras e Cores ---------- */
+.panel{position:absolute;z-index:50;inset:0;overflow:auto;background:var(--paper);-webkit-overflow-scrolling:touch}.panel[hidden]{display:none}
+.pwrap{max-width:1000px;margin:0 auto;padding:26px 28px 90px 46px}
+.panel .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}
+.panel h2{font-size:clamp(34px,6.4vw,70px);margin:12px 0 12px}
+.panel h3{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;margin:36px 0 12px;padding-top:12px;border-top:1px solid var(--ink)}
+.panel p,.panel li{font-size:13px;line-height:1.65;color:#444;max-width:70ch}.panel .lead{font-size:15px;color:var(--ink)}.panel ol,.panel ul{padding-left:20px;margin:0}.panel li{margin:0 0 6px}.panel a{color:inherit}
+.play{font-size:clamp(46px,10.5vw,132px);margin:16px 0 6px;min-height:1.1em}
+.pctl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:12px 0 18px}
+.pctl button{border:1px solid #ccc;background:#fff;padding:9px 10px;font-size:9px;font-weight:800;letter-spacing:.03em}.pctl button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pctl input[type=text]{font:inherit;font-size:13px;border:1px solid #bbb;background:#fff;padding:8px 10px;min-width:min(300px,100%);flex:1 1 220px}.pctl label{font-size:9px;font-weight:800;letter-spacing:.03em;display:inline-flex;align-items:center;gap:6px;border:1px solid #ccc;background:#fff;padding:5px 10px}.pctl input[type=range]{width:110px;accent-color:#161616}
+.spec{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.spec article{border:1px solid var(--line);background:#fff;padding:14px 14px 12px;min-width:0}
+.spec .nm{font-size:31px;line-height:1.05;margin-bottom:8px}.spec .abc{font-size:20px;line-height:1.25;overflow-wrap:anywhere;color:#222}
+.spec small{display:block;font-size:9px;letter-spacing:.1em;font-weight:900;color:#777;text-transform:uppercase;margin:9px 0 2px}.spec p{font-size:11.5px;line-height:1.55;margin:0;color:#555}
+.inks{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:12px}
+.inks article,.mixes article{border:1px solid var(--line);background:#fff;padding:14px;min-width:0}.inks b,.mixes b{display:block;font-size:12px;margin:10px 0 2px}.inks code,.mixes code{font-size:10px;color:#777}.inks p,.mixes p{font-size:11.5px;line-height:1.55;margin:6px 0 0;color:#555}
+.sw{display:inline-block;width:54px;height:54px;border-radius:50%;border:1.5px solid var(--ink);background:var(--c);vertical-align:middle}.sw.s{width:30px;height:30px}.sw.sq{border-radius:4px}
+.mixes{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}.mixes .eq{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800}
+.vt{border-collapse:collapse;font-size:12px;width:100%;max-width:860px}.vt th,.vt td{border-top:1px solid var(--line);padding:9px 12px 9px 0;text-align:left;vertical-align:top;line-height:1.5}.vt th{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#777}.vt td:first-child{font-weight:700}
+.vwrap{overflow-x:auto}
+@media(max-width:780px){.pwrap{padding:18px 16px 110px 34px}.brand{font-size:17px}.play{font-size:clamp(40px,13vw,90px)}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" id="brand">CARTOGRAFIA DO FOMENTO</a>
+  <div class="tabs" role="tablist" aria-label="Partes do lab"><button role="tab" data-tab="campo" class="active">Campo</button><button role="tab" data-tab="letras">Letras</button><button role="tab" data-tab="cores">Cores</button></div>
+  <span class="status">LAB 07 · LETRA + COR</span>
+</header>
+
+<div class="stage" id="stage">
+  <div id="trailStage" class="layer" aria-hidden="true"></div>
+  <div id="rizomaStage" class="layer"></div>
+
+  <div class="copy"><div class="kicker">LAB 07 / LETRA BRASILEIRA, COR COM FUNDAMENTO</div><h1 id="headline">A RUA ESCREVE O MAPA</h1><div id="mechLegend" class="legend"><span><i style="--c:var(--if)"></i>Incentivo Fiscal</span><span><i style="--c:var(--fundo)"></i>Fundo Municipal</span><span><i style="--c:var(--desc)"></i>Descentra</span><span class="shape">tamanho = valor</span><span class="shape">contorno grosso = monumental</span></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue uma linha: a tinta corre entre as bolinhas parentes e, onde duas tintas se cruzam, a mistura mostra quais mecanismos se encontraram.</p></div>
+
+  <div class="tools">
+    <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
+    <div class="row">
+      <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
+      <button id="palBtn" class="active" title="Tecla C · compara as tintas propostas com a paleta anterior">Cor · tintas</button>
+      <span class="group" aria-label="Quantidade de agentes"><button id="lessBtn" title="Menos agentes">−</button><button id="countBtn" class="mid" title="Agentes ativos">0 agentes</button><button id="moreBtn" title="Mais agentes">+</button></span>
+      <button id="evapBtn" title="Tecla E">Evaporação · média</button>
+      <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
+      <button id="resetBtn" title="Tecla R">Recomeçar</button>
+      <button id="finalBtn" class="final-btn" title="Tecla M · congela o campo e gera a estampa da sua visita">Fechar meu mapa ↗</button>
+    </div>
+  </div>
+  <div class="foot"><p>Letras: Tipografia Vernacular 0800, de Gi Favetta (Creative Commons). Aperto no fim da linha: ideia do Brasilêro Profiça, de Crystian Cruz. Micélio: Jones (2010), sobre as posições na tela, não sobre a cidade. Monumental e capilar são categorias de análise do TCC, não classificação oficial.</p><span id="counter">0 / 20 NÓS</span></div>
+  <div class="guide" id="guide"></div>
+  <div id="hoverTip" class="hover-tip" hidden><b id="htTitle"></b><span id="htMeta"></span><span id="htMore"></span><i id="htBar"></i></div>
+  <section id="final" class="final" hidden aria-label="Meu micélio">
+    <div class="final-card">
+      <div class="kicker">MEU MICÉLIO · ESTAMPA DESTA VISITA</div>
+      <h2 id="finalTitle"></h2>
+      <p id="finalText"></p>
+      <div class="final-preview"><img id="finalImg" alt="Estampa do micélio desta visita"></div>
+      <div class="final-actions"><a id="finalDownload" class="primary" download="meu-micelio.png" href="#">BAIXAR PNG ↗</a><button id="finalLast" class="ghost">ABRIR O ÚLTIMO PROJETO</button><button id="finalBack" class="ghost">CONTINUAR EXPLORANDO</button><button id="finalReset" class="ghost">RECOMEÇAR</button></div>
+      <p class="final-note">O mapa é seu: cada visita produz outro. Nada aqui é a localização real das obras.</p>
+    </div>
+  </section>
+
+  <aside class="card" id="card" aria-live="polite">
+    <div class="top"><div class="kicker" id="cKicker">NÓ ABERTO</div><button class="ghost" id="cClose">FECHAR</button></div>
+    <h2 id="cTitle"></h2>
+    <div class="mech" id="cMech"></div>
+    <div id="cExplain"></div>
+    <a class="primary" id="cOpen" href="index.html">VER NO PROTÓTIPO ↗</a>
+    <div class="sub">AINDA ESCONDIDO</div><p id="cHidden" class="hidden-note"></p>
+    <div class="sub">LINHAS LIGADAS</div><div class="links" id="cLinks"></div>
+    <div class="sub">LIGAÇÕES POSSÍVEIS</div><div class="links" id="cPot"></div>
+  </aside>
+
+  <section id="pLetras" class="panel" hidden aria-label="Letras">
+    <div class="pwrap">
+      <div class="kicker">LETRAS / A MÃO DE QUEM ESCREVE NA RUA</div>
+      <div id="play" class="play">CARTOGRAFIA DO FOMENTO</div>
+      <div class="pctl">
+        <input type="text" id="playText" value="CARTOGRAFIA DO FOMENTO" maxlength="60" aria-label="Texto do letreiro">
+        <span class="group" id="playMode" aria-label="Quem escreve"><button data-mode="palavra" class="active">Mão por palavra</button><button data-mode="letra">por letra</button><button data-mode="mao">uma mão só</button></span>
+        <button id="playRoll" title="Sorteia outra combinação de mãos">Sortear</button>
+        <span class="group" id="playMut" aria-label="Repintura"><button data-mut="0">Parada</button><button data-mut="3200" class="active">Lenta</button><button data-mut="900">Viva</button></span>
+        <label>Balanço <input type="range" id="playSway" min="0" max="100" value="60"></label>
+        <button id="playSqueeze" class="active" title="As últimas letras se comprimem quando a linha não cabe">Aperto no fim da linha</button>
+        <button id="playVaz" title="Contorno que se enche de tinta">Vazada → cheia</button>
+      </div>
+      <p class="lead">O título do site não tem uma fonte: tem várias mãos. Cada palavra é escrita por uma letra de placa, de muro ou de pixo fotografada numa cidade brasileira, e de tempos em tempos uma palavra é repintada por outra mão. O sorteio tem semente: a mesma página abre sempre igual, e cada projeto guarda a sua mão.</p>
+
+      <h3>As seis mãos</h3>
+      <div id="specimens" class="spec"></div>
+
+      <h3>A gramática da mutação</h3>
+      <ol>
+        <li><b>Troca de mão.</b> Por palavra (padrão), por letra ou uma mão só. Uma placa de rua é escrita por uma pessoa de cada vez; por isso o padrão troca a palavra inteira, não letra a letra.</li>
+        <li><b>Balanço.</b> Cada letra sai um pouco da linha, gira e muda de tamanho. É o que as seis fontes têm em comum: linha de base instável e largura irregular.</li>
+        <li><b>Aperto no fim da linha.</b> Quando a linha não cabe, as últimas letras se comprimem aos poucos, como quem pinta e fica sem muro.</li>
+        <li><b>Repintura.</b> Uma palavra troca de mão, letra por letra, com névoa de spray que assenta. Para quem pede menos movimento no sistema, a troca não acontece.</li>
+        <li><b>Vazada e cheia.</b> A Vendo Gelinho existe em contorno e em tinta cheia. Contorno é o que ainda não foi pintado; cheia é o que já foi.</li>
+        <li><b>Limite de leitura.</b> O pixo só entra em palavras de até três letras. Uma fonte que não desenha o acento da palavra não é sorteada para ela.</li>
+      </ol>
+
+      <h3>O que vem do Brasilêro</h3>
+      <p>O Brasilêro, de Crystian Cruz, foi desenhado em 1999 a partir da análise de centenas de letreiros pintados à mão em várias cidades do país e lançado como fonte grátis em 2003. A versão Profiça, iniciada em 2010, comprime as letras no fim da linha. Daqui saem duas coisas: o método, que é olhar a letra da rua antes de desenhar, e o aperto, refeito em código porque as fontes deste lab não têm recursos OpenType. O arquivo do Brasilêro não está neste lab: ele não veio junto com as outras fontes, e a licença de redistribuição precisa ser conferida antes de entrar num repositório público. <a href="https://crystiancruz.myportfolio.com/brasilero" target="_blank" rel="noopener">Página do projeto ↗</a></p>
+
+      <h3>Onde a letra entra e onde não entra</h3>
+      <p>A letra mutável escreve títulos: a marca, a chamada de cada tela e o nome do projeto na ficha. Valor, ano, edital e qualquer número continuam em Arial, parados. É a mesma regra do Lab 01: a letra sofre a cidade, o dado não.</p>
+
+      <p style="margin-top:28px;font-size:11px;color:#777">Fontes: FAVETTA, Giovanna. Tipografia Vernacular 0800. Licença Creative Commons declarada pela autora (uso comercial, acadêmico e pessoal; revenda proibida). <a href="https://www.gifavetta.art/tipografia-0800" target="_blank" rel="noopener">gifavetta.art/tipografia-0800 ↗</a>. Os arquivos estão em <code>assets/fontes/vernacular-0800/</code>, sem alteração.</p>
+    </div>
+  </section>
+
+  <section id="pCores" class="panel" hidden aria-label="Cores">
+    <div class="pwrap">
+      <div class="kicker">CORES / TRÊS TINTAS, UMA POR ORIGEM DO DINHEIRO</div>
+      <h2 id="coresTitle">COR É DE ONDE VEM O DINHEIRO</h2>
+      <p class="lead">A cor faz um trabalho só: dizer por qual mecanismo o dinheiro chegou ao projeto. O tamanho diz quanto. Todo o resto é preto sobre papel.</p>
+      <div class="pctl"><button id="palBtn2">Comparar com a paleta anterior</button></div>
+      <div class="inks" id="inks"></div>
+
+      <h3>Quando duas tintas se cruzam</h3>
+      <p>No campo, a tinta de cada bolinha corre até as parentes quando uma linha é ligada. A mistura é feita como pigmento, não como luz: tinta sobre tinta escurece e muda de matiz. Por isso o encontro de dois mecanismos tem cor própria e nome.</p>
+      <div class="mixes" id="mixes"></div>
+
+      <h3>As regras</h3>
+      <ol>
+        <li><b>Cor só significa mecanismo.</b> Nenhuma outra variável usa cor. As linhas de fuga, que antes tinham seis cores, agora são pretas.</li>
+        <li><b>Tamanho é valor.</b> A área da bolinha cresce com o dinheiro. Contorno grosso marca o circuito monumental; fino, o capilar.</li>
+        <li><b>Texto é preto.</b> Nome, número e legenda nunca vestem a cor da categoria; uma bolinha colorida ao lado faz esse papel.</li>
+        <li><b>Mistura é dado.</b> Onde o rastro muda de cor, dois mecanismos se encontraram por uma linha ligada.</li>
+        <li><b>Cor nunca vai sozinha.</b> A legenda fica sempre visível e a ficha escreve o mecanismo por extenso.</li>
+        <li><b>O amarelo sempre leva contorno preto,</b> porque sozinho ele some no papel.</li>
+      </ol>
+
+      <h3>O teste</h3>
+      <div class="vwrap"><table class="vt">
+        <thead><tr><th>Critério</th><th>Paleta anterior (rosa, azul, verde)</th><th>Tintas (magenta, azul, amarelo)</th></tr></thead>
+        <tbody>
+          <tr><td>Claridade dentro da faixa de 0,43 a 0,77</td><td>Falha: o verde fica em 0,83</td><td>Passa: 0,55, 0,55 e 0,76</td></tr>
+          <tr><td>Separação para daltonismo (mínimo 8)</td><td>15,1 no pior par</td><td>16,8 no pior par</td></tr>
+          <tr><td>Separação em visão normal (mínimo 15)</td><td>29,1</td><td>30,1</td></tr>
+          <tr><td>Contraste com o papel (alvo 3:1)</td><td>Rosa 2,84, azul 2,37, verde 1,46</td><td>Magenta 5,08, azul 4,49, amarelo 2,03 (por isso o contorno preto)</td></tr>
+          <tr><td>Misturas</td><td>Rosa com verde e azul com verde dão tons sem nome</td><td>Violeta, vermelho e verde</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:11px;color:#777;margin-top:10px">Medidas em OKLCH e OKLab, com simulação de protanopia e deuteranopia de Machado, Oliveira e Fernandes (2009), sobre o papel #f7f6f1.</p>
+
+      <h3>De onde vem cada decisão</h3>
+      <ul>
+        <li><b>Uma cor, um trabalho.</b> Bertin (1967) separa as variáveis visuais: matiz distingue categorias, tamanho ordena quantidades. Tufte (1990) trata a cor como rótulo e pede que ela não atrapalhe.</li>
+        <li><b>Por que estas três.</b> Magenta, azul-ciano e amarelo são as tintas com que se imprime cartaz e lambe, junto com o preto. São as primárias da mistura de pigmentos: nenhuma se obtém das outras duas, como cada mecanismo é uma porta diferente do dinheiro público.</li>
+        <li><b>O que muda.</b> O rosa do Incentivo Fiscal e o azul do Fundo continuam, um pouco mais escuros. Só o Descentra troca o verde pelo amarelo: a tinta mais clara fica com os menores valores, e o verde passa a significar o encontro de Fundo com Descentra, os dois do circuito capilar.</li>
+        <li><b>O que é proposta minha.</b> A ligação entre tinta de impressão e fomento é uma leitura de projeto, não um dado. Ela precisa da sua defesa no texto do TCC.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script src="js/data.js?v=20261112-31"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
+<script src="js/rizoma.js?v=20261112-31"></script>
+<script src="js/letreiro.js?v=20261112-31"></script>
+<script>
+/* Lab 07 — Letra brasileira, cor com fundamento. Parte do Lab 04 (abaixo) e muda quatro coisas, a pedido do autor (12/11/2026):
+   1. LETRA: títulos em fontes vernaculares brasileiras, mutáveis (js/letreiro.js; fontes de Gi Favetta, ideia do aperto de Crystian Cruz);
+   2. COR: uma tinta por mecanismo (magenta, azul, amarelo), validada; linhas de fuga em preto; o rastro leva a tinta do nó de origem
+      e mistura como pigmento (média geométrica por canal), então o encontro de dois mecanismos tem cor própria;
+   3. NÓ: volta a bolinha (nodeStyle "bolinha" no motor): cor = mecanismo, tamanho = valor, contorno = circuito; sai o nó-muro;
+   4. FICHA: explicação em frases (o que é, de onde vem o dinheiro, quanto é, circuito, parentes, o que falta), só com o que js/data.js tem.
+   Decisões e referências em rizoma/PROPOSTAS-LAB07.md.
+
+   Lab 04 — Physarum: o micélio como terceira forma de ligação do campo rizomático.
+   Cartografia do Fomento · TCC Pedro H. F. Moreira (Design UFMG).
+
+   Algoritmo: modelo de agentes de Jeff Jones para redes de transporte do Physarum polycephalum.
+     JONES, Jeff. Characteristics of pattern formation and evolution in approximations of
+     Physarum transport networks. Artificial Life, v. 16, n. 2, p. 127-153, 2010.
+   Referência didática (sem código copiado): VIRA, Patt. Slime Molds (Physarum): coding tutorial.
+     2023. Disponível em: https://youtu.be/VyXxSNcgDtg e https://www.pattvira.com/.
+
+   Adaptação própria para o campo rizomático:
+   - os nós revelados pelo motor (js/rizoma.js) são as fontes: cada um solta agentes e
+     projeta "alimento" (um gradiente) na sua posição de tela;
+   - com uma linha de fuga ligada, os nós que compartilham o atributo (mesmo ano, mesmo
+     mecanismo…) recebem mais agentes, e esses agentes depositam mais forte, na cor da
+     natureza da linha (Rizoma.LINES[t].color), com um leve puxão de quimiotaxia na direção de
+     um nó irmão; desligar a linha deixa a rede evaporar (ruptura sem corte manual);
+   - cada agente sente três pontos (frente, esquerda, direita), vira para o mais forte,
+     anda um passo e deposita; agentes que saem do mapa ou envelhecem renascem num nó;
+   - o mapa de rastro é um p5.Graphics com um terço da resolução, lido com loadPixels uma
+     vez por quadro (não uma vez por agente) e devolvido com updatePixels; evaporação por
+     retângulo semitransparente (destination-out) mais um decaimento linear mínimo, para o
+     rastro não ficar preso na quantização de 8 bits do canvas;
+   - ajuste de 31/10 (pedido do autor): o rastro segue a bolinha com que o nó se liga (quimiotaxia mais
+     forte, agente que chega volta pelo caminho e engrossa a veia), as cores se fundem devagar (mix 0,35),
+     e a camada é ampliada com desfoque na GPU, para ler como forma contínua, não como pontos;
+   - 31/10, segunda passagem: agentes livres rumam a outro nó revelado (traços entre todos), nós sem halo;
+     o cursor é alimento (os agentes do nó em foco seguem a mão e revelam escondidos no caminho);
+     camadas por permanência no hover; "Meu micélio" congela o campo e gera a estampa da visita;
+   - contagem adaptativa: ~2500 agentes no desktop, ~700 no celular, com um governador que
+     reduz se o quadro passar de 30 ms; pausa quando a aba está oculta; desligado com
+     prefers-reduced-motion. Modo instância, como o resto do motor. */
+(() => {
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+if (typeof p5 === "undefined" || typeof Rizoma === "undefined" || !window.CARTOGRAFIA_DATA) { // aberto pelo arquivo (file://) ou sem rede: os scripts não vieram
+  const g = $("#guide"); g.textContent = "O motor não carregou. Abra esta página por um servidor (http://…) ou pelo site publicado, não pelo arquivo: ela precisa de js/data.js, js/rizoma.js e do p5.js (CDN)."; g.classList.add("show"); g.style.background = "#b42318";
+  return;
+}
+const DATA = window.CARTOGRAFIA_DATA || [], REL = window.CARTOGRAFIA_RELATIONS || [];
+const IDX = {}; DATA.forEach((d, i) => IDX[d.id] = i);
+const TYPES = Object.keys(Rizoma.LINES);
+const touch = matchMedia("(pointer:coarse)").matches; if (touch) document.body.classList.add("touch");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const small = () => innerWidth <= 780;
+const stage = $("#stage");
+let R = null;
+
+/* ---------- parâmetros do Physarum ---------- */
+const SCALE = 3;                                     // o mapa de rastro tem 1/3 da resolução do palco
+const INK = [170, 168, 162];                         // cor do rastro livre (sem linha): cinza bem claro, quase fundo
+/* ---------- cor com fundamento: três tintas, uma por origem do dinheiro ---------- */
+const MECHS = ["Incentivo Fiscal", "Fundo Municipal", "Descentra"];
+const PALETAS = {
+  tintas: [[201, 24, 106], [18, 115, 201], [224, 165, 0]],      // magenta, azul, amarelo: validada (aba Cores)
+  anterior: [[255, 79, 154], [49, 168, 255], [101, 231, 125]]   // rosa, azul, verde dos labs 01 a 06, para comparar
+};
+for (const t of TYPES) Rizoma.LINES[t].color = [22, 22, 22];   // linhas de fuga em preto: cor só significa mecanismo
+const MIDX = DATA.map(d => MECHS.indexOf(d.mechanism));
+const LOGT = new Float32Array(256); for (let i = 0; i < 256; i++) LOGT[i] = Math.log(Math.max(i, 1) / 255);
+const LOGINK = INK.map(v => LOGT[v]);
+const hex = c => "#" + c.map(v => Math.round(v).toString(16).padStart(2, "0")).join("").toUpperCase();
+const mixSub = (a, b, m = 0.5) => a.map((x, i) => Math.round(255 * Math.exp(LOGT[x] * (1 - m) + LOGT[b[i]] * m))); // mistura de pigmento
+let paleta = "tintas", INKS = PALETAS.tintas, LOGS = INKS.map(c => c.map(v => LOGT[v]));
+const mechMap = () => { const o = {}; MECHS.forEach((m, i) => o[m] = INKS[i]); return o; };
+function stain(px, k, c, lc, m, dep) { // tinta sobre tinta: média geométrica por canal (subtrativa). Azul sobre amarelo dá verde, não cinza
+  if (px[k + 3] < 6) { px[k] = c[0]; px[k + 1] = c[1]; px[k + 2] = c[2]; }
+  else { px[k] = 255 * Math.exp(LOGT[px[k]] * (1 - m) + lc[0] * m); px[k + 1] = 255 * Math.exp(LOGT[px[k + 1]] * (1 - m) + lc[1] * m); px[k + 2] = 255 * Math.exp(LOGT[px[k + 2]] * (1 - m) + lc[2] * m); }
+  px[k + 3] += dep;
+}
+const PH = {
+  on: !reduced,
+  count: 200,                                        // padrão escolhido pelo autor
+  step: 100, min: 100, max: 6000, floor: 200, // o governador não desce abaixo de floor
+  evapLevels: [["lenta", 0.012, 1], ["média", 0.03, 1], ["rápida", 0.07, 2]], evap: 1, // [nome, fator do retângulo, decaimento linear]
+  sensorAngle: 0.5, sensorDist: 12, turn: 0.2, speed: 1.15, jitter: 0.06,   // curvas longas: o rastro vira veia, não ruído
+  deposit: 3, depositLinked: 22, bias: 0.09, biasFree: 0.03, biasLure: 0.16, mix: 0.35, mixFree: 0.06, life: [600, 1600], // bias: puxão rumo ao irmão ligado; biasFree: rumo a qualquer outro nó revelado (traços entre todos); biasLure: rumo ao cursor
+  blur: (touch || small()) ? 1.6 : 2.4
+};
+let trail = null, tw = 0, th = 0, trailP = null;
+const A = { x: null, y: null, h: null, home: null, target: null, type: null, mech: null, age: null, life: null };
+const pos = { x: new Float32Array(DATA.length), y: new Float32Array(DATA.length), on: new Uint8Array(DATA.length) }; // posição de tela (escala do rastro) de cada nó
+let sibs = DATA.map(() => []);                       // por nó: [{ j, t }] nós irmãos pela linha t ligada
+let spawnPool = [];                                  // índices dos nós revelados, com peso maior para os ligados
+let drawMs = 0, frameN = 0;                          // custo médio (ms) do quadro do micélio, para o governador
+let flush = 0;                                       // quadros de evaporação forte depois de desligar uma linha (ruptura)
+
+function alloc() {
+  const n = PH.max;
+  A.x = new Float32Array(n); A.y = new Float32Array(n); A.h = new Float32Array(n);
+  A.home = new Int16Array(n).fill(-1); A.target = new Int16Array(n).fill(-1); A.type = new Int8Array(n).fill(-1);
+  A.age = new Float32Array(n); A.life = new Float32Array(n).fill(0); // age >= life: renasce no próximo quadro
+  A.mech = new Int8Array(n).fill(-1); // a tinta do agente: o mecanismo do nó onde nasceu
+}
+function makeTrail(p) {
+  tw = Math.max(8, Math.ceil(p.width / SCALE)); th = Math.max(8, Math.ceil(p.height / SCALE));
+  if (trail) trail.remove();
+  // o mapa é lido a cada quadro: o contexto 2D precisa nascer com willReadFrequently, e createGraphics não aceita a opção;
+  // por isso getContext é interceptado só durante a criação do p5.Graphics
+  const orig = HTMLCanvasElement.prototype.getContext;
+  HTMLCanvasElement.prototype.getContext = function (t, o) { return orig.call(this, t, t === "2d" ? Object.assign({ willReadFrequently: true }, o || {}) : o); };
+  try { trail = p.createGraphics(tw, th); } finally { HTMLCanvasElement.prototype.getContext = orig; }
+  trail.pixelDensity(1); trail.noStroke(); trail.clear();
+  if (A.life) A.life.fill(0);
+}
+
+/* nós irmãos por linha ligada: calculado só quando o estado do rizoma muda */
+function rebuildSibs(active) {
+  sibs = DATA.map(() => []);
+  for (const t of TYPES) {
+    if (!active[t]) continue;
+    const L = Rizoma.LINES[t], ti = TYPES.indexOf(t);
+    if (L.pair) { for (const r of REL) { const a = IDX[r.a], b = IDX[r.b]; if (a == null || b == null) continue; sibs[a].push({ j: b, t: ti }); sibs[b].push({ j: a, t: ti }); } continue; }
+    const groups = {};
+    DATA.forEach((d, i) => { const k = L.key(d); if (k != null) (groups[k] = groups[k] || []).push(i); });
+    for (const k in groups) { const g = groups[k]; if (g.length < 2) continue; for (const i of g) for (const j of g) if (i !== j) sibs[i].push({ j, t: ti }); }
+  }
+}
+const linkOf = i => { for (const s of sibs[i]) if (pos.on[s.j]) return s; return null; }; // primeira ligação com irmão revelado
+function updateSources() {
+  pos.on.fill(0); spawnPool.length = 0;
+  for (const n of R.screen().nodes) { const i = IDX[n.id]; if (i == null) continue; pos.x[i] = n.x / SCALE; pos.y[i] = n.y / SCALE; pos.on[i] = 1; }
+  for (let i = 0; i < DATA.length; i++) { if (!pos.on[i]) continue; spawnPool.push(i); if (linkOf(i)) spawnPool.push(i, i); } // nós ligados recebem 3× mais agentes
+}
+function respawn(i) {
+  if (!spawnPool.length) return false;
+  const home = spawnPool[(Math.random() * spawnPool.length) | 0];
+  const opts = sibs[home].filter(s => pos.on[s.j]);
+  const pick = opts.length ? opts[(Math.random() * opts.length) | 0] : null;
+  const an = Math.random() * Math.PI * 2, rr = Math.random() * 2.5;
+  A.x[i] = pos.x[home] + Math.cos(an) * rr; A.y[i] = pos.y[home] + Math.sin(an) * rr; A.h[i] = Math.random() * Math.PI * 2;
+  let free = -1; if (!pick && spawnPool.length > 1) { for (let k = 0; k < 4; k++) { const j = spawnPool[(Math.random() * spawnPool.length) | 0]; if (j !== home) { free = j; break; } } } // livre: ruma a outro nó revelado qualquer
+  A.home[i] = home; A.target[i] = pick ? pick.j : free; A.type[i] = pick ? pick.t : -1; A.mech[i] = MIDX[home];
+  A.age[i] = 0; A.life[i] = PH.life[0] + Math.random() * (PH.life[1] - PH.life[0]);
+  return true;
+}
+
+/* ---------- camada 1: o micélio (sketch em modo instância) ---------- */
+new p5(p => {
+  trailP = p;
+  p.setup = () => { p.pixelDensity(1); const c = p.createCanvas(stage.clientWidth, stage.clientHeight); c.parent("trailStage"); p.frameRate(60); alloc(); makeTrail(p); };
+  p.windowResized = () => { p.resizeCanvas(stage.clientWidth, stage.clientHeight); makeTrail(p); };
+  p.draw = () => {
+    if (!PH.on || !R) { p.clear(); return; }
+    if (final.on) return; // congelado: a estampa fica como está
+    const t0 = performance.now();
+    updateSources();
+    let [, evapF, evapL] = PH.evapLevels[PH.evap];
+    if (flush > 0) { flush--; evapF = 0.09; evapL = 3; } // a rede antiga se desfaz antes de o micélio livre se refazer
+    // 1. evaporação: um retângulo semitransparente apaga o rastro em bloco (destination-out multiplica o alfa)
+    const ctx = trail.drawingContext;
+    ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = `rgba(0,0,0,${evapF})`; ctx.fillRect(0, 0, tw, th); ctx.globalCompositeOperation = "source-over";
+    // 2. alimento: cada nó revelado projeta um gradiente na sua posição; o nó ligado projeta na cor da linha
+    for (let i = 0; i < DATA.length; i++) {
+      if (!pos.on[i]) continue;
+      const l = linkOf(i), c = l ? (INKS[MIDX[i]] || INK) : INK; // o nó ligado projeta a tinta do seu mecanismo
+      if (l) { trail.fill(c[0], c[1], c[2], 22); trail.circle(pos.x[i], pos.y[i], 7); }
+      else { trail.fill(c[0], c[1], c[2], 8); trail.circle(pos.x[i], pos.y[i], 6); } // alimento pequeno: o nó é ponto de partida, não mancha
+    }
+    // 3. agentes: o mapa é lido uma vez por quadro; cada agente sente três pontos, vira, anda e deposita
+    trail.loadPixels();
+    const px = trail.pixels, n = PH.count, sa = PH.sensorAngle, sd = PH.sensorDist, ta = PH.turn, sp = PH.speed, jt = PH.jitter;
+    if (evapL) for (let k = 3, e = px.length; k < e; k += 4) px[k] = px[k] > evapL ? px[k] - evapL : 0; // decaimento linear mínimo
+    const sense = (x, y) => (x < 0 || y < 0 || x >= tw || y >= th) ? -1 : px[(((y | 0) * tw + (x | 0)) << 2) + 3];
+    for (let i = 0; i < n; i++) {
+      if (A.age[i] >= A.life[i] || A.home[i] < 0 || !pos.on[A.home[i]]) { if (!respawn(i)) { A.life[i] = 0; continue; } }
+      let x = A.x[i], y = A.y[i], h = A.h[i];
+      const f = sense(x + Math.cos(h) * sd, y + Math.sin(h) * sd), l = sense(x + Math.cos(h - sa) * sd, y + Math.sin(h - sa) * sd), r = sense(x + Math.cos(h + sa) * sd, y + Math.sin(h + sa) * sd);
+      if (f > l && f > r) { } else if (f < l && f < r) h += Math.random() < 0.5 ? -ta : ta; else if (l > r) h -= ta; else if (r > l) h += ta;
+      const tg = A.target[i];
+      if (lure.on && A.home[i] === lure.home) { // o cursor é alimento: os agentes do nó em foco seguem a mão e esticam a veia
+        const dx = lure.x - x, dy = lure.y - y, d = Math.atan2(dy, dx) - h; h += Math.atan2(Math.sin(d), Math.cos(d)) * PH.biasLure;
+      } else if (tg >= 0 && pos.on[tg]) { // quimiotaxia rumo ao irmão ligado (forte) ou a outro nó revelado (fraca): traços entre todos
+        const dx = pos.x[tg] - x, dy = pos.y[tg] - y, dist = Math.hypot(dx, dy), d = Math.atan2(dy, dx) - h, linked = A.type[i] >= 0;
+        h += Math.atan2(Math.sin(d), Math.cos(d)) * (dist < 6 ? 0.5 : linked ? PH.bias : PH.biasFree);
+        if (dist < 3) { A.target[i] = A.home[i]; A.home[i] = tg; } // chegou: volta pelo mesmo caminho, engrossando o traço
+      }
+      h += (Math.random() - 0.5) * jt;
+      x += Math.cos(h) * sp; y += Math.sin(h) * sp;
+      if (x < 1 || y < 1 || x >= tw - 1 || y >= th - 1) { A.life[i] = 0; continue; } // saiu do mapa: renasce num nó
+      const k = (((y | 0) * tw + (x | 0)) << 2), mi = A.mech[i], tinta = A.type[i] >= 0 && mi >= 0, c = tinta ? INKS[mi] : INK, lc = tinta ? LOGS[mi] : LOGINK, dep = tinta ? PH.depositLinked : PH.deposit;
+      stain(px, k, c, lc, tinta ? PH.mix : PH.mixFree, dep); // o agente leva a tinta do nó onde nasceu; o livre é cinza e quase não tinge
+      if (tinta) { const k2 = k + 4; if (k2 + 3 < px.length) stain(px, k2, c, lc, PH.mix, dep >> 1); } // veia ligada mais grossa
+      A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
+    }
+    trail.updatePixels();
+    // 4. o rastro vai para a tela ampliado 3× (a interpolação do navegador faz a difusão visual)
+    if (!final.on) { // na estampa final nada evapora nem se mexe
+    p.clear(); const dc = p.drawingContext; dc.filter = `blur(${PH.blur}px)`; p.image(trail, 0, 0, p.width, p.height); dc.filter = "none";
+    drawHints(p);
+    }
+    // governador: se o quadro ficar pesado, menos agentes
+    drawMs += (performance.now() - t0 - drawMs) * 0.05; if (++frameN % 180 === 0 && drawMs > 12 && PH.count > PH.floor) setCount(Math.max(PH.floor, PH.count - PH.step)); // governador: o micélio não pode comer o quadro
+  };
+  p.clearTrail = () => { if (trail) trail.clear(); };
+  window.Lab7Physarum = { PH, fps: () => p.frameRate(), drawMs: () => drawMs, trail: () => trail }; // para testes no console
+});
+function setCount(n) { PH.count = Math.max(PH.min, Math.min(PH.max, n)); $("#countBtn").textContent = PH.on ? `${PH.count} agentes` : "sem agentes"; $("#lessBtn").disabled = !PH.on || PH.count <= PH.min; $("#moreBtn").disabled = !PH.on || PH.count >= PH.max; if (R) sync(R.state()); }
+function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.length; $("#evapBtn").textContent = `Evaporação · ${PH.evapLevels[PH.evap][0]}`; }
+
+/* margens do campo medidas nos elementos reais: o nó nunca fica por trás de texto, ferramentas, contador ou ficha */
+let marginCache = { t: 120, r: 60, b: 80, l: 60, at: 0 };
+function uiMargin() {
+  const now = performance.now(); if (now - marginCache.at < 400) return marginCache; // mede no máximo a cada 400 ms
+  const sr = stage.getBoundingClientRect(), pad = 26;
+  const rect = sel => { const el = $(sel); if (!el || el.hidden || getComputedStyle(el).display === "none") return null; const r = el.getBoundingClientRect(); return r.width && r.height ? r : null; };
+  let t = pad, b = pad, l = pad, r = pad;
+  const copy = rect(".copy"), tools = rect(".tools"), foot = rect(".foot span"), card = document.body.classList.contains("card-open") ? rect("#card") : null;
+  for (const el of [copy, tools, foot]) { if (!el) continue; // cada elemento ocupa uma faixa: a que menos rouba campo
+    const fromTop = el.bottom - sr.top, fromBottom = sr.bottom - el.top, fromLeft = el.right - sr.left, fromRight = sr.right - el.left;
+    const best = Math.min(fromTop, fromBottom, fromLeft, fromRight);
+    if (best === fromTop) t = Math.max(t, fromTop + pad); else if (best === fromBottom) b = Math.max(b, fromBottom + pad); else if (best === fromLeft) l = Math.max(l, fromLeft + pad); else r = Math.max(r, fromRight + pad);
+  }
+  if (card && !small()) r = Math.max(r, sr.right - card.left + pad); // no celular a ficha é uma folha temporária sobre o campo: não espremer os nós na faixa que sobra
+  marginCache = { t, r, b, l, at: now }; return marginCache;
+}
+/* ---------- camada 2: o rizoma (motor do protótipo, fundo transparente) ---------- */
+const chips = {};
+function mountField() {
+  R = Rizoma.mount({
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "bolinha", mechColors: mechMap(), lineWeight: 0.55, spread: 1.45, focusZoom: true, spray: false,
+    margin: uiMargin, lineCycle: 2.2, // margens medidas nos elementos da interface; linhas crescem e puxam 2,2× mais devagar // sem as bolinhas do gesto no fundo: só muros, linhas e micélio // linhas finas, nós espaçados, foco que aproxima
+    treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
+    onChange: sync, onOpen: openCard, onHover: onHover
+  });
+  window.Lab7Rizoma = R;
+  for (const t of TYPES) {
+    const L = Rizoma.LINES[t], b = document.createElement("button"); b.className = "chip"; b.style.setProperty("--sw", `rgb(${L.color.join(",")})`);
+    b.innerHTML = `<i></i><span>${L.label}</span><small>0</small>`; b.onclick = () => { R.toggleLine(t); if (R.state().focus) R.refresh(); }; $("#chips").appendChild(b); chips[t] = b;
+  }
+  sync(R.state());
+}
+let lastActiveKey = "";
+function sync(s) {
+  const ak = TYPES.map(t => s.active[t] ? 1 : 0).join("");
+  if (ak !== lastActiveKey) { // o conjunto de linhas mudou: todos os agentes renascem; se uma linha saiu, a rede dela evapora depressa
+    const removed = [...lastActiveKey].some((c, i) => c === "1" && ak[i] !== "1");
+    lastActiveKey = ak; rebuildSibs(s.active);
+    if (A.life) { A.life.fill(0); A.type.fill(-1); A.target.fill(-1); }
+    if (removed) flush = 70;
+  }
+  for (const t in chips) { chips[t].classList.toggle("active", !!s.active[t]); chips[t].querySelector("small").textContent = s.linesByType ? s.linesByType[t] : 0; }
+  $("#depthBtn").classList.toggle("active", s.depth);
+  $("#palBtn").textContent = paleta === "tintas" ? "Cor · tintas" : "Cor · anterior"; $("#palBtn").classList.toggle("active", paleta === "tintas");
+
+  $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (PH.on ? ` · ${PH.count} AGENTES` : "");
+  document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
+  if (s.revealed >= s.total && !finalHinted) { finalHinted = true; guide("Todos os projetos revelados. Quer fechar o seu mapa? O botão congela o micélio e gera a estampa desta visita."); }
+  if (!PH.on) guide("O sistema pede menos movimento: o micélio fica desligado; nós e linhas continuam funcionando.");
+  else if (s.revealed < 3) guide(touch ? "Os pontos que piscam são projetos escondidos: toque num deles para revelar." : "Os pontos que piscam são projetos escondidos: clique num deles, ou passe a mão, para revelar.");
+  else if (!s.anyLine) guide("Ligue uma linha: a tinta de cada bolinha corre até as parentes. Onde duas tintas se cruzam, a mistura diz quais mecanismos se encontraram.");
+  else guide("Desligue a linha para ver a rede evaporar; arraste o fundo para girar o campo e ver o rastro ficar para trás.");
+}
+let guideT = 0; function guide(t) { const g = $("#guide"); clearTimeout(guideT); if (!t) { g.classList.remove("show"); return; } g.textContent = t; g.classList.add("show"); guideT = setTimeout(() => g.classList.remove("show"), 6000); }
+
+/* ---------- ficha ---------- */
+function openCard(i) {
+  $("#cKicker").textContent = ((i.trailIndex > 1 ? `NÓ ${i.trailIndex} DA TRILHA · ` : "NÓ ABERTO · ") + i.circuit).toUpperCase();
+  cardTitle.opts({ text: i.title, seed: i.id }); // cada projeto tem a sua mão: a semente é o id
+  $("#cMech").innerHTML = `<i style="--c:${hex(INKS[MECHS.indexOf(i.mechanism)] || INK)}"></i><span>${i.mechanism} · ${i.year} · ${i.valueText || "valor a verificar"}</span>`;
+  $("#cExplain").innerHTML = explain(i);
+  $("#cOpen").href = `index.html#${i.id}`;
+  const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${Rizoma.shortTitle(c.title)}</span><small>${c.why} →</small></button>`).join("") : `<div class="empty">Nenhuma linha ligada chega aqui. Ligue uma linha de fuga nas ferramentas.</div>`;
+  const hid = hiddenSiblings(IDX[i.id]); $("#cHidden").textContent = hid.length ? `${hid.length} nó(s) ligado(s) a este ainda escondido(s): ${hid.slice(0, 3).map(g => Rizoma.shortTitle(DATA[g].title)).join(", ")}${hid.length > 3 ? "…" : ""}. Passe a mão por eles no campo, ou estique o micélio até lá.` : "Nenhum nó ligado a este continua escondido.";
+  const P = {}; for (const q of (i.potentials || [])) (P[q.type] = P[q.type] || []).push(q);
+  $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button data-line="${t}" style="--sw:rgb(${Rizoma.LINES[t].color.join(",")})"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} nó(s)</small></button>`).join("") : `<div class="empty">Revele mais nós para ver ligações possíveis.</div>`;
+  $$("[data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("[data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
+  $("#card").classList.add("open");
+}
+$("#cClose").onclick = () => R.close();
+
+/* ---------- descoberta: o cursor é alimento; parar sobre o nó revela em camadas; os escondidos ligados pulsam ---------- */
+const lure = { on: false, home: -1, x: 0, y: 0, lastMove: 0 };
+let hover = { id: null, since: 0, x: 0, y: 0, tier: -1 };
+function hiddenSiblings(i) { // nós ligados a i (por qualquer natureza) ainda não revelados
+  if (i == null) return []; const out = new Set();
+  for (const t of TYPES) { const L = Rizoma.LINES[t]; if (L.pair) { for (const r of REL) { if (r.a === DATA[i].id && !pos.on[IDX[r.b]]) out.add(IDX[r.b]); if (r.b === DATA[i].id && !pos.on[IDX[r.a]]) out.add(IDX[r.a]); } continue; }
+    const k = L.key(DATA[i]); if (k == null) continue; DATA.forEach((d, j) => { if (j !== i && !pos.on[j] && L.key(d) === k) out.add(j); }); }
+  return [...out];
+}
+function onHover(h) {
+  if (h && h.kind === "node") { if (hover.id !== h.id) { hover = { id: h.id, since: performance.now(), x: h.x, y: h.y, tier: -1 }; lure.on = true; lure.home = IDX[h.id]; lure.x = h.x / SCALE; lure.y = h.y / SCALE; lure.lastMove = performance.now(); } else { hover.x = h.x; hover.y = h.y; } }
+  else { hover = { id: null, since: 0, x: 0, y: 0, tier: -1 }; $("#hoverTip").hidden = true; }
+}
+stage.addEventListener("pointermove", e => { // a mão puxa o micélio do nó em foco; perto de um escondido, ele se revela
+  if (!lure.on || touch) return; const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  lure.x = x / SCALE; lure.y = y / SCALE; lure.lastMove = performance.now();
+  if (R && !R.state().hover) { const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 34); if (g) { R.revealAt(x, y, 40, 1); guide(`${Rizoma.shortTitle(g.title)} se revelou pelo micélio.`); } }
+});
+setInterval(() => { // o atrativo do cursor dura 2,5 s depois do último movimento; o aviso por permanência sobe de camada
+  if (lure.on && performance.now() - lure.lastMove > 2500) lure.on = false;
+  if (!hover.id || touch) return; const dwell = performance.now() - hover.since, i = R.info(hover.id); if (!i) return;
+  const tier = dwell > 2600 ? 3 : dwell > 1500 ? 2 : dwell > 700 ? 1 : dwell > 250 ? 0 : -1; if (tier < 0) return;
+  const tip = $("#hoverTip"); tip.hidden = false; tip.style.left = hover.x + "px"; tip.style.top = hover.y + "px";
+  $("#htTitle").textContent = Rizoma.shortTitle(i.title);
+  $("#htMeta").textContent = tier >= 1 ? `${i.year} · ${i.mechanism} · ${i.circuit}` : "";
+  const hid = hiddenSiblings(IDX[i.id]);
+  $("#htMore").textContent = tier >= 2 ? `${i.valueText || "valor a verificar"} · ${(i.potentials || []).length} ligação(ões) possível(is) · ${hid.length} escondida(s)` : "";
+  $("#htBar").style.setProperty("--w", Math.min(100, dwell / 30) + "%");
+  if (tier === 3 && hover.tier < 3 && hid.length) guide(`Fique: ${hid.length} nó(s) ligado(s) a este ainda está(ão) escondido(s). Eles pulsam no micélio.`);
+  hover.tier = tier;
+}, 120);
+function drawHints(p) { // radar: cada projeto ainda escondido pisca de leve no lugar onde está; os ligados ao nó em foco piscam mais forte
+  if (!R || final.on) return;
+  const gs = R.ghosts(); if (!gs.length) return;
+  const hid = hover.id && hover.tier >= 1 ? hiddenSiblings(IDX[hover.id]) : [], t = performance.now() / 700;
+  for (const g of gs) {
+    const i = IDX[g.id], strong = hid.includes(i), ph = (Math.sin(t * (strong ? 2.2 : 1) + i * 1.7) + 1) / 2;
+    p.noStroke(); p.fill(22, strong ? 150 + 80 * ph : 60 + 70 * ph); p.circle(g.x, g.y, strong ? 4.5 : 3.2);
+    p.noFill(); p.stroke(22, (strong ? 120 : 45) * (1 - ph)); p.strokeWeight(1); p.circle(g.x, g.y, 6 + ph * (strong ? 26 : 16));
+  }
+}
+stage.addEventListener("pointerdown", e => { // clicar num ponto que pisca revela aquele projeto
+  if (!R || final.on) return; const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 22); if (g) { R.revealAt(x, y, 26, 1); guide(`${Rizoma.shortTitle(g.title)} revelado.`); }
+}, { capture: true });
+
+/* ---------- interação final: Meu micélio ---------- */
+const final = { on: false };
+function composeFinal() { // junta rastro e rizoma num PNG com título
+  const tc = $("#trailStage canvas"), rc = $("#rizomaStage canvas"); if (!tc || !rc) return null;
+  const W = rc.width, H = rc.height, out = document.createElement("canvas"); out.width = W; out.height = H + Math.round(H * .12); const g = out.getContext("2d");
+  g.fillStyle = "#f7f6f1"; g.fillRect(0, 0, out.width, out.height);
+  g.filter = `blur(${PH.blur * (W / stage.clientWidth)}px)`; g.drawImage(trail.elt, 0, 0, W, H); g.filter = "none"; g.drawImage(rc, 0, 0, W, H);
+  const s = R.state(), lines = TYPES.filter(t => s.active[t]).map(t => Rizoma.LINES[t].label), d = new Date(), pad = n => String(n).padStart(2, "0");
+  const title = `${s.revealed} projeto${s.revealed > 1 ? "s" : ""} · ${lines.length ? lines.join(" e ") : "sem linha ligada"} · ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+  g.fillStyle = "#161616"; const sc = W / 900; g.font = `${Math.round(34 * sc)}px "TV0800 Cachoeira", Arial`; g.fillText("CARTOGRAFIA DO FOMENTO · MEU MICÉLIO", Math.round(24 * sc), H + Math.round(40 * sc));
+  g.font = `${Math.round(18 * sc)}px Arial`; g.fillStyle = "#666"; g.fillText(title + (s.trailTitles && s.trailTitles.length ? " · trilha: " + s.trailTitles.join(" → ") : ""), Math.round(24 * sc), H + Math.round(72 * sc));
+  return { url: out.toDataURL("image/png"), title, lines };
+}
+function openFinal() {
+  if (!R) return; final.on = true; R.setPaused(true); lure.on = false; $("#hoverTip").hidden = true;
+  const f = composeFinal(); if (!f) { final.on = false; R.setPaused(false); return; }
+  const s = R.state();
+  $("#finalTitle").textContent = f.title; $("#finalImg").src = f.url; $("#finalDownload").href = f.url; $("#finalDownload").download = `meu-micelio-${Date.now()}.png`;
+  $("#finalText").textContent = `Você revelou ${s.revealed} de ${s.total} projetos e abriu ${s.trail.length}. O micélio congelou do jeito que estava: este é o mapa que a sua visita desenhou, e nenhuma outra visita desenha o mesmo.`;
+  $("#finalLast").hidden = !s.trail.length;
+  $("#final").hidden = false;
+}
+function closeFinal(reset) { final.on = false; $("#final").hidden = true; R.setPaused(false); if (reset) { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); } }
+$("#finalBtn").onclick = openFinal; $("#finalBack").onclick = () => closeFinal(false); $("#finalReset").onclick = () => closeFinal(true);
+$("#finalLast").onclick = () => { const s = R.state(); closeFinal(false); if (s.trail.length) R.open(s.trail[s.trail.length - 1]); };
+let finalHinted = false;
+
+/* ---------- ferramentas ---------- */
+$("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
+$("#palBtn").onclick = () => setPaleta(paleta === "tintas" ? "anterior" : "tintas");
+$("#lessBtn").onclick = () => setCount(PH.count - PH.step);
+$("#moreBtn").onclick = () => setCount(PH.count + PH.step);
+$("#countBtn").onclick = () => setCount(200);
+$("#evapBtn").onclick = () => setEvap(PH.evap + 1);
+$("#clearBtn").onclick = () => trailP && trailP.clearTrail();
+$("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
+document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "c") $("#palBtn").click(); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
+window.addEventListener("resize", () => R && R.resize());
+document.addEventListener("visibilitychange", () => { const hid = document.hidden || tab !== "campo"; if (trailP) hid ? trailP.noLoop() : trailP.loop(); if (R) R.setVisible(!hid); }); // aba oculta: tudo pausa
+
+/* ---------- Lab 07: paleta ---------- */
+function setPaleta(nome) {
+  paleta = nome; INKS = PALETAS[nome]; LOGS = INKS.map(c => c.map(v => LOGT[v]));
+  const rs = document.documentElement.style; rs.setProperty("--if", hex(INKS[0])); rs.setProperty("--fundo", hex(INKS[1])); rs.setProperty("--desc", hex(INKS[2]));
+  if (R) { R.setMechColors(mechMap()); if (trailP) trailP.clearTrail(); }
+  $("#palBtn").textContent = nome === "tintas" ? "Cor · tintas" : "Cor · anterior"; $("#palBtn").classList.toggle("active", nome === "tintas");
+  $("#palBtn2").textContent = nome === "tintas" ? "Comparar com a paleta anterior" : "Voltar para as tintas"; $("#palBtn2").classList.toggle("active", nome !== "tintas");
+  renderCores();
+}
+function renderCores() {
+  const T = paleta === "tintas", nomes = T ? ["Magenta", "Azul", "Amarelo"] : ["Rosa", "Azul", "Verde"];
+  const txt = T ? ["A tinta mais forte para o dinheiro que passa por empresas e paga os maiores valores. Mantém, mais escuro, o rosa que os labs já usavam.", "Dinheiro direto do Fundo Municipal de Cultura. Mantém o azul dos labs, mais escuro para ler no papel.", "A tinta mais clara para os menores valores. Entra no lugar do verde e fecha o trio das tintas de impressão."]
+    : ["Rosa dos labs 01 a 06.", "Azul dos labs 01 a 06.", "Verde dos labs 01 a 06: claro demais para o papel, e as misturas com ele não têm nome."];
+  $("#inks").innerHTML = MECHS.map((m, i) => `<article><span class="sw" style="--c:${hex(INKS[i])}"></span><b>${nomes[i]} · ${m}</b><code>${hex(INKS[i])}</code><p>${txt[i]}</p></article>`).join("")
+    + `<article><span class="sw" style="--c:#161616"></span><b>Preto · tudo o que não é mecanismo</b><code>#161616</code><p>Texto, contorno, linhas e números. Nunca vira categoria.</p></article>`
+    + `<article><span class="sw sq" style="--c:#f7f6f1"></span><b>Papel · o fundo</b><code>#F7F6F1</code><p>O muro caiado e o papel do lambe. A tinta só aparece porque ele é claro.</p></article>`;
+  const pares = [[0, 1, T ? "Violeta" : "Lilás acinzentado", "Incentivo Fiscal encontra Fundo Municipal."], [0, 2, T ? "Vermelho" : "Marrom rosado", "Incentivo Fiscal encontra Descentra: o maior valor ligado ao menor."], [1, 2, T ? "Verde" : "Verde-água", "Fundo encontra Descentra: os dois mecanismos do circuito capilar."]];
+  $("#mixes").innerHTML = pares.map(([a, b, n, t]) => { const mx = mixSub(INKS[a], INKS[b]); return `<article><div class="eq"><span class="sw s" style="--c:${hex(INKS[a])}"></span>+<span class="sw s" style="--c:${hex(INKS[b])}"></span>=<span class="sw" style="--c:${hex(mx)}"></span></div><b>${n}</b><code>${hex(mx)}</code><p>${t}</p></article>`; }).join("");
+}
+$("#palBtn2").onclick = () => setPaleta(paleta === "tintas" ? "anterior" : "tintas");
+
+/* ---------- Lab 07: a explicação do projeto, só com o que js/data.js tem ---------- */
+const mil = v => "R$ " + (v / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " mil";
+const median = a => { const s = a.slice().sort((x, y) => x - y), n = s.length; return n ? (n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2) : 0; };
+const VALS = DATA.map(d => d.value).filter(v => v != null), MED = median(VALS), VTOP = 180000;
+const ORIGEM = {
+  "Incentivo Fiscal": "O dinheiro vem de renúncia fiscal: a Prefeitura abre mão de imposto e o projeto capta esse valor com empresas patrocinadoras.",
+  "Fundo Municipal": "O dinheiro sai direto do Fundo Municipal de Cultura, sem depender de patrocinador.",
+  "Descentra": "O dinheiro sai direto da Prefeitura pelo edital Descentra, de valores menores e com pontuação por território."
+};
+const CIRCUITO = {
+  Monumental: "Monumental é a categoria de análise do TCC para os projetos do Incentivo Fiscal, de grande escala.",
+  Capilar: "Capilar é a categoria de análise do TCC para os projetos do Fundo e do Descentra, de escala menor e mais espalhada."
+};
+function regua(d) { // régua de valores: os 20 projetos em três faixas, uma por mecanismo; o aberto em destaque
+  const W = 330, L = 62, R0 = 10, x = v => L + (v / VTOP) * (W - L - R0), rows = [16, 34, 52], short = ["Inc. Fiscal", "Fundo", "Descentra"];
+  let o = `<svg class="regua" viewBox="0 0 ${W} 78" role="img" aria-label="Valor deste projeto comparado aos outros ${DATA.length - 1} do corpus, por mecanismo">`;
+  for (const t of [0, 50000, 100000, 150000]) o += `<line x1="${x(t)}" x2="${x(t)}" y1="6" y2="62" stroke="#e3e1da"/><text x="${x(t)}" y="74" text-anchor="middle">${t ? t / 1000 + " mil" : "0"}</text>`;
+  MECHS.forEach((m, r) => {
+    o += `<text x="0" y="${rows[r] + 3}">${short[r]}</text>`;
+    const list = DATA.filter(p => p.mechanism === m && p.value != null).sort((a, b) => a.value - b.value); let lastX = -99, flip = 1;
+    for (const p of list) { if (p.id === d.id) continue; const px = x(p.value); let py = rows[r]; if (px - lastX < 7) { py += 4 * flip; flip = -flip; } lastX = px;
+      o += `<circle data-go="${p.id}" cx="${px.toFixed(1)}" cy="${py}" r="3.6" fill="${hex(INKS[r])}" fill-opacity=".55" stroke="#161616" stroke-width=".6"><title>${Rizoma.shortTitle(p.title)} · ${p.year} · ${Rizoma.money(p.value)}</title></circle>`; }
+  });
+  const r = MECHS.indexOf(d.mechanism);
+  if (d.value != null && r >= 0) { const px = x(d.value), right = px > W - 70;
+    o += `<circle cx="${px.toFixed(1)}" cy="${rows[r]}" r="6.5" fill="${hex(INKS[r])}" stroke="#161616" stroke-width="1.6"/><circle cx="${px.toFixed(1)}" cy="${rows[r]}" r="1.8" fill="#161616"/>`;
+    o += `<text class="me" x="${(px + (right ? -10 : 10)).toFixed(1)}" y="${rows[r] - 7}" text-anchor="${right ? "end" : "start"}">este: ${mil(d.value)}</text>`; }
+  return o + "</svg>";
+}
+function explain(i) {
+  const d = DATA[IDX[i.id]], N = VALS.length, ex = (t, body) => `<div class="ex"><b>${t}</b>${body}</div>`;
+  let quanto = "Valor ainda não verificado.";
+  if (d.value != null) {
+    const acima = VALS.filter(v => v > d.value).length, iguais = VALS.filter(v => v === d.value).length, ratio = d.value / MED;
+    quanto = acima === 0 ? (iguais > 1 ? `Divide o maior valor do corpus com outro${iguais > 2 ? "s " + (iguais - 1) : ""} projeto${iguais > 2 ? "s" : ""}` : "É o maior valor do corpus") : `É o ${acima + 1}º maior valor entre os ${N} projetos do corpus`;
+    quanto += ratio >= 1.15 ? `, ${ratio.toLocaleString("pt-BR", { maximumFractionDigits: 1 })} vezes a mediana (${mil(MED)}).` : ratio <= 0.87 ? `, ${Math.round(ratio * 100)}% da mediana (${mil(MED)}).` : `, perto da mediana (${mil(MED)}).`;
+    const ano = DATA.filter(p => p.year === d.year && p.value != null), tot = ano.reduce((a, p) => a + p.value, 0);
+    quanto += ano.length > 1 ? ` Em ${d.year}, ${ano.length} projetos somaram ${mil(tot)}; este responde por ${Math.round(d.value / tot * 100)}%.` : ` É o único projeto do corpus em ${d.year}.`;
+    const mm = DATA.filter(p => p.mechanism === d.mechanism && p.value != null).map(p => p.value);
+    quanto += ` Entre os ${mm.length} projetos de ${d.mechanism}, a mediana é ${mil(median(mm))}.`;
+  }
+  const rel = REL.filter(r => r.a === d.id || r.b === d.id).map(r => { const o = DATA[IDX[r.a === d.id ? r.b : r.a]]; return o ? `<button data-go="${o.id}">${o.title} (${o.year})<small>${r.why} · fonte: ${r.source}</small></button>` : ""; }).join("");
+  const falta = [d.region == null ? "regional" : "", d.proponent == null ? "proponente" : "", "local de execução", "fotos"].filter(Boolean);
+  return ex("O QUE É", `<p>Projeto aprovado em ${d.year} no edital ${d.edital}${d.value != null ? ", com " + Rizoma.money(d.value) : ""}.</p>`)
+    + ex("DE ONDE VEM O DINHEIRO", `<p>${ORIGEM[d.mechanism] || d.mechanism}</p>`)
+    + ex("QUANTO É", `<p>${quanto}</p>${regua(d)}`)
+    + ex("CIRCUITO", `<p>${CIRCUITO[d.circuit] || d.circuit} Não é classificação oficial da Prefeitura.</p>`)
+    + (rel ? ex("PARENTES DOCUMENTADOS", `<div class="rel">${rel}</div>`) : "")
+    + ex("O QUE AINDA NÃO SE SABE", `<p>Sem verificação: ${falta.join(", ")}. O protótipo deixa em branco em vez de supor.${d.issue ? " Atenção: " + d.issue : ""} Fonte do registro: ${d.verification || "a verificar"}.</p>`);
+}
+
+/* ---------- Lab 07: letreiros (títulos mutáveis) e abas ---------- */
+let tab = "campo";
+const brand = Letreiro.mount("#brand", { text: "CARTOGRAFIA DO FOMENTO", seed: "marca", sway: 0.5, mutate: 6000 });
+const headline = Letreiro.mount("#headline", { text: "A RUA ESCREVE\nO MAPA", seed: "campo", mutate: 4200 });
+const cardTitle = Letreiro.mount("#cTitle", { text: "", seed: "ficha", wrap: true, sway: 0.45 });
+const coresTitle = Letreiro.mount("#coresTitle", { text: "COR É DE ONDE\nVEM O DINHEIRO", seed: "cores", mutate: 5200 });
+const play = Letreiro.mount("#play", { text: "CARTOGRAFIA DO FOMENTO", seed: "letras", mutate: 3200 });
+const specs = [];
+function renderSpecimens() {
+  const NOTE = {
+    cachoeira: ["Traço de espessura constante. D, O, P e R viram caixas, com contraformas quadradas. I e J levam pingo.", "A mais legível das seis: aguenta título longo."],
+    ducha: ["Letra inclinada e solta. M, N e O aparecem em forma de minúscula no meio das maiúsculas. Números inclinados.", "Boa para nome de projeto."],
+    hortifruti: ["Letra de cartaz de oferta: estreita, pesada, apertada para caber. É a mais próxima do aperto do Brasilêro.", "Só é sorteada para palavras cujos acentos ela desenha."],
+    gelinho: ["Letra gorda e baixa, de cantos arredondados. B, G, H e Q em forma de minúscula.", "Peso máximo: palavras curtas e fortes."],
+    jessica: ["Pixo: letra alta e angulosa, com hastes que invadem a vizinha. A leitura é difícil de propósito.", "Só entra em palavras de até três letras. É a mão mais próxima do tema do TCC."],
+    gelinhoV: ["A mesma Vendo Gelinho, só no contorno.", "Faz par com a cheia: contorno para o que ainda não foi pintado."]
+  };
+  const teste = "ÁÀÂÃÉÊÍÓÔÕÚÇ–·ªº";
+  $("#specimens").innerHTML = Letreiro.MAOS.map(m => { const sem = [...teste].filter(ch => !Letreiro.tem(m.id, ch));
+    return `<article><div class="nm" data-mao="${m.id}">${m.nome.toUpperCase()}</div><div class="abc" style="font-family:'${m.fam}',Arial">ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</div><small>${m.local} · ${m.ferramenta}</small><p>${NOTE[m.id][0]}</p><small>Uso no site</small><p>${NOTE[m.id][1]}</p><small>Não desenha</small><p>${sem.length ? sem.join(" ") : "Tem todos os sinais testados."}</p></article>`; }).join("");
+  specs.forEach(s => s.destroy()); specs.length = 0;
+  $$("#specimens .nm").forEach(el => specs.push(Letreiro.mount(el, { text: el.textContent, seed: el.dataset.mao, mode: "mao", pool: [el.dataset.mao], sway: 0.35, wrap: true })));
+}
+Letreiro.ready.then(renderSpecimens);
+function setTab(t) {
+  tab = t; $$(".tabs button").forEach(b => { const on = b.dataset.tab === t; b.classList.toggle("active", on); b.setAttribute("aria-selected", String(on)); });
+  $("#pLetras").hidden = t !== "letras"; $("#pCores").hidden = t !== "cores";
+  const campo = t === "campo" && !document.hidden; if (trailP) campo ? trailP.loop() : trailP.noLoop(); if (R) R.setVisible(campo);
+  if (t === "letras") { play.fit(); specs.forEach(s => s.fit()); } if (t === "cores") coresTitle.fit();
+}
+$$(".tabs button").forEach(b => b.onclick = () => setTab(b.dataset.tab));
+/* controles do letreiro de teste */
+const playState = { mode: "palavra", mutate: 3200, squeeze: true, vazada: false };
+const playApply = () => { play.opts({ mode: playState.mode, mutate: playState.vazada ? 1600 : playState.mutate, squeeze: playState.squeeze, wrap: !playState.squeeze, vazada: playState.vazada, sway: $("#playSway").value / 100 });
+  $$("#playMode button").forEach(b => b.classList.toggle("active", b.dataset.mode === playState.mode)); $$("#playMut button").forEach(b => b.classList.toggle("active", +b.dataset.mut === playState.mutate));
+  $("#playSqueeze").classList.toggle("active", playState.squeeze); $("#playVaz").classList.toggle("active", playState.vazada); };
+$$("#playMode button").forEach(b => b.onclick = () => { playState.mode = b.dataset.mode; playState.vazada = false; playApply(); });
+$$("#playMut button").forEach(b => b.onclick = () => { playState.mutate = +b.dataset.mut; playApply(); });
+$("#playSqueeze").onclick = () => { playState.squeeze = !playState.squeeze; playApply(); };
+$("#playVaz").onclick = () => { playState.vazada = !playState.vazada; playApply(); };
+$("#playRoll").onclick = () => play.sortear();
+$("#playSway").oninput = playApply;
+$("#playText").oninput = e => play.set(e.target.value.trim() || "CARTOGRAFIA DO FOMENTO");
+
+setCount(PH.count); setEvap(PH.evap);
+setPaleta("tintas");
+mountField();
+setTimeout(() => { for (let i = 0; i < 5; i++) R.revealOne(); }, 600); // já nasce com alguns nós: o micélio aparece antes do primeiro gesto
+})();
+</script>
+<script src="js/labs-nav.js?v=20261112-31"></script>
+</body>
+</html>

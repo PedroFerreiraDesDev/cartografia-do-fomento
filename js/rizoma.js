@@ -22,7 +22,7 @@
    API: Rizoma.mount({ container, data, relations, lines, paper, reduced, depth, intro,
                        treeTop, panelWidth, onOpen, onChange, onStarted, onHover })
         R.toggleLine(t) R.setLine(t,on) R.setMode("rizoma"|"arvore") R.setDepth(v)
-        R.setIntro(v) R.setCutting(v) R.setPaused(v) R.setPaper(v) R.setReduced(v) R.setNodeStyle("circulo"|"muro")
+        R.setIntro(v) R.setCutting(v) R.setPaused(v) R.setPaper(v) R.setReduced(v) R.setNodeStyle("circulo"|"muro"|"bolinha") R.setMechColors({mecanismo:[r,g,b]})
         R.open(id, silent) R.close() R.connections(id) R.potentials(id) R.info(id)
         R.state() R.save(name) R.reset() R.resize() R.setVisible(v) R.refresh()      */
 (function () {
@@ -58,8 +58,9 @@
     const relations = opts.relations || window.CARTOGRAFIA_RELATIONS || [];
     const active = Object.assign({}, DEFAULT_ACTIVE, opts.lines || {});
     const cb = { open: opts.onOpen || function () {}, change: opts.onChange || function () {}, started: opts.onStarted || function () {}, hover: opts.onHover || null };
-    const MECH_COLOR = { "Incentivo Fiscal": [255, 79, 154], "Fundo Municipal": [49, 168, 255], "Descentra": [101, 231, 125] }; // mesma paleta dos labs
-    const S = { nodeStyle: opts.nodeStyle === "muro" ? "muro" : "circulo", mode: "rizoma", depth: !!opts.depth, intro: !!opts.intro, cutting: false, paused: false, paper: !!opts.paper, reduced: !!opts.reduced, focus: null, hover: null, hoverEdge: null, trail: [], started: false, cutKeys: new Set(), visible: true };
+    const MECH_COLOR = Object.assign({ "Incentivo Fiscal": [255, 79, 154], "Fundo Municipal": [49, 168, 255], "Descentra": [101, 231, 125] }, opts.mechColors || {}); // paleta dos labs; opts.mechColors troca (Lab 07: tintas de impressão)
+    const NODE_STYLES = ["circulo", "muro", "bolinha"]; // bolinha: círculo na cor do mecanismo, contorno em tinta
+    const S = { nodeStyle: NODE_STYLES.includes(opts.nodeStyle) ? opts.nodeStyle : "circulo", mode: "rizoma", depth: !!opts.depth, intro: !!opts.intro, cutting: false, paused: false, paper: !!opts.paper, reduced: !!opts.reduced, focus: null, hover: null, hoverEdge: null, trail: [], started: false, cutKeys: new Set(), visible: true };
     const view = { rx: -0.35, ry: 0.45, lastDrag: 0, zoom: S.intro ? 0.72 : 1, zoomTarget: S.intro ? 0.72 : 1, px: 0, py: 0, pxT: 0, pyT: 0 };
     const ZOOM_MIN = 0.5, ZOOM_MAX = 3.2;
     const coarsePointer = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
@@ -546,6 +547,14 @@
       }
       if (lit || isF) { p.noFill(); p.stroke(ink, 200); p.strokeWeight(1); p.rect(-r * 1.1, -r * 1.1, r * 2.2, r * 2.2, 3); }
     }
+    function drawDot(n, r, mon, ease, dim, ghost, isF, lit) { // bolinha: cor = mecanismo (origem do dinheiro), tamanho = valor, contorno em tinta = circuito; nada mais leva cor
+      const c = MECH_COLOR[n.p.mechanism] || [120, 120, 120], ink = S.paper ? 22 : 240, a = 255 * dim;
+      p.stroke(ink, a); p.strokeWeight(mon ? 1.9 : 1.1); // o contorno garante leitura da tinta clara sobre o papel
+      if (ghost) p.noFill(); else p.fill(c[0], c[1], c[2], a);
+      p.circle(0, 0, r);
+      if (isF) { p.noStroke(); p.fill(ink, a); p.circle(0, 0, Math.max(3, r * 0.3)); } // aberto: miolo em tinta
+      if (lit || isF) { p.noFill(); p.stroke(ink, 220); p.strokeWeight(1); p.circle(0, 0, r + 9); }
+    }
     function drawNode(n) {
       const ghost = !n.revealed; // só na capa
       const age = ghost ? 1 : Math.min(1, (p.millis() - n.born) / 600);
@@ -562,6 +571,7 @@
       p.push();
       p.translate(n.scr.x, n.scr.y);
       if (S.nodeStyle === "muro") drawWall(n, r, mon, ease, dim, ghost, isF, isH || edgeEnd);
+      else if (S.nodeStyle === "bolinha") drawDot(n, r, mon, ease, dim, ghost, isF, isH || edgeEnd);
       else if (!S.paper) {
         p.blendMode(p.ADD);
         p.noStroke();
@@ -829,7 +839,8 @@
       setCutting(v) { S.cutting = !!v; cb.change(state()); },
       setPaused(v) { S.paused = !!v; cb.change(state()); },
       setPaper(v) { S.paper = !!v; if (spray) spray.clear(); cb.change(state()); },
-      setNodeStyle(v) { S.nodeStyle = v === "muro" ? "muro" : "circulo"; cb.change(state()); },
+      setNodeStyle(v) { S.nodeStyle = NODE_STYLES.includes(v) ? v : "circulo"; cb.change(state()); },
+      setMechColors(m) { Object.assign(MECH_COLOR, m || {}); cb.change(state()); }, // troca a paleta dos mecanismos em uso
       setReduced(v) { S.reduced = !!v; if (S.reduced) { for (const e of edges) e.growth = 1; if (spray) spray.clear(); view.zoom = view.zoomTarget; } cb.change(state()); },
       open(id, silent) { openNode(byId(id), silent); },
       close() { S.focus = null; touchInspect=null; focusOut(); cb.change(state()); },

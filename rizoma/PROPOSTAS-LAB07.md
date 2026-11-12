@@ -1,0 +1,141 @@
+# Lab 07 — Letra brasileira, cor com fundamento
+
+Página: `lab-07-letra-brasileira.html`. Módulo novo: `js/letreiro.js`. Motor: `js/rizoma.js` ganhou `nodeStyle: "bolinha"`, `opts.mechColors` e `R.setMechColors()`.
+
+Pedido do autor (12/11/2026): explorar o projeto inteiro e os gráficos antes de fechar as soluções visuais; manter a ideia do spray e a cartografia; ter uma tipografia brasileira **mutável**, com aleatoriedade controlada, a partir do Brasilêro (Crystian Cruz) e das fontes enviadas; explicar melhor os projetos; cor com propósito e sentido, não decoração; sair da iconografia de prédios empilhados (o nó-muro) e ficar com as bolinhas.
+
+Este documento guarda as decisões, as alternativas que não entraram e as referências, para o texto do TCC.
+
+---
+
+## 1. Análise das formas: as seis fontes e o Brasilêro
+
+### 1.1 De onde vêm
+
+Os sete arquivos enviados (`.otf`/`.ttf`; o `DuchaCompleta` veio nos dois formatos, iguais) são do projeto **Tipografia Vernacular 0800**, de Giovanna (Gi) Favetta. Cada fonte parte da foto de um letreiro improvisado registrado numa cidade brasileira, e a autora desenha a partir dele o alfabeto completo, com números, sinais e acentos. A página do projeto declara licença Creative Commons com uso comercial, acadêmico e pessoal liberado e revenda proibida; a versão exata da licença vem no arquivo que acompanha o download e **não veio junto com as fontes**: antes da banca, baixar o pacote e guardar o arquivo de licença em `assets/fontes/vernacular-0800/`.
+
+| Mão | Arquivo | Registro | Ferramenta aparente | Glifos | O que não desenha |
+|---|---|---|---|---|---|
+| Cachoeira Feiticeira | `CachoeiraFeiticeira-Regular.otf` | Ilha Grande/RJ | pincel redondo | 135 | travessão, ponto mediano, ª º |
+| Ducha Completa | `DuchaCompleta-Regular.ttf` | Curitiba/PR | marcador | 81 | travessão, ponto mediano, ª º |
+| Ofertas Hortifruti | `OfertasHortifruti.otf` | Bertioga/SP | pincel chato | 137 | travessão, ponto mediano, ª º, aspas curvas; acentos muito discretos |
+| Vendo Gelinho Cheia | `VendoGelinho-Cheia.otf` | São Paulo/SP | pincel largo | 215 | travessão |
+| Vendo Gelinho Vazada | `VendoGelinho-Vazada.otf` | São Paulo/SP | contorno | 105 | travessão, ponto mediano, ª º, õ |
+| Te Amo Jéssica | `TeAmoJessica-Regular.otf` | Florianópolis/SC | spray (pixo) | 246 | travessão |
+
+Nenhuma das seis tem tabela `GSUB`/`GPOS` (sem alternates, ligaduras ou kerning por recurso OpenType; a Cachoeira tem uma tabela `kern` antiga). Todas têm só caixa alta: as minúsculas repetem as maiúsculas. O que isso implica: qualquer variação (alternância de formas, compressão, balanço) precisa ser feita fora da fonte, em código.
+
+**Brasilêro** (Crystian Cruz, desenhada em 1999, grátis desde 2003): nasceu da análise de centenas de letreiros pintados à mão em várias cidades. A versão Profiça (2010, não lançada) usa OpenType para "melhor emular a estética vernacular", incluindo um recurso que **comprime as letras no fim da linha**. O arquivo do Brasilêro não foi enviado e o link de download da página é um Dropbox; não entrou no repositório porque a licença de redistribuição não foi conferida. Entrou a ideia.
+
+### 1.2 O que as formas têm em comum (e o que o código imita)
+
+1. **Linha de base instável**: as letras sobem e descem; nenhuma das seis alinha. → regra "balanço" (`sway`).
+2. **Largura irregular e aperto**: na Ofertas Hortifruti as letras estreitam para caber no cartaz; é o mesmo fenômeno que o Brasilêro Profiça formaliza. → regra "aperto no fim da linha" (`squeeze`).
+3. **Mistura de formas na mesma palavra**: a Ducha usa M, N, O em forma de minúscula entre maiúsculas; a Gelinho usa B, G, H, Q minúsculos. A mão troca de forma sem avisar. → regra "mão por palavra / por letra".
+4. **Cheio e vazado**: a Vendo Gelinho existe nas duas versões, que é como o pintor trabalha: primeiro o contorno, depois o enchimento. → regra "vazada → cheia".
+5. **O pixo é outra coisa**: a Te Amo Jéssica é a mais próxima do tema do TCC e a menos legível. Entra, mas com limite. → regra "limite de leitura".
+
+### 1.3 A gramática da mutação (o que está em `js/letreiro.js`)
+
+| Regra | Como funciona | Por quê |
+|---|---|---|
+| Mão por palavra (padrão), por letra, ou uma mão só | sorteio com semente (`seed`): a mesma página abre igual; cada projeto usa o próprio `id` como semente | uma placa é escrita por uma pessoa de cada vez; aleatoriedade sem semente viraria ruído a cada carregamento |
+| Balanço | cada letra recebe deslocamento vertical (±7% do corpo), rotação (±5,5°) e escala (±8%), proporcionais a `sway` | item 1.2.1 |
+| Aperto no fim da linha | se a linha não cabe, as últimas 55% das letras recebem `scaleX` crescente até 42% da largura; se nem assim cabe, o corpo da linha inteira diminui | item 1.2.2; Brasilêro Profiça |
+| Repintura | a cada `mutate` ms uma palavra troca de mão, letra por letra (70 ms entre letras), com névoa (`blur` que assenta em 0,55 s) | a camada nova sobre a antiga: o muro repintado. Desligada com `prefers-reduced-motion` |
+| Vazada → cheia | `L.encher(true)` troca a Gelinho Vazada pela Cheia letra a letra | item 1.2.4; serve para foco e para "o que já foi pintado" |
+| Limite de leitura | o pixo só em palavras de até 3 letras; uma mão que não desenha um sinal da palavra não é sorteada para ela (teste por pixel: o desenho de `Á` precisa ser diferente do de `A`) | legibilidade; a Hortifruti mapeia acentos para formas quase iguais à letra sem acento |
+| Corpo igualado | cada mão recebe um fator de corpo para que a altura da versal (`H`) seja a mesma em todas | sem isso a troca de mão muda o tamanho da palavra |
+| Só títulos | marca, chamada de cada tela, nome do projeto na ficha, título da estampa | regra do Lab 01: a letra sofre a cidade, o dado não; valor e ano ficam em Arial |
+
+Onde entrou: marca no topo (muta a cada 6 s), chamada do campo (4,2 s), título da aba Cores (5,2 s), nome do projeto na ficha (sem mutação; semente = id do projeto), letreiro de teste na aba Letras (com todos os controles), título da estampa "Meu micélio" (Cachoeira).
+
+### 1.4 Alternativas consideradas e não adotadas
+
+- **Fonte variável própria (eixo de "desgaste")**: exigiria desenhar fonte; fora do escopo do protótipo. Fica como proposta de continuação.
+- **Distorção por p5 (letra como malha deformada, como no Lab 01)**: o Lab 01 já tem a tensão; aqui a mutação é de mão, não de forma. As duas podem coexistir, mas juntas competem.
+- **Sortear a cada carregamento, sem semente**: descartado; a marca precisa ser reconhecível.
+- **Usar o pixo em tudo**: descartado pela legibilidade; entra por cota.
+- **Brasilêro como arquivo no repositório**: adiado até conferir a licença.
+
+---
+
+## 2. Cor com fundamento
+
+### 2.1 A regra
+
+A cor faz um trabalho só: **dizer por qual mecanismo o dinheiro chegou ao projeto**. O tamanho diz quanto. O contorno diz o circuito (grosso = monumental, fino = capilar). Todo o resto é preto (`#161616`) sobre papel (`#F7F6F1`). As seis linhas de fuga, que tinham seis cores, passam a preto: ligação é relação, não categoria.
+
+Base: Bertin (1967) separa as variáveis visuais e dá ao matiz a função de distinguir categorias e ao tamanho a de ordenar quantidades; Tufte (1990) trata a cor como rótulo e pede que ela não compita com o dado. No método de visualização usado aqui, "cor segue a entidade, nunca o valor", "texto veste tinta, nunca a cor da série" e "cor nunca vai sozinha" (legenda sempre presente, mecanismo por extenso na ficha).
+
+### 2.2 Por que estas três tintas
+
+| Mecanismo | Tinta | Hex | OKLCH L / C | Contraste com o papel |
+|---|---|---|---|---|
+| Incentivo Fiscal | magenta | `#C9186A` | 0,548 / 0,211 | 5,08 |
+| Fundo Municipal | azul | `#1273C9` | 0,551 / 0,156 | 4,49 |
+| Descentra | amarelo | `#E0A500` | 0,757 / 0,156 | 2,03 (por isso leva contorno preto sempre) |
+
+Magenta, azul-ciano e amarelo são as tintas com que se imprime cartaz e lambe (com o preto). São primárias da mistura de pigmento: nenhuma se obtém das outras duas, como cada mecanismo é uma porta diferente do dinheiro público. O rosa do IF e o azul do Fundo dos labs anteriores continuam, mais escuros para ler no papel; só o Descentra troca o verde pelo amarelo, e o verde passa a significar **encontro de Fundo com Descentra** (os dois mecanismos do circuito capilar). Esta ligação entre tinta de impressão e fomento é leitura de projeto, não dado; precisa de defesa no texto do TCC.
+
+### 2.3 O teste (validador de paleta, OKLab/OKLCH, simulação de Machado, Oliveira e Fernandes 2009, papel `#F7F6F1`, todos os pares)
+
+| Critério | Paleta anterior `#FF4F9A #31A8FF #65E77D` | Tintas `#C9186A #1273C9 #E0A500` |
+|---|---|---|
+| Claridade na faixa 0,43–0,77 | **falha** (verde 0,83) | passa (0,55 / 0,55 / 0,76) |
+| Separação com daltonismo (alvo ≥ 8) | 15,1 (pior par verde–rosa, deutan) | 16,8 (pior par azul–magenta, protan) |
+| Separação em visão normal (≥ 15) | 29,1 | 30,1 |
+| Contraste com o papel (≥ 3:1) | rosa 2,84, azul 2,37, verde 1,46 | magenta 5,08, azul 4,49, amarelo 2,03 |
+
+Outras candidatas testadas e descartadas: CMY de impressão puro (`#E5097F #009FE3 #FFD400`: amarelo com claridade 0,88, fora da faixa, contraste 1,32) e `#D6246E #1778C8 #C99700` (passa, mas o amarelo fica ocre). O botão "Cor · tintas / anterior" (tecla C) troca a paleta ao vivo para comparar.
+
+### 2.4 Mistura como pigmento
+
+No Lab 04 o rastro misturava as cores das linhas por média aritmética (luz): azul com amarelo dava cinza. No Lab 07 cada agente carrega a tinta do mecanismo do nó onde nasceu e a deposita por **média geométrica por canal** (mistura subtrativa aproximada): tinta sobre tinta escurece e muda de matiz. Resultado: IF + Fundo = violeta `#3C3592`; IF + Descentra = vermelho `#D43F0A`; Fundo + Descentra = verde `#3F8A0E`. Onde o rastro muda de cor, dois mecanismos se encontraram por uma linha ligada: a mistura é dado. O micélio livre (sem linha) continua cinza e quase não tinge (`mixFree` 0,06).
+
+### 2.5 O nó: bolinha, não muro
+
+A pedido do autor, sai o nó-muro (empena/fachadas) e volta a bolinha. `nodeStyle: "bolinha"` no motor: preenchimento na tinta do mecanismo, raio pelo valor (já era), contorno em tinta preta com peso pelo circuito, miolo preto quando aberto, anel quando em foco. O círculo é a forma com menos "iconografia": não afirma prédio, muro nem mapa. O muro continua disponível no Lab 04 e no motor.
+
+---
+
+## 3. Explicação do projeto (a ficha)
+
+Antes: cinco pares "chave: valor" (ano, mecanismo, edital, valor, escala). Agora: seis blocos em frases, gerados só com o que há em `js/data.js` (nada inferido):
+
+1. **O que é**: ano, edital, valor.
+2. **De onde vem o dinheiro**: a frase do mecanismo (renúncia fiscal captada com empresas / Fundo direto / Descentra direto com pontuação territorial).
+3. **Quanto é**: posição no corpus (nº maior entre 20), razão para a mediana do corpus (R$ 79,9 mil), participação no total do ano, mediana do próprio mecanismo; e uma **régua** em SVG com os 20 projetos em três faixas (uma por mecanismo), o aberto em destaque e os outros clicáveis. É um gráfico de pontos (dot strip) por categoria: um eixo, cor pela entidade, texto preto, tooltip nativo no `<title>`.
+4. **Circuito**: a definição e o aviso de que monumental/capilar são categorias de análise do TCC, não classificação oficial (pedido do documento de fontes).
+5. **Parentes documentados**: as relações de `CARTOGRAFIA_RELATIONS`, com o porquê e a fonte.
+6. **O que ainda não se sabe**: regional, proponente, local, fotos; a observação de `issue`; a fonte do registro.
+
+Os blocos "Linhas ligadas" e "Ligações possíveis" do Lab 04 continuam abaixo.
+
+---
+
+## 4. O que fica para depois
+
+- Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.
+- Levar letreiro e tintas para o Lab 05 (o sistema inteiro) e para o protótipo principal, se o autor aprovar.
+- Régua de valores também nos Indicadores.
+- Fonte variável própria com eixo de desgaste (proposta).
+- Testar no Android real (o emulador não reproduz toque).
+
+---
+
+## Referências
+
+BERTIN, Jacques. **Sémiologie graphique**: les diagrammes, les réseaux, les cartes. Paris: Mouton; Gauthier-Villars, 1967.
+
+CRUZ, Crystian. **Brasilêro**: vernacular typeface. 1999. Disponível em: https://crystiancruz.myportfolio.com/brasilero. Acesso em: 12 nov. 2026.
+
+FAVETTA, Giovanna. **Tipografia Vernacular 0800**. Disponível em: https://www.gifavetta.art/tipografia-0800. Acesso em: 12 nov. 2026.
+
+JONES, Jeff. Characteristics of pattern formation and evolution in approximations of Physarum transport networks. **Artificial Life**, v. 16, n. 2, p. 127-153, 2010.
+
+MACHADO, Gustavo M.; OLIVEIRA, Manuel M.; FERNANDES, Leandro A. F. A physiologically-based model for simulation of color vision deficiency. **IEEE Transactions on Visualization and Computer Graphics**, v. 15, n. 6, p. 1291-1298, 2009.
+
+OTTOSSON, Björn. **A perceptual color space for image processing** (OKLab). 2020. Disponível em: https://bottosson.github.io/posts/oklab/. Acesso em: 12 nov. 2026.
+
+TUFTE, Edward R. **Envisioning information**. Cheshire: Graphics Press, 1990.

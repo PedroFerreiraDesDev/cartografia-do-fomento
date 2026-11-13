@@ -22,7 +22,7 @@
    API: Rizoma.mount({ container, data, relations, lines, paper, reduced, depth, intro,
                        treeTop, panelWidth, onOpen, onChange, onStarted, onHover })
         R.toggleLine(t) R.setLine(t,on) R.setMode("rizoma"|"arvore") R.setDepth(v)
-        R.setIntro(v) R.setCutting(v) R.setPaused(v) R.setPaper(v) R.setReduced(v) R.setNodeStyle("circulo"|"muro"|"bolinha") R.setMechColors({mecanismo:[r,g,b]}) R.setEdgeColor("nos"|"natureza")
+        R.setIntro(v) R.setCutting(v) R.setPaused(v) R.setPaper(v) R.setReduced(v) R.setNodeStyle("circulo"|"muro"|"bolinha"|"grapixo") R.setMechColors({mecanismo:[r,g,b]}) R.setEdgeColor("nos"|"natureza")
         R.open(id, silent) R.close() R.connections(id) R.potentials(id) R.info(id)
         R.state() R.save(name) R.reset() R.resize() R.setVisible(v) R.refresh()      */
 (function () {
@@ -59,7 +59,7 @@
     const active = Object.assign({}, DEFAULT_ACTIVE, opts.lines || {});
     const cb = { open: opts.onOpen || function () {}, change: opts.onChange || function () {}, started: opts.onStarted || function () {}, hover: opts.onHover || null };
     const MECH_COLOR = Object.assign({ "Incentivo Fiscal": [255, 79, 154], "Fundo Municipal": [49, 168, 255], "Descentra": [101, 231, 125] }, opts.mechColors || {}); // paleta dos labs; opts.mechColors troca (Lab 07: tintas de impressão)
-    const NODE_STYLES = ["circulo", "muro", "bolinha"]; // bolinha: círculo na cor do mecanismo, contorno em tinta
+    const NODE_STYLES = ["circulo", "muro", "bolinha", "grapixo"]; // bolinha: círculo na cor do mecanismo, contorno em tinta; grapixo: a mesma bolinha com sombra e brilho, como letra de grafite
     let EDGE_COLOR = opts.edgeColor === "nos" ? "nos" : "natureza"; // "nos": a linha leva a tinta dos dois projetos que liga (Lab 07); "natureza": a cor do tipo de linha
     const lg = v => Math.log(Math.max(v, 1) / 255); // para misturar duas tintas como pigmento (média geométrica)
     const S = { nodeStyle: NODE_STYLES.includes(opts.nodeStyle) ? opts.nodeStyle : "circulo", mode: "rizoma", depth: !!opts.depth, intro: !!opts.intro, cutting: false, paused: false, paper: !!opts.paper, reduced: !!opts.reduced, focus: null, hover: null, hoverEdge: null, trail: [], started: false, cutKeys: new Set(), visible: true };
@@ -253,8 +253,19 @@
       const frozen = new Set();
       if (anchor) { frozen.add(anchor); for (const e of edges) { if (e.a === anchor && e.b.revealed) frozen.add(e.b); if (e.b === anchor && e.a.revealed) frozen.add(e.a); } }
       if (S.hoverEdge) { frozen.add(S.hoverEdge.a); frozen.add(S.hoverEdge.b); }
+      // Com 3D e margens definidas (labs), quem segura o campo é uma força de centro calibrada pela área útil, não as paredes.
+      // Motivo: nós que se repelem com força 1/d² dentro de uma caixa 3D terminam encostados nas faces (como carga em condutor);
+      // aqui as faces eram as margens de cima e de baixo, e os nós formavam duas fileiras. Com força de centro linear, a mesma
+      // repulsão se distribui pelo volume de um elipsoide. A constante de cada eixo vem do equilíbrio de um elipsoide uniforme
+      // de semieixos (a, b, c): k_i = 3·N·q·L_i / (a·b·c), com L_i ≈ (1/a_i) / Σ(1/a_j).
+      const M0 = margin(), trap = D && opts.margin ? (() => {
+        const hw = Math.max(60, (p.width - M0.l - M0.r) / 2), hh = Math.max(60, (p.height - M0.t - M0.b) / 2);
+        const a = hw * 0.8, b = hh * 0.8, c = D * 0.9, q3 = 3 * nodes.length * REP * SPREAD * SPREAD / (a * b * c), inv = 1 / a + 1 / b + 1 / c;
+        return { cx: M0.l + hw, cy: M0.t + hh, kx: 0.28 * q3 / (a * inv), ky: 0.65 * q3 / (b * inv), kz: 0.6 * q3 / (c * inv) }; // 0,28 / 0,65 / 0,6: calibrados no navegador (20 nós discretos ocupam menos que o elipsoide contínuo da fórmula)
+      })() : null;
       for (const n of nodes) {
-        n.acc.add((cx - n.pos.x) * CENTER / SPREAD, (cy - n.pos.y) * CENTER / SPREAD, -n.pos.z * CENTER * 1.5);
+        if (trap) n.acc.add((trap.cx - n.pos.x) * trap.kx, (trap.cy - n.pos.y) * trap.ky, -n.pos.z * trap.kz);
+        else n.acc.add((cx - n.pos.x) * CENTER / SPREAD, (cy - n.pos.y) * CENTER / SPREAD, -n.pos.z * CENTER * 1.5);
         const still = frozen.has(n);
         if (!still && drift) {
           const ang = p.noise(n.seed, p.frameCount * 0.003) * p.TWO_PI * 2;
@@ -266,11 +277,21 @@
         if (n === S.hover && !depthOn()) { const dx = p.mouseX - n.scr.x, dy = p.mouseY - n.scr.y, m = Math.hypot(dx, dy) || 1, k = Math.min(0.6, m * 0.05); n.pos.add(dx / m * k, dy / m * k, 0); } // ímã sutil
         n.pos.add(p5.Vector.mult(n.vel, dt));
         // margens medidas na TELA: usa a posição projetada do último quadro (perspectiva, giro e zoom incluídos) e corrige a posição do mundo
-        const M = margin(), soft = 110, sc = Math.max(0.5, (n.scr && n.scr.s) || view.zoom || 1), sx = n.scr ? n.scr.x : n.pos.x, sy = n.scr ? n.scr.y : n.pos.y;
-        if (sx < M.l + soft) n.vel.x += (M.l + soft - sx) / sc * 0.02; if (sx > p.width - M.r - soft) n.vel.x -= (sx - (p.width - M.r - soft)) / sc * 0.02;
-        if (sy < M.t + soft) n.vel.y += (M.t + soft - sy) / sc * 0.02; if (sy > p.height - M.b - soft) n.vel.y -= (sy - (p.height - M.b - soft)) / sc * 0.02;
-        if (sx < M.l) n.pos.x += (M.l - sx) / sc; if (sx > p.width - M.r) n.pos.x -= (sx - (p.width - M.r)) / sc;
-        if (sy < M.t) n.pos.y += (M.t - sy) / sc; if (sy > p.height - M.b) n.pos.y -= (sy - (p.height - M.b)) / sc;
+        const M = M0, soft = trap ? 50 : 110, sc = Math.max(0.5, (n.scr && n.scr.s) || view.zoom || 1), sx = n.scr ? n.scr.x : n.pos.x, sy = n.scr ? n.scr.y : n.pos.y;
+        // a margem é medida na TELA; o empurrão (ax, ay) e a trava (hx, hy) nascem em eixos de tela e são levados ao campo girado.
+        // Antes iam direto para pos.x/pos.y: com o campo girado além de 90° o empurrão saía para o lado contrário e os nós fugiam da tela.
+        let ax = 0, ay = 0, hx = 0, hy = 0;
+        if (sx < M.l + soft) ax += (M.l + soft - sx) / sc * 0.02; if (sx > p.width - M.r - soft) ax -= (sx - (p.width - M.r - soft)) / sc * 0.02;
+        if (sy < M.t + soft) ay += (M.t + soft - sy) / sc * 0.02; if (sy > p.height - M.b - soft) ay -= (sy - (p.height - M.b - soft)) / sc * 0.02;
+        if (sx < M.l) hx += (M.l - sx) / sc; if (sx > p.width - M.r) hx -= (sx - (p.width - M.r)) / sc;
+        if (sy < M.t) hy += (M.t - sy) / sc; if (sy > p.height - M.b) hy -= (sy - (p.height - M.b)) / sc;
+        if (ax || ay || hx || hy) {
+          if (D) { // tela → campo: transposta da rotação usada em project()
+            const cyy = Math.cos(view.ry), syy = Math.sin(view.ry), cxx = Math.cos(view.rx), sxx = Math.sin(view.rx);
+            n.vel.x += ax * cyy + ay * sxx * syy; n.vel.y += ay * cxx; n.vel.z += ax * syy - ay * sxx * cyy;
+            n.pos.x += hx * cyy + hy * sxx * syy; n.pos.y += hy * cxx; n.pos.z += hx * syy - hy * sxx * cyy;
+          } else { n.vel.x += ax; n.vel.y += ay; n.pos.x += hx; n.pos.y += hy; }
+        }
         n.pos.x = p.constrain(n.pos.x, 20, p.width - 20); n.pos.y = p.constrain(n.pos.y, 20, p.height - 20); n.pos.z = D ? p.constrain(n.pos.z, -D, D) : 0;
       }
     }
@@ -557,9 +578,12 @@
     }
     function drawDot(n, r, mon, ease, dim, ghost, isF, lit) { // bolinha: cor = mecanismo (origem do dinheiro), tamanho = valor, contorno em tinta = circuito; nada mais leva cor
       const c = MECH_COLOR[n.p.mechanism] || [120, 120, 120], ink = S.paper ? 22 : 240, a = 255 * dim;
+      const gx = S.nodeStyle === "grapixo" && !ghost; // anatomia da letra de grafite: sombra ("3D"), preenchimento, contorno, brilho; tudo na mesma tinta
+      if (gx) { const o = Math.max(1.5, r * 0.11); p.noStroke(); p.fill(c[0] * 0.72, c[1] * 0.72, c[2] * 0.72, a); p.circle(o, o * 1.15, r); } // sombra: a tinta 28% mais escura, deslocada
       p.stroke(ink, a); p.strokeWeight(mon ? 1.9 : 1.1); // o contorno garante leitura da tinta clara sobre o papel
       if (ghost) p.noFill(); else p.fill(c[0], c[1], c[2], a);
       p.circle(0, 0, r);
+      if (gx && r > 9 && !isF) { const pw = S.paper ? [247, 246, 241] : [255, 255, 255]; p.noFill(); p.stroke(c[0] * 0.55 + pw[0] * 0.45, c[1] * 0.55 + pw[1] * 0.45, c[2] * 0.55 + pw[2] * 0.45, a); p.strokeWeight(Math.max(1.2, r * 0.09)); p.strokeCap(p.ROUND); p.arc(0, 0, r * 0.6, r * 0.6, p.PI * 1.08, p.PI * 1.42); } // brilho: a tinta 45% mais clara, no alto à esquerda
       if (isF) { p.noStroke(); p.fill(ink, a); p.circle(0, 0, Math.max(3, r * 0.3)); } // aberto: miolo em tinta
       if (lit || isF) { p.noFill(); p.stroke(ink, 220); p.strokeWeight(1); p.circle(0, 0, r + 9); }
     }
@@ -579,7 +603,7 @@
       p.push();
       p.translate(n.scr.x, n.scr.y);
       if (S.nodeStyle === "muro") drawWall(n, r, mon, ease, dim, ghost, isF, isH || edgeEnd);
-      else if (S.nodeStyle === "bolinha") drawDot(n, r, mon, ease, dim, ghost, isF, isH || edgeEnd);
+      else if (S.nodeStyle === "bolinha" || S.nodeStyle === "grapixo") drawDot(n, r, mon, ease, dim, ghost, isF, isH || edgeEnd);
       else if (!S.paper) {
         p.blendMode(p.ADD);
         p.noStroke();

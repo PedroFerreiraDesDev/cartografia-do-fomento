@@ -175,6 +175,63 @@ Referências desta rodada (conferir autores e edições na biblioteca antes de c
 
 ---
 
+## 3B. Ajuste de 13/11/2026: correção do 3D e paleta ampliada
+
+Pedido do autor: corrigir o 3D ("quando começo a mexer no 3D os pontos vão indo para a lateral e somem da tela") e ampliar as cores, que ele achou "muito limitadas", olhando as regras de design de cor e o artigo de Calvo Ivanovic (2025).
+
+### 3B.1 O defeito do 3D: duas causas, as duas no motor (`js/rizoma.js`)
+
+1. **Empurrão no eixo errado.** As margens do campo são medidas na tela, mas a correção era somada direto às coordenadas do campo (`pos.x`, `pos.y`). Com o campo girado além de 90°, o eixo x do campo aponta para o lado contrário da tela: o empurrão que devia trazer o nó para dentro o levava para fora, cada vez mais. Correção: o empurrão nasce em eixos de tela e é convertido para o campo pela transposta da rotação usada em `project()`. Medido no navegador, com os 20 nós revelados e dois arrastos de giro: antes, 6 nós fora da tela; depois, nenhum.
+2. **Nós encostados nas margens.** Sem linhas ligadas, os nós terminavam em duas fileiras, em cima e embaixo. É física: pontos que se repelem com força 1/d² dentro de uma caixa 3D vão para as faces, como carga elétrica num condutor, e as faces aqui eram as margens. Correção: quando há 3D e margens definidas, quem segura o campo é uma força de centro linear, calibrada pela área útil (equilíbrio de um elipsoide uniforme de semieixos a, b, c: k_i = 3·N·q·L_i/(a·b·c), com fatores 0,28 / 0,65 / 0,6 ajustados no navegador). Os nós se distribuem pelo volume em vez de ir para a borda. Vale para os labs que passam `opts.margin` (04, 05 e 07); o site principal não muda.
+
+### 3B.2 Paleta ampliada: de 3 cores para 23, todas com função
+
+O matiz continua dizendo o mecanismo. O que cresce é o **tom**: cada tinta abre numa família de cinco, e cada tom tem um trabalho. A referência é a anatomia da letra de grafite e do grapixo: preenchimento, contorno, sombra ("3D") e brilho, quase sempre em tons da mesma cor.
+
+| Tom | Como é feito | Incentivo Fiscal | Fundo | Descentra | Trabalho |
+|---|---|---|---|---|---|
+| funda | tinta × 0,5 | `#640C35` | `#093A64` | `#5C4000` | texto e rótulo do mecanismo (contraste 8,9 a 11,8 com o papel) |
+| sombra | tinta × 0,72 | `#91114C` | `#0D5391` | `#855B00` | sombra da bolinha |
+| base | a tinta | `#C9186A` | `#1273C9` | `#B97F00` | preenchimento, linha, legenda: é a cor que identifica |
+| clara | 55% tinta + 45% papel | `#DE7CA7` | `#79AEDB` | `#D5B56C` | brilho da bolinha, rastro |
+| luz | 20% tinta + 80% papel | `#EECAD6` | `#C9DCE9` | `#EBDEC1` | fundo de etiqueta; nunca identifica sozinha |
+
+Mais as três misturas (violeta `#3C3592`, tijolo `#C1370A`, verde `#3A790E`) e cinco neutros do muro (cal `#FFFFFF`, cimento `#F7F6F1`, reboco `#D4D1C8`, concreto `#747474`, pixo `#161616`).
+
+Separação entre as três tintas em cada tom (distância OKLab; mínimo 15 em visão normal e 8 com daltonismo): funda 14,9 / 9,1; sombra 18,8 / 11,0; base 23,8 / 13,7; clara 17,9 / 7,9; luz 6,2 / 2,6. Por isso: base e sombra identificam; funda identifica com apoio do texto; clara só aparece dentro da bolinha, que já tem a base; luz é só superfície.
+
+No campo: `nodeStyle: "grapixo"` (botão "Bolinha · grafite", tecla B, compara com a lisa). Na ficha: a etiqueta do mecanismo usa fundo luz e texto fundo.
+
+### 3B.3 Regras de design de cor aplicadas
+
+- **Os sete contrastes de Itten (1961).** Usados: matiz (três tintas), claro e escuro (pixo sobre muro; cinco degraus por tinta), quente e frio (magenta e ocre quentes, azul frio), saturação (tinta viva só nos dados, interface em neutros), quantidade (muito muro, pouco pixo, pouquíssima tinta; a proporção 60–30–10 é regra prática de mercado, sem autor único). Não usados: complementares e simultâneo.
+- **Interação das cores (Albers, 1963).** Uma cor muda conforme a vizinha; o contorno preto isola cada bolinha.
+- **Harmonia.** Tríade de matizes + escala monocromática por matiz + escala de neutros.
+
+### 3B.4 O artigo de Calvo Ivanovic (2025) como lente
+
+O artigo propõe o quadro Sustainable Colour Design Strategies, com oito estratégias (A a H) para design de cor em produtos. Não trata de interfaces; aqui ele serve de lente, sem afirmar que o site é "sustentável".
+
+| Estratégia do artigo | O que diz | No Lab 07 |
+|---|---|---|
+| C. Identidade por cores locais (C2, C3, C4) | cada lugar tem cores que vêm dos seus materiais e da sua história; coletar o significado local da cor | paleta do muro de BH: cimento, azulejo, terra de minério, pixo |
+| C1. Envolver comunidades | planos de cor feitos com quem vive o lugar | **não feito**: ouvir artistas do corpus sobre as cores é o próximo passo |
+| B. Refletir sobre tendências (B3, B5) | cores atemporais (terras, neutros) e icônicas; marca com cor consistente | mesma cor = mesmo mecanismo em todas as telas; base em terras e neutros |
+| D. Relatividade e ciclo de vida da cor (D1) | a cor desbota e muda, e isso pode ser valor; a cor depende da luz, do material, do observador e das cores vizinhas | o rastro evapora; as linhas misturam tintas; contorno isola a vizinhança |
+| F. Imperfeição (F2, F4) | cor chapada e padronizada é rara; justaposição e mistura óptica | sombra, brilho e mistura visível |
+| G3. A cor preexistente participa | aceitar a cor que já está no material | o muro (papel) é a maior área de cor |
+| A, E, H | formação, biotecnologia, gestão industrial da cor | fora do alcance de um site |
+
+**Alternativa testada e descartada: desbotar a bolinha pelo ano** (estratégia D1 levada ao dado: 2017 gasto, 2024 novo). Com 55% de desbotamento em 2017, o pior par entre mecanismos cai para 4,1 de distância com daltonismo simulado (mínimo 8), o contraste com o papel fica entre 1,6 e 2,2 (mínimo 3) e o passo entre anos vizinhos é de 2 a 4, quase imperceptível. O ano continua na linha "Ano" e na ficha.
+
+Referências desta rodada:
+
+- ALBERS, Josef. **Interaction of color**. New Haven: Yale University Press, 1963.
+- CALVO IVANOVIC, Ingrid. Sustainable colour design strategies: a framework for action. **Coloration Technology**, v. 141, n. 6, p. 776-800, 2025. DOI: 10.1111/cote.70018. (O sobrenome da autora é composto, "Calvo Ivanovic", como aparece no cabeçalho do artigo.)
+- ITTEN, Johannes. **The art of color**: the subjective experience and objective rationale of color. New York: Reinhold, 1961.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.

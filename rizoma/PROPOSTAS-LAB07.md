@@ -232,6 +232,44 @@ Referências desta rodada:
 
 ---
 
+## 3C. Ajuste de 13/11/2026, segunda rodada: rastro de spray, só três tintas, o artigo como base
+
+Pedido do autor: "ainda não está legal"; quer a ideia do **rastro de spray**; as cores ficam **só as três**, mudando os tons; e o artigo de Calvo Ivanovic (2025) deve ser a **base** das decisões de cor. Esta seção substitui, na 3A e na 3B, tudo o que fala de mistura de pigmento (violeta, tijolo, verde).
+
+### 3C.1 O rastro de spray
+
+No lugar da mancha borrada, o que se vê agora é uma camada de grão (`spray`, em `lab-07-letra-brasileira.html`). O mapa de baixa resolução do Physarum continua existindo, mas só para os agentes sentirem o caminho.
+
+- Cada agente ligado solta três grãos por passo, espalhados em volta dele (distribuição normal, desvio de 2,6 px). O agente que segue a mão solta quatro, com desvio de 4 px: o rastro acompanha o gesto.
+- **Os tons variam dentro da mesma tinta**: metade do grão na tinta base, um quarto no tom claro, um quinto na sombra, um vigésimo no tom fundo. Seis por cento dos grãos são gotas maiores.
+- O agente sem linha ligada solta só uma névoa clara, de vez em quando.
+- Quando um projeto é revelado, ele aparece com um jato de 80 grãos da tinta dele.
+- **O spray seca**: a cada 20 quadros todo grão perde um pouco de tinta e some em cerca de 6 s, 3 s ou 1,5 s, conforme o botão de evaporação. Ele seca rápido de propósito, para o grão não ficar para trás quando o campo gira.
+- O botão "Rastro · spray" (tecla G) compara com a mancha anterior. Em telas muito grandes a camada tem menos pixels, para o custo ficar limitado. Medido: 60 quadros por segundo, 2 ms por quadro com 200 agentes.
+
+### 3C.2 Só três tintas
+
+- **Sem cor nova no encontro.** A mistura de pigmento saiu. Onde dois mecanismos se encontram, os grãos das duas tintas ficam lado a lado e o olho faz a passagem (justaposição, ação F4 do artigo).
+- **Linhas.** `opts.edgeMix: "optica"` no motor: a linha entre tintas diferentes é feita de trechos de uma e de outra; perto de cada ponta predomina a tinta daquele projeto.
+- A paleta fica em 15 tons de tinta e 5 neutros do muro. A tecla da comparação de paleta passou de C para V, porque C já era o corte de linhas no motor.
+
+### 3C.3 O artigo como base
+
+A aba Cores agora abre com o quadro do artigo, e cada estratégia que cabe num site vira uma decisão:
+
+| Estratégia (Calvo Ivanovic, 2025) | Decisão |
+|---|---|
+| C. Identidade por cores locais | as três tintas saem do muro de BH; fundo de cimento, texto de pixo |
+| B. Cores que duram, marca consistente | só três tintas, sempre as mesmas, mesmo sentido em todas as telas |
+| F. Imperfeição e justaposição | rastro em grão de vários tons; duas tintas lado a lado, sem quarta cor |
+| D. A cor tem ciclo de vida | o spray seca e some |
+| G. A cor que já existe participa | o muro é a maior área de cor |
+| C1. Envolver a comunidade | **não feito**: mostrar a paleta a artistas do corpus |
+
+Limite a registrar no TCC: o artigo trata de cor sustentável em produtos físicos. Aqui ele é usado como método para decidir cor, não como prova de sustentabilidade do site. As estratégias A, E e H não se aplicam.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.

@@ -99,15 +99,16 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div id="trailStage" class="layer" aria-hidden="true"></div>
   <div id="rizomaStage" class="layer"></div>
 
-  <div class="copy"><div class="kicker">LAB 07 / LETRA BRASILEIRA, COR COM FUNDAMENTO</div><h1 id="headline">A RUA ESCREVE O MAPA</h1><div id="mechLegend" class="legend"><span><i style="--c:var(--if)"></i>Incentivo Fiscal</span><span><i style="--c:var(--fundo)"></i>Fundo Municipal</span><span><i style="--c:var(--desc)"></i>Descentra</span><span class="shape">tamanho = valor</span><span class="shape">contorno grosso = monumental</span></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue uma linha: ela sai na tinta de um projeto e chega na tinta do outro. Onde duas tintas se cruzam, a mistura mostra quais mecanismos se encontraram.</p></div>
+  <div class="copy"><div class="kicker">LAB 07 / LETRA BRASILEIRA, COR COM FUNDAMENTO</div><h1 id="headline">A RUA ESCREVE O MAPA</h1><div id="mechLegend" class="legend"><span><i style="--c:var(--if)"></i>Incentivo Fiscal</span><span><i style="--c:var(--fundo)"></i>Fundo Municipal</span><span><i style="--c:var(--desc)"></i>Descentra</span><span class="shape">tamanho = valor</span><span class="shape">contorno grosso = monumental</span></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue uma linha: o spray de cada projeto corre até os parentes. São só três tintas, em vários tons; onde duas se encontram, os pontos ficam lado a lado.</p></div>
 
   <div class="tools">
     <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
     <div class="row">
       <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
-      <button id="palBtn" class="active" title="Tecla C · compara as tintas do muro de BH com a paleta anterior">Cor · muro de BH</button>
+      <button id="palBtn" class="active" title="Tecla V · compara as tintas do muro de BH com a paleta anterior">Cor · muro de BH</button>
       <button id="lineBtn" class="active" title="Tecla L · linhas na tinta dos projetos ou em preto">Linhas · tinta</button>
       <button id="dotBtn" class="active" title="Tecla B · bolinha com sombra e brilho de grafite, ou lisa">Bolinha · grafite</button>
+      <button id="lookBtn" class="active" title="Tecla G · rastro em grão de spray ou em mancha">Rastro · spray</button>
       <span class="group" aria-label="Quantidade de agentes"><button id="lessBtn" title="Menos agentes">−</button><button id="countBtn" class="mid" title="Agentes ativos">0 agentes</button><button id="moreBtn" title="Mais agentes">+</button></span>
       <button id="evapBtn" title="Tecla E">Evaporação · média</button>
       <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
@@ -180,79 +181,73 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 
   <section id="pCores" class="panel" hidden aria-label="Cores">
     <div class="pwrap">
-      <div class="kicker">CORES / O MURO DE BELO HORIZONTE EM CAMADAS</div>
+      <div class="kicker">CORES / TRÊS TINTAS, MUITOS TONS</div>
       <h2 id="coresTitle">COR É DE ONDE VEM O DINHEIRO</h2>
-      <p class="lead">A cor faz um trabalho só: dizer por qual mecanismo o dinheiro chegou ao projeto. E cada cor sai de uma camada do muro de Belo Horizonte: o cimento, o pixo, o grapixo e o grafite.</p>
+      <p class="lead">São três tintas e só três. O que muda é o tom. Cada decisão de cor segue uma estratégia do quadro de design de cor de Calvo Ivanovic (2025).</p>
       <div class="pctl"><button id="palBtn2">Comparar com a paleta anterior</button></div>
+
+      <h3>O quadro que guia a cor</h3>
+      <p>O artigo propõe estratégias para decidir cor em design, com ações para cada uma. Ele trata de produtos, não de sites; aqui cada estratégia que cabe num site virou uma decisão.</p>
+      <div class="vwrap"><table class="vt">
+        <thead><tr><th>Estratégia do artigo</th><th>O que ela pede</th><th>A decisão no site</th></tr></thead>
+        <tbody>
+          <tr><td>C. Identidade por cores locais</td><td>Usar as cores que vêm dos materiais e da história do lugar, e levantar o que elas significam ali.</td><td>As três tintas saem do muro de Belo Horizonte: a lata de spray, o azulejo da Pampulha e a terra de minério. O fundo é o cimento e o texto é o pixo.</td></tr>
+          <tr><td>B. Cores que duram, marca consistente</td><td>Preferir poucas cores atemporais a modas, e não mudar a cor da marca a cada ocasião.</td><td>Só três tintas, sempre as mesmas, valendo o mesmo mecanismo em todas as telas. Nada de cor nova para enfeitar.</td></tr>
+          <tr><td>F. Imperfeição e justaposição</td><td>Aceitar a cor irregular, feita de áreas e pontos diferentes, e usar cores lado a lado para o olho misturar.</td><td>O rastro é spray: grão em vários tons da mesma tinta. Onde dois mecanismos se encontram, os pontos das duas tintas ficam lado a lado. Não nasce uma quarta cor.</td></tr>
+          <tr><td>D. A cor tem ciclo de vida</td><td>Tratar o desbotar e a mudança da cor como valor, não como defeito.</td><td>O spray seca e some em alguns segundos. O que fica na tela é o que está sendo pintado agora.</td></tr>
+          <tr><td>G. A cor que já existe participa</td><td>Aproveitar a cor do material em vez de cobrir tudo.</td><td>O muro aparece: é a maior área de cor do site, e a tinta entra em pouca quantidade.</td></tr>
+          <tr><td>C1. Envolver a comunidade</td><td>Decidir a cor com quem vive o lugar.</td><td>Ainda não foi feito. O passo seguinte é mostrar esta paleta a artistas do corpus.</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:11px;color:#777;margin-top:10px">As estratégias A (formação), E (biotecnologia e novos materiais) e H (gestão industrial da cor) tratam de produção física e não se aplicam a um site.</p>
+
+      <h3>As três tintas</h3>
+      <div class="inks" id="inks"></div>
+
+      <h3>Os tons de cada tinta</h3>
+      <p>A variedade vem do tom, não de cores novas. Cada tinta abre em cinco tons, e cada tom tem um trabalho. No spray eles aparecem misturados, como numa parede pintada à mão.</p>
+      <div id="families"></div>
+
+      <h3>O rastro de spray</h3>
+      <p>Cada projeto solta grão de tinta no caminho até os parentes. Metade do grão sai na tinta base; o resto varia entre o tom claro, a sombra e o tom fundo, com uma gota maior de vez em quando. Quando duas tintas se encontram, nada se mistura no balde: os pontos ficam lado a lado e o olho faz a passagem.</p>
+      <canvas id="mixDemo" width="900" height="110" style="display:block;width:100%;max-width:900px;height:auto;border:1px solid var(--line)" role="img" aria-label="Três faixas de grão de spray: magenta passando a azul, magenta passando a ocre e azul passando a ocre, sem cor intermediária"></canvas>
+      <p style="font-size:11px;color:#777;margin-top:8px">Da esquerda para a direita: Incentivo Fiscal com Fundo, Incentivo Fiscal com Descentra, Fundo com Descentra.</p>
 
       <h3>As camadas do muro</h3>
       <div class="inks">
-        <article><span class="sw sq" style="--c:#f7f6f1"></span><b>O muro · papel</b><code>#F7F6F1</code><p>O cimento claro, a superfície que recebe o traço. A cor só aparece porque ele é claro.</p></article>
-        <article><span class="sw" style="--c:#161616"></span><b>O pixo · preto</b><code>#161616</code><p>O pixo é escrita de uma cor só, feita com spray ou rolinho (Carvalho, 2013). No site o preto é texto, número e contorno. Nunca vira categoria.</p></article>
-        <article><div class="eq" style="display:flex;align-items:center;gap:8px;font-weight:800"><span class="sw s o"></span>+<span class="sw s" style="--c:var(--if);border-color:transparent"></span>=<span class="sw s" style="--c:var(--if)"></span></div><b>O grapixo · contorno e cor</b><code>cada bolinha</code><p>O grapixo, que se firmou em BH, junta o traço do pixo com as cores, as sombras e os contornos do grafite (Soares, 2013). É a fórmula de cada bolinha: contorno preto, cor por dentro, sombra e brilho na mesma tinta. Dois projetos do corpus levam o nome Real Grapixo.</p></article>
+        <article><span class="sw sq" style="--c:#f7f6f1"></span><b>O muro · papel</b><code>#F7F6F1</code><p>O cimento claro, a superfície que recebe o traço.</p></article>
+        <article><span class="sw" style="--c:#161616"></span><b>O pixo · preto</b><code>#161616</code><p>O pixo é escrita de uma cor só, feita com spray ou rolinho (Carvalho, 2013). No site o preto é texto, número e contorno.</p></article>
+        <article><div class="eq" style="display:flex;align-items:center;gap:8px;font-weight:800"><span class="sw s o"></span>+<span class="sw s" style="--c:var(--if);border-color:transparent"></span>=<span class="sw s" style="--c:var(--if)"></span></div><b>O grapixo · contorno e cor</b><code>cada bolinha</code><p>O grapixo, que se firmou em BH, junta o traço do pixo com as cores, as sombras e os contornos do grafite (Soares, 2013). É a fórmula de cada bolinha.</p></article>
       </div>
-
-      <h3>O grafite: as três tintas</h3>
-      <div class="inks" id="inks"></div>
-
-      <h3>A família de cada tinta</h3>
-      <p>Três cores chapadas são pouco para um muro. No grafite, uma letra tem preenchimento, contorno, sombra e brilho, quase sempre em tons da mesma cor. Aqui cada tinta abre em cinco tons, e cada tom tem um trabalho. O matiz continua dizendo o mecanismo; o tom diz a função.</p>
-      <div id="families"></div>
 
       <h3>Os neutros do muro</h3>
       <div class="fam" style="margin-bottom:6px">
-        <div><i style="--c:#ffffff"></i><b>cal</b><code>#FFFFFF</code><span>Fichas e botões: a parede caiada.</span></div>
+        <div><i style="--c:#ffffff"></i><b>cal</b><code>#FFFFFF</code><span>Fichas e botões.</span></div>
         <div><i style="--c:#f7f6f1"></i><b>cimento</b><code>#F7F6F1</code><span>O fundo de tudo.</span></div>
         <div><i style="--c:#d4d1c8"></i><b>reboco</b><code>#D4D1C8</code><span>Fios e divisórias.</span></div>
-        <div><i style="--c:#747474"></i><b>concreto</b><code>#747474</code><span>Texto de apoio e legendas pequenas.</span></div>
+        <div><i style="--c:#747474"></i><b>concreto</b><code>#747474</code><span>Texto de apoio.</span></div>
         <div><i style="--c:#161616"></i><b>pixo</b><code>#161616</code><span>Texto, número e contorno.</span></div>
       </div>
-      <p>Somando: quinze tons de tinta, três misturas e cinco neutros. São vinte e três cores, todas com nome e função.</p>
 
-      <h3>As regras de cor aplicadas</h3>
-      <ul>
-        <li><b>Contraste de matiz.</b> Três tintas afastadas no círculo de cores separam os três mecanismos (Itten, 1961).</li>
-        <li><b>Contraste de claro e escuro.</b> O pixo preto sobre o muro claro carrega a leitura. Dentro de cada tinta, cinco degraus de claro e escuro separam as funções.</li>
-        <li><b>Contraste de quente e frio.</b> Magenta e ocre são quentes, o azul é frio. Isso ajuda a destacar o azul das outras duas mesmo quando os tons se aproximam.</li>
-        <li><b>Contraste de saturação.</b> Tinta viva só nos dados; a interface fica nos neutros do muro.</li>
-        <li><b>Contraste de quantidade.</b> Muito muro, pouco pixo, pouquíssima tinta. É a proporção 60, 30 e 10 usada como regra prática em design: a cor vale mais porque é rara.</li>
-        <li><b>A cor depende da vizinha.</b> Albers (1963) mostra que uma cor muda conforme a que está ao lado. O contorno preto isola cada bolinha para que a vizinha não altere a leitura.</li>
-        <li><b>Harmonia.</b> Uma tríade de matizes, uma escala de tons para cada um e uma escala de neutros. Nada fora dessas três escalas.</li>
-      </ul>
-
-      <h3>O que o artigo de Calvo Ivanovic traz</h3>
-      <p>O artigo (Calvo Ivanovic, 2025) propõe oito estratégias de design de cor sustentável para produtos. Ele não trata de sites, mas cinco estratégias servem de lente aqui.</p>
-      <ul>
-        <li><b>Identidade por cores locais (estratégia C).</b> Cada lugar tem cores que vêm dos seus materiais e da sua história. É o que a paleta faz com o cimento, o azulejo e a terra de minério. Falta a ação C1, envolver a comunidade: ouvir os artistas do corpus sobre essas cores.</li>
-        <li><b>Cores atemporais e marca consistente (B).</b> Tons de terra, neutros e cores icônicas duram mais que modas, e a cor da marca não deve mudar a cada ocasião. Aqui a mesma cor vale o mesmo mecanismo em todas as telas.</li>
-        <li><b>A cor tem ciclo de vida (D).</b> A cor desbota e muda, e isso pode ser valor. O rastro do micélio evapora e as linhas misturam tintas. Testei também desbotar a bolinha pelo ano do projeto e descartei: no tom mais gasto as três tintas ficam abaixo do mínimo de separação para daltonismo (4,1 para um mínimo de 8).</li>
-        <li><b>Imperfeição e justaposição (F).</b> Cor chapada e padronizada é rara fora da indústria. A sombra, o brilho e a mistura visível nas linhas assumem a cor irregular do muro pintado à mão.</li>
-        <li><b>A cor que já existe participa (G).</b> O muro não é fundo neutro: é a maior área de cor do site e todas as tintas são lidas sobre ele.</li>
-      </ul>
-      <p style="font-size:11px;color:#777">As estratégias A (formação), E (biotecnologia e novos materiais) e H (gestão industrial da cor) tratam de produção física e ficam fora do alcance de um site.</p>
-
-      <h3>Quando duas tintas se cruzam</h3>
-      <p>A linha leva a tinta dos dois projetos que liga. Entre projetos do mesmo mecanismo ela tem uma cor só. Entre mecanismos diferentes ela sai de uma tinta, passa pela mistura e chega na outra. A mistura é feita como pigmento, não como luz: tinta sobre tinta escurece e muda de matiz, como no muro repintado.</p>
-      <div class="mixes" id="mixes"></div>
+      <h3>As regras</h3>
+      <ol>
+        <li><b>Três tintas, e só três.</b> Cada uma é um mecanismo. Nenhuma outra variável usa cor.</li>
+        <li><b>O tom muda, o matiz não.</b> Sombra, brilho, névoa e gota são tons da mesma tinta.</li>
+        <li><b>Duas tintas nunca viram uma terceira.</b> No encontro, elas ficam lado a lado.</li>
+        <li><b>A linha leva a tinta dos projetos que liga.</b> O tipo da linha aparece no nome, ao passar a mão.</li>
+        <li><b>Tamanho é valor.</b> Contorno grosso marca o circuito monumental; fino, o capilar.</li>
+        <li><b>Texto é preto.</b> Só o rótulo do mecanismo pode vestir o tom fundo da própria tinta.</li>
+        <li><b>Toda bolinha leva contorno preto.</b> É a fórmula do grapixo e o que garante a leitura sobre o papel.</li>
+      </ol>
 
       <h3>O contraste, pela regra</h3>
       <ul>
         <li><b>Cada cor contra o fundo.</b> A WCAG 2.2, no critério 1.4.11, pede contraste de pelo menos 3:1 para elementos gráficos. As três tintas passam: 5,08, 4,49 e 3,18. O contorno preto tem 16,7:1.</li>
-        <li><b>Uma cor contra a outra.</b> Entre si elas se separam pelo matiz, não pelo claro e escuro: magenta, azul e ocre ficam em três regiões afastadas do círculo de cores. A distância medida no pior par é 23,8, para um mínimo de 15. Com daltonismo simulado é 13,7, para um mínimo de 8.</li>
-        <li><b>Cor nunca vai sozinha.</b> É o critério 1.4.1 da WCAG. A legenda fica sempre visível, a ficha escreve o mecanismo por extenso e o contorno preto separa as bolinhas que se tocam.</li>
-        <li><b>Semelhança.</b> Pela lei da semelhança da Gestalt (Wertheimer, 1923), o que tem a mesma cor é lido como grupo. Por isso a cor vale a mesma coisa em todo lugar: bolinha, linha, rastro, legenda e régua da ficha.</li>
-        <li><b>Memória.</b> São três cores e um preto, e cada uma tem um nome de rua: lata, azulejo, terra. Cabe na memória de quem visita (Miller, 1956).</li>
+        <li><b>Uma cor contra a outra.</b> Elas se separam pelo matiz, não pelo claro e escuro. A distância medida no pior par é 23,8, para um mínimo de 15. Com daltonismo simulado é 13,7, para um mínimo de 8.</li>
+        <li><b>Cor nunca vai sozinha.</b> É o critério 1.4.1 da WCAG. A legenda fica sempre visível e a ficha escreve o mecanismo por extenso.</li>
+        <li><b>Contrastes de Itten (1961).</b> Matiz entre as três tintas; claro e escuro entre os cinco tons; quente e frio entre magenta e ocre de um lado e azul do outro; saturação entre a tinta e os neutros; quantidade, com muito muro e pouca tinta.</li>
+        <li><b>A cor depende da vizinha.</b> Albers (1963) mostra que uma cor muda conforme a que está ao lado. O contorno preto isola cada bolinha.</li>
       </ul>
-
-      <h3>As regras</h3>
-      <ol>
-        <li><b>Cor só significa mecanismo.</b> Nenhuma outra variável usa cor.</li>
-        <li><b>A linha não tem cor própria.</b> Ela leva a tinta dos projetos que liga. O tipo da linha (ano, edital, escala) aparece no nome, ao passar a mão.</li>
-        <li><b>Tamanho é valor.</b> A área da bolinha cresce com o dinheiro. Contorno grosso marca o circuito monumental; fino, o capilar.</li>
-        <li><b>Texto é preto ou do tom fundo.</b> Número e nome ficam em preto. Só o rótulo do mecanismo pode vestir o tom fundo da própria tinta, que tem contraste acima de 8:1.</li>
-        <li><b>Mistura é dado.</b> Onde a linha ou o rastro muda de cor, dois mecanismos se encontraram.</li>
-        <li><b>Toda bolinha leva contorno preto.</b> É a fórmula do grapixo e é o que garante a leitura sobre o papel.</li>
-      </ol>
 
       <h3>O teste</h3>
       <div class="vwrap"><table class="vt">
@@ -262,16 +257,15 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
           <tr><td>Claridade dentro da faixa de 0,43 a 0,77</td><td>Falha: o verde fica em 0,83</td><td>Passa: 0,55, 0,55 e 0,64</td></tr>
           <tr><td>Separação em visão normal (mínimo 15)</td><td>29,1 no pior par</td><td>23,8 no pior par</td></tr>
           <tr><td>Separação com daltonismo (mínimo 8)</td><td>11,1 no pior caso</td><td>13,7 no pior caso</td></tr>
-          <tr><td>Misturas</td><td>Tons sem nome</td><td>Violeta, tijolo e verde</td></tr>
         </tbody>
       </table></div>
-      <p style="font-size:11px;color:#777;margin-top:10px">Medidas em OKLCH e OKLab, com simulação de protanopia, deuteranopia e tritanopia de Machado, Oliveira e Fernandes (2009), sobre o papel #f7f6f1. Uma versão com amarelo vivo (#E0A500) foi testada e trocada pelo ocre, porque tinha contraste de 2,03 com o papel.</p>
+      <p style="font-size:11px;color:#777;margin-top:10px">Medidas em OKLCH e OKLab, com simulação de Machado, Oliveira e Fernandes (2009), sobre o papel #f7f6f1. Duas ideias foram testadas e descartadas: misturar as tintas como pigmento, o que criava violeta, tijolo e verde, e desbotar a bolinha pelo ano do projeto, que reprovou na separação para daltonismo.</p>
 
       <h3>O que é fonte e o que é leitura</h3>
       <ul>
-        <li><b>Com fonte.</b> O pixo é monocromático (Carvalho, 2013; Lassala, 2010). O grafite usa cores saturadas contra o cinza (Gitahy, 1999). O grapixo mistura os dois e se firmou em BH (Soares, 2013). O painel de Portinari na Pampulha é azul e branco, de 1944. O solo da Serra do Curral é rico em ferro.</li>
-        <li><b>Leitura de projeto.</b> Ligar o magenta ao Incentivo Fiscal, o azul do azulejo ao Fundo e o ocre da terra ao Descentra é uma decisão de design. Ela precisa da sua defesa no texto do TCC.</li>
-        <li><b>Falta fazer.</b> Fotografar os muros do corpus e as latas do catálogo, para a ligação virar evidência visual. Conferir as referências na biblioteca.</li>
+        <li><b>Com fonte.</b> As estratégias de cor (Calvo Ivanovic, 2025). O pixo monocromático (Carvalho, 2013; Lassala, 2010). O grafite de cores saturadas (Gitahy, 1999). O grapixo em BH (Soares, 2013). O painel azul de Portinari na Pampulha, de 1944. O ferro no solo da Serra do Curral.</li>
+        <li><b>Leitura de projeto.</b> Ligar o magenta ao Incentivo Fiscal, o azul ao Fundo e o ocre ao Descentra é decisão de design. Precisa da sua defesa no texto do TCC.</li>
+        <li><b>Falta fazer.</b> Mostrar a paleta a artistas do corpus, fotografar os muros e as latas, e conferir as referências na biblioteca.</li>
       </ul>
     </div>
   </section>
@@ -279,7 +273,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 
 <script src="js/data.js?v=20261112-31"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
-<script src="js/rizoma.js?v=20261113-38"></script>
+<script src="js/rizoma.js?v=20261113-39"></script>
 <script src="js/letreiro.js?v=20261112-31"></script>
 <script>
 /* Lab 07 — Letra brasileira, cor com fundamento. Parte do Lab 04 (abaixo) e muda quatro coisas, a pedido do autor (12/11/2026):
@@ -355,10 +349,10 @@ const mixSub = (a, b, m = 0.5) => a.map((x, i) => Math.round(255 * Math.exp(LOGT
 let paleta = "tintas", INKS = PALETAS.tintas, LOGS = INKS.map(c => c.map(v => LOGT[v]));
 const PAPEL = [247, 246, 241];
 const TONS = [ // a família de cada tinta: do tom mais fundo ao mais claro (multiplica para escurecer, mistura com o papel para clarear)
-  ["funda", c => c.map(v => v * 0.5), "Texto e rótulo na cor do mecanismo. Contraste acima de 8:1 com o papel."],
-  ["sombra", c => c.map(v => v * 0.72), "A sombra da bolinha, o 3D da letra de grafite."],
+  ["funda", c => c.map(v => v * 0.5), "Rótulo do mecanismo e a gota mais carregada do spray. Contraste acima de 8:1 com o papel."],
+  ["sombra", c => c.map(v => v * 0.72), "A sombra da bolinha e o grão escuro do spray."],
   ["base", c => c, "O preenchimento da bolinha, a linha e a legenda. É a cor que identifica o mecanismo."],
-  ["clara", c => c.map((v, i) => v * 0.55 + PAPEL[i] * 0.45), "O brilho da bolinha e o rastro que a tinta deixa."],
+  ["clara", c => c.map((v, i) => v * 0.55 + PAPEL[i] * 0.45), "O brilho da bolinha e a névoa do spray."],
   ["luz", c => c.map((v, i) => v * 0.2 + PAPEL[i] * 0.8), "Fundo de etiqueta e de faixa. Nunca identifica sozinha: vem sempre com texto."]
 ];
 const tom = (c, nome) => TONS.find(t => t[0] === nome)[1](c).map(Math.round);
@@ -374,10 +368,27 @@ const PH = {
   step: 100, min: 100, max: 6000, floor: 200, // o governador não desce abaixo de floor
   evapLevels: [["lenta", 0.012, 1], ["média", 0.03, 1], ["rápida", 0.07, 2]], evap: 1, // [nome, fator do retângulo, decaimento linear]
   sensorAngle: 0.5, sensorDist: 12, turn: 0.2, speed: 1.15, jitter: 0.06,   // curvas longas: o rastro vira veia, não ruído
-  deposit: 3, depositLinked: 22, bias: 0.09, biasFree: 0.03, biasLure: 0.16, mix: 0.35, mixFree: 0.06, life: [600, 1600], // bias: puxão rumo ao irmão ligado; biasFree: rumo a qualquer outro nó revelado (traços entre todos); biasLure: rumo ao cursor
+  deposit: 3, depositLinked: 22, bias: 0.09, biasFree: 0.03, biasLure: 0.16, mix: 0.35, mixFree: 0.06, look: "spray", life: [600, 1600], // bias: puxão rumo ao irmão ligado; biasFree: rumo a qualquer outro nó revelado (traços entre todos); biasLure: rumo ao cursor
   blur: (touch || small()) ? 1.6 : 2.4
 };
 let trail = null, tw = 0, th = 0, trailP = null;
+/* rastro de spray (13/11, pedido do autor): no lugar da mancha borrada, cada agente solta grão de tinta, em tons da mesma tinta.
+   Só as três tintas: onde dois mecanismos se encontram, os pontos ficam lado a lado e o olho mistura (justaposição; Calvo Ivanovic, 2025, ação F4).
+   O mapa de baixa resolução continua existindo, mas só para os agentes sentirem o caminho; o que se vê é esta camada. */
+let spray = null, sctx = null, SS = 1, SPRAY = [];
+const wasOn = new Uint8Array(DATA.length);
+function sprayAt(x, y, mi, n, sigma, alpha, nevoa) { // x, y em px do palco; mi: índice do mecanismo; nevoa: só o tom claro (agente sem linha)
+  const tons = SPRAY[mi]; if (!tons || !sctx) return;
+  for (let d = 0; d < n; d++) {
+    const r = Math.sqrt(-2 * Math.log(1 - Math.random())) * sigma, a = Math.random() * 6.2832, q = Math.random();
+    const px = (x + Math.cos(a) * r) * SS, py = (y + Math.sin(a) * r) * SS;
+    sctx.fillStyle = nevoa ? tons[3] : tons[q < 0.5 ? 2 : q < 0.75 ? 3 : q < 0.95 ? 1 : 0]; // metade na tinta base; o resto varia entre clara, sombra e funda
+    sctx.globalAlpha = alpha * (0.55 + Math.random() * 0.45);
+    const g = Math.random() < 0.06 ? 2.2 + Math.random() * 1.6 : 0.8 + Math.random() * 0.9; // quase tudo é névoa fina; de vez em quando, uma gota
+    if (g > 2) { sctx.beginPath(); sctx.arc(px, py, g / 2, 0, 6.2832); sctx.fill(); } else sctx.fillRect(px, py, g, g);
+  }
+  sctx.globalAlpha = 1;
+}
 const A = { x: null, y: null, h: null, home: null, target: null, type: null, mech: null, age: null, life: null };
 const pos = { x: new Float32Array(DATA.length), y: new Float32Array(DATA.length), on: new Uint8Array(DATA.length) }; // posição de tela (escala do rastro) de cada nó
 let sibs = DATA.map(() => []);                       // por nó: [{ j, t }] nós irmãos pela linha t ligada
@@ -399,8 +410,11 @@ function makeTrail(p) {
   // por isso getContext é interceptado só durante a criação do p5.Graphics
   const orig = HTMLCanvasElement.prototype.getContext;
   HTMLCanvasElement.prototype.getContext = function (t, o) { return orig.call(this, t, t === "2d" ? Object.assign({ willReadFrequently: true }, o || {}) : o); };
-  try { trail = p.createGraphics(tw, th); } finally { HTMLCanvasElement.prototype.getContext = orig; }
+  SS = Math.min(1, Math.sqrt(1600000 / Math.max(1, p.width * p.height))); // em telas muito grandes a camada de spray tem menos pixels: o custo de fazê-la secar fica limitado
+  if (spray) spray.remove();
+  try { trail = p.createGraphics(tw, th); spray = p.createGraphics(Math.ceil(p.width * SS), Math.ceil(p.height * SS)); } finally { HTMLCanvasElement.prototype.getContext = orig; }
   trail.pixelDensity(1); trail.noStroke(); trail.clear();
+  spray.pixelDensity(1); spray.clear(); sctx = spray.drawingContext; wasOn.fill(0);
   if (A.life) A.life.fill(0);
 }
 
@@ -421,6 +435,7 @@ function updateSources() {
   pos.on.fill(0); spawnPool.length = 0;
   for (const n of R.screen().nodes) { const i = IDX[n.id]; if (i == null) continue; pos.x[i] = n.x / SCALE; pos.y[i] = n.y / SCALE; pos.on[i] = 1; }
   for (let i = 0; i < DATA.length; i++) { if (!pos.on[i]) continue; spawnPool.push(i); if (linkOf(i)) spawnPool.push(i, i); } // nós ligados recebem 3× mais agentes
+  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && PH.look === "spray") sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 80, 9, 0.85, false); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
 }
 function respawn(i) {
   if (!spawnPool.length) return false;
@@ -450,6 +465,11 @@ new p5(p => {
     // 1. evaporação: um retângulo semitransparente apaga o rastro em bloco (destination-out multiplica o alfa)
     const ctx = trail.drawingContext;
     ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = `rgba(0,0,0,${evapF})`; ctx.fillRect(0, 0, tw, th); ctx.globalCompositeOperation = "source-over";
+    if (spray && frameN % 20 === 0) { // o spray seca: a cada 20 quadros todo grão perde um pouco de tinta, até sumir (some em cerca de 6 s, 3 s ou 1,5 s, conforme a evaporação; seca rápido para o grão não ficar para trás quando o campo gira)
+      const dec = flush > 0 ? 60 : [9, 20, 40][PH.evap], im = sctx.getImageData(0, 0, spray.elt.width, spray.elt.height), d = im.data;
+      for (let k = 3, e = d.length; k < e; k += 4) if (d[k]) d[k] = d[k] > dec ? d[k] - dec : 0;
+      sctx.putImageData(im, 0, 0);
+    }
     // 2. alimento: cada nó revelado projeta um gradiente na sua posição; o nó ligado projeta na cor da linha
     for (let i = 0; i < DATA.length; i++) {
       if (!pos.on[i]) continue;
@@ -481,18 +501,25 @@ new p5(p => {
       const k = (((y | 0) * tw + (x | 0)) << 2), mi = A.mech[i], tinta = A.type[i] >= 0 && mi >= 0, c = tinta ? INKS[mi] : INK, lc = tinta ? LOGS[mi] : LOGINK, dep = tinta ? PH.depositLinked : PH.deposit;
       stain(px, k, c, lc, tinta ? PH.mix : PH.mixFree, dep); // o agente leva a tinta do nó onde nasceu; o livre é cinza e quase não tinge
       if (tinta) { const k2 = k + 4; if (k2 + 3 < px.length) stain(px, k2, c, lc, PH.mix, dep >> 1); } // veia ligada mais grossa
+      if (PH.look === "spray" && mi >= 0) { // grão de spray no caminho do agente
+        const mao = lure.on && A.home[i] === lure.home; // agente que segue a mão: o rastro de spray acompanha o gesto
+        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, mao ? 4 : 3, mao ? 4 : 2.6, 0.9, false);
+        else if (((frameN + i) & 7) === 0) sprayAt(x * SCALE, y * SCALE, mi, 1, 2.5, 0.3, true); // sem linha ligada: só uma névoa clara, de vez em quando
+      }
       A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
     }
     trail.updatePixels();
     // 4. o rastro vai para a tela ampliado 3× (a interpolação do navegador faz a difusão visual)
     if (!final.on) { // na estampa final nada evapora nem se mexe
-    p.clear(); const dc = p.drawingContext; dc.filter = `blur(${PH.blur}px)`; p.image(trail, 0, 0, p.width, p.height); dc.filter = "none";
+    p.clear();
+    if (PH.look === "spray") p.image(spray, 0, 0, p.width, p.height);
+    else { const dc = p.drawingContext; dc.filter = `blur(${PH.blur}px)`; p.image(trail, 0, 0, p.width, p.height); dc.filter = "none"; }
     drawHints(p);
     }
     // governador: se o quadro ficar pesado, menos agentes
     drawMs += (performance.now() - t0 - drawMs) * 0.05; if (++frameN % 180 === 0 && drawMs > 12 && PH.count > PH.floor) setCount(Math.max(PH.floor, PH.count - PH.step)); // governador: o micélio não pode comer o quadro
   };
-  p.clearTrail = () => { if (trail) trail.clear(); };
+  p.clearTrail = () => { if (trail) trail.clear(); if (spray) spray.clear(); };
   window.Lab7Physarum = { PH, fps: () => p.frameRate(), drawMs: () => drawMs, trail: () => trail }; // para testes no console
 });
 function setCount(n) { PH.count = Math.max(PH.min, Math.min(PH.max, n)); $("#countBtn").textContent = PH.on ? `${PH.count} agentes` : "sem agentes"; $("#lessBtn").disabled = !PH.on || PH.count <= PH.min; $("#moreBtn").disabled = !PH.on || PH.count >= PH.max; if (R) sync(R.state()); }
@@ -518,7 +545,7 @@ function uiMargin() {
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "grapixo", mechColors: mechMap(), edgeColor: "nos", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "grapixo", mechColors: mechMap(), edgeColor: "nos", edgeMix: "optica", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
     margin: uiMargin, lineCycle: 2.2, // margens medidas nos elementos da interface; linhas crescem e puxam 2,2× mais devagar // sem as bolinhas do gesto no fundo: só muros, linhas e micélio // linhas finas, nós espaçados, foco que aproxima
     treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
     onChange: sync, onOpen: openCard, onHover: onHover
@@ -550,7 +577,7 @@ function sync(s) {
   if (s.revealed >= s.total && !finalHinted) { finalHinted = true; guide("Todos os projetos revelados. Quer fechar o seu mapa? O botão congela o micélio e gera a estampa desta visita."); }
   if (!PH.on) guide("O sistema pede menos movimento: o micélio fica desligado; nós e linhas continuam funcionando.");
   else if (s.revealed < 3) guide(touch ? "Os pontos que piscam são projetos escondidos: toque num deles para revelar." : "Os pontos que piscam são projetos escondidos: clique num deles, ou passe a mão, para revelar.");
-  else if (!s.anyLine) guide("Ligue uma linha: ela leva a tinta dos dois projetos que liga. Onde duas tintas se cruzam, a mistura diz quais mecanismos se encontraram.");
+  else if (!s.anyLine) guide("Ligue uma linha: o spray de cada projeto corre até os parentes. Onde duas tintas se encontram, os pontos ficam lado a lado.");
   else guide("Desligue a linha para ver a rede evaporar; arraste o fundo para girar o campo e ver o rastro ficar para trás.");
 }
 let guideT = 0; function guide(t) { const g = $("#guide"); clearTimeout(guideT); if (!t) { g.classList.remove("show"); return; } g.textContent = t; g.classList.add("show"); guideT = setTimeout(() => g.classList.remove("show"), 6000); }
@@ -624,7 +651,8 @@ function composeFinal() { // junta rastro e rizoma num PNG com título
   const tc = $("#trailStage canvas"), rc = $("#rizomaStage canvas"); if (!tc || !rc) return null;
   const W = rc.width, H = rc.height, out = document.createElement("canvas"); out.width = W; out.height = H + Math.round(H * .12); const g = out.getContext("2d");
   g.fillStyle = "#f7f6f1"; g.fillRect(0, 0, out.width, out.height);
-  g.filter = `blur(${PH.blur * (W / stage.clientWidth)}px)`; g.drawImage(trail.elt, 0, 0, W, H); g.filter = "none"; g.drawImage(rc, 0, 0, W, H);
+  if (PH.look === "spray") g.drawImage(spray.elt, 0, 0, W, H); else { g.filter = `blur(${PH.blur * (W / stage.clientWidth)}px)`; g.drawImage(trail.elt, 0, 0, W, H); g.filter = "none"; }
+  g.drawImage(rc, 0, 0, W, H);
   const s = R.state(), lines = TYPES.filter(t => s.active[t]).map(t => Rizoma.LINES[t].label), d = new Date(), pad = n => String(n).padStart(2, "0");
   const title = `${s.revealed} projeto${s.revealed > 1 ? "s" : ""} · ${lines.length ? lines.join(" e ") : "sem linha ligada"} · ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
   g.fillStyle = "#161616"; const sc = W / 900; g.font = `${Math.round(34 * sc)}px "TV0800 Cachoeira", Arial`; g.fillText("CARTOGRAFIA DO FOMENTO · MEU MICÉLIO", Math.round(24 * sc), H + Math.round(40 * sc));
@@ -650,13 +678,15 @@ $("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
 $("#palBtn").onclick = () => setPaleta(paleta === "tintas" ? "anterior" : "tintas");
 $("#lineBtn").onclick = () => R.setEdgeColor(R.state().edgeColor === "nos" ? "natureza" : "nos");
 $("#dotBtn").onclick = () => R.setNodeStyle(R.state().nodeStyle === "grapixo" ? "bolinha" : "grapixo");
+function setLook(v) { PH.look = v; $("#lookBtn").textContent = v === "spray" ? "Rastro · spray" : "Rastro · mancha"; $("#lookBtn").classList.toggle("active", v === "spray"); if (trailP) trailP.clearTrail(); wasOn.fill(0); }
+$("#lookBtn").onclick = () => setLook(PH.look === "spray" ? "mancha" : "spray");
 $("#lessBtn").onclick = () => setCount(PH.count - PH.step);
 $("#moreBtn").onclick = () => setCount(PH.count + PH.step);
 $("#countBtn").onclick = () => setCount(200);
 $("#evapBtn").onclick = () => setEvap(PH.evap + 1);
 $("#clearBtn").onclick = () => trailP && trailP.clearTrail();
 $("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
-document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "c") $("#palBtn").click(); if (k === "l") $("#lineBtn").click(); if (k === "b") $("#dotBtn").click(); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
+document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "v") $("#palBtn").click(); if (k === "g") $("#lookBtn").click(); if (k === "l") $("#lineBtn").click(); if (k === "b") $("#dotBtn").click(); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
 window.addEventListener("resize", () => R && R.resize());
 document.addEventListener("visibilitychange", () => { const hid = document.hidden || tab !== "campo"; if (trailP) hid ? trailP.noLoop() : trailP.loop(); if (R) R.setVisible(!hid); }); // aba oculta: tudo pausa
 
@@ -664,7 +694,8 @@ document.addEventListener("visibilitychange", () => { const hid = document.hidde
 function setPaleta(nome) {
   paleta = nome; INKS = PALETAS[nome]; LOGS = INKS.map(c => c.map(v => LOGT[v]));
   const rs = document.documentElement.style; rs.setProperty("--if", hex(INKS[0])); rs.setProperty("--fundo", hex(INKS[1])); rs.setProperty("--desc", hex(INKS[2]));
-  if (R) { R.setMechColors(mechMap()); if (trailP) trailP.clearTrail(); }
+  SPRAY = INKS.map(c => ["funda", "sombra", "base", "clara"].map(n => `rgb(${tom(c, n).join(",")})`)); // os tons que o spray usa
+  if (R) { R.setMechColors(mechMap()); if (trailP) trailP.clearTrail(); wasOn.fill(0); }
   $("#palBtn").textContent = nome === "tintas" ? "Cor · muro de BH" : "Cor · anterior"; $("#palBtn").classList.toggle("active", nome === "tintas");
   $("#palBtn2").textContent = nome === "tintas" ? "Comparar com a paleta anterior" : "Voltar para as tintas do muro de BH"; $("#palBtn2").classList.toggle("active", nome !== "tintas");
   renderCores();
@@ -675,11 +706,18 @@ function renderCores() {
     "O grafite usa cor saturada para vencer o cinza do concreto (Gitahy, 1999). Magenta é nome de lata no catálogo de spray. A cor que mais grita fica com o mecanismo que depende de patrocínio e visibilidade e que pinta as empenas do centro.",
     "O azul do painel de azulejos de Portinari na igreja da Pampulha, de 1944, feito dentro de uma obra da Prefeitura. É a cor do muro que o poder público encomendou: dinheiro direto do Fundo, sem patrocinador.",
     "A cor do chão de Belo Horizonte: o ferro da Serra do Curral deixa a terra avermelhada e amarelada. Fica com o edital que pontua por território e chega às regionais."]
-    : ["Rosa dos labs 01 a 06.", "Azul dos labs 01 a 06: contraste de 2,37 com o papel, abaixo de 3:1.", "Verde dos labs 01 a 06: claro demais para o papel (1,46), e as misturas com ele não têm nome."];
+    : ["Rosa dos labs 01 a 06.", "Azul dos labs 01 a 06: contraste de 2,37 com o papel, abaixo de 3:1.", "Verde dos labs 01 a 06: claro demais para o papel (1,46)."];
   $("#inks").innerHTML = MECHS.map((m, i) => `<article><span class="sw" style="--c:${hex(INKS[i])}"></span><b>${nomes[i]} · ${m}</b><code>${hex(INKS[i])}</code><p>${txt[i]}</p></article>`).join("");
   $("#families").innerHTML = MECHS.map((m, i) => `<div class="famrow"><h4>${nomes[i]} · ${m}</h4><div class="fam">${TONS.map(([n, f, uso]) => { const h = hex(f(INKS[i]).map(Math.round)); return `<div><i style="--c:${h}"></i><b>${n}</b><code>${h}</code><span>${uso}</span></div>`; }).join("")}</div></div>`).join("");
-  const pares = [[0, 1, T ? "Violeta" : "Lilás acinzentado", "Incentivo Fiscal encontra Fundo Municipal."], [0, 2, T ? "Tijolo" : "Marrom rosado", "Incentivo Fiscal encontra Descentra: o maior valor ligado ao menor."], [1, 2, T ? "Verde" : "Verde-água", "Fundo encontra Descentra: os dois mecanismos do circuito capilar."]];
-  $("#mixes").innerHTML = pares.map(([a, b, n, t]) => { const mx = mixSub(INKS[a], INKS[b]); return `<article><div class="eq"><span class="sw s" style="--c:${hex(INKS[a])}"></span>+<span class="sw s" style="--c:${hex(INKS[b])}"></span>=<span class="sw" style="--c:${hex(mx)}"></span></div><b>${n}</b><code>${hex(mx)}</code><p>${t}</p></article>`; }).join("");
+  // demonstração do encontro: duas tintas em grão, lado a lado, sem cor nova
+  const cv = $("#mixDemo"), g = cv.getContext("2d"), W = cv.width, H = cv.height, pw = (W - 40) / 3;
+  g.clearRect(0, 0, W, H);
+  [[0, 1], [0, 2], [1, 2]].forEach(([a, b], k) => { const x0 = k * (pw + 20);
+    g.fillStyle = "#f7f6f1"; g.fillRect(x0, 0, pw, H);
+    for (let n = 0; n < 2600; n++) { const x = Math.random() * pw, y = Math.random() * H, mi = Math.random() < x / pw ? b : a, q = Math.random();
+      g.fillStyle = hex(tom(INKS[mi], q < 0.5 ? "base" : q < 0.75 ? "clara" : q < 0.95 ? "sombra" : "funda")); g.globalAlpha = 0.6 + Math.random() * 0.4;
+      const d = Math.random() < 0.06 ? 3 + Math.random() * 2 : 1.2 + Math.random() * 1.4; g.fillRect(x0 + x, y, d, d); }
+    g.globalAlpha = 1; });
 }
 $("#palBtn2").onclick = () => setPaleta(paleta === "tintas" ? "anterior" : "tintas");
 

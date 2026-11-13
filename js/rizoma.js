@@ -62,6 +62,7 @@
     const NODE_STYLES = ["circulo", "muro", "bolinha", "grapixo"]; // bolinha: círculo na cor do mecanismo, contorno em tinta; grapixo: a mesma bolinha com sombra e brilho, como letra de grafite
     let EDGE_COLOR = opts.edgeColor === "nos" ? "nos" : "natureza"; // "nos": a linha leva a tinta dos dois projetos que liga (Lab 07); "natureza": a cor do tipo de linha
     const lg = v => Math.log(Math.max(v, 1) / 255); // para misturar duas tintas como pigmento (média geométrica)
+    const OPTICA = opts.edgeMix === "optica"; // linha entre tintas diferentes: trechos de uma e de outra lado a lado (mistura óptica), sem criar uma terceira cor
     const S = { nodeStyle: NODE_STYLES.includes(opts.nodeStyle) ? opts.nodeStyle : "circulo", mode: "rizoma", depth: !!opts.depth, intro: !!opts.intro, cutting: false, paused: false, paper: !!opts.paper, reduced: !!opts.reduced, focus: null, hover: null, hoverEdge: null, trail: [], started: false, cutKeys: new Set(), visible: true };
     const view = { rx: -0.35, ry: 0.45, lastDrag: 0, zoom: S.intro ? 0.72 : 1, zoomTarget: S.intro ? 0.72 : 1, px: 0, py: 0, pxT: 0, pyT: 0 };
     const ZOOM_MIN = 0.5, ZOOM_MAX = 3.2;
@@ -538,7 +539,9 @@
         const x = q.x + nx * off, y = q.y + ny * off;
         e.pts.push([x, y]);
         if (grad) { // tintas diferentes: a linha sai de uma, passa pela mistura e chega na outra, trecho a trecho
-          if (i > 0 && !(e.regrown && i % 3 === 1)) { const u = (i - 0.5) / steps, w = 1 - u; p.stroke(255 * Math.exp(lg(ca[0]) * w + lg(cb2[0]) * u), 255 * Math.exp(lg(ca[1]) * w + lg(cb2[1]) * u), 255 * Math.exp(lg(ca[2]) * w + lg(cb2[2]) * u), alpha); p.line(px0, py0, x, y); }
+          if (i > 0 && !(e.regrown && i % 3 === 1)) { const u = (i - 0.5) / steps, w = 1 - u;
+            if (OPTICA) { const hh = Math.sin((e.seed + i) * 12.9898) * 43758.5453, pick = (hh - Math.floor(hh)) < u ? cb2 : ca; p.stroke(pick[0], pick[1], pick[2], alpha); } // perto de cada ponta, a tinta dela; no meio, as duas se alternam
+            else p.stroke(255 * Math.exp(lg(ca[0]) * w + lg(cb2[0]) * u), 255 * Math.exp(lg(ca[1]) * w + lg(cb2[1]) * u), 255 * Math.exp(lg(ca[2]) * w + lg(cb2[2]) * u), alpha); p.line(px0, py0, x, y); }
           px0 = x; py0 = y;
         } else p.vertex(x, y);
       }

@@ -73,7 +73,7 @@ button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid va
 .chips,.row{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
 .tools button{border:1px solid #ccc;background:rgba(255,255,255,.92);padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.03em}.tools button.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}.tools button:disabled{opacity:.4;cursor:default}
 .group{display:inline-flex}.group button{border-radius:0}.group button+button{border-left:0}.group .mid{min-width:92px;text-align:center}
-.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px}.chip i{width:7px;height:7px;border-radius:50%;background:var(--sw);opacity:.4}.chip.active{background:#fff!important;color:var(--ink)!important;border-color:var(--sw)!important}.chip.active i{opacity:1}.chip small{color:#888;font-size:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px}.chip i{width:20px;height:0;border-top:3px solid var(--sw);opacity:.5}.chip[data-t=edital] i{border-top-style:dashed}.chip[data-t=escala] i{border-top-style:dotted}.chip[data-t=curadoria] i{border-top-width:5px}.chip[data-t=territorio] i{border-top-style:dotted}.chip[data-t=mecanismo] i{border:0;height:3px;background:linear-gradient(90deg,#C9186A 0 33%,#1273C9 33% 66%,#B97F00 66%)}.chip.active{background:#fff!important;color:var(--ink)!important;border-color:var(--sw)!important}.chip.active i{opacity:1}.chip small{color:#888;font-size:8px}
 .final-btn{border-color:var(--ink)!important}
 /* busca (porta direta do protótipo) e trilha clicável */
 .search{position:relative;width:min(300px,100%)}.search input{width:100%;height:32px;border:1px solid #ccc;background:rgba(255,255,255,.92);padding:0 30px 0 10px;font:inherit;font-size:10px;color:var(--ink);outline:none}.search input:focus{border-color:var(--ink)}.search::after{content:"/";position:absolute;right:9px;top:8px;font-size:9px;color:#aaa;border:1px solid #ddd;padding:0 4px;border-radius:3px;pointer-events:none}
@@ -247,6 +247,8 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 @media(max-width:780px){.hero h1.sec{font-size:32px}.copy h1.sec{font-size:17px}}
 .fontes{margin-top:12px;font-size:11.5px;line-height:1.55;color:#555;max-width:720px}.fontes summary{cursor:pointer;font-size:10.5px;font-weight:900;color:var(--ink)}.fontes ul{margin:10px 0 8px;padding-left:16px}.fontes li{margin:0 0 7px}.fontes a{color:var(--ink);font-weight:700}.fontes p{margin:0;font-size:10.5px;color:#777}
 .chart>p.read{margin:0 0 12px;max-width:none;min-height:38px;border:1px dashed #bbb;background:rgba(255,255,255,.6);padding:9px 11px;font-size:12px;line-height:1.5;color:#777}.chart>p.read.on{border:1.5px solid var(--ink);color:var(--ink);font-weight:700;background:#fff}
+.mini{display:grid;gap:3px;margin:2px 0 10px}.mini span{font-size:9px;color:#777}.mini i{display:block;height:9px;border:1px solid var(--ink);background:#fff}.mini b{display:block;height:100%;border-right:1px solid var(--ink)}
+.verind.big{border:1.5px solid var(--ink);background:#fff;padding:10px 13px;font-size:11px;font-weight:900}
 .mleg{display:flex;align-items:center;gap:5px;margin-top:10px;font-size:9.5px;color:#777}.mleg span{font-size:8.5px;font-weight:900;letter-spacing:.12em;margin-right:6px}.mleg i{display:inline-block;width:14px;height:14px;border:1px solid var(--line);background:rgba(22,22,22,var(--a));margin-left:6px}
 .gapgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 14px}.gapgrid article{border:1px dashed #bbb;padding:12px 14px}.gapgrid h4{margin:0 0 6px;font-size:14px}.gapgrid p{margin:0;font-size:11.5px;line-height:1.6;color:#5c5c5c}
 .mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
@@ -432,7 +434,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="content narrow">
     <div class="hero"><span class="mark"></span><div class="kicker">05 / PROJETO ACADÊMICO</div><h1 class="sec">Sobre</h1><p>O território continua nos dados e relatos, mas a experiência pode começar pelo muro, pelo valor, pelo ano ou pelo edital. O modelo conceitual é o rizoma de Deleuze e Guattari: conexões heterogêneas, sem raiz nem centro. O movimento do spray segue o modelo de Jones (2010) para as redes do <em>Physarum polycephalum</em>.</p></div>
     <div style="height:30px"></div>
-    <article class="block"><div><span class="kicker">COR</span><h2>O muro, o pixo e três tintas</h2></div><div><p>O fundo claro é o cimento do muro. O preto é o pixo, que é escrita de uma cor só: texto, número e contorno. A cor entra só onde carrega informação, e são três tintas tiradas do muro de Belo Horizonte: magenta de spray para o Incentivo Fiscal, azul de azulejo para o Fundo Municipal e ocre de minério para o Descentra. Elas nunca se misturam numa quarta cor: no encontro, os pontos de spray ficam lado a lado. A defesa está em <code>rizoma/PROPOSTAS-LAB07.md</code>.</p><div class="legend" id="aboutLegend"></div></div></article>
+    <article class="block"><div><span class="kicker">COR</span><h2>O muro, o pixo e três tintas</h2></div><div><p>O fundo claro é o cimento do muro. O preto é o pixo, que é escrita de uma cor só: texto, número e contorno. A cor entra só onde carrega informação, e são três tintas tiradas do muro de Belo Horizonte: magenta de spray para o Incentivo Fiscal, azul de azulejo para o Fundo Municipal e ocre de minério para o Descentra. No spray elas não se misturam: no encontro, os pontos ficam lado a lado. As ligações têm cor e traço próprios, para não se confundirem com as tintas: verde contínua para ano, violeta tracejada para edital, ferrugem pontilhada para escala e preta grossa para curadoria. Verde, violeta e ferrugem são as misturas das tintas duas a duas, escurecidas. A ligação por mecanismo leva a tinta do próprio mecanismo. A defesa está em <code>rizoma/PROPOSTAS-LAB07.md</code>.</p><div class="legend" id="aboutLegend"></div></div></article>
     <article class="block"><div><span class="kicker">LETRA</span><h2>Várias mãos</h2></div><p>O site tem um título só, Cartografia do Fomento. Ele e o nome de cada projeto são escritos com letras de placa, de muro e de pixo fotografadas em cidades brasileiras (Tipografia Vernacular 0800, de Gi Favetta). No título, cada letra tem uma mão, e de tempos em tempos algumas letras são repintadas por outra mão. Quando a linha não cabe, as últimas letras se apertam, como quem pinta e fica sem muro (ideia do Brasilêro, de Crystian Cruz). O nome das telas, os dados, as fichas e os textos de leitura ficam sempre parados, em Arial.</p></article>
     <article class="block"><div><span class="kicker">O PROJETO</span><h2>Uma bolinha</h2></div><div><p>Cada projeto é uma bolinha com a fórmula do grapixo: contorno preto, cor por dentro, sombra na mesma tinta. A cor é o mecanismo, o tamanho é o valor e o contorno grosso marca o circuito monumental. A mesma bolinha aparece no mapa, nos indicadores, nos editais e na página de cada projeto.</p><div id="aboutWalls" style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap"></div></div></article>
     <article class="block"><div><span class="kicker">DESCOBRIR</span><h2>O gesto revela</h2></div><p>O mapa começa com poucos projetos. Os escondidos piscam; tocar revela. Ao ligar os projetos por ano, mecanismo ou edital, o spray de cada um corre até os parentes, e seca em poucos segundos quando a ligação é desligada.</p></article>
@@ -521,7 +523,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <script src="js/data.js?v=20261112-31"></script>
 <script src="dados/mural.js?v=20261113-41"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
-<script src="js/rizoma.js?v=20261113-40"></script>
+<script src="js/rizoma.js?v=20261113-41"></script>
 <script src="js/letreiro.js?v=20261113-41"></script>
 <script>
 /* Lab 08 — O site inteiro na linguagem do Lab 07 (13/11/2026, pedido do autor).
@@ -564,7 +566,13 @@ const INKS = [[201, 24, 106], [18, 115, 201], [185, 127, 0]]; // magenta de spra
 const hex = c => "#" + c.map(v => Math.round(v).toString(16).padStart(2, "0")).join("").toUpperCase();
 const MECH = { "Incentivo Fiscal": hex(INKS[0]), "Fundo Municipal": hex(INKS[1]), "Descentra": hex(INKS[2]) };
 const mechMap = () => { const o = {}; MECHS.forEach((m, i) => o[m] = INKS[i]); return o; };
-for (const t of TYPES) Rizoma.LINES[t].color = [22, 22, 22]; // as ligações não têm cor própria: cor só significa mecanismo
+/* rodada 10: cada tipo de ligação tem cor e traço próprios, para não se confundir com as três tintas nem entre si.
+   Verde, violeta e ferrugem são as misturas das tintas duas a duas (azul + ocre, magenta + azul, magenta + ocre), escurecidas até
+   passarem no validador contra as tintas e o preto (pior par: 9,7 simulando daltonismo, 17,1 em visão comum; todas acima de 3:1
+   sobre o papel). A ligação por mecanismo leva a tinta do próprio mecanismo. O traço repete a diferença sem depender de cor
+   (WCAG 2.2, critério 1.4.1). Defesa e testes: rizoma/PROPOSTAS-LAB07.md, seção 3H. */
+const LINE_COLORS = { ano: [47, 107, 30], mecanismo: [22, 22, 22], edital: [105, 34, 120], escala: [118, 10, 3], territorio: [154, 151, 143], curadoria: [22, 22, 22] };
+for (const t of TYPES) Rizoma.LINES[t].color = LINE_COLORS[t] || [22, 22, 22];
 const PAPEL = [247, 246, 241];
 const TONS = [ // a família de cada tinta: do tom mais fundo ao mais claro (multiplica para escurecer, mistura com o papel para clarear)
   ["funda", c => c.map(v => v * 0.5), "Rótulo do mecanismo e a gota mais carregada do spray. Contraste acima de 8:1 com o papel."],
@@ -583,12 +591,12 @@ const MEC_HELP = {
   "Descentra": ["É um edital do Fundo Municipal criado para espalhar o dinheiro pela cidade. Os valores são menores, historicamente entre R$ 20 mil e R$ 40 mil.", "Os critérios dão pontos a proponentes e ações fora do eixo da Avenida do Contorno. Financia arte de base e formação nos bairros."]
 };
 const LINE_HELP = { // [frase curta para o aviso, texto do cartão de ajuda]
-  ano: ["liga projetos aprovados no mesmo ano.", "Liga projetos aprovados no mesmo ano. Serve para ver o que aconteceu junto."],
-  mecanismo: ["liga projetos pagos pelo mesmo mecanismo.", "Liga projetos pagos pelo mesmo mecanismo: Incentivo Fiscal, Fundo Municipal ou Descentra. As ligações ficam todas da mesma cor."],
-  edital: ["liga projetos aprovados no mesmo edital.", "Liga projetos aprovados no mesmo edital, ou seja, na mesma chamada pública do mesmo ano."],
-  escala: ["liga projetos da mesma faixa de valor.", "Liga projetos da mesma faixa de valor: micro (até R$ 30 mil), médio (de R$ 30 mil a R$ 100 mil) ou macro (acima de R$ 100 mil)."],
+  ano: ["linha verde, contínua. Liga projetos aprovados no mesmo ano.", "Liga projetos aprovados no mesmo ano. Serve para ver o que aconteceu junto. No mapa é a linha verde, contínua."],
+  mecanismo: ["linha na tinta do mecanismo. Liga projetos pagos pelo mesmo mecanismo.", "Liga projetos pagos pelo mesmo mecanismo: Incentivo Fiscal, Fundo Municipal ou Descentra. No mapa a linha leva a tinta do próprio mecanismo: magenta, azul ou ocre."],
+  edital: ["linha violeta, tracejada. Liga projetos aprovados no mesmo edital.", "Liga projetos aprovados no mesmo edital, ou seja, na mesma chamada pública do mesmo ano. No mapa é a linha violeta, tracejada."],
+  escala: ["linha cor de ferrugem, pontilhada. Liga projetos da mesma faixa de valor.", "Liga projetos da mesma faixa de valor: micro (até R$ 30 mil), médio (de R$ 30 mil a R$ 100 mil) ou macro (acima de R$ 100 mil). No mapa é a linha cor de ferrugem, pontilhada."],
   territorio: ["ligaria projetos da mesma regional da cidade. Ainda não liga nada, porque a regional de cada projeto não foi verificada.", "Ligaria projetos da mesma regional de Belo Horizonte. Ainda não funciona: a regional de cada projeto não foi verificada, e o site não supõe esse dado."],
-  curadoria: ["liga projetos com uma relação documentada, como duas edições do mesmo festival.", "Liga pares de projetos com uma relação documentada, uma a uma, como duas edições do mesmo festival. Cada ligação tem motivo e fonte na ficha do projeto."]
+  curadoria: ["linha preta, mais grossa. Liga projetos com uma relação documentada, como duas edições do mesmo festival.", "Liga pares de projetos com uma relação documentada, uma a uma, como duas edições do mesmo festival. Cada ligação tem motivo e fonte na ficha do projeto. No mapa é a linha preta, mais grossa."]
 };
 const EDITAL_COMO = {
   "Incentivo Fiscal": "Edital de Incentivo Fiscal: o projeto aprovado recebe autorização para captar dinheiro com empresas, até um teto.",
@@ -865,7 +873,7 @@ function uiMargin() {
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: true, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "grapixo", mechColors: mechMap(), edgeColor: "nos", edgeMix: "optica", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
+    container: "#rizomaStage", paper: true, depth: true, intro: true, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "grapixo", mechColors: mechMap(), edgeColor: "natureza", lineExact: true, lineInk: { mecanismo: true }, lineDash: { edital: 3, escala: 2 }, lineWeights: { curadoria: 1.7 }, edgeMix: "optica", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
     margin: uiMargin, lineCycle: 2.2,
     treeTop: () => uiMargin().t, treeBottom: () => uiMargin().b, // a árvore (decalque) respeita as mesmas faixas da interface
     onChange: sync, onOpen: showPreview, onHover: onHover
@@ -876,7 +884,7 @@ function mountField() {
       if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); const se = $("#search"), re = $("#results"); if (se) se.value = ""; if (re) re.hidden = true;
       selection = null; hoverSel = null; guide("Começou de novo: projetos escondidos, ligações desligadas e spray limpo.", 4200); }; }
   for (const t of TYPES) {
-    const L = Rizoma.LINES[t], b = document.createElement("button"); b.className = "chip"; b.style.setProperty("--sw", LC(t));
+    const L = Rizoma.LINES[t], b = document.createElement("button"); b.className = "chip"; b.dataset.t = t; b.title = LINE_HELP[t][0]; b.style.setProperty("--sw", LC(t));
     b.innerHTML = `<i></i><span>${L.label}</span><small>0</small>`; b.onclick = () => { R.toggleLine(t); if (R.state().focus) R.refresh(); }; $("#chips").appendChild(b); chips[t] = b;
   }
   sync(R.state());
@@ -930,7 +938,7 @@ function showPreview(i) {
   const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${esc(Rizoma.shortTitle(c.title))}</span><small>${esc(c.why)}${c.regrown ? " · rebrotou" : ""} →</small></button>`).join("") : `<div class="empty">Nenhuma ligação ativa chega a este projeto. No mapa, escolha uma opção em Ligar os projetos por.</div>`;
   const hid = hiddenSiblings(IDX[i.id]); $("#cHidden").textContent = hid.length ? `${hid.length === 1 ? "Um projeto ligado a este ainda está escondido" : hid.length + " projetos ligados a este ainda estão escondidos"}: ${hid.slice(0, 3).map(g => Rizoma.shortTitle(DATA[g].title)).join(", ")}${hid.length > 3 ? "…" : ""}. No mapa, eles piscam mais forte.` : "Nenhum projeto ligado a este continua escondido.";
   const P = {}; for (const q of (i.potentials || [])) (P[q.type] = P[q.type] || []).push(q);
-  $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button class="pot" data-line="${t}" style="--sw:${LC(t)}"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} projeto(s)</small></button>`).join("") : `<div class="empty">${L.length ? "Todas as ligações possíveis com os projetos revelados já estão ativas." : "Revele mais projetos no mapa para ver ligações possíveis."}</div>`;
+  $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button class="pot" data-line="${t}" style="--sw:${t === "mecanismo" ? MECH[i.mechanism] : LC(t)}"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} projeto(s)</small></button>`).join("") : `<div class="empty">${L.length ? "Todas as ligações possíveis com os projetos revelados já estão ativas." : "Revele mais projetos no mapa para ver ligações possíveis."}</div>`;
   $$("#cLinks [data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("#cPot [data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
   $("#cTrail").innerHTML = i.trail.length > 1 ? `<strong>Sua trilha:</strong> ${i.trail.map(esc).join(" → ")}` : ""; $("#cTrail").hidden = i.trail.length <= 1;
   renderCardLines(DATA[IDX[i.id]]);
@@ -1563,7 +1571,7 @@ function highlightDom(root, ids) { root.querySelectorAll("[data-ct],[data-leg]")
 const CARD_LINES = [["ano", "year", p => String(p.year)], ["mecanismo", "mechanism", p => p.mechanism], ["edital", "edital", p => p.edital], ["escala", "scale", p => Rizoma.scaleOf(p.value)], ["territorio", "region", p => p.region]];
 function renderCardLines(d) { // os chips das linhas de fuga na ficha também criam a seleção dos indicadores
   let box = $("#cLines"); if (!box) { box = document.createElement("div"); box.id = "cLines"; box.className = "card-lines"; const sub = document.createElement("div"); sub.className = "sub"; sub.textContent = "VER NOS INDICADORES"; $("#cOpen").after(sub, box); const sel = document.createElement("div"); sel.id = "cSel"; $("#cTrans").after(sel); }
-  box.innerHTML = CARD_LINES.filter(([t, , key]) => key(d) != null).map(([t, type, key]) => `<button type="button" data-cl="${type}" data-ck="${esc(key(d))}" data-lab="${esc(Rizoma.LINES[t].label + " " + String(key(d)).split(" (")[0])}" style="--sw:${LC(t)}"><i></i>${Rizoma.LINES[t].label}<small>${esc(String(key(d)).split(" (")[0])}</small></button>`).join("");
+  box.innerHTML = CARD_LINES.filter(([t, , key]) => key(d) != null).map(([t, type, key]) => `<button type="button" data-cl="${type}" data-ck="${esc(key(d))}" data-lab="${esc(Rizoma.LINES[t].label + " " + String(key(d)).split(" (")[0])}" style="--sw:${t === "mecanismo" ? MECH[d.mechanism] : LC(t)}"><i></i>${Rizoma.LINES[t].label}<small>${esc(String(key(d)).split(" (")[0])}</small></button>`).join("");
   $$("#cLines [data-cl]").forEach(b => b.onclick = () => { selection = { type: b.dataset.cl, key: b.dataset.ck, label: b.dataset.lab }; if (page !== "indicators") showPage("indicators"); else renderIndicators(); });
 }
 function highlightCard(ids) { const sel = $("#cSel"); if (!sel) return; const s = hoverSel || selection; if (!ids || !previewId || !$("#card").classList.contains("open")) { sel.className = ""; sel.textContent = ""; return; } const inSel = ids.has(previewId); sel.className = inSel ? "in" : "out"; sel.textContent = (inSel ? "NA SELEÇÃO · " : "FORA DA SELEÇÃO · ") + (s.label || s.key).toUpperCase(); $$("#cLinks [data-go]").forEach(b => b.style.opacity = ids.has(b.dataset.go) ? "" : ".35"); }
@@ -1611,16 +1619,19 @@ function renderEditais() { // mecanismos, ligações e editais explicados (mesmo
   const eds = [...new Set(DATA.map(d => d.edital))].sort((a, b) => (DATA.find(d => d.edital === a).year - DATA.find(d => d.edital === b).year) || a.localeCompare(b));
   const editais = eds.map(e => { const ps = DATA.filter(d => d.edital === e), m = ps[0].mechanism, i = MECHS.indexOf(m), info = EDITAL_INFO[e] || {}, ev = EDITAL_VALOR[e] || {}, nf = n => n.toLocaleString("pt-BR"), tot = ps.reduce((a, p) => a + (p.value || 0), 0);
     const disputa = ev.insc && ev.aprov ? `${nf(ev.aprov)} aprovados entre ${nf(ev.insc)} inscritos.` : ev.junto ? `${nf(JUNTOS[ev.junto].aprov)} aprovados entre ${nf(JUNTOS[ev.junto].insc)} inscritos, somando Fundo e Incentivo Fiscal.` : ev.taxa ? `${nf(ev.aprov)} aprovados, ${pct1(ev.taxa)} dos inscritos.` : ev.insc ? `${nf(ev.insc)} inscritos.` : "";
+    const taxa = ev.insc && ev.aprov ? ev.aprov / ev.insc : ev.junto ? JUNTOS[ev.junto].aprov / JUNTOS[ev.junto].insc : ev.taxa || null, maxTotal = Math.max(...Object.values(EDITAL_VALOR).map(x => x.total || 0), 1);
     return `<article data-k="${esc(e)}"><h4><i style="--c:${hex(INKS[i] || INK)}"></i>${esc(e)}</h4><p>${EDITAL_COMO[m] || ""}</p>${info.teto ? `<p><b>Teto por projeto:</b> ${info.teto}</p>` : ""}<p><b>Valor do edital:</b> ${ev.total ? milhoes(ev.total) + "." : "não fixado no edital."}${disputa ? " " + disputa : ""}${ev.obs ? " " + esc(ev.obs) : ""}${ev.fonte ? ` <a href="${ev.fonte}" target="_blank" rel="noopener">Edital em PDF ↗</a>` : ""}</p>
+      <div class="mini" role="img" aria-label="Valor do edital comparado ao maior edital, e parte dos inscritos que foi aprovada">${ev.total ? `<span>valor do edital</span><i><b style="width:${f1(ev.total / maxTotal * 100)}%;background:${hex(INKS[i] || INK)}"></b></i>` : ""}${taxa != null ? `<span>aprovados entre os inscritos: ${pct1(taxa)}</span><i><b style="width:${f1(taxa * 100)}%;background:${hex(INKS[i] || INK)}"></b></i>` : ""}</div>
       <small>${ps.length === 1 ? "Um projeto do corpus" : ps.length + " projetos do corpus"}, somando ${money(tot)}.</small><div class="pj">${ps.map(p => `<button data-ver="${p.id}">${esc(Rizoma.shortTitle(p.title))} →</button>`).join("")}<button class="verind" data-ed="${esc(e)}">Ver nos indicadores →</button></div>
       ${info.url ? `<small><a href="${info.url}" target="_blank" rel="noopener">Página na Prefeitura ↗</a></small>` : ""}</article>`; }).join("");
   $("#editalList").innerHTML = `<h3 id="h-mec">Os três mecanismos</h3><p>Mecanismo é o caminho pelo qual o dinheiro público chega ao projeto. No mapa, cada mecanismo tem uma cor.</p><div class="hgrid">${mecs}</div>
     <h3 id="h-linhas">As ligações</h3><p>As ligações mostram o que dois projetos têm em comum. No mapa, você escolhe qual ligar em Ligar os projetos por.</p><div class="hgrid">${linhas}</div>
-    <h3 id="h-editais">Os editais</h3><p>Edital é a chamada pública em que os projetos se inscrevem e são selecionados. Cada edital pertence a um mecanismo.</p><div class="hgrid">${editais}</div>
+    <h3 id="h-editais">Os editais</h3><p>Edital é a chamada pública em que os projetos se inscrevem e são selecionados. Cada edital pertence a um mecanismo. Em cada cartão, a primeira barra compara o valor do edital com o maior edital, e a segunda mostra a parte dos inscritos que foi aprovada.</p><p><button type="button" class="verind big" id="verGraficosEd">Ver os gráficos dos editais: valor total e quantos passam →</button></p><div class="hgrid">${editais}</div>
     <p style="margin-top:26px;font-size:11px;color:#777">De onde vem cada informação: a descrição dos mecanismos e os tetos marcados com TCC vêm do texto do TCC; os números dos editais vêm das páginas da Prefeitura de Belo Horizonte, consultadas em 31/10/2026; os valores do corpus vêm das Tabelas 1 e 2 do TCC. No Incentivo Fiscal, o valor aprovado é o máximo que o projeto pode captar: quanto foi captado de fato não é publicado.</p>`;
   $$("#editalList [data-mech]").forEach(b => b.onclick = () => { selection = { type: "mechanism", key: b.dataset.mech, label: b.dataset.mech }; showPage("indicators"); });
   $$("#editalList [data-ed]").forEach(b => b.onclick = () => { selection = { type: "edital", key: b.dataset.ed, label: "Edital " + b.dataset.ed }; showPage("indicators"); });
   $$("#editalList [data-ver]").forEach(b => b.onclick = () => openPreview(b.dataset.ver, "editais"));
+  $("#verGraficosEd").onclick = () => { showPage("indicators"); requestAnimationFrame(() => $('.chart[data-chart="pote"]').scrollIntoView({ block: "start" })); };
 }
 function openGloss(a) { // "h-mec:Incentivo Fiscal" abre a tela Editais no cartão certo
   const str = String(a), cut = str.indexOf(":"), sec = cut < 0 ? str : str.slice(0, cut), key = cut < 0 ? "" : str.slice(cut + 1);

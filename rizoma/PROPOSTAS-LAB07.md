@@ -503,6 +503,55 @@ Conferido no navegador em 1280 px e 375 px: Recomeçar e Desligar ligações, ma
 
 ---
 
+## 3H. Lab 08, quarta rodada de 13/11/2026: cor e traço por tipo de ligação; os editais na tela Editais
+
+Pedidos do autor: as linhas das ligações, que funcionam como filtros, precisam de cores diferentes para ele saber qual ligação é qual, porque estava se confundindo; e ele não encontrou os gráficos de inscritos e aprovados.
+
+### 3H.1 O problema
+
+Desde a rodada do spray, toda ligação levava a tinta dos dois projetos que ligava. Com duas ou mais ligações ligadas ao mesmo tempo, uma linha de "ano" e uma de "edital" entre os mesmos dois projetos saíam idênticas. A cor da linha repetia o mecanismo, que a bolinha já mostra, e não dizia o tipo da ligação.
+
+### 3H.2 A solução: uma cor e um traço para cada ligação
+
+| Ligação | Cor | Traço | De onde vem a cor |
+|---|---|---|---|
+| Ano | verde `#2F6B1E` | contínuo | mistura de azul e ocre |
+| Edital | violeta `#692278` | tracejado | mistura de magenta e azul |
+| Escala | ferrugem `#760A03` | pontilhado | mistura de magenta e ocre |
+| Mecanismo | a tinta do próprio mecanismo | contínuo | magenta, azul ou ocre, conforme os projetos ligados |
+| Curadoria | preto `#161616` | contínuo e mais grosso | o pixo: é a ligação documentada, escrita |
+| Regional | cinza claro `#9A978F` | pontilhado | não liga nada hoje |
+
+**Fundamento.** As ligações usam as misturas das três tintas, duas a duas, que é o que o pintor obtém no muro quando duas tintas se encontram. A ligação une dois projetos; não pertence a um mecanismo, então não usa tinta pura. As três misturas tinham sido testadas na segunda rodada do Lab 07 e abandonadas na rodada do spray, quando o autor pediu só as três tintas. Voltam agora em outra função: não são mais o trecho entre duas tintas, são a identidade de um tipo de ligação. As misturas calculadas (`#3C3592`, `#C13700`, `#3A7900`) reprovaram no validador: o tijolo ficava a 12,4 do magenta em visão comum e a 4,3 do verde simulando daltonismo. Foram escurecidas até passar. O que tem fonte: a prática da mistura subtrativa de tintas e os contrastes de matiz e de claro-escuro (ITTEN, 1961). O que é leitura de design: associar cada mistura a um tipo de ligação.
+
+**A exceção do mecanismo.** A ligação por mecanismo une projetos do mesmo mecanismo. Ela continua na tinta dele, porque aí a cor da linha e a cor da bolinha dizem a mesma coisa.
+
+**Teste** (validador de paleta, OKLab, simulação de Machado, Oliveira e Fernandes, 2009, papel `#F7F6F1`, todos os pares entre as três tintas e as três cores de ligação):
+
+- separação simulando daltonismo: pior par ferrugem e verde, 9,7 (mínimo 8). Passa.
+- separação em visão comum: pior par ferrugem e violeta, 17,1 (mínimo 15). Passa.
+- contraste com o papel: verde 6,0; violeta 9,2; ferrugem 10,7 (mínimo 3). Passa.
+- faixa de claridade do validador: violeta e ferrugem ficam abaixo dela. É de propósito: a faixa serve a áreas preenchidas, e aqui são linhas finas, que precisam ser mais escuras que as bolinhas para aparecer.
+
+**Tons mais claros.** O autor sugeriu tons mais claros. Foram testados e reprovaram: um verde médio fica a 6,1 do magenta simulando daltonismo, um violeta claro fica a 6,4 do azul, e os cinzas médios ficam a menos de 1 do magenta. A linha já aparece mais leve que a bolinha por ser fina e translúcida quando não está em foco.
+
+**Traço.** Cada ligação tem também um traço: contínuo, tracejado, pontilhado ou grosso. Assim o tipo não depende só da cor, como pede a WCAG 2.2, critério 1.4.1. Preto de curadoria e tinta de mecanismo se separam pela espessura.
+
+**Onde aparece.** Nos botões "Ligar os projetos por", que agora mostram um pedaço da linha no lugar do ponto; no aviso ao ligar ("Edital: linha violeta, tracejada..."); nas ligações da ficha e da página do projeto; nos textos da tela Editais e do Sobre.
+
+**No motor** (`js/rizoma.js`), quatro opções novas, desligadas por padrão, que não mudam os outros labs: `lineExact` (usa a cor do tipo sem escurecer), `lineInk` (tipos que levam a tinta dos projetos), `lineDash` (um trecho vazio a cada n) e `lineWeights` (espessura por tipo).
+
+### 3H.3 Inscritos e aprovados: onde estão
+
+O gráfico "De quem se inscreve, quantos passam?" está publicado desde a segunda rodada, como pergunta 6 da tela Indicadores. Como o autor não o encontrou, a tela Editais ganhou duas portas:
+
+- um botão no alto da lista de editais, "Ver os gráficos dos editais: valor total e quantos passam", que abre os Indicadores já na pergunta 5;
+- em cada cartão de edital, duas barras pequenas: o valor do edital comparado ao maior edital, e a parte dos inscritos que foi aprovada.
+
+Conferido no navegador em 1280 px e 375 px: as cinco ligações ligadas juntas e em pares, os botões com o traço de cada uma, a ficha, as barras nos doze cartões, o botão para os gráficos, e o protótipo principal e o Lab 07 abrindo sem erro com o motor alterado.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.

@@ -81,6 +81,9 @@
     const SPREAD = Math.max(0.5, opts.spread || 1), LINE_W = Math.max(0.2, opts.lineWeight || 1);
     const margin = () => Object.assign({ t: 40, r: 40, b: 40, l: 40 }, (typeof opts.margin === "function" ? opts.margin() : opts.margin) || {}); // área útil do campo, em px
     const col = t => LINES[t].color;
+    // Lab 08, rodada 10: cada tipo de ligação pode ter cor exata (sem escurecer), traço e espessura próprios; lineInk lista os tipos que levam a tinta dos projetos
+    const LINE_EXACT = !!opts.lineExact, LINE_INK = opts.lineInk || {}, LINE_DASH = opts.lineDash || {}, LINE_WEIGHTS = opts.lineWeights || {};
+    const edgeCol = (type, node) => LINE_INK[type] && node ? (MECH_COLOR[node.p.mechanism] || LINES[type].color) : LINES[type].color;
 
     /* ---------- relações possíveis entre dois nós (todas as naturezas) ---------- */
     function relationsBetween(a, b) {
@@ -383,7 +386,7 @@
     }
     function edgeInfo(e) {
       const L = LINES[e.t], mid = e.pts[Math.floor(e.pts.length / 2)] || [0, 0];
-      return { kind: "edge", type: e.t, label: L.label, why: L.why(e.k), source: e.source || null, color: L.color, regrown: e.regrown, x: mid[0], y: mid[1], a: { id: e.a.p.id, title: e.a.p.title, year: e.a.p.year, mechanism: e.a.p.mechanism }, b: { id: e.b.p.id, title: e.b.p.title, year: e.b.p.year, mechanism: e.b.p.mechanism } };
+      return { kind: "edge", type: e.t, label: L.label, why: L.why(e.k), source: e.source || null, color: edgeCol(e.t, e.a), regrown: e.regrown, x: mid[0], y: mid[1], a: { id: e.a.p.id, title: e.a.p.title, year: e.a.p.year, mechanism: e.a.p.mechanism }, b: { id: e.b.p.id, title: e.b.p.title, year: e.b.p.year, mechanism: e.b.p.mechanism } };
     }
 
     /* ---------- desenho ---------- */
@@ -522,10 +525,11 @@
       const A = e.a.scr, B = e.b.scr; const dx = B.x - A.x, dy = B.y - A.y; const L = Math.hypot(dx, dy) || 1;
       const nx = -dy / L, ny = dx / L;
       p.noFill();
-      const byNode = EDGE_COLOR === "nos", ca = byNode ? (MECH_COLOR[e.a.p.mechanism] || c) : c, cb2 = byNode ? (MECH_COLOR[e.b.p.mechanism] || c) : c, grad = byNode && ca !== cb2;
+      const byNode = EDGE_COLOR === "nos" || !!LINE_INK[e.t], ca = byNode ? (MECH_COLOR[e.a.p.mechanism] || c) : c, cb2 = byNode ? (MECH_COLOR[e.b.p.mechanism] || c) : c, grad = byNode && ca !== cb2;
       if (byNode) p.stroke(ca[0], ca[1], ca[2], alpha); // mesma tinta nas duas pontas: uma cor só
-      else if (S.paper) p.stroke(c[0] * 0.5, c[1] * 0.5, c[2] * 0.5, alpha); else p.stroke(c[0], c[1], c[2], alpha);
-      p.strokeWeight(weight * LINE_W * Math.min(A.s, B.s));
+      else if (S.paper && !LINE_EXACT) p.stroke(c[0] * 0.5, c[1] * 0.5, c[2] * 0.5, alpha); else p.stroke(c[0], c[1], c[2], alpha);
+      p.strokeWeight(weight * LINE_W * (LINE_WEIGHTS[e.t] || 1) * Math.min(A.s, B.s));
+      const dash = LINE_DASH[e.t] | 0; // n: a cada n trechos, um fica vazio (tracejado por tipo de ligação)
       let px0 = 0, py0 = 0;
       const steps = Math.max(8, Math.floor(L / 12));
       e.pts = [];
@@ -535,7 +539,7 @@
         const q = depthOn() ? project(p5.Vector.lerp(e.a.pos, e.b.pos, t)) : { x: A.x + dx * t, y: A.y + dy * t };
         const amp = Math.sin(t * p.PI) * Math.min(30, L * 0.2);
         const off = (p.noise(e.seed + t * 2.2, p.frameCount * 0.0025) - 0.5) * 2 * amp;
-        if (e.regrown && i % 3 === 1) { p.endShape(); p.beginShape(); } // pontilhado = linha que rebrotou
+        if ((e.regrown && i % 3 === 1) || (dash > 1 && i % dash === dash - 1)) { p.endShape(); p.beginShape(); } // pontilhado = linha que rebrotou; tracejado = traço do tipo
         const x = q.x + nx * off, y = q.y + ny * off;
         e.pts.push([x, y]);
         if (grad) { // tintas diferentes: a linha sai de uma, passa pela mistura e chega na outra, trecho a trecho
@@ -707,13 +711,13 @@
       const n = byId(id); if (!n) return [];
       return edges.filter(e => e.a === n || e.b === n).map(e => {
         const o = e.a === n ? e.b : e.a; const L = LINES[e.t];
-        return { id: o.p.id, title: o.p.title, type: e.t, label: L.label, why: L.why(e.k), source: e.source || null, color: L.color, regrown: e.regrown, revealed: o.revealed };
+        return { id: o.p.id, title: o.p.title, type: e.t, label: L.label, why: L.why(e.k), source: e.source || null, color: edgeCol(e.t, e.a), regrown: e.regrown, revealed: o.revealed };
       });
     }
     function potentials(id) { // ligações possíveis ainda não ligadas (qualquer natureza), com nós revelados
       const n = byId(id); if (!n) return [];
       const out = [];
-      for (const m of nodes) { if (m === n || !m.revealed) continue; for (const r of relationsBetween(n, m)) if (!edges.find(e => e.key === edgeKey(n, m, r.t))) out.push({ id: m.p.id, title: m.p.title, type: r.t, label: LINES[r.t].label, why: LINES[r.t].why(r.k), color: LINES[r.t].color }); }
+      for (const m of nodes) { if (m === n || !m.revealed) continue; for (const r of relationsBetween(n, m)) if (!edges.find(e => e.key === edgeKey(n, m, r.t))) out.push({ id: m.p.id, title: m.p.title, type: r.t, label: LINES[r.t].label, why: LINES[r.t].why(r.k), color: edgeCol(r.t, n) }); }
       return out;
     }
     function info(id) {

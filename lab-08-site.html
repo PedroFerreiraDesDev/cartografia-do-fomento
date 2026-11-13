@@ -261,6 +261,13 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 @media(prefers-reduced-motion:no-preference){html.story-on .chart.cap .lead,html.story-on .chart.cap .answer,html.story-on .chart.cap .bignum{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}html.story-on .chart.cap.in .lead,html.story-on .chart.cap.in .answer,html.story-on .chart.cap.in .bignum{opacity:1;transform:none}html.story-on .chart.cap .answer{transition-delay:.15s}}
 @media(max-width:780px){.chart.cap h2{font-size:25px}.prog .dots button{width:18px;height:18px;font-size:8.5px}.prog #progTxt{display:none}.prog .dots{margin-left:0}}
 .mleg{display:flex;align-items:center;gap:5px;margin-top:10px;font-size:9.5px;color:#777}.mleg span{font-size:8.5px;font-weight:900;letter-spacing:.12em;margin-right:6px}.mleg i{display:inline-block;width:14px;height:14px;border:1px solid var(--line);background:rgba(22,22,22,var(--a));margin-left:6px}
+/* rodada 12: passo 8 em seis etapas (teia dos dois circuitos) */
+.tsteps{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0 10px}.tsteps button{display:flex;align-items:center;gap:7px;border:1px solid #ccc;background:#fff;padding:8px 10px 8px 7px;font-size:10px;font-weight:800;text-align:left}.tsteps button:hover{border-color:var(--ink)}
+.tsteps button b{display:grid;place-items:center;flex:none;width:18px;height:18px;border-radius:50%;background:#eceae3;color:var(--ink);font-size:9px}.tsteps button i{display:block;flex:none;width:20px;height:0;border-top:var(--sw,2px) var(--st,solid) var(--sc,#161616)}
+.tsteps button.done b{background:#d4d1c8}.tsteps button.active{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}.tsteps button.active b{background:var(--ink);color:#fff}
+.tsteps button.play{border-color:var(--ink);background:var(--ink);color:#fff;padding:8px 12px;margin-left:auto}
+.chart>p.tcap{margin:0 0 10px;max-width:none;min-height:46px;font-size:14px;line-height:1.5;font-weight:700;color:var(--ink);border-left:3px solid var(--ink);padding-left:11px}
+@media(max-width:780px){.tsteps button{padding:7px 8px 7px 6px;font-size:9.5px}.tsteps button.play{margin-left:0}.chart>p.tcap{font-size:13px;min-height:78px}}
 .gapgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 14px}.gapgrid article{border:1px dashed #bbb;padding:12px 14px}.gapgrid h4{margin:0 0 6px;font-size:14px}.gapgrid p{margin:0;font-size:11.5px;line-height:1.6;color:#5c5c5c}
 .mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
 .mfoto{margin:0;border:1px solid var(--line);background:#fff}.mfoto img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.mfoto figcaption{padding:8px 10px 9px;font-size:11.5px;line-height:1.45}.mfoto small{display:block;margin-top:3px;font-size:9.5px;color:#777}.mfoto em{display:block;margin-top:6px;font-style:normal;font-size:8.5px;font-weight:900;letter-spacing:.08em;color:var(--ink)}.mfoto.pend{border:1.5px dashed var(--ink)}
@@ -421,11 +428,17 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
         <p class="ponte">Os projetos grandes e os pequenos têm alguma coisa em comum? ↓</p>
       </section>
 
-      <section class="chart cap" data-chart="matrix" data-cap="Ligações"><div class="kicker"><i></i>PASSO 8 DE 9 · LIGAÇÕES <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Dois grupos que quase não se tocam</h2><p class="lead">Dois projetos podem ter em comum o ano, o mecanismo, o edital, o tamanho do valor ou uma relação documentada. Arrumados por mecanismo, aparecem blocos escuros: projetos do mesmo caminho se parecem entre si e pouco com os outros. O TCC chama esses dois grupos de circuito monumental e circuito capilar.</p><p class="answer" id="ansMatrix"></p>
-        <div class="metric views" id="matrixOrder" role="group" aria-label="Ordem da matriz"><span>ARRUMAR POR</span><button data-order="mecanismo" class="active">Mecanismo</button><button data-order="ano">Ano</button><button data-order="valor">Valor</button></div>
-        <p class="how">Como ler: cada quadradinho cruza dois projetos, o da linha e o da coluna. Quanto mais escuro, mais coisas eles têm em comum: ano, mecanismo, edital, tamanho do valor ou curadoria. Arrumar por mecanismo junta os parecidos em blocos.</p>
-        <div id="matrixChart" class="matrix"></div>
-        <div class="mleg" aria-hidden="true"><span>COISAS EM COMUM</span><i style="--a:0"></i>0<i style="--a:.27"></i>1<i style="--a:.44"></i>2<i style="--a:.61"></i>3<i style="--a:.78"></i>4<i style="--a:.95"></i>5</div>
+      <section class="chart cap" data-chart="matrix" data-cap="Ligações"><div class="kicker"><i></i>PASSO 8 DE 9 · LIGAÇÕES <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Dois grupos que quase não se tocam</h2><p class="lead">O TCC separa os vinte projetos em dois circuitos. O monumental reúne os projetos do Incentivo Fiscal. O capilar reúne os do Fundo Municipal e do Descentra. O desenho põe um circuito de cada lado e liga os projetos que têm alguma coisa em comum. Siga os seis passos: cada um acende um tipo de ligação.</p><p class="answer" id="ansMatrix"></p>
+        <div class="metric views" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-lview="teia" class="active">Teia</button><button data-lview="tabela">Tabela</button></div>
+        <div class="tsteps" id="teiaSteps" data-lv="teia" role="group" aria-label="Passo a passo das ligações"></div>
+        <p class="tcap" id="teiaCap" data-lv="teia" aria-live="polite"></p>
+        <div id="teiaChart" class="p5chart" data-lv="teia" role="img" aria-label="Teia: os projetos do circuito monumental à esquerda, os do capilar à direita, e linhas entre os que têm algo em comum"></div>
+        <p class="read" id="teiaRead" data-lv="teia" aria-live="polite" style="margin-top:10px"></p>
+        <p class="how" data-lv="teia">Como ler: cada bolinha é um projeto, com o ano ao lado. Uma linha liga dois projetos que têm aquela coisa em comum. Arco que volta para o mesmo lado liga projetos do mesmo circuito. Linha que cruza o meio liga um circuito ao outro, e o número no alto conta quantas cruzam. O mecanismo não vira linha: ele já é a cor da bolinha.</p>
+        <div class="metric views" id="matrixOrder" data-lv="tabela" role="group" aria-label="Ordem da tabela" hidden><span>ARRUMAR POR</span><button data-order="mecanismo" class="active">Mecanismo</button><button data-order="ano">Ano</button><button data-order="valor">Valor</button></div>
+        <p class="how" data-lv="tabela" hidden>Como ler: é o mesmo dado da teia, em tabela. Cada quadradinho cruza dois projetos, o da linha e o da coluna. Quanto mais escuro, mais coisas eles têm em comum. Aqui o mecanismo também conta, por isso aparecem três blocos escuros, um para cada mecanismo. Toque num quadradinho para saber o que os dois projetos dividem.</p>
+        <div id="matrixChart" class="matrix" data-lv="tabela" hidden></div>
+        <div class="mleg" data-lv="tabela" hidden aria-hidden="true"><span>COISAS EM COMUM</span><i style="--a:0"></i>0<i style="--a:.27"></i>1<i style="--a:.44"></i>2<i style="--a:.61"></i>3<i style="--a:.78"></i>4<i style="--a:.95"></i>5</div>
         <p class="ponte">Essa história tem buracos. O que os documentos ainda não contam? ↓</p>
       </section>
 
@@ -1268,7 +1281,7 @@ function renderSlope() { // declive (Tufte, 2001): dois períodos, uma linha por
    Aqui cada pergunta tem um gráfico principal, a resposta escrita antes dele (título que afirma o achado:
    Knaflic, 2015) e as outras formas ficam em "ver como", na mesma seção. Uma pergunta por vez e detalhe sob pedido
    (Shneiderman, 1996). As respostas são calculadas dos dados, nunca escritas à mão. */
-let yView = "colunas", vView = "regua", rView = "fita";
+let yView = "colunas", vView = "regua", rView = "fita", lView = "teia";
 const pct = x => Math.round(x * 100) + "%", dec = x => x.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 function renderFita() { // fita do dinheiro: uma barra só, parte e todo no mesmo eixo; comprimento numa escala comum (Cleveland e McGill, 1984)
   const sm = small(), W = sm ? 400 : 820, bh = sm ? 50 : 58, top = 34, H = top + bh + 40, x0 = 3, x1 = W - 3, focus = R ? R.state().focus : null;
@@ -1300,16 +1313,15 @@ function renderAnswers() {
   const circ = {}; let puro = true; MECHS.forEach(m => { const cs = [...new Set(DATA.filter(p => p.mechanism === m).map(p => p.circuit))]; if (cs.length === 1) (circ[cs[0]] = circ[cs[0]] || []).push(m); else if (cs.length) puro = false; });
   const lista = a => a.length > 1 ? a.slice(0, -1).join(", ") + " e " + a[a.length - 1] : a[0];
   $("#circNote").textContent = puro && Object.keys(circ).length ? "Neste corpus o circuito acompanha o mecanismo: " + Object.keys(circ).map(c => `${lista(circ[c])} ${circ[c].length > 1 ? "são" : "é"} ${circ[c].length > 1 ? ({ Monumental: "monumentais", Capilar: "capilares" }[c] || c.toLowerCase()) : c.toLowerCase()}`).join("; ") + "." : "";
-  // 4 ligações
-  let pairs = 0, linked = 0, same = [0, 0], diff = [0, 0];
-  for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) { const r = relationsOf(DATA[i], DATA[j]).length, o = DATA[i].mechanism === DATA[j].mechanism ? same : diff; pairs++; if (r) linked++; o[0] += r; o[1]++; }
-  $("#ansMatrix").textContent = `Dos ${pairs} pares de projetos, ${linked} têm pelo menos uma coisa em comum. Dois projetos do mesmo mecanismo têm em média ${dec(same[1] ? same[0] / same[1] : 0)} coisas em comum. De mecanismos diferentes, ${dec(diff[1] ? diff[0] / diff[1] : 0)}.`;
+  // 4 ligações: a resposta sai da teia (rodada 12), que não conta o mecanismo como ligação
+  $("#ansMatrix").textContent = teiaAnswer();
 }
 function renderViews() {
   const un = metric === "count" ? "projetos" : "valor aprovado";
   $("#yearChart").hidden = yView !== "colunas"; $("#slopeChart").hidden = yView !== "declive"; $("#mancha").hidden = yView !== "mancha"; $("#cordasChart").hidden = yView !== "cordas";
   $("#dotChart").hidden = vView !== "regua"; $("#wallsChart").hidden = vView === "regua";
   $("#fitaChart").hidden = rView !== "fita"; $("#lorenzChart").hidden = rView !== "curva";
+  $$("[data-lv]").forEach(el => el.hidden = el.dataset.lv !== lView); $$("[data-lview]").forEach(b => b.classList.toggle("active", b.dataset.lview === lView));
   $$("[data-yview]").forEach(b => b.classList.toggle("active", b.dataset.yview === yView)); $$("[data-vview]").forEach(b => b.classList.toggle("active", b.dataset.vview === vView)); $$("[data-rview]").forEach(b => b.classList.toggle("active", b.dataset.rview === rView));
   $("#howYears").textContent = yView === "colunas" ? `Como ler: cada caixa é um ano. Dentro dela, cada faixa colorida é um mecanismo. Quanto mais alta a faixa, mais ${un}. 2018 e 2020 não têm projeto neste recorte, mas tiveram edital.`
     : yView === "declive" ? `Como ler: à esquerda, a soma de 2017 a 2021. À direita, a de 2022 a 2024. Cada linha é um mecanismo. Linha que sobe, cresceu. Linha que desce, encolheu. É o mesmo dado das colunas, juntado em dois períodos.`
@@ -1324,6 +1336,7 @@ function renderViews() {
 $$("[data-yview]").forEach(b => b.onclick = () => { yView = b.dataset.yview; renderViews(); if (yView === "mancha") startMancha(); applyHighlight(); });
 $$("[data-vview]").forEach(b => b.onclick = () => { vView = b.dataset.vview; if (vView !== "regua") wallsMode = vView; renderWalls(); renderViews(); applyHighlight(); });
 $$("[data-rview]").forEach(b => b.onclick = () => { rView = b.dataset.rview; renderViews(); applyHighlight(); });
+$$("[data-lview]").forEach(b => b.onclick = () => { lView = b.dataset.lview; if (lView !== "teia") teiaStop(); renderViews(); applyHighlight(); });
 $$("[data-q]").forEach(b => b.onclick = () => { const s = $(`.chart[data-chart="${b.dataset.q}"]`); if (s) s.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); });
 /* ---------- rodada 8: o valor total de cada edital e a disputa por ele ----------
    Pedido do autor: gráficos sobre o valor total disponibilizado em cada edital. Cada número foi lido no próprio edital (PDF no
@@ -1369,7 +1382,7 @@ const mixInk = (c, k) => c.map((x, i) => Math.round(x * k + [247, 246, 241][i] *
 const ST = { sk: {}, prog: {}, playing: {}, hov: null };
 const edHot = () => { const s = hoverSel || selection; return s && s.type === "edital" ? s.key : null; };
 function redrawStory() { if (page !== "indicators") return; for (const k in ST.sk) ST.sk[k].redraw(); const h = edHot(), rest = touch ? "Toque num edital para ler os números dele." : "Passe a mão num edital para ler os números dele. Clique para fixar.";
-  ["muroRead", "peneiraRead", "bolhasRead"].forEach(id => { const el = $("#" + id); if (!el) return; el.textContent = h ? edRead(h) : rest; el.classList.toggle("on", !!h); }); }
+  ["muroRead", "peneiraRead", "bolhasRead"].forEach(id => { const el = $("#" + id); if (!el) return; el.textContent = h ? edRead(h) : rest; el.classList.toggle("on", !!h); }); teiaRead(); }
 function playStory(key) { if (!(key in ST.prog) || ST.prog[key] >= 1 || ST.playing[key]) return; if (reduced) { ST.prog[key] = 1; ST.sk[key].redraw(); return; }
   ST.playing[key] = true; const t0 = performance.now(), step = () => { const t = Math.min(1, (performance.now() - t0) / 1100); ST.prog[key] = t; ST.sk[key].redraw(); if (t < 1) requestAnimationFrame(step); else ST.playing[key] = false; }; requestAnimationFrame(step);
   setTimeout(() => { if (ST.prog[key] < 1) { ST.prog[key] = 1; ST.playing[key] = false; ST.sk[key].redraw(); } }, 2600); } // se o navegador segurar a animação, o desenho aparece inteiro
@@ -1424,6 +1437,91 @@ mountSketch("bolhas", "bolhasChart", (bw, sm) => { const H = sm ? 470 : 500, Lm 
   if (t < 1) return; L.nodes.forEach(n => { const a = on(n.d) ? 255 : 70, tx = n.d.e.replace("LMIC ", "").replace(/ - /, " ").replace("Descentra", L.sm ? "Desc." : "Descentra"); p.textAlign(p.CENTER, p.BASELINE); p.textStyle(p.BOLD); p.textSize(L.sm ? 8.5 : 9.5); const ty = n.r < 20 ? n.y + n.r + 13 : n.y - n.r - 5, tw = p.textWidth(tx);
     p.noStroke(); p.fill(247, 246, 241, 215); p.rect(n.x - tw / 2 - 3, ty - 10, tw + 6, 13); fl(p, PRETO, a); p.text(tx, n.x, ty); p.textStyle(p.NORMAL); }); },
 (L, mx, my) => { const hit = L.nodes.filter(n => Math.hypot(mx - n.x, my - n.y) <= Math.max(14, n.r)).sort((a, b) => a.r - b.r)[0]; return hit ? hit.d.e : null; });
+/* ---------- rodada 12: passo 8, a teia dos dois circuitos ----------
+   Pedido do autor: o gráfico das ligações não se entendia nem atraía, e o título falava em dois grupos enquanto a tabela mostrava
+   três blocos. O desenho novo põe os dois circuitos do TCC frente a frente (monumental à esquerda, capilar à direita) e liga os
+   projetos por arcos: diagrama de arcos (Wattenberg, 2002). Arco que volta fica dentro do circuito; linha que cruza o meio
+   atravessa. A leitura vem em seis etapas, uma ligação de cada vez, como uma sequência de quadros (Segel e Heer, 2010).
+   O mecanismo NÃO entra como ligação: ele define o grupo, e contá-lo faria o gráfico provar a própria definição. As cores e os
+   traços das linhas são os do mapa (rodada 10). A tabela (Bertin, 1967) continua em "ver como". Seção 3K de rizoma/PROPOSTAS-LAB07.md. */
+const TK = ["ano", "edital", "escala", "curadoria"]; // o que pode ligar dois projetos além do mecanismo
+const TKN = { ano: "Mesmo ano", edital: "Mesmo edital", escala: "Tamanho do valor", curadoria: "Relação documentada" };
+const TKP = { ano: "pelo ano", edital: "pelo edital", escala: "pelo tamanho do valor", curadoria: "por relação documentada" };
+const TSTAGES = [{ k: [], n: "Os projetos" }, ...TK.map(k => ({ k: [k], n: TKN[k] })), { k: TK, n: "Tudo junto" }];
+const TDASH = { edital: [6, 4], escala: [1.5, 4.5] };
+const TSIDE = CIRCUITS.map(c => DATA.filter(p => p.circuit === c).sort((a, b) => MECHS.indexOf(a.mechanism) - MECHS.indexOf(b.mechanism) || a.year - b.year || (b.value || 0) - (a.value || 0)));
+const TPAIRS = []; for (let i = 0; i < DATA.length; i++) for (let j = i + 1; j < DATA.length; j++) { const a = DATA[i], b = DATA[j], ks = relationsOf(a, b).filter(t => TK.includes(t)); if (ks.length) TPAIRS.push({ a: a.id, b: b.id, ks, cross: a.circuit !== b.circuit, side: CIRCUITS.indexOf(a.circuit) }); }
+const TE = { stage: reduced ? TSTAGES.length - 1 : 0, t: 1, run: 0, timer: 0, played: reduced };
+const eLista = a => a.length > 1 ? a.slice(0, -1).join(", ") + " e " + a[a.length - 1] : a[0] || "";
+const teiaShown = () => TSTAGES[TE.stage].k, teiaHot = () => { const s = hoverSel || selection; return s && s.type === "project" ? s.key : null; };
+const teiaCount = ks => { const l = TPAIRS.filter(q => q.ks.some(k => ks.includes(k))); return { n: l.length, cross: l.filter(q => q.cross).length }; };
+const teiaMechs = s => [...new Set(TSIDE[s].map(p => p.mechanism))].join(" e do ");
+function teiaAnswer() { const nL = TSIDE[0].length, nR = TSIDE[1].length, poss = nL * nR, c = teiaCount(TK), por = TK.map(k => [k, TPAIRS.filter(q => q.cross && q.ks.includes(k)).length]).filter(x => x[1]);
+  const dentro = s => TPAIRS.filter(q => !q.cross && q.side === s).length, tot = n => n * (n - 1) / 2, doc = TPAIRS.filter(q => q.ks.includes("curadoria"));
+  return `Entre os dois circuitos há ${poss} pares possíveis de projetos. ${c.cross / poss < .5 ? "Só " : ""}${c.cross} têm alguma coisa em comum${por.length ? ": " + eLista(por.map(([k, n]) => `${n} ${TKP[k]}`)) : ""}. ${doc.length && !doc.some(q => q.cross) ? "Nenhuma relação documentada liga um circuito ao outro. " : ""}Dentro do ${CIRCUITS[0].toLowerCase()}, ${dentro(0)} de ${tot(nL)} pares têm ligação. Dentro do ${CIRCUITS[1].toLowerCase()}, ${dentro(1)} de ${tot(nR)}.`; }
+function teiaCaption() { const st = TSTAGES[TE.stage], c = teiaCount(st.k), nL = TSIDE[0].length, nR = TSIDE[1].length, vai = n => n === 0 ? "Nenhum atravessa de um circuito ao outro" : n === 1 ? "Só um atravessa de um circuito ao outro" : `${n} atravessam de um circuito ao outro`;
+  if (!st.k.length) return `${DATA.length} projetos em dois circuitos. À esquerda, o ${CIRCUITS[0].toLowerCase()}: ${nL} projetos do ${teiaMechs(0)}. À direita, o ${CIRCUITS[1].toLowerCase()}: ${nR} projetos do ${teiaMechs(1)}. A cor da bolinha é o mecanismo.`;
+  if (st.k.length > 1) return `Tudo junto: ${c.n} pares de projetos têm alguma ligação. ${c.n - c.cross} ficam dentro de um circuito. ${c.cross} atravessam, de ${nL * nR} travessias possíveis.`;
+  const k = st.k[0];
+  return k === "ano" ? `Mesmo ano: ${c.n} pares de projetos foram aprovados no mesmo ano. ${vai(c.cross)}.`
+    : k === "edital" ? `Mesmo edital: ${c.n} pares saíram da mesma chamada pública. ${c.cross ? vai(c.cross) + "." : "Nenhum atravessa, e nem poderia: cada edital pertence a um mecanismo só."}`
+    : k === "escala" ? `Mesmo tamanho de valor: ${c.n} pares estão na mesma faixa (até R$ 30 mil, de R$ 30 mil a R$ 100 mil ou acima de R$ 100 mil). ${vai(c.cross)}.`
+    : `Relação documentada: ${c.n} pares têm uma relação registrada em documento, como duas edições do mesmo festival. ${c.cross ? vai(c.cross) + "." : "Nenhuma liga um circuito ao outro."}`; }
+function teiaRead() { const el = $("#teiaRead"); if (!el) return; const h = teiaHot(), shown = teiaShown(), p = h ? DATA[IDX[h]] : null;
+  if (!p) { el.textContent = touch ? "Toque num projeto para ver só as ligações dele." : "Passe a mão num projeto para ver só as ligações dele. Clique para fixar."; el.classList.remove("on"); return; }
+  const mine = TPAIRS.filter(q => (q.a === h || q.b === h) && q.ks.some(k => shown.includes(k))), cross = mine.filter(q => q.cross).length, por = shown.length === 1 ? " " + TKP[shown[0]] : "";
+  el.textContent = `${Rizoma.shortTitle(p.title)} (${p.year}, ${p.mechanism}, circuito ${String(p.circuit).toLowerCase()}): ` + (!shown.length ? "escolha uma ligação nos passos acima para ver com quem ele se liga." : mine.length ? `${mine.length === 1 ? "ligado a 1 projeto" : `ligado a ${mine.length} projetos`}${por}. ${mine.length - cross} no mesmo circuito, ${cross} no outro.` : `nenhuma ligação${por}.`); el.classList.add("on"); }
+function teiaUi() { const last = TSTAGES.length - 1; $$("#teiaSteps [data-ts]").forEach((b, i) => { b.classList.toggle("active", i === TE.stage); b.classList.toggle("done", i < TE.stage); if (i === TE.stage) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current"); });
+  const nx = $("#teiaNext"); if (nx) nx.textContent = TE.stage < last ? "Seguinte ›" : "↺ Ver de novo"; $("#teiaCap").textContent = teiaCaption(); teiaRead(); }
+function teiaGo(i, anim) { TE.stage = Math.max(0, Math.min(TSTAGES.length - 1, i)); teiaUi(); const id = ++TE.run, sk = ST.sk.teia;
+  if (!anim || reduced) { TE.t = 1; sk.redraw(); return; }
+  const t0 = performance.now(); TE.t = 0; const step = () => { if (id !== TE.run) return; TE.t = Math.min(1, (performance.now() - t0) / 700); sk.redraw(); if (TE.t < 1) requestAnimationFrame(step); }; requestAnimationFrame(step);
+  setTimeout(() => { if (id === TE.run && TE.t < 1) { TE.t = 1; sk.redraw(); } }, 1500); } // se o navegador segurar a animação, a etapa aparece inteira
+function teiaStop() { clearTimeout(TE.timer); TE.timer = 0; }
+function teiaPlay() { teiaStop(); TE.played = true; let i = 0; const next = () => { teiaGo(i, true); if (i < TSTAGES.length - 1) { i++; TE.timer = setTimeout(next, i === 1 ? 1700 : 2100); } else TE.timer = 0; }; next(); }
+function teiaSeen() { if (TE.played || page !== "indicators" || lView !== "teia") return; const el = $("#teiaChart"), r = el ? el.getBoundingClientRect() : null; if (r && r.width && r.top < innerHeight * 0.72 && r.bottom > innerHeight * 0.2) teiaPlay(); } // a sequência começa quando o desenho aparece
+$("#teiaSteps").innerHTML = TSTAGES.map((s, i) => `<button type="button" data-ts="${i}"><b>${i + 1}</b>${s.k.length === 1 ? `<i style="--sc:${LC(s.k[0])};--st:${s.k[0] === "edital" ? "dashed" : s.k[0] === "escala" ? "dotted" : "solid"};--sw:${s.k[0] === "curadoria" ? "3px" : "2px"}"></i>` : ""}${s.n}</button>`).join("") + `<button type="button" class="play" id="teiaNext">Seguinte ›</button>`;
+$$("#teiaSteps [data-ts]").forEach(b => b.onclick = () => { teiaStop(); TE.played = true; teiaGo(+b.dataset.ts, true); });
+$("#teiaNext").onclick = () => { teiaStop(); TE.played = true; if (TE.stage < TSTAGES.length - 1) teiaGo(TE.stage + 1, true); else teiaPlay(); };
+function teiaLayout(bw, sm) { const rh = sm ? 24 : 28, hh = sm ? 20 : 22, top = sm ? 62 : 66, xl = sm ? 122 : 252, xr = bw - xl, pos = {}, heads = [], hs = [];
+  TSIDE.forEach((list, s) => { let y = 0, last = null; const rows = []; list.forEach(p => { if (p.mechanism !== last) { if (last !== null) y += 10; rows.push({ head: p.mechanism, y: y + hh - 8 }); y += hh; last = p.mechanism; } rows.push({ p, y: y + rh / 2 }); y += rh; }); hs[s] = { h: y, rows }; });
+  const mh = Math.max(...hs.map(o => o.h)); hs.forEach((o, s) => { const off = top + (mh - o.h) / 2; o.rows.forEach(r => { if (r.p) pos[r.p.id] = { p: r.p, s, x: s ? xr : xl, y: off + r.y }; else heads.push({ s, m: r.head, y: off + r.y }); }); });
+  return { bw, sm, H: top + mh + 14, rh, xl, xr, pos, heads, bmax: sm ? 46 : 98, r: sm ? 5.5 : 6.5 }; }
+function teiaFit(p, s, w) { if (p.textWidth(s) <= w) return s; let n = s.length; while (n > 3 && p.textWidth(s.slice(0, n) + "…") > w) n--; return s.slice(0, n).trimEnd() + "…"; }
+function teiaDraw(p, L, t) { const shown = teiaShown(), hot = teiaHot(), ids = highlightIds(), all = shown.length > 1, sm = L.sm, gap = L.xr - L.xl;
+  const linked = hot ? new Set([hot]) : null; if (hot) TPAIRS.forEach(q => { if (q.ks.some(k => shown.includes(k))) { if (q.a === hot) linked.add(q.b); if (q.b === hot) linked.add(q.a); } });
+  // duas áreas claras, uma para cada circuito: o vão do meio é o que as linhas precisam atravessar
+  const ex = L.bmax + 8, y0 = sm ? 50 : 54; p.stroke(212, 209, 200); p.strokeWeight(1); p.fill(255, 255, 255, 175); p.rect(3, y0, L.xl + ex - 3, L.H - y0 - 4, 5); p.rect(L.xr - ex, y0, L.bw - 3 - (L.xr - ex), L.H - y0 - 4, 5);
+  // títulos dos dois circuitos e, no meio, quantas ligações atravessam nesta etapa
+  p.noStroke(); p.textStyle(p.BOLD); p.textSize(sm ? 9.5 : 11); fl(p, PRETO); p.textAlign(p.RIGHT, p.BASELINE); p.text((sm ? "" : "CIRCUITO ") + CIRCUITS[0].toUpperCase(), L.xl + L.r, 16); p.textAlign(p.LEFT, p.BASELINE); p.text((sm ? "" : "CIRCUITO ") + CIRCUITS[1].toUpperCase(), L.xr - L.r, 16);
+  p.textStyle(p.NORMAL); p.textSize(sm ? 8.5 : 10); p.fill(119); p.textAlign(p.RIGHT, p.BASELINE); p.text(TSIDE[0].length + " projetos", L.xl + L.r, 30); p.textAlign(p.LEFT, p.BASELINE); p.text(TSIDE[1].length + " projetos", L.xr - L.r, 30);
+  if (shown.length) { const c = teiaCount(shown); p.textAlign(p.CENTER, p.BASELINE); fl(p, PRETO); p.textStyle(p.BOLD); p.textSize(sm ? 26 : 34); p.text(String(Math.round(c.cross * t)), L.bw / 2, sm ? 30 : 34); p.textStyle(p.NORMAL); p.textSize(sm ? 8.5 : 10); p.fill(119); p.text(c.cross === 1 ? "atravessa" : "atravessam", L.bw / 2, sm ? 43 : 48); }
+  L.heads.forEach(h => { const i = MECHS.indexOf(h.m); p.noStroke(); fl(p, i < 0 ? PRETO : tom(INKS[i], "funda")); p.textStyle(p.BOLD); p.textSize(sm ? 8 : 9); p.textAlign(h.s ? p.LEFT : p.RIGHT, p.BASELINE); p.text(h.m.toUpperCase(), h.s ? L.xr - L.r : L.xl + L.r, h.y); });
+  // ligações: primeiro as apagadas, depois as de dentro, por cima as que atravessam
+  const lines = []; TPAIRS.forEach(q => q.ks.forEach(k => { if (!shown.includes(k)) return; const A = L.pos[q.a], B = L.pos[q.b]; if (!A || !B) return; lines.push({ q, k, A, B, on: hot ? q.a === hot || q.b === hot : !ids || (ids.has(q.a) && ids.has(q.b)) }); }));
+  lines.sort((a, b) => (a.on - b.on) || (a.q.cross - b.q.cross)); p.noFill();
+  lines.forEach(({ q, k, A, B, on }) => { const ki = TK.indexOf(k), c = LINE_COLORS[k] || PRETO, a = !on ? 20 : hot ? 255 : q.cross ? 255 : all ? 105 : 175;
+    sk(p, c, q.cross ? a * t : a); p.strokeWeight((k === "curadoria" ? 2.6 : 1.3) + (q.cross && on ? .5 : 0)); p.drawingContext.setLineDash(TDASH[k] || []);
+    if (q.cross) { const l = A.s === 0 ? A : B, r = A.s === 0 ? B : A, o = all ? (ki - 1.5) * 3 : 0; p.bezier(l.x, l.y, l.x + gap * .45, l.y + o, r.x - gap * .45, r.y + o, r.x, r.y); }
+    else { const d = A.s === 0 ? 1 : -1, b = (Math.min(L.bmax, 12 + Math.abs(A.y - B.y) * .36) + (all ? ki * 3 : 0)) * t * 1.33; p.bezier(A.x, A.y, A.x + d * b, A.y, B.x + d * b, B.y, B.x, B.y); } });
+  p.drawingContext.setLineDash([]);
+  // bolinhas com o ano e o nome, do lado de fora
+  Object.values(L.pos).forEach(n => { const o = hot ? linked.has(n.p.id) : !ids || ids.has(n.p.id), a = o ? 255 : 60, i = MECHS.indexOf(n.p.mechanism), ink = i < 0 ? PRETO : INKS[i], isHot = n.p.id === hot, r = L.r + (isHot ? 1.5 : 0), d = n.s === 0 ? -1 : 1, x0 = n.x + d * (L.r + 7);
+    p.noStroke(); fl(p, mixInk(ink, .45), o ? 200 : 40); p.circle(n.x + 1.6, n.y + 2, r * 2); sk(p, PRETO, a); p.strokeWeight(isHot ? 2.6 : 1.2); fl(p, ink, a); p.circle(n.x, n.y, r * 2);
+    p.noStroke(); p.textAlign(n.s === 0 ? p.RIGHT : p.LEFT, p.CENTER); p.textStyle(p.NORMAL); p.textSize(sm ? 8.5 : 10); p.fill(119, 119, 119, a); const yt = sm ? "'" + String(n.p.year).slice(2) : String(n.p.year), yw = p.textWidth(yt) + 6; p.text(yt, x0, n.y);
+    p.textSize(sm ? 9.5 : 11.5); p.textStyle(isHot ? p.BOLD : p.NORMAL); fl(p, PRETO, a); p.text(teiaFit(p, Rizoma.shortTitle(n.p.title).split(" (")[0],(n.s === 0 ? x0 : L.bw - x0) - yw - 10), x0 + d * yw, n.y); });
+  p.textStyle(p.NORMAL); }
+const teiaPick = (L, mx, my) => { const n = Object.values(L.pos).find(n => Math.abs(my - n.y) <= L.rh / 2 && (n.s === 0 ? mx <= n.x + 14 : mx >= n.x - 14)); return n ? n.p.id : null; };
+ST.sk.teia = new p5(p => { let k = 1, L = null, elt = null; const lab = id => Rizoma.shortTitle(DATA[IDX[id]].title);
+  const fit = () => { const el = $("#teiaChart"), w = el ? el.clientWidth : 0; if (!w) return false; const sm = w < 560, bw = sm ? 400 : 820; if (!L || L.bw !== bw) L = teiaLayout(bw, sm); k = w / bw; const cw = Math.round(w), ch = Math.round(L.H * k); if (p.width !== cw || p.height !== ch) p.resizeCanvas(cw, ch, true); return true; };
+  p.setup = () => { const c = p.createCanvas(10, 10); c.parent("teiaChart"); elt = c.elt; p.noLoop(); };
+  p.draw = () => { if (!fit()) return; p.clear(); p.textFont("Arial"); p.push(); p.scale(k); teiaDraw(p, L, easeO(TE.t)); p.pop(); };
+  const at = () => L && page === "indicators" && p.mouseX >= 0 && p.mouseY >= 0 && p.mouseX <= p.width && p.mouseY <= p.height ? teiaPick(L, p.mouseX / k, p.mouseY / k) : undefined;
+  p.mouseMoved = ev => { if (touch) return; const h = ev && ev.target === elt ? at() : undefined; if (h === undefined) { if (ST.hov === "teia") { ST.hov = null; hoverSel = null; renderSide(); } return; }
+    const cur = hoverSel && hoverSel.type === "project" ? hoverSel.key : null; if ((h || null) !== cur) { hoverSel = h ? { type: "project", key: h, label: lab(h) } : null; ST.hov = h ? "teia" : null; renderSide(); } };
+  p.mouseClicked = ev => { const h = ev && ev.target === elt ? at() : undefined; if (!h) return; teiaStop(); TE.played = true; if (!teiaShown().length) { TE.stage = TSTAGES.length - 1; TE.t = 1; } selection = selection && selection.type === "project" && selection.key === h ? null : { type: "project", key: h, label: lab(h) }; hoverSel = null; teiaUi(); renderIndicators(); };
+});
+teiaUi();
 function renderStoryAnswers() {
   const com = ED8.filter(d => d.total), soma = com.reduce((a, d) => a + d.total, 0) || 1, corp = com.reduce((a, d) => a + d.corpus, 0), maior = com.slice().sort((a, b) => b.total - a.total)[0], sem = ED8.filter(d => !d.total).map(d => d.e);
   const porMec = MECHS.map((m, i) => com.filter(d => d.mi === i).reduce((a, d) => a + d.total, 0)), menorMec = porMec.indexOf(Math.min(...porMec));
@@ -1445,8 +1543,8 @@ $$("#progDots [data-q]").forEach(b => b.onclick = () => { const s = $(`.chart[da
 if ("IntersectionObserver" in window) { document.documentElement.classList.add("story-on");
   const mid = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setStep(CAPS.indexOf(e.target)); }), { rootMargin: "-40% 0px -55% 0px" });
   const enter = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); playStory(e.target.dataset.chart); } }), { threshold: 0.12 });
-  CAPS.forEach(s => { mid.observe(s); enter.observe(s); }); } else CAPS.forEach(s => s.classList.add("in"));
-function markCaps() { if (page !== "indicators") return; const vh = innerHeight; let cur = -1; CAPS.forEach((s, i) => { const r = s.getBoundingClientRect(); if (r.top < vh * 0.88 && r.bottom > 0) { s.classList.add("in"); playStory(s.dataset.chart); } if (r.top < vh * 0.45) cur = i; }); if (cur >= 0) setStep(cur); } // reserva para quando o observador demora: mede a posição de cada passo
+  CAPS.forEach(s => { mid.observe(s); enter.observe(s); }); new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) teiaSeen(); }), { threshold: [0.3, 0.6] }).observe($("#teiaChart")); } else CAPS.forEach(s => s.classList.add("in"));
+function markCaps() { if (page !== "indicators") return; const vh = innerHeight; let cur = -1; CAPS.forEach((s, i) => { const r = s.getBoundingClientRect(); if (r.top < vh * 0.88 && r.bottom > 0) { s.classList.add("in"); playStory(s.dataset.chart); } if (r.top < vh * 0.45) cur = i; }); if (cur >= 0) setStep(cur); teiaSeen(); } // reserva para quando o observador demora: mede a posição de cada passo
 { let mt = 0; const onScroll = () => { if (mt) return; mt = setTimeout(() => { mt = 0; markCaps(); }, 120); }; addEventListener("scroll", onScroll, { passive: true }); $("#indicators .ind-main").addEventListener("scroll", onScroll, { passive: true }); $("#indicators").addEventListener("scroll", onScroll, { passive: true, capture: true }); }
 $("#fimMapa").onclick = () => showPage("discover"); $("#fimEditais").onclick = () => showPage("editais");
 addEventListener("resize", () => { if (page === "indicators") { redrawStory(); renderStoryAnswers(); } });
@@ -1628,7 +1726,7 @@ const HELP = {
   muro: { t: "Tudo começa num edital", o: "Cada bloco é um edital e o tamanho do bloco é o valor que ele pôs à disposição. Os quadrados escuros são os projetos de grafite deste trabalho, na mesma escala.", q: "Dá a medida de tudo: os vinte projetos são uma parte pequena de editais que atendem todas as áreas da cultura, e o Descentra inteiro é muito menor que os outros dois caminhos.", c: "Valores como retângulos encaixados, lidos pelo tamanho: ideia de The Billion Dollar Gram (McCandless, Information is Beautiful). Desenho em p5.js.", f: "Editais em PDF no site da Prefeitura de Belo Horizonte, lidos em 13/11/2026. O link de cada um está abaixo do desenho." },
   peneira: { t: "Muita gente pede, pouca gente leva", o: "Um grão para cada projeto inscrito em cada edital. Os aprovados passam a linha e ganham a cor do caminho.", q: "Mostra a disputa de um jeito que dá para contar: centenas de grãos em cima, dezenas embaixo.", c: "Quantidade pela repetição de uma marca, uma para cada unidade: Isotype (Neurath, 1936). Desenho em p5.js.", f: "Páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidas em 13/11/2026. Contam todos os projetos inscritos, não só os de arte urbana." },
   bolhas: { t: "O mais disputado é um dos menores", o: "Cada bolinha é um edital. O tamanho é o valor, a altura é a parte dos inscritos que foi aprovada e a posição da esquerda para a direita é o ano.", q: "Junta dinheiro e disputa: ter mais dinheiro num edital não quer dizer que é mais fácil passar nele, nem o contrário.", c: "Bolhas em que o tamanho é uma medida e a posição é outra: ideia de Snake Oil Supplements e World's Biggest Data Breaches & Hacks (McCandless, Information is Beautiful). Desenho em p5.js.", f: "Editais em PDF, páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidos em 13/11/2026." },
-  matrix: { t: "O que os projetos têm em comum?", o: "Para cada par de projetos, quantas coisas eles dividem: ano, mecanismo, edital, tamanho do valor ou curadoria.", q: "Arrumada por mecanismo, a matriz mostra blocos escuros: projetos do mesmo mecanismo se parecem muito entre si e pouco com os outros.", c: "Matriz reordenável (Bertin, 1967)." }
+  matrix: { t: "Dois grupos que quase não se tocam", o: "Os projetos do circuito monumental ficam à esquerda e os do capilar à direita. Uma linha liga dois projetos que têm em comum o ano, o edital, o tamanho do valor ou uma relação documentada.", q: "Mostra que quase tudo o que os projetos dividem fica dentro do próprio circuito. Poucas linhas cruzam o meio, e nenhuma relação documentada cruza. O mecanismo não entra na conta, porque é ele que define os grupos.", c: "Diagrama de arcos (Wattenberg, 2002), com os dois grupos em lados opostos. Leitura em etapas (Segel e Heer, 2010). Desenho em p5.js. A tabela é uma matriz reordenável (Bertin, 1967)." }
 };
 let helpOpener = null, pressT = 0, pressed = false;
 function openHelp(key, opener, ev) {

@@ -616,11 +616,66 @@ Os títulos são fixos e os números ao lado são calculados. Se o corpus mudar,
 - "O mais disputado é um dos menores": o Descentra 2024 aprovou 10% dos inscritos e ofereceu R$ 1,8 milhão; o maior edital, o LMIC 2021 - IF, com R$ 14 milhões, aprovou 30%.
 - "O grafite é um pedaço pequeno": R$ 1,04 milhão de R$ 77,28 milhões, 1,3%.
 - "Poucos projetos ficam com quase metade": os 5 maiores somam 48%.
-- "Dois grupos que quase não se tocam": projetos do mesmo mecanismo têm em média 2,1 coisas em comum; de mecanismos diferentes, 0,3.
+- "Dois grupos que quase não se tocam": dos 96 pares possíveis entre os dois circuitos, 20 têm alguma coisa em comum (a conta e o desenho foram refeitos na seção 3K).
 
 Limites declarados na própria tela: o passo 4 fala dos vinte projetos do TCC, não de todo o grafite de Belo Horizonte; os inscritos dos passos 2 e 3 são de todas as áreas da cultura; no Incentivo Fiscal o valor do edital é renúncia fiscal, e o projeto ainda precisa captar.
 
 Conferido no navegador em 1280 px e 375 px: os nove passos na ordem, a barra de progresso, a entrada em cena, o clique num edital nos três desenhos e a seleção acendendo nos outros gráficos, sem erros no console.
+
+---
+
+## 3K. Lab 08, 13/11/2026: o passo 8 vira uma teia em seis etapas
+
+Arquivo: `lab-08-site.html`, passo 8 da tela Indicadores.
+
+### 3K.1 O problema
+
+O autor não entendeu o gráfico do passo 8 ("Dois grupos que quase não se tocam") e disse que ele não atraía. Pediu um gráfico mais intuitivo, com fluxo. A conferência achou três defeitos:
+
+1. **O título dizia dois grupos e o desenho mostrava três.** A tabela, arrumada por mecanismo, formava três blocos escuros (Incentivo Fiscal, Fundo, Descentra). Os dois grupos do título são os circuitos do TCC: monumental (os 8 projetos do Incentivo Fiscal) e capilar (os 12 do Fundo e do Descentra).
+2. **A conta era circular.** A tabela contava "mesmo mecanismo" como coisa em comum. Como os grupos são definidos pelo mecanismo, todo par do mesmo grupo já ganhava um ponto por definição. O mesmo vale para o edital, que pertence a um mecanismo só. A média de 2,1 contra 0,3 vinha em parte disso.
+3. **A forma pedia treino.** Uma tabela de 20 por 20 com 380 quadradinhos cinza não tem entrada: não diz por onde começar nem o que procurar.
+
+### 3K.2 A forma nova
+
+- **Dois lados.** O circuito monumental fica à esquerda e o capilar à direita, cada um numa área clara. Cada projeto é uma bolinha na tinta do seu mecanismo, com o ano e o nome ao lado. Dentro do capilar, Fundo e Descentra aparecem separados por um rótulo.
+- **Arcos e travessias.** Uma linha liga dois projetos que têm uma coisa em comum. Se os dois são do mesmo circuito, a linha é um arco que volta para o mesmo lado. Se são de circuitos diferentes, a linha cruza o vão do meio. É a ideia do diagrama de arcos (WATTENBERG, 2002), com os dois grupos postos frente a frente. Ideia emprestada, nenhum código copiado. Assim a pergunta do título vira uma pergunta visual: quantas linhas cruzam o meio?
+- **O número no alto do vão** conta as linhas que atravessam naquela etapa.
+- **O mecanismo não entra como linha.** Ele já é a cor da bolinha e é o que define o grupo. Ficam quatro ligações: mesmo ano, mesmo edital, mesmo tamanho de valor e relação documentada.
+- **As cores e os traços das linhas são os do mapa** (seção 3H): verde contínua para o ano, violeta tracejada para o edital, ferrugem pontilhada para o tamanho do valor, preta grossa para a relação documentada. Quem aprendeu as ligações no mapa reconhece as mesmas aqui.
+
+### 3K.3 O fluxo: seis etapas
+
+A leitura vem em etapas, uma ligação de cada vez, como uma sequência de quadros (SEGEL; HEER, 2010). Cada etapa tem um botão numerado, uma frase calculada e o desenho correspondente. Quando o desenho aparece na tela, a sequência toca sozinha uma vez, cerca de dois segundos por etapa, e para na última. O botão "Seguinte" avança à mão e, no fim, vira "Ver de novo". Com a preferência de movimento reduzido do aparelho, a sequência não toca e o desenho abre na última etapa.
+
+| Etapa | O que acende | Pares ligados | Atravessam |
+|---|---|---|---|
+| 1. Os projetos | só as bolinhas | | |
+| 2. Mesmo ano | linha verde | 29 | 13 |
+| 3. Mesmo edital | linha violeta tracejada | 12 | 0 |
+| 4. Tamanho do valor | linha ferrugem pontilhada | 63 | 8 |
+| 5. Relação documentada | linha preta grossa | 5 | 0 |
+| 6. Tudo junto | as quatro | 80 | 20 |
+
+Passar a mão ou tocar num projeto mostra só as ligações dele e escreve a conta numa caixa. Clicar fixa o projeto, e a seleção vale para os outros gráficos da história.
+
+### 3K.4 O que o título afirma agora
+
+Números calculados na página, sem contar o mecanismo:
+
+- Entre os dois circuitos há 96 pares possíveis de projetos (8 × 12). Só 20 têm alguma coisa em comum: 13 ligações de mesmo ano e 8 de mesmo tamanho de valor. Um par tem as duas.
+- Nenhuma das 5 relações documentadas liga um circuito ao outro.
+- Dentro do monumental, 23 dos 28 pares têm ligação. Dentro do capilar, 37 dos 66.
+
+O título "Dois grupos que quase não se tocam" ficou, porque agora o desenho mostra o que ele diz. É um título fixo: se o corpus mudar, precisa ser relido.
+
+Limites: o edital não pode atravessar por definição, e a própria etapa 3 diz isso. O tamanho do valor usa as três faixas do motor (até R$ 30 mil, de R$ 30 mil a R$ 100 mil, acima de R$ 100 mil), e outra divisão de faixas daria outra contagem. As relações documentadas são as registradas em `js/data.js`. Uma relação que exista e não esteja documentada não aparece.
+
+### 3K.5 A tabela continua
+
+A matriz reordenável (BERTIN, 1967) ficou em "ver como: Tabela", com a explicação de que ali o mecanismo também conta e por isso aparecem três blocos.
+
+Conferido no navegador em 1280 px e 375 px: as seis etapas com as frases, a sequência automática, o botão "Seguinte", o clique num projeto, a troca para a tabela e a volta, sem erros no console. Não foi testado num Android real.
 
 ---
 
@@ -679,3 +734,5 @@ SEGEL, Edward; HEER, Jeffrey. Narrative visualization: telling stories with data
 SHNEIDERMAN, Ben. The eyes have it: a task by data type taxonomy for information visualizations. In: IEEE SYMPOSIUM ON VISUAL LANGUAGES, 1996, Boulder. **Proceedings** [...]. Los Alamitos: IEEE, 1996. p. 336-343.
 
 TUFTE, Edward R. **Envisioning information**. Cheshire: Graphics Press, 1990.
+
+WATTENBERG, Martin. Arc diagrams: visualizing structure in strings. In: IEEE SYMPOSIUM ON INFORMATION VISUALIZATION, 2002, Boston. **Proceedings** [...]. Los Alamitos: IEEE, 2002. p. 110-116.

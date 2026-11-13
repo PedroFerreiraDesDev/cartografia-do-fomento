@@ -62,6 +62,8 @@ Onde entrou: marca no topo (muta a cada 6 s), chamada do campo (4,2 s), título 
 
 ## 2. Cor com fundamento
 
+> Primeira versão (manhã de 12/11). A seção 3A, da segunda rodada, substitui as linhas pretas pelas linhas na tinta dos projetos e o amarelo pelo ocre, e liga a paleta ao muro de Belo Horizonte. O texto abaixo fica como registro do caminho.
+
 ### 2.1 A regra
 
 A cor faz um trabalho só: **dizer por qual mecanismo o dinheiro chegou ao projeto**. O tamanho diz quanto. O contorno diz o circuito (grosso = monumental, fino = capilar). Todo o resto é preto (`#161616`) sobre papel (`#F7F6F1`). As seis linhas de fuga, que tinham seis cores, passam a preto: ligação é relação, não categoria.
@@ -111,6 +113,65 @@ Antes: cinco pares "chave: valor" (ano, mecanismo, edital, valor, escala). Agora
 6. **O que ainda não se sabe**: regional, proponente, local, fotos; a observação de `issue`; a fonte do registro.
 
 Os blocos "Linhas ligadas" e "Ligações possíveis" do Lab 04 continuam abaixo.
+
+---
+
+## 3A. Ajuste de 12/11/2026, segunda rodada: linhas na tinta e paleta do muro de BH
+
+Pedido do autor depois de ver o Lab 07: gostou; quer **as linhas com cor**; quer que as cores tenham **relação com os muros e o grafite de Belo Horizonte**, com defesa; e que tenham **contraste entre si, como pede a regra de UX**. Esta seção substitui o que as seções 2.1 a 2.4 dizem sobre linhas pretas e sobre o amarelo `#E0A500`.
+
+### 3A.1 A linha leva a tinta dos projetos que liga
+
+`opts.edgeColor: "nos"` no motor (`R.setEdgeColor`; no Lab 07, botão "Linhas · tinta", tecla L). A linha não tem cor própria: entre dois projetos do mesmo mecanismo ela é da cor deles; entre mecanismos diferentes ela é desenhada trecho a trecho, saindo de uma tinta, passando pela mistura de pigmento (média geométrica) e chegando na outra. Assim a regra "cor só significa mecanismo" continua valendo com linhas coloridas, e a mistura que antes só aparecia no rastro agora aparece também na linha. O tipo da linha (ano, edital, escala) continua no rótulo ao passar a mão. Alternativa descartada: voltar às seis cores por natureza de linha (seriam nove cores no campo, sem defesa, e o validador não aprova nove matizes distinguíveis entre todos os pares).
+
+### 3A.2 As camadas do muro de Belo Horizonte
+
+A paleta inteira é lida como as camadas de um muro da cidade:
+
+| Camada | No site | Cor | Fonte |
+|---|---|---|---|
+| O muro | papel, fundo de tudo | `#F7F6F1` | o cimento claro que recebe o traço (defesa já feita em `IDENTIDADE-COESAO-LAB05.md`, seção 3) |
+| O pixo | texto, número, contorno | `#161616` | o pixo é inscrição monocromática, feita com spray ou rolo (Carvalho, 2013; Lassala, 2010) |
+| O grapixo | a forma de cada bolinha: contorno preto, cor por dentro | — | técnica intermediária entre pixo e grafite, com cores, sombras e contornos, difundida em BH (Soares, 2013); o corpus tem dois projetos Real Grapixo (p12 e p14) |
+| O grafite | as três tintas dos mecanismos | abaixo | o grafite é policromático e usa cor saturada contra o cinza do concreto (Gitahy, 1999) |
+
+| Mecanismo | Tinta | Hex | De onde vem | Por que neste mecanismo |
+|---|---|---|---|---|
+| Incentivo Fiscal | magenta de spray | `#C9186A` | "Magenta" é nome de lata na linha Arte Urbana da Colorgin (a conferir e fotografar) | o mecanismo que depende de patrocínio e visibilidade fica com a cor que mais grita; é o que pinta as empenas do centro |
+| Fundo Municipal | azul de azulejo | `#1273C9` | painel de azulejos azul e branco de Portinari na igreja de São Francisco de Assis, Pampulha (1944), dentro do conjunto encomendado pela Prefeitura de Juscelino Kubitschek | é a cor do muro que o poder público encomendou: dinheiro direto, sem patrocinador |
+| Descentra | ocre de minério | `#B97F00` | o solo rico em ferro da Serra do Curral e do Quadrilátero Ferrífero, avermelhado e amarelado | o edital que pontua por território fica com a cor do chão da cidade |
+
+**O que é fonte e o que é leitura.** São fatos com fonte: o pixo monocromático, a policromia do grafite, o grapixo em BH, o painel azul de Portinari, o ferro no solo da serra. É decisão de design, a defender no texto do TCC: associar cada uma dessas cores a um mecanismo. Os valores hexadecimais foram escolhidos para passar no teste de contraste, não medidos em fotos: **falta fotografar** os muros do corpus, o painel da Pampulha e as latas, e comparar.
+
+Alternativas consideradas: amostrar as cores de fotos dos murais do CURA (seria a ligação mais direta, mas depende de fotos próprias e de autorização de uso; fica como próximo passo); verde para o Descentra, como nos labs anteriores (reprovado no teste, ver abaixo); amarelo vivo `#E0A500` (contraste de 2,03 com o papel).
+
+### 3A.3 O contraste, pela regra
+
+| Critério | Regra | Paleta anterior `#FF4F9A #31A8FF #65E77D` | Muro de BH `#C9186A #1273C9 #B97F00` |
+|---|---|---|---|
+| Cada cor contra o papel | WCAG 2.2, critério 1.4.11: mínimo 3:1 para elementos gráficos | 2,84 / 2,37 / 1,46: falha nas três | 5,08 / 4,49 / 3,18: passa nas três |
+| Claridade (OKLCH L) | faixa 0,43–0,77 | verde 0,83: falha | 0,55 / 0,55 / 0,64 |
+| Uma cor contra a outra, visão normal | distância OKLab ≥ 15 | 29,1 | 23,8 (pior par: ocre–magenta) |
+| Uma cor contra a outra, daltonismo simulado | ≥ 8 | 11,1 (tritan) | 13,7 (tritan); 14,2 (deutan) |
+| Contorno preto contra o papel | 3:1 | — | 16,7 |
+
+Entre si as três tintas se separam pelo **matiz**, não pelo claro e escuro (a razão de luminância entre elas fica entre 1,1 e 1,6). Isso é o esperado para uma paleta categórica (Ware, 2012; Munzner, 2014) e é por isso que a medida usada é a distância de cor, não a razão de contraste. O contorno preto resolve o caso de duas bolinhas que se tocam.
+
+Outras regras aplicadas: **uso de cor** (WCAG 1.4.1: a cor nunca é o único sinal; legenda sempre visível, mecanismo escrito na ficha); **semelhança** (Wertheimer, 1923: mesma cor, mesmo grupo; por isso a cor vale o mesmo em bolinha, linha, rastro, legenda e régua); **memória** (Miller, 1956: três cores e um preto, cada uma com um nome de rua: lata, azulejo, terra).
+
+Misturas com a paleta nova: IF + Fundo = violeta `#3C3592`; IF + Descentra = tijolo `#C1370A`; Fundo + Descentra = verde `#3A790E`.
+
+Referências desta rodada (conferir autores e edições na biblioteca antes de citar):
+
+- CARVALHO, Rodrigo Amaro de. **Entre prezas e rolês**: pixadores e pixações de/em Belo Horizonte. 2013. Citado em artigo da revista Caminhos de Geografia (UFU) sobre a seletividade espacial da pichação em BH: https://seer.ufu.br/index.php/caminhosdegeografia/article/download/56721/33106/278838. Dados completos a conferir.
+- SOARES (prenome a conferir). Pixação em Belo Horizonte: identidade e transgressão como apropriação do espaço urbano. **Ponto Urbe**, 2013. Disponível em: https://journals.openedition.org/pontourbe/565.
+- GITAHY, Celso. **O que é graffiti**. São Paulo: Brasiliense, 1999.
+- LASSALA, Gustavo. **Pichação não é pixação**. São Paulo: Altamira, 2010.
+- PROJETO PORTINARI. **Igreja de São Francisco de Assis (Pampulha)**: altar e azulejos internos e externos. Disponível em: https://www.portinari.org.br/en/archive/artwork/20480/igreja-de-sao-francisco-de-assis-pampulha-altar-e-azulejos-internos-e-externos.
+- Sobre o solo da Serra do Curral: trabalho disponível em https://bdjur.stj.jus.br/jspui/bitstream/2011/161784/serra_curral_significado_custodio.pdf (autor e título a conferir).
+- COLORGIN. **Arte Urbana**. Disponível em: https://www.colorgin.com.br/produto/arte-urbana/.
+- W3C. **Web Content Accessibility Guidelines (WCAG) 2.2**: critérios 1.4.1 (uso de cor) e 1.4.11 (contraste não textual). 2023. Disponível em: https://www.w3.org/TR/WCAG22/.
+- WERTHEIMER (1923), MILLER (1956), WARE (2012), MUNZNER (2014): referências completas em `IDENTIDADE-COESAO-LAB05.md`, seção 8.
 
 ---
 

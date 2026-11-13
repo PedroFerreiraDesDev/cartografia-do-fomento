@@ -22,7 +22,7 @@
    API: Rizoma.mount({ container, data, relations, lines, paper, reduced, depth, intro,
                        treeTop, panelWidth, onOpen, onChange, onStarted, onHover })
         R.toggleLine(t) R.setLine(t,on) R.setMode("rizoma"|"arvore") R.setDepth(v)
-        R.setIntro(v) R.setCutting(v) R.setPaused(v) R.setPaper(v) R.setReduced(v) R.setNodeStyle("circulo"|"muro"|"bolinha") R.setMechColors({mecanismo:[r,g,b]})
+        R.setIntro(v) R.setCutting(v) R.setPaused(v) R.setPaper(v) R.setReduced(v) R.setNodeStyle("circulo"|"muro"|"bolinha") R.setMechColors({mecanismo:[r,g,b]}) R.setEdgeColor("nos"|"natureza")
         R.open(id, silent) R.close() R.connections(id) R.potentials(id) R.info(id)
         R.state() R.save(name) R.reset() R.resize() R.setVisible(v) R.refresh()      */
 (function () {
@@ -60,6 +60,8 @@
     const cb = { open: opts.onOpen || function () {}, change: opts.onChange || function () {}, started: opts.onStarted || function () {}, hover: opts.onHover || null };
     const MECH_COLOR = Object.assign({ "Incentivo Fiscal": [255, 79, 154], "Fundo Municipal": [49, 168, 255], "Descentra": [101, 231, 125] }, opts.mechColors || {}); // paleta dos labs; opts.mechColors troca (Lab 07: tintas de impressão)
     const NODE_STYLES = ["circulo", "muro", "bolinha"]; // bolinha: círculo na cor do mecanismo, contorno em tinta
+    let EDGE_COLOR = opts.edgeColor === "nos" ? "nos" : "natureza"; // "nos": a linha leva a tinta dos dois projetos que liga (Lab 07); "natureza": a cor do tipo de linha
+    const lg = v => Math.log(Math.max(v, 1) / 255); // para misturar duas tintas como pigmento (média geométrica)
     const S = { nodeStyle: NODE_STYLES.includes(opts.nodeStyle) ? opts.nodeStyle : "circulo", mode: "rizoma", depth: !!opts.depth, intro: !!opts.intro, cutting: false, paused: false, paper: !!opts.paper, reduced: !!opts.reduced, focus: null, hover: null, hoverEdge: null, trail: [], started: false, cutKeys: new Set(), visible: true };
     const view = { rx: -0.35, ry: 0.45, lastDrag: 0, zoom: S.intro ? 0.72 : 1, zoomTarget: S.intro ? 0.72 : 1, px: 0, py: 0, pxT: 0, pyT: 0 };
     const ZOOM_MIN = 0.5, ZOOM_MAX = 3.2;
@@ -498,8 +500,11 @@
       const A = e.a.scr, B = e.b.scr; const dx = B.x - A.x, dy = B.y - A.y; const L = Math.hypot(dx, dy) || 1;
       const nx = -dy / L, ny = dx / L;
       p.noFill();
-      if (S.paper) p.stroke(c[0] * 0.5, c[1] * 0.5, c[2] * 0.5, alpha); else p.stroke(c[0], c[1], c[2], alpha);
+      const byNode = EDGE_COLOR === "nos", ca = byNode ? (MECH_COLOR[e.a.p.mechanism] || c) : c, cb2 = byNode ? (MECH_COLOR[e.b.p.mechanism] || c) : c, grad = byNode && ca !== cb2;
+      if (byNode) p.stroke(ca[0], ca[1], ca[2], alpha); // mesma tinta nas duas pontas: uma cor só
+      else if (S.paper) p.stroke(c[0] * 0.5, c[1] * 0.5, c[2] * 0.5, alpha); else p.stroke(c[0], c[1], c[2], alpha);
       p.strokeWeight(weight * LINE_W * Math.min(A.s, B.s));
+      let px0 = 0, py0 = 0;
       const steps = Math.max(8, Math.floor(L / 12));
       e.pts = [];
       p.beginShape();
@@ -511,7 +516,10 @@
         if (e.regrown && i % 3 === 1) { p.endShape(); p.beginShape(); } // pontilhado = linha que rebrotou
         const x = q.x + nx * off, y = q.y + ny * off;
         e.pts.push([x, y]);
-        p.vertex(x, y);
+        if (grad) { // tintas diferentes: a linha sai de uma, passa pela mistura e chega na outra, trecho a trecho
+          if (i > 0 && !(e.regrown && i % 3 === 1)) { const u = (i - 0.5) / steps, w = 1 - u; p.stroke(255 * Math.exp(lg(ca[0]) * w + lg(cb2[0]) * u), 255 * Math.exp(lg(ca[1]) * w + lg(cb2[1]) * u), 255 * Math.exp(lg(ca[2]) * w + lg(cb2[2]) * u), alpha); p.line(px0, py0, x, y); }
+          px0 = x; py0 = y;
+        } else p.vertex(x, y);
       }
       p.endShape();
     }
@@ -707,7 +715,7 @@
         zoom: view.zoomTarget, revealed: nodes.filter(n => n.revealed).length, total: nodes.length,
         lines: edges.filter(e => e.a.revealed && e.b.revealed).length, linesByType, cuts: S.cutKeys.size,
         trail: S.trail.map(t => t.p.id), trailTitles: S.trail.map(t => shortTitle(t.p.title)),
-        nodeStyle: S.nodeStyle, mode: S.mode, depth: S.depth, intro: S.intro, cutting: S.cutting, paused: S.paused, paper: S.paper, reduced: S.reduced,
+        nodeStyle: S.nodeStyle, edgeColor: EDGE_COLOR, mode: S.mode, depth: S.depth, intro: S.intro, cutting: S.cutting, paused: S.paused, paper: S.paper, reduced: S.reduced,
         active: Object.assign({}, active), anyLine: Object.keys(active).some(k => active[k]), focus: S.focus ? S.focus.p.id : null, started: S.started
       };
     }
@@ -841,6 +849,7 @@
       setPaper(v) { S.paper = !!v; if (spray) spray.clear(); cb.change(state()); },
       setNodeStyle(v) { S.nodeStyle = NODE_STYLES.includes(v) ? v : "circulo"; cb.change(state()); },
       setMechColors(m) { Object.assign(MECH_COLOR, m || {}); cb.change(state()); }, // troca a paleta dos mecanismos em uso
+      setEdgeColor(v) { EDGE_COLOR = v === "nos" ? "nos" : "natureza"; cb.change(state()); }, // linhas na tinta dos nós ou na cor da natureza
       setReduced(v) { S.reduced = !!v; if (S.reduced) { for (const e of edges) e.growth = 1; if (spray) spray.clear(); view.zoom = view.zoomTarget; } cb.change(state()); },
       open(id, silent) { openNode(byId(id), silent); },
       close() { S.focus = null; touchInspect=null; focusOut(); cb.change(state()); },

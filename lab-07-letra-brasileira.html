@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lab 07 — Letra brasileira, cor com fundamento</title>
 <style>
-:root{--paper:#f7f6f1;--ink:#161616;--muted:#747474;--line:#d4d1c8;--if:#C9186A;--fundo:#1273C9;--desc:#E0A500}
+:root{--paper:#f7f6f1;--ink:#161616;--muted:#747474;--line:#d4d1c8;--if:#C9186A;--fundo:#1273C9;--desc:#B97F00}
 *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;overflow:hidden}
 button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:62px;background:rgba(247,246,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 20px}
@@ -78,7 +78,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .spec small{display:block;font-size:9px;letter-spacing:.1em;font-weight:900;color:#777;text-transform:uppercase;margin:9px 0 2px}.spec p{font-size:11.5px;line-height:1.55;margin:0;color:#555}
 .inks{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:12px}
 .inks article,.mixes article{border:1px solid var(--line);background:#fff;padding:14px;min-width:0}.inks b,.mixes b{display:block;font-size:12px;margin:10px 0 2px}.inks code,.mixes code{font-size:10px;color:#777}.inks p,.mixes p{font-size:11.5px;line-height:1.55;margin:6px 0 0;color:#555}
-.sw{display:inline-block;width:54px;height:54px;border-radius:50%;border:1.5px solid var(--ink);background:var(--c);vertical-align:middle}.sw.s{width:30px;height:30px}.sw.sq{border-radius:4px}
+.sw{display:inline-block;width:54px;height:54px;border-radius:50%;border:1.5px solid var(--ink);background:var(--c);vertical-align:middle}.sw.s{width:30px;height:30px}.sw.o{background:transparent}.sw.sq{border-radius:4px}
 .mixes{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}.mixes .eq{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800}
 .vt{border-collapse:collapse;font-size:12px;width:100%;max-width:860px}.vt th,.vt td{border-top:1px solid var(--line);padding:9px 12px 9px 0;text-align:left;vertical-align:top;line-height:1.5}.vt th{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#777}.vt td:first-child{font-weight:700}
 .vwrap{overflow-x:auto}
@@ -96,13 +96,14 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div id="trailStage" class="layer" aria-hidden="true"></div>
   <div id="rizomaStage" class="layer"></div>
 
-  <div class="copy"><div class="kicker">LAB 07 / LETRA BRASILEIRA, COR COM FUNDAMENTO</div><h1 id="headline">A RUA ESCREVE O MAPA</h1><div id="mechLegend" class="legend"><span><i style="--c:var(--if)"></i>Incentivo Fiscal</span><span><i style="--c:var(--fundo)"></i>Fundo Municipal</span><span><i style="--c:var(--desc)"></i>Descentra</span><span class="shape">tamanho = valor</span><span class="shape">contorno grosso = monumental</span></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue uma linha: a tinta corre entre as bolinhas parentes e, onde duas tintas se cruzam, a mistura mostra quais mecanismos se encontraram.</p></div>
+  <div class="copy"><div class="kicker">LAB 07 / LETRA BRASILEIRA, COR COM FUNDAMENTO</div><h1 id="headline">A RUA ESCREVE O MAPA</h1><div id="mechLegend" class="legend"><span><i style="--c:var(--if)"></i>Incentivo Fiscal</span><span><i style="--c:var(--fundo)"></i>Fundo Municipal</span><span><i style="--c:var(--desc)"></i>Descentra</span><span class="shape">tamanho = valor</span><span class="shape">contorno grosso = monumental</span></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue uma linha: ela sai na tinta de um projeto e chega na tinta do outro. Onde duas tintas se cruzam, a mistura mostra quais mecanismos se encontraram.</p></div>
 
   <div class="tools">
     <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
     <div class="row">
       <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
-      <button id="palBtn" class="active" title="Tecla C · compara as tintas propostas com a paleta anterior">Cor · tintas</button>
+      <button id="palBtn" class="active" title="Tecla C · compara as tintas do muro de BH com a paleta anterior">Cor · muro de BH</button>
+      <button id="lineBtn" class="active" title="Tecla L · linhas na tinta dos projetos ou em preto">Linhas · tinta</button>
       <span class="group" aria-label="Quantidade de agentes"><button id="lessBtn" title="Menos agentes">−</button><button id="countBtn" class="mid" title="Agentes ativos">0 agentes</button><button id="moreBtn" title="Mais agentes">+</button></span>
       <button id="evapBtn" title="Tecla E">Evaporação · média</button>
       <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
@@ -175,45 +176,62 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 
   <section id="pCores" class="panel" hidden aria-label="Cores">
     <div class="pwrap">
-      <div class="kicker">CORES / TRÊS TINTAS, UMA POR ORIGEM DO DINHEIRO</div>
+      <div class="kicker">CORES / O MURO DE BELO HORIZONTE EM CAMADAS</div>
       <h2 id="coresTitle">COR É DE ONDE VEM O DINHEIRO</h2>
-      <p class="lead">A cor faz um trabalho só: dizer por qual mecanismo o dinheiro chegou ao projeto. O tamanho diz quanto. Todo o resto é preto sobre papel.</p>
+      <p class="lead">A cor faz um trabalho só: dizer por qual mecanismo o dinheiro chegou ao projeto. E cada cor sai de uma camada do muro de Belo Horizonte: o cimento, o pixo, o grapixo e o grafite.</p>
       <div class="pctl"><button id="palBtn2">Comparar com a paleta anterior</button></div>
+
+      <h3>As camadas do muro</h3>
+      <div class="inks">
+        <article><span class="sw sq" style="--c:#f7f6f1"></span><b>O muro · papel</b><code>#F7F6F1</code><p>O cimento claro, a superfície que recebe o traço. A cor só aparece porque ele é claro.</p></article>
+        <article><span class="sw" style="--c:#161616"></span><b>O pixo · preto</b><code>#161616</code><p>O pixo é escrita de uma cor só, feita com spray ou rolinho (Carvalho, 2013). No site o preto é texto, número e contorno. Nunca vira categoria.</p></article>
+        <article><div class="eq" style="display:flex;align-items:center;gap:8px;font-weight:800"><span class="sw s o"></span>+<span class="sw s" style="--c:var(--if);border-color:transparent"></span>=<span class="sw s" style="--c:var(--if)"></span></div><b>O grapixo · contorno e cor</b><code>cada bolinha</code><p>O grapixo, que se firmou em BH, junta o traço do pixo com as cores e os contornos do grafite (Soares, 2013). É a fórmula de cada bolinha: contorno preto, cor por dentro. Dois projetos do corpus levam o nome Real Grapixo.</p></article>
+      </div>
+
+      <h3>O grafite: as três tintas</h3>
       <div class="inks" id="inks"></div>
 
       <h3>Quando duas tintas se cruzam</h3>
-      <p>No campo, a tinta de cada bolinha corre até as parentes quando uma linha é ligada. A mistura é feita como pigmento, não como luz: tinta sobre tinta escurece e muda de matiz. Por isso o encontro de dois mecanismos tem cor própria e nome.</p>
+      <p>A linha leva a tinta dos dois projetos que liga. Entre projetos do mesmo mecanismo ela tem uma cor só. Entre mecanismos diferentes ela sai de uma tinta, passa pela mistura e chega na outra. A mistura é feita como pigmento, não como luz: tinta sobre tinta escurece e muda de matiz, como no muro repintado.</p>
       <div class="mixes" id="mixes"></div>
+
+      <h3>O contraste, pela regra</h3>
+      <ul>
+        <li><b>Cada cor contra o fundo.</b> A WCAG 2.2, no critério 1.4.11, pede contraste de pelo menos 3:1 para elementos gráficos. As três tintas passam: 5,08, 4,49 e 3,18. O contorno preto tem 16,7:1.</li>
+        <li><b>Uma cor contra a outra.</b> Entre si elas se separam pelo matiz, não pelo claro e escuro: magenta, azul e ocre ficam em três regiões afastadas do círculo de cores. A distância medida no pior par é 23,8, para um mínimo de 15. Com daltonismo simulado é 13,7, para um mínimo de 8.</li>
+        <li><b>Cor nunca vai sozinha.</b> É o critério 1.4.1 da WCAG. A legenda fica sempre visível, a ficha escreve o mecanismo por extenso e o contorno preto separa as bolinhas que se tocam.</li>
+        <li><b>Semelhança.</b> Pela lei da semelhança da Gestalt (Wertheimer, 1923), o que tem a mesma cor é lido como grupo. Por isso a cor vale a mesma coisa em todo lugar: bolinha, linha, rastro, legenda e régua da ficha.</li>
+        <li><b>Memória.</b> São três cores e um preto, e cada uma tem um nome de rua: lata, azulejo, terra. Cabe na memória de quem visita (Miller, 1956).</li>
+      </ul>
 
       <h3>As regras</h3>
       <ol>
-        <li><b>Cor só significa mecanismo.</b> Nenhuma outra variável usa cor. As linhas de fuga, que antes tinham seis cores, agora são pretas.</li>
+        <li><b>Cor só significa mecanismo.</b> Nenhuma outra variável usa cor.</li>
+        <li><b>A linha não tem cor própria.</b> Ela leva a tinta dos projetos que liga. O tipo da linha (ano, edital, escala) aparece no nome, ao passar a mão.</li>
         <li><b>Tamanho é valor.</b> A área da bolinha cresce com o dinheiro. Contorno grosso marca o circuito monumental; fino, o capilar.</li>
         <li><b>Texto é preto.</b> Nome, número e legenda nunca vestem a cor da categoria; uma bolinha colorida ao lado faz esse papel.</li>
-        <li><b>Mistura é dado.</b> Onde o rastro muda de cor, dois mecanismos se encontraram por uma linha ligada.</li>
-        <li><b>Cor nunca vai sozinha.</b> A legenda fica sempre visível e a ficha escreve o mecanismo por extenso.</li>
-        <li><b>O amarelo sempre leva contorno preto,</b> porque sozinho ele some no papel.</li>
+        <li><b>Mistura é dado.</b> Onde a linha ou o rastro muda de cor, dois mecanismos se encontraram.</li>
+        <li><b>Toda bolinha leva contorno preto.</b> É a fórmula do grapixo e é o que garante a leitura sobre o papel.</li>
       </ol>
 
       <h3>O teste</h3>
       <div class="vwrap"><table class="vt">
-        <thead><tr><th>Critério</th><th>Paleta anterior (rosa, azul, verde)</th><th>Tintas (magenta, azul, amarelo)</th></tr></thead>
+        <thead><tr><th>Critério</th><th>Paleta anterior (rosa, azul, verde)</th><th>Muro de BH (magenta, azul, ocre)</th></tr></thead>
         <tbody>
-          <tr><td>Claridade dentro da faixa de 0,43 a 0,77</td><td>Falha: o verde fica em 0,83</td><td>Passa: 0,55, 0,55 e 0,76</td></tr>
-          <tr><td>Separação para daltonismo (mínimo 8)</td><td>15,1 no pior par</td><td>16,8 no pior par</td></tr>
-          <tr><td>Separação em visão normal (mínimo 15)</td><td>29,1</td><td>30,1</td></tr>
-          <tr><td>Contraste com o papel (alvo 3:1)</td><td>Rosa 2,84, azul 2,37, verde 1,46</td><td>Magenta 5,08, azul 4,49, amarelo 2,03 (por isso o contorno preto)</td></tr>
-          <tr><td>Misturas</td><td>Rosa com verde e azul com verde dão tons sem nome</td><td>Violeta, vermelho e verde</td></tr>
+          <tr><td>Contraste com o papel (mínimo 3:1)</td><td>Falha nas três: 2,84, 2,37 e 1,46</td><td>Passa nas três: 5,08, 4,49 e 3,18</td></tr>
+          <tr><td>Claridade dentro da faixa de 0,43 a 0,77</td><td>Falha: o verde fica em 0,83</td><td>Passa: 0,55, 0,55 e 0,64</td></tr>
+          <tr><td>Separação em visão normal (mínimo 15)</td><td>29,1 no pior par</td><td>23,8 no pior par</td></tr>
+          <tr><td>Separação com daltonismo (mínimo 8)</td><td>11,1 no pior caso</td><td>13,7 no pior caso</td></tr>
+          <tr><td>Misturas</td><td>Tons sem nome</td><td>Violeta, tijolo e verde</td></tr>
         </tbody>
       </table></div>
-      <p style="font-size:11px;color:#777;margin-top:10px">Medidas em OKLCH e OKLab, com simulação de protanopia e deuteranopia de Machado, Oliveira e Fernandes (2009), sobre o papel #f7f6f1.</p>
+      <p style="font-size:11px;color:#777;margin-top:10px">Medidas em OKLCH e OKLab, com simulação de protanopia, deuteranopia e tritanopia de Machado, Oliveira e Fernandes (2009), sobre o papel #f7f6f1. Uma versão com amarelo vivo (#E0A500) foi testada e trocada pelo ocre, porque tinha contraste de 2,03 com o papel.</p>
 
-      <h3>De onde vem cada decisão</h3>
+      <h3>O que é fonte e o que é leitura</h3>
       <ul>
-        <li><b>Uma cor, um trabalho.</b> Bertin (1967) separa as variáveis visuais: matiz distingue categorias, tamanho ordena quantidades. Tufte (1990) trata a cor como rótulo e pede que ela não atrapalhe.</li>
-        <li><b>Por que estas três.</b> Magenta, azul-ciano e amarelo são as tintas com que se imprime cartaz e lambe, junto com o preto. São as primárias da mistura de pigmentos: nenhuma se obtém das outras duas, como cada mecanismo é uma porta diferente do dinheiro público.</li>
-        <li><b>O que muda.</b> O rosa do Incentivo Fiscal e o azul do Fundo continuam, um pouco mais escuros. Só o Descentra troca o verde pelo amarelo: a tinta mais clara fica com os menores valores, e o verde passa a significar o encontro de Fundo com Descentra, os dois do circuito capilar.</li>
-        <li><b>O que é proposta minha.</b> A ligação entre tinta de impressão e fomento é uma leitura de projeto, não um dado. Ela precisa da sua defesa no texto do TCC.</li>
+        <li><b>Com fonte.</b> O pixo é monocromático (Carvalho, 2013; Lassala, 2010). O grafite usa cores saturadas contra o cinza (Gitahy, 1999). O grapixo mistura os dois e se firmou em BH (Soares, 2013). O painel de Portinari na Pampulha é azul e branco, de 1944. O solo da Serra do Curral é rico em ferro.</li>
+        <li><b>Leitura de projeto.</b> Ligar o magenta ao Incentivo Fiscal, o azul do azulejo ao Fundo e o ocre da terra ao Descentra é uma decisão de design. Ela precisa da sua defesa no texto do TCC.</li>
+        <li><b>Falta fazer.</b> Fotografar os muros do corpus e as latas do catálogo, para a ligação virar evidência visual. Conferir as referências na biblioteca.</li>
       </ul>
     </div>
   </section>
@@ -221,12 +239,13 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 
 <script src="js/data.js?v=20261112-31"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
-<script src="js/rizoma.js?v=20261112-31"></script>
+<script src="js/rizoma.js?v=20261112-33"></script>
 <script src="js/letreiro.js?v=20261112-31"></script>
 <script>
 /* Lab 07 — Letra brasileira, cor com fundamento. Parte do Lab 04 (abaixo) e muda quatro coisas, a pedido do autor (12/11/2026):
    1. LETRA: títulos em fontes vernaculares brasileiras, mutáveis (js/letreiro.js; fontes de Gi Favetta, ideia do aperto de Crystian Cruz);
-   2. COR: uma tinta por mecanismo (magenta, azul, amarelo), validada; linhas de fuga em preto; o rastro leva a tinta do nó de origem
+   2. COR: uma tinta por mecanismo (magenta de spray, azul de azulejo, ocre de minério), validada e ligada ao muro de BH; a linha leva a
+      tinta dos dois projetos que liga (opts.edgeColor "nos" no motor; tecla L volta ao preto); o rastro leva a tinta do nó de origem
       e mistura como pigmento (média geométrica por canal), então o encontro de dois mecanismos tem cor própria;
    3. NÓ: volta a bolinha (nodeStyle "bolinha" no motor): cor = mecanismo, tamanho = valor, contorno = circuito; sai o nó-muro;
    4. FICHA: explicação em frases (o que é, de onde vem o dinheiro, quanto é, circuito, parentes, o que falta), só com o que js/data.js tem.
@@ -284,7 +303,7 @@ const INK = [170, 168, 162];                         // cor do rastro livre (sem
 /* ---------- cor com fundamento: três tintas, uma por origem do dinheiro ---------- */
 const MECHS = ["Incentivo Fiscal", "Fundo Municipal", "Descentra"];
 const PALETAS = {
-  tintas: [[201, 24, 106], [18, 115, 201], [224, 165, 0]],      // magenta, azul, amarelo: validada (aba Cores)
+  tintas: [[201, 24, 106], [18, 115, 201], [185, 127, 0]],      // magenta de spray, azul de azulejo, ocre de minério: validada, as três com 3:1 sobre o papel (aba Cores)
   anterior: [[255, 79, 154], [49, 168, 255], [101, 231, 125]]   // rosa, azul, verde dos labs 01 a 06, para comparar
 };
 for (const t of TYPES) Rizoma.LINES[t].color = [22, 22, 22];   // linhas de fuga em preto: cor só significa mecanismo
@@ -450,7 +469,7 @@ function uiMargin() {
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "bolinha", mechColors: mechMap(), lineWeight: 0.55, spread: 1.45, focusZoom: true, spray: false,
+    container: "#rizomaStage", paper: true, depth: true, intro: false, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "bolinha", mechColors: mechMap(), edgeColor: "nos", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
     margin: uiMargin, lineCycle: 2.2, // margens medidas nos elementos da interface; linhas crescem e puxam 2,2× mais devagar // sem as bolinhas do gesto no fundo: só muros, linhas e micélio // linhas finas, nós espaçados, foco que aproxima
     treeTop: () => small() ? 100 : 110, treeBottom: () => small() ? 120 : 50,
     onChange: sync, onOpen: openCard, onHover: onHover
@@ -473,14 +492,15 @@ function sync(s) {
   }
   for (const t in chips) { chips[t].classList.toggle("active", !!s.active[t]); chips[t].querySelector("small").textContent = s.linesByType ? s.linesByType[t] : 0; }
   $("#depthBtn").classList.toggle("active", s.depth);
-  $("#palBtn").textContent = paleta === "tintas" ? "Cor · tintas" : "Cor · anterior"; $("#palBtn").classList.toggle("active", paleta === "tintas");
+  $("#palBtn").textContent = paleta === "tintas" ? "Cor · muro de BH" : "Cor · anterior"; $("#palBtn").classList.toggle("active", paleta === "tintas");
+  $("#lineBtn").textContent = s.edgeColor === "nos" ? "Linhas · tinta" : "Linhas · pretas"; $("#lineBtn").classList.toggle("active", s.edgeColor === "nos");
 
   $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (PH.on ? ` · ${PH.count} AGENTES` : "");
   document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
   if (s.revealed >= s.total && !finalHinted) { finalHinted = true; guide("Todos os projetos revelados. Quer fechar o seu mapa? O botão congela o micélio e gera a estampa desta visita."); }
   if (!PH.on) guide("O sistema pede menos movimento: o micélio fica desligado; nós e linhas continuam funcionando.");
   else if (s.revealed < 3) guide(touch ? "Os pontos que piscam são projetos escondidos: toque num deles para revelar." : "Os pontos que piscam são projetos escondidos: clique num deles, ou passe a mão, para revelar.");
-  else if (!s.anyLine) guide("Ligue uma linha: a tinta de cada bolinha corre até as parentes. Onde duas tintas se cruzam, a mistura diz quais mecanismos se encontraram.");
+  else if (!s.anyLine) guide("Ligue uma linha: ela leva a tinta dos dois projetos que liga. Onde duas tintas se cruzam, a mistura diz quais mecanismos se encontraram.");
   else guide("Desligue a linha para ver a rede evaporar; arraste o fundo para girar o campo e ver o rastro ficar para trás.");
 }
 let guideT = 0; function guide(t) { const g = $("#guide"); clearTimeout(guideT); if (!t) { g.classList.remove("show"); return; } g.textContent = t; g.classList.add("show"); guideT = setTimeout(() => g.classList.remove("show"), 6000); }
@@ -577,13 +597,14 @@ let finalHinted = false;
 /* ---------- ferramentas ---------- */
 $("#depthBtn").onclick = () => R.setDepth(!R.state().depth);
 $("#palBtn").onclick = () => setPaleta(paleta === "tintas" ? "anterior" : "tintas");
+$("#lineBtn").onclick = () => R.setEdgeColor(R.state().edgeColor === "nos" ? "natureza" : "nos");
 $("#lessBtn").onclick = () => setCount(PH.count - PH.step);
 $("#moreBtn").onclick = () => setCount(PH.count + PH.step);
 $("#countBtn").onclick = () => setCount(200);
 $("#evapBtn").onclick = () => setEvap(PH.evap + 1);
 $("#clearBtn").onclick = () => trailP && trailP.clearTrail();
 $("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
-document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "c") $("#palBtn").click(); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
+document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "c") $("#palBtn").click(); if (k === "l") $("#lineBtn").click(); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
 window.addEventListener("resize", () => R && R.resize());
 document.addEventListener("visibilitychange", () => { const hid = document.hidden || tab !== "campo"; if (trailP) hid ? trailP.noLoop() : trailP.loop(); if (R) R.setVisible(!hid); }); // aba oculta: tudo pausa
 
@@ -592,18 +613,19 @@ function setPaleta(nome) {
   paleta = nome; INKS = PALETAS[nome]; LOGS = INKS.map(c => c.map(v => LOGT[v]));
   const rs = document.documentElement.style; rs.setProperty("--if", hex(INKS[0])); rs.setProperty("--fundo", hex(INKS[1])); rs.setProperty("--desc", hex(INKS[2]));
   if (R) { R.setMechColors(mechMap()); if (trailP) trailP.clearTrail(); }
-  $("#palBtn").textContent = nome === "tintas" ? "Cor · tintas" : "Cor · anterior"; $("#palBtn").classList.toggle("active", nome === "tintas");
-  $("#palBtn2").textContent = nome === "tintas" ? "Comparar com a paleta anterior" : "Voltar para as tintas"; $("#palBtn2").classList.toggle("active", nome !== "tintas");
+  $("#palBtn").textContent = nome === "tintas" ? "Cor · muro de BH" : "Cor · anterior"; $("#palBtn").classList.toggle("active", nome === "tintas");
+  $("#palBtn2").textContent = nome === "tintas" ? "Comparar com a paleta anterior" : "Voltar para as tintas do muro de BH"; $("#palBtn2").classList.toggle("active", nome !== "tintas");
   renderCores();
 }
 function renderCores() {
-  const T = paleta === "tintas", nomes = T ? ["Magenta", "Azul", "Amarelo"] : ["Rosa", "Azul", "Verde"];
-  const txt = T ? ["A tinta mais forte para o dinheiro que passa por empresas e paga os maiores valores. Mantém, mais escuro, o rosa que os labs já usavam.", "Dinheiro direto do Fundo Municipal de Cultura. Mantém o azul dos labs, mais escuro para ler no papel.", "A tinta mais clara para os menores valores. Entra no lugar do verde e fecha o trio das tintas de impressão."]
-    : ["Rosa dos labs 01 a 06.", "Azul dos labs 01 a 06.", "Verde dos labs 01 a 06: claro demais para o papel, e as misturas com ele não têm nome."];
-  $("#inks").innerHTML = MECHS.map((m, i) => `<article><span class="sw" style="--c:${hex(INKS[i])}"></span><b>${nomes[i]} · ${m}</b><code>${hex(INKS[i])}</code><p>${txt[i]}</p></article>`).join("")
-    + `<article><span class="sw" style="--c:#161616"></span><b>Preto · tudo o que não é mecanismo</b><code>#161616</code><p>Texto, contorno, linhas e números. Nunca vira categoria.</p></article>`
-    + `<article><span class="sw sq" style="--c:#f7f6f1"></span><b>Papel · o fundo</b><code>#F7F6F1</code><p>O muro caiado e o papel do lambe. A tinta só aparece porque ele é claro.</p></article>`;
-  const pares = [[0, 1, T ? "Violeta" : "Lilás acinzentado", "Incentivo Fiscal encontra Fundo Municipal."], [0, 2, T ? "Vermelho" : "Marrom rosado", "Incentivo Fiscal encontra Descentra: o maior valor ligado ao menor."], [1, 2, T ? "Verde" : "Verde-água", "Fundo encontra Descentra: os dois mecanismos do circuito capilar."]];
+  const T = paleta === "tintas", nomes = T ? ["Magenta de spray", "Azul de azulejo", "Ocre de minério"] : ["Rosa", "Azul", "Verde"];
+  const txt = T ? [
+    "O grafite usa cor saturada para vencer o cinza do concreto (Gitahy, 1999). Magenta é nome de lata no catálogo de spray. A cor que mais grita fica com o mecanismo que depende de patrocínio e visibilidade e que pinta as empenas do centro.",
+    "O azul do painel de azulejos de Portinari na igreja da Pampulha, de 1944, feito dentro de uma obra da Prefeitura. É a cor do muro que o poder público encomendou: dinheiro direto do Fundo, sem patrocinador.",
+    "A cor do chão de Belo Horizonte: o ferro da Serra do Curral deixa a terra avermelhada e amarelada. Fica com o edital que pontua por território e chega às regionais."]
+    : ["Rosa dos labs 01 a 06.", "Azul dos labs 01 a 06: contraste de 2,37 com o papel, abaixo de 3:1.", "Verde dos labs 01 a 06: claro demais para o papel (1,46), e as misturas com ele não têm nome."];
+  $("#inks").innerHTML = MECHS.map((m, i) => `<article><span class="sw" style="--c:${hex(INKS[i])}"></span><b>${nomes[i]} · ${m}</b><code>${hex(INKS[i])}</code><p>${txt[i]}</p></article>`).join("");
+  const pares = [[0, 1, T ? "Violeta" : "Lilás acinzentado", "Incentivo Fiscal encontra Fundo Municipal."], [0, 2, T ? "Tijolo" : "Marrom rosado", "Incentivo Fiscal encontra Descentra: o maior valor ligado ao menor."], [1, 2, T ? "Verde" : "Verde-água", "Fundo encontra Descentra: os dois mecanismos do circuito capilar."]];
   $("#mixes").innerHTML = pares.map(([a, b, n, t]) => { const mx = mixSub(INKS[a], INKS[b]); return `<article><div class="eq"><span class="sw s" style="--c:${hex(INKS[a])}"></span>+<span class="sw s" style="--c:${hex(INKS[b])}"></span>=<span class="sw" style="--c:${hex(mx)}"></span></div><b>${n}</b><code>${hex(mx)}</code><p>${t}</p></article>`; }).join("");
 }
 $("#palBtn2").onclick = () => setPaleta(paleta === "tintas" ? "anterior" : "tintas");

@@ -13,6 +13,7 @@
     ["lab-05-sistema.html", "Lab 05", "o sistema inteiro"],
     ["lab-06-experimentos.html", "Lab 06", "experimentos fora do campo"],
     ["lab-07-letra-brasileira.html", "Lab 07", "letra brasileira · cor com fundamento"],
+    ["lab-08-site.html", "Lab 08", "o site inteiro na linguagem do Lab 07"],
     ["wireframes-svg/index.html", "Wireframes", "telas em SVG"]
   ];
   const norm = u => u.replace(/index\.html$/, ""); // "pasta/" e "pasta/index.html" são a mesma página

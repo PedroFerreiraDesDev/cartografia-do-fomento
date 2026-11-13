@@ -136,3 +136,10 @@ O laboratório é exploratório: suas decisões visuais não devem ser tratadas 
 - Terceira rodada de 13/11/2026: tela de entrada com animação explicativa em cinco passos (desenhada em canvas; `#direto` no endereço pula a entrada); aba "Como funciona" com a explicação de cada mecanismo, de cada ligação e dos 12 editais do corpus, com atalhos a partir da ficha; ferramentas reduzidas (200 agentes e evaporação média fixos; comparações do lab num menu "Ajustes do lab"); "← Voltar ao mapa" na ficha e "↓ Baixar meu mapa"; avisos em linguagem simples, um passo por vez; spray de fundo mais fraco.
 - Fontes: Tipografia Vernacular 0800, de Gi Favetta (Creative Commons), em `assets/fontes/vernacular-0800/` (ver `LEIA-ME.md` da pasta). O aperto no fim da linha vem do Brasilêro Profiça, de Crystian Cruz (ideia, sem código nem arquivo).
 - Análise das formas, gramática da mutação, fundamento e teste das cores, alternativas descartadas e referências ABNT: `rizoma/PROPOSTAS-LAB07.md`.
+
+## Lab 08 — O site inteiro na linguagem do Lab 07
+
+- `lab-08-site.html` (13/11/2026) — todas as telas (entrada, Descobrir, Indicadores, Editais, Pesquisa, Sobre e página do projeto) na linguagem aprovada no Lab 07: títulos em letreiro vernacular mutável, três tintas do muro de BH, bolinha de grapixo no mapa e como ícone, rastro de spray, entrada com animação explicativa, ficha que explica o projeto em frases, vocabulário simples.
+- Parte do Lab 05: mantém os nove gráficos dos Indicadores, a seleção compartilhada, os "?" de cada gráfico, a busca, a árvore e a página do projeto. Saem a tipografia em tensão, a marca viva e o painel de fontes.
+- A tela Editais passa a explicar os três mecanismos, os seis tipos de ligação e os 12 editais do corpus, com porta para os Indicadores. `#direto` no endereço pula a entrada.
+- O que mudou em relação ao Lab 05, o que ficou e os limites: `rizoma/PROPOSTAS-LAB07.md`, seção 3E.

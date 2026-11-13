@@ -312,6 +312,34 @@ Uma aba nova, acessível pela entrada, pelo botão "? Como funciona", pelo "?" a
 
 ---
 
+## 3E. Lab 08 (13/11/2026): as outras telas na linguagem do Lab 07
+
+Página: `lab-08-site.html`. Pedido do autor: implementar as outras telas. O Lab 07 fica como está; o Lab 08 é o site inteiro.
+
+**Como foi feito.** O Lab 08 parte do Lab 05, que já tinha todas as telas, os gráficos aprovados pelo autor, a seleção compartilhada entre gráficos, a ficha única e a página de projeto. Em cima dele entrou a linguagem do Lab 07. O gerador está descrito abaixo para que a decisão possa ser refeita ou revertida.
+
+| O que | Antes (Lab 05) | Agora (Lab 08) |
+|---|---|---|
+| Títulos | tipografia em tensão, marca viva de pontos, painel de fontes | letreiros vernaculares mutáveis (`js/letreiro.js`) na marca, na entrada, no título de cada tela, na ficha e na página do projeto |
+| Cor | rosa, azul, verde; seis cores de linha | três tintas do muro de BH (`#C9186A`, `#1273C9`, `#B97F00`); ligações em preto ou na tinta dos projetos; a mancha por ano e as cordas usam as mesmas tintas |
+| Projeto | nó-muro (empena, fachadas) no mapa e como ícone | bolinha de grapixo no mapa e como ícone em SVG (cor = mecanismo, tamanho = valor, contorno grosso = monumental, sombra) |
+| Rastro | mancha borrada do micélio | spray em grão, que seca; duas tintas lado a lado |
+| Capa | marca viva sobre o campo | entrada do Lab 07, com a animação de cinco passos e portas para Indicadores, Editais e Sobre |
+| Editais | três linhas de mecanismo com botões | mecanismos, ligações e os 12 editais explicados, cada cartão com porta para os Indicadores e para os projetos |
+| Ficha | pares rótulo e valor | explicação em frases com régua de valores, e atalhos "Como funciona este edital" e "Entender este mecanismo" |
+| Ferramentas | agentes, evaporação, forma do nó | 200 agentes e evaporação média fixos; "? Como funciona", 3D, Recomeçar, "↓ Baixar meu mapa"; árvore, corte e limpar no menu "Mais" |
+| Vocabulário | nó, linha de fuga, micélio, estampa | projeto, ligação, spray, mapa |
+
+**O que ficou do Lab 05 sem mudança de lógica:** os nove gráficos dos Indicadores (regional, ano × mecanismo com a mancha, cordas, escala em blocos ou células, régua de valores, Lorenz, matriz, declive, dados sociais), a seleção compartilhada, os "?" de cada gráfico, a busca, a trilha, a árvore, o corte de ligações, as telas Pesquisa e Sobre e a página do projeto com galeria, ligações, território, fomento, relatos, questionário e fontes.
+
+**O que saiu:** a tipografia em tensão, a marca viva e o painel de experimento de fontes do Lab 05 (cerca de 370 linhas), e o carregamento de 20 famílias de fonte do Google Fonts.
+
+**Limites conhecidos.** A matriz de relações perdeu a cor por tipo de ligação: agora a célula só escurece com a quantidade de ligações em comum. A tela Pesquisa continua com o texto do protótipo. A página do projeto continua sem fotos reais.
+
+Conferido no navegador em 1280 px e 375 px: entrada, mapa com spray, ligações, ficha, busca, árvore, Indicadores com seleção, Editais com destaque de cartão, Sobre e página do projeto, sem erros no console.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.

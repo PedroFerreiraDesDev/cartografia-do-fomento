@@ -552,6 +552,24 @@ Conferido no navegador em 1280 px e 375 px: as cinco ligações ligadas juntas e
 
 ---
 
+## 3I. Propostas em análise (13/11/2026): outra forma para os gráficos dos editais
+
+O autor não gostou dos dois gráficos de barras dos editais (valor total e disputa). Pediu formas diferentes, com referência em trabalhos como os do Information is Beautiful, feitas em p5.js, leves, dentro do conceito do site e bem explicadas. Antes de trocar, três propostas foram desenhadas com os dados reais para ele escolher.
+
+Página: `rizoma/prototipo-p5/propostas-editais.html`.
+
+| Proposta | Forma | Referência e ideia emprestada | Responde | Limite |
+|---|---|---|---|---|
+| A. Muro de blocos | faixa por mecanismo, bloco por edital, área = valor; quadrados escuros = projetos do corpus | McCANDLESS, The Billion Dollar Gram: valores como retângulos encaixados | quanto cada edital ofereceu e a parte do corpus | não mostra a disputa; o LMIC 2023 - IF fica de fora |
+| B. Bolinhas | uma bolinha por edital: tamanho = valor, altura = parte dos inscritos aprovada, posição horizontal = ano; bolinhas escuras dentro = projetos do corpus | McCANDLESS, Snake Oil Supplements e World's Biggest Data Breaches & Hacks: bolhas em que o tamanho é uma medida e a posição é outra | as duas perguntas num desenho só | círculo se compara pior que barra; dois eixos pedem mais explicação |
+| C. Peneira | um grão por projeto inscrito; os aprovados passam a linha e ganham a tinta do mecanismo | NEURATH, Isotype: quantidade pela repetição de uma marca | de quem se inscreve, quantos passam | não compara o valor dos editais; ocupa mais espaço |
+
+**Recomendação feita ao autor:** a proposta B no lugar dos dois gráficos, porque usa a bolinha do mapa e responde às duas perguntas, com a peneira como detalhe ao tocar numa bolinha. **Decisão pendente do autor.**
+
+As referências foram conferidas no site em 13/11/2026 só quanto ao título e ao endereço; a descrição da forma de cada uma é conhecimento geral sobre esses trabalhos, porque os gráficos não carregaram no navegador de teste. Nenhum código nem desenho foi copiado.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.
@@ -590,7 +608,15 @@ JONES, Jeff. Characteristics of pattern formation and evolution in approximation
 
 KNAFLIC, Cole Nussbaumer. **Storytelling with data**: a data visualization guide for business professionals. Hoboken: Wiley, 2015.
 
+McCANDLESS, David. **The Billion Dollar Gram**. Information is Beautiful. Disponível em: https://informationisbeautiful.net/visualizations/the-billion-dollar-gram/. Acesso em: 13 nov. 2026.
+
+McCANDLESS, David. **Snake Oil Supplements**. Information is Beautiful. Disponível em: https://informationisbeautiful.net/visualizations/snake-oil-scientific-evidence-for-nutritional-supplements-vizsweet/. Acesso em: 13 nov. 2026.
+
+McCANDLESS, David. **World's Biggest Data Breaches & Hacks**. Information is Beautiful. Disponível em: https://informationisbeautiful.net/visualizations/worlds-biggest-data-breaches-hacks/. Acesso em: 13 nov. 2026.
+
 MACHADO, Gustavo M.; OLIVEIRA, Manuel M.; FERNANDES, Leandro A. F. A physiologically-based model for simulation of color vision deficiency. **IEEE Transactions on Visualization and Computer Graphics**, v. 15, n. 6, p. 1291-1298, 2009.
+
+NEURATH, Otto. **International picture language**: the first rules of Isotype. London: Kegan Paul, Trench, Trubner & Co., 1936.
 
 OTTOSSON, Björn. **A perceptual color space for image processing** (OKLab). 2020. Disponível em: https://bottosson.github.io/posts/oklab/. Acesso em: 12 nov. 2026.
 

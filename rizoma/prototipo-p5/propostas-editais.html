@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Propostas para os gráficos dos editais · Cartografia do Fomento</title>
+<meta name="description" content="Três propostas de gráfico para o valor dos editais e a disputa, em p5.js, para o autor escolher.">
+<style>
+:root{--ink:#161616;--paper:#F7F6F1;--line:#d4d1c8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 Arial,Helvetica,sans-serif}
+main{max-width:900px;margin:0 auto;padding:28px 18px 90px}
+.k{font-size:10px;font-weight:900;letter-spacing:.14em;color:#777}
+h1{font-size:34px;line-height:1.05;letter-spacing:-.03em;margin:6px 0 12px;text-transform:uppercase}
+h2{font-size:25px;line-height:1.1;letter-spacing:-.02em;margin:4px 0 8px;text-transform:uppercase}
+p{margin:0 0 10px;color:#444;max-width:700px}
+section{border-top:1px solid var(--line);padding:26px 0 30px}
+.meta{display:grid;grid-template-columns:120px 1fr;gap:4px 14px;margin:10px 0 14px;font-size:13px;line-height:1.5;max-width:760px}
+.meta b{font-size:9.5px;letter-spacing:.12em;color:#777;padding-top:3px}
+.meta a{color:var(--ink)}
+.holder{border:1px solid var(--line);background:rgba(255,255,255,.55);line-height:0}
+.holder canvas{display:block;max-width:100%;height:auto!important;touch-action:manipulation}
+.read{min-height:40px;margin:8px 0 0;border:1px dashed #bbb;background:rgba(255,255,255,.6);padding:9px 11px;font-size:13px;line-height:1.5;color:#777;max-width:none}
+.read.on{border:1.5px solid var(--ink);color:var(--ink);font-weight:700;background:#fff}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;max-width:760px}.pc div{border:1px dashed #bbb;padding:10px 12px;font-size:13px;line-height:1.5}.pc b{display:block;font-size:9.5px;letter-spacing:.12em;color:#777;margin-bottom:3px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}.nav a{border:1px solid #bbb;background:#fff;padding:8px 11px;font-size:12px;font-weight:800;color:var(--ink);text-decoration:none}
+.note{border:1px dashed #999;padding:12px 14px;font-size:13px;color:#555;max-width:760px}
+@media(max-width:640px){h1{font-size:27px}h2{font-size:21px}.meta{grid-template-columns:1fr}.pc{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<div class="k">CARTOGRAFIA DO FOMENTO · PROPOSTAS · 13/11/2026</div>
+<h1>Três formas para os gráficos dos editais</h1>
+<p>O autor não gostou das barras do valor dos editais e da disputa. Aqui estão três propostas, desenhadas em p5.js com os dados reais dos doze editais, para escolher. Cada uma parte de uma referência e fica dentro da linguagem do site: papel, três tintas, bolinha e grão de spray. Passe a mão ou toque em cada desenho.</p>
+<div class="nav"><a href="#a">A · Muro de blocos</a><a href="#b">B · Bolinhas</a><a href="#c">C · Peneira</a><a href="../../lab-08-site.html#direto">Voltar ao Lab 08</a></div>
+
+<section id="a">
+<div class="k">PROPOSTA A</div><h2>Muro de blocos</h2>
+<p>Todo o dinheiro dos editais vira um muro. Cada bloco é um edital, e o tamanho do bloco é o valor. Os quadrados escuros dentro de cada bloco são os projetos de grafite deste corpus, na mesma escala.</p>
+<div class="meta">
+<b>REFERÊNCIA</b><span>McCANDLESS, David. <a href="https://informationisbeautiful.net/visualizations/the-billion-dollar-gram/" target="_blank" rel="noopener">The Billion Dollar Gram</a>. Information is Beautiful. Ideia emprestada: valores como retângulos encaixados, lidos pelo tamanho.</span>
+<b>RESPONDE</b><span>Quanto cada edital ofereceu, e que parte foi para estes projetos.</span>
+<b>COMO LER</b><span>Cada faixa é um mecanismo. Dentro da faixa, cada bloco é um edital, do mais antigo em cima ao mais novo embaixo. Bloco grande, edital grande.</span>
+</div>
+<div class="holder" id="hA"></div><p class="read" id="rA">Passe a mão ou toque num bloco.</p>
+<div class="pc"><div><b>BOM PARA</b>Ver de uma vez o tamanho de tudo e como a parte do corpus é pequena. Não precisa de eixo.</div><div><b>LIMITE</b>Não mostra a disputa. Comparar dois blocos de formatos diferentes é menos exato que comparar barras. O LMIC 2023 - IF fica de fora, porque o edital não fixa valor.</div></div>
+</section>
+
+<section id="b">
+<div class="k">PROPOSTA B</div><h2>Bolinhas: tamanho e disputa</h2>
+<p>Cada edital é uma bolinha, a mesma do mapa. O tamanho é o valor do edital. A altura é a parte dos inscritos que foi aprovada. As bolinhas escuras dentro são os projetos deste corpus. Um desenho só responde às duas perguntas.</p>
+<div class="meta">
+<b>REFERÊNCIA</b><span>McCANDLESS, David. <a href="https://informationisbeautiful.net/visualizations/snake-oil-scientific-evidence-for-nutritional-supplements-vizsweet/" target="_blank" rel="noopener">Snake Oil Supplements</a> e <a href="https://informationisbeautiful.net/visualizations/worlds-biggest-data-breaches-hacks/" target="_blank" rel="noopener">World's Biggest Data Breaches &amp; Hacks</a>. Information is Beautiful. Ideia emprestada: bolhas em que o tamanho é uma medida e a posição é outra.</span>
+<b>RESPONDE</b><span>Quanto cada edital ofereceu, quantos inscritos passaram e onde estão os projetos do corpus.</span>
+<b>COMO LER</b><span>Da esquerda para a direita, os anos. De baixo para cima, a parte dos inscritos que foi aprovada: quanto mais baixa a bolinha, mais disputado o edital. Bolinha grande, edital com mais dinheiro. Contorno tracejado quer dizer dado incompleto.</span>
+</div>
+<div class="holder" id="hB"></div><p class="read" id="rB">Passe a mão ou toque numa bolinha.</p>
+<div class="pc"><div><b>BOM PARA</b>Juntar os dois gráficos num só e usar a bolinha, que é a marca do site. Mostra que edital grande não quer dizer edital fácil.</div><div><b>LIMITE</b>Tamanho de círculo se compara pior que comprimento. Pede dois eixos, então precisa de mais explicação. Em 2017 a Prefeitura só publicou a disputa somando Fundo e Incentivo Fiscal.</div></div>
+</section>
+
+<section id="c">
+<div class="k">PROPOSTA C</div><h2>Peneira</h2>
+<p>Cada grão é um projeto inscrito. Os grãos caem numa peneira: os aprovados passam e ganham a tinta do mecanismo, os outros ficam em cima, em cinza. É o spray do site usado para contar gente.</p>
+<div class="meta">
+<b>REFERÊNCIA</b><span>NEURATH, Otto. International picture language: the first rules of Isotype. London: Kegan Paul, 1936. Ideia emprestada: mostrar quantidade repetindo uma marca, uma para cada unidade, em vez de esticar uma barra.</span>
+<b>RESPONDE</b><span>De quem se inscreve, quantos passam. O valor do edital entra como número, embaixo de cada peneira.</span>
+<b>COMO LER</b><span>Cada quadro é um edital. Grãos cinza em cima da linha: inscritos que não passaram. Grãos coloridos embaixo: aprovados. Dá para contar.</span>
+</div>
+<div class="holder" id="hC"></div><p class="read" id="rC">Passe a mão ou toque num quadro.</p>
+<div class="pc"><div><b>BOM PARA</b>Sentir a disputa: mil grãos em cima, cem embaixo. Cada grão é um projeto de verdade, o que conversa com o grão do spray.</div><div><b>LIMITE</b>Não compara bem o valor dos editais. Ocupa mais espaço. Só o desenho não basta para o valor: ele vai escrito.</div></div>
+</section>
+
+<section>
+<h2>O que eu recomendo</h2>
+<p>A proposta B, sozinha, no lugar dos dois gráficos de barras. Ela responde às duas perguntas, usa a bolinha do mapa e é diferente de tudo que já está nos Indicadores. A peneira, proposta C, pode entrar como detalhe: ao tocar numa bolinha, os grãos daquele edital caem.</p>
+<div class="note">Os valores foram lidos em cada edital, em PDF, no site da Prefeitura de Belo Horizonte, em 13/11/2026. Inscritos e aprovados vêm das páginas dos editais e das notícias da Prefeitura. A tabela e as fontes estão em <code>rizoma/PROPOSTAS-LAB07.md</code>, seção 3G.4.</div>
+</section>
+</main>
+
+<script src="../../js/data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<script>
+(function () {
+"use strict";
+const DATA = window.CARTOGRAFIA_DATA || [];
+const MECHS = ["Incentivo Fiscal", "Fundo Municipal", "Descentra"], INKS = [[201, 24, 106], [18, 115, 201], [185, 127, 0]], PAPER = [247, 246, 241], INK = [22, 22, 22];
+const mix = (c, k) => c.map((v, i) => Math.round(v * k + PAPER[i] * (1 - k))); // tom mais claro da mesma tinta
+/* valor de cada edital, inscritos e aprovados: os mesmos números de EDITAL_VALOR no Lab 08 (fontes na seção 3G.4) */
+const ED = [
+  { e: "LMIC 2017 - IF", total: 12050000, junto: 1 }, { e: "LMIC 2021 - IF", total: 14000000, insc: 420, aprov: 128 }, { e: "LMIC 2023 - IF", total: null, est: 16000000, insc: 487 },
+  { e: "LMIC 2017 - Fundo", total: 8000000, junto: 1 }, { e: "LMIC 2021 - Fundo", total: 8200000, insc: 1189, aprov: 136 }, { e: "LMIC 2022 - Fundo", total: 8200000, insc: 607, aprov: 131 }, { e: "LMIC 2023 - Fundo", total: 11250000, insc: 991, aprov: 148 }, { e: "LMIC 2024 - Fundo", total: 9598374, insc: 661, aprov: 124 },
+  { e: "Descentra 2019", total: 1060000, aprov: 54, taxa: 0.131 }, { e: "Descentra 2021", total: 1560000, insc: 488, aprov: 79 }, { e: "Descentra 2022", total: 1560000, insc: 324, aprov: 41 }, { e: "Descentra 2024", total: 1800000, insc: 450, aprov: 46 }
+];
+const JUNTO = { insc: 1663, aprov: 275 }; // LMIC 2017: a Prefeitura publicou só a soma de Fundo e Incentivo Fiscal
+ED.forEach(d => { d.ps = DATA.filter(p => p.edital === d.e && p.value).sort((a, b) => b.value - a.value); d.corpus = d.ps.reduce((a, p) => a + p.value, 0); d.mech = d.ps[0] ? d.ps[0].mechanism : (/IF$/.test(d.e) ? MECHS[0] : /Fundo$/.test(d.e) ? MECHS[1] : MECHS[2]); d.mi = MECHS.indexOf(d.mech); d.year = +d.e.match(/\d{4}/)[0];
+  d.rate = d.junto ? JUNTO.aprov / JUNTO.insc : d.insc && d.aprov ? d.aprov / d.insc : d.taxa || null; });
+const nf = n => n.toLocaleString("pt-BR"), mi = v => "R$ " + (v / 1e6).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + (v >= 2e6 ? " milhões" : " milhão"), mil = v => "R$ " + Math.round(v / 1000) + " mil", pc = x => (x * 100 < 10 ? (x * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) : Math.round(x * 100)) + "%";
+const frase = d => `${d.e}: ${d.total ? mi(d.total) + " no edital" : "o edital não fixa valor"}. ${d.ps.length === 1 ? "Um projeto deste corpus" : d.ps.length + " projetos deste corpus"}, ${mil(d.corpus)}${d.total ? " (" + pc(d.corpus / d.total) + " do edital)" : ""}. ${d.junto ? `${nf(JUNTO.aprov)} aprovados entre ${nf(JUNTO.insc)} inscritos, somando Fundo e Incentivo Fiscal.` : d.insc && d.aprov ? `${nf(d.aprov)} aprovados entre ${nf(d.insc)} inscritos (${pc(d.rate)}).` : d.taxa ? `${nf(d.aprov)} aprovados, ${pc(d.taxa)} dos inscritos.` : d.insc ? `${nf(d.insc)} inscritos; aprovados não informados.` : ""}`;
+const say = (id, d, rest) => { const el = document.getElementById(id); el.textContent = d ? frase(d) : rest; el.classList.toggle("on", !!d); };
+const BW = 820; // largura de desenho; o canvas encolhe com a tela
+function mount(holder, H, draw, pick, readId, rest) {
+  new p5(p => { let k = 1, hot = null;
+    const size = () => { k = Math.min(1, document.getElementById(holder).clientWidth / BW); return [Math.round(BW * k), Math.round(H * k)]; };
+    p.setup = () => { const [w, h] = size(); p.createCanvas(w, h).parent(holder); p.textFont("Arial"); p.noLoop(); };
+    p.windowResized = () => { const [w, h] = size(); p.resizeCanvas(w, h); p.redraw(); };
+    p.draw = () => { p.clear(); p.push(); p.scale(k); draw(p, hot); p.pop(); };
+    const move = () => { const inside = p.mouseX >= 0 && p.mouseY >= 0 && p.mouseX <= p.width && p.mouseY <= p.height, h = inside ? pick(p.mouseX / k, p.mouseY / k) : null; if (h !== hot) { hot = h; say(readId, hot, rest); p.redraw(); } };
+    p.mouseMoved = move; p.touchStarted = () => { move(); }; p.mousePressed = move;
+    p.kick = () => p.redraw(); mount.all.push(p);
+  });
+}
+mount.all = [];
+const fillc = (p, c, a) => a == null ? p.fill(c[0], c[1], c[2]) : p.fill(c[0], c[1], c[2], a), strokec = (p, c, a) => a == null ? p.stroke(c[0], c[1], c[2]) : p.stroke(c[0], c[1], c[2], a);
+
+/* ---------- A: muro de blocos. Faixa = mecanismo (largura = soma), bloco = edital (altura = valor): a área é o valor ---------- */
+const A = (() => { const H = 470, top = 26, bot = 8, comp = ED.filter(d => d.total), tot = comp.reduce((a, d) => a + d.total, 0), boxes = []; let x = 0;
+  MECHS.forEach((m, i) => { const l = comp.filter(d => d.mi === i).sort((a, b) => a.year - b.year), s = l.reduce((a, d) => a + d.total, 0), w = BW * s / tot; let y = top; l.forEach(d => { const h = (H - top - bot) * d.total / s; boxes.push({ d, x, y, w, h }); y += h; }); x += w; });
+  const px2 = (BW * (H - top - bot)) / tot; // pixels quadrados por real
+  return { H, boxes, px2, top }; })();
+mount("hA", A.H, (p, hot) => {
+  p.textAlign(p.LEFT, p.BASELINE); p.noStroke(); p.textStyle(p.BOLD); p.textSize(10); let hx = {}; A.boxes.forEach(b => { if (hx[b.d.mi] == null) hx[b.d.mi] = b.x; });
+  MECHS.forEach((m, i) => { fillc(p, INK); const w = A.boxes.find(b => b.d.mi === i).w; p.text(w > 110 ? m.toUpperCase() : "DESC.", hx[i] + 4, 16); });
+  A.boxes.forEach(b => { const ink = INKS[b.d.mi], on = !hot || hot === b.d; strokec(p, INK); p.strokeWeight(hot === b.d ? 2.4 : 1); fillc(p, mix(ink, .2), on ? 255 : 110); p.rect(b.x + 1, b.y + 1, b.w - 2, b.h - 2);
+    let qx = b.x + 5, qy = b.y + b.h - 5, rowH = 0; b.d.ps.forEach(pr => { const s = Math.sqrt(pr.value * A.px2); if (qx + s > b.x + b.w - 4) { qx = b.x + 5; qy -= rowH + 3; rowH = 0; } strokec(p, INK); p.strokeWeight(1); fillc(p, ink, on ? 255 : 110); p.rect(qx, qy - s, s, s); qx += s + 3; rowH = Math.max(rowH, s); });
+    p.noStroke(); fillc(p, INK, on ? 255 : 120); p.textStyle(p.BOLD); p.textSize(b.w > 110 ? 11 : 9); const nome = b.w > 110 ? b.d.e : String(b.d.year); if (b.h > 26) p.text(nome, b.x + 6, b.y + 15); p.textStyle(p.NORMAL); p.textSize(b.w > 110 ? 10 : 8.5); if (b.h > 40) p.text(b.w > 110 ? mi(b.d.total) : (b.d.total / 1e6).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + " mi", b.x + 6, b.y + 29); });
+}, (mx, my) => { const b = A.boxes.find(b => mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h); return b ? b.d : null; }, "rA", "Passe a mão ou toque num bloco.");
+
+/* ---------- B: bolinhas. x = ano, y = parte dos inscritos aprovada, área = valor do edital; dentro, os projetos do corpus ---------- */
+const B = (() => { const H = 500, L = 104, R = 70, T = 24, Bm = 96, ymax = 0.35, rmax = 54, vmax = 16000000;
+  const X = y => L + (y - 2017) / 7 * (BW - L - R), Y = r => T + (1 - r / ymax) * (H - T - Bm), rad = v => rmax * Math.sqrt(v / vmax);
+  const nodes = ED.map(d => ({ d, x: X(d.year) + (d.junto ? (d.mi === 0 ? -40 : 34) : d.mi === 1 ? 20 : d.mi === 2 ? -32 : 0), y: d.rate != null ? Y(d.rate) : H - 46, r: rad(d.total || d.est), dash: !d.total || !!d.junto || d.rate == null }));
+  return { H, L, R, T, Bm, X, Y, rad, nodes, ymax }; })();
+mount("hB", B.H, (p, hot) => {
+  p.textAlign(p.LEFT, p.CENTER); p.textStyle(p.NORMAL); p.textSize(10);
+  [0.1, 0.2, 0.3].forEach(t => { strokec(p, [212, 209, 200]); p.strokeWeight(1); p.line(B.L, B.Y(t), BW - B.R, B.Y(t)); p.noStroke(); p.fill(119); p.textAlign(p.RIGHT, p.CENTER); p.text(Math.round(t * 100) + "%", B.L - 8, B.Y(t)); });
+  p.noStroke(); p.fill(119); p.textAlign(p.LEFT, p.BASELINE); p.text("parte dos inscritos que foi aprovada", B.L, 14);
+  strokec(p, INK, 90); p.drawingContext.setLineDash([3, 4]); p.line(B.L, B.H - B.Bm + 14, BW - B.R, B.H - B.Bm + 14); p.drawingContext.setLineDash([]); p.noStroke(); p.fill(119); p.text("sem número de aprovados publicado", B.L, B.H - B.Bm + 28);
+  p.textAlign(p.CENTER, p.BASELINE); for (let y = 2017; y <= 2024; y++) { p.fill(y === 2018 || y === 2020 ? 170 : 60); p.text(y, B.X(y), B.H - 6); }
+  B.nodes.slice().sort((a, b) => b.r - a.r).forEach(n => { const ink = INKS[n.d.mi], on = !hot || hot === n.d, a = on ? 255 : 70;
+    p.noStroke(); fillc(p, mix(ink, .72 * .6), on ? 200 : 40); if (!n.dash) p.circle(n.x + n.r * .16, n.y + n.r * .2, n.r * 2); // sombra do grapixo
+    strokec(p, INK, a); p.strokeWeight(hot === n.d ? 2.6 : 1.4); if (n.dash) p.drawingContext.setLineDash([4, 4]); if (n.d.total) fillc(p, mix(ink, .2), a); else p.noFill(); p.circle(n.x, n.y, n.r * 2); p.drawingContext.setLineDash([]);
+    const rs = n.d.ps.map(pr => B.rad(pr.value)), wsum = rs.reduce((s, r) => s + r * 2 + 2, -2); let px = n.x - wsum / 2; n.d.ps.forEach((pr, i) => { const r = rs[i]; strokec(p, INK, a); p.strokeWeight(1); fillc(p, ink, a); p.circle(px + r, n.y, Math.max(3, r * 2)); px += r * 2 + 2; });
+  });
+  B.nodes.forEach(n => { const a = !hot || hot === n.d ? 255 : 70, t = n.d.e.replace("LMIC ", "").replace(/ - /, " "); p.textAlign(p.CENTER, p.BASELINE); p.textStyle(p.BOLD); p.textSize(9.5); const below = n.r < 20, ty = below ? n.y + n.r + 13 : n.y - n.r - 5; // rótulos por cima de todas as bolinhas; nas pequenas, embaixo
+    p.noStroke(); p.fill(247, 246, 241, 215); p.rect(n.x - p.textWidth(t) / 2 - 3, ty - 10, p.textWidth(t) + 6, 13); fillc(p, INK, a); p.text(t, n.x, ty); p.textStyle(p.NORMAL); });
+}, (mx, my) => { const hit = B.nodes.filter(n => Math.hypot(mx - n.x, my - n.y) <= Math.max(14, n.r)).sort((a, b) => a.r - b.r)[0]; return hit ? hit.d : null; }, "rB", "Passe a mão ou toque numa bolinha.");
+
+/* ---------- C: peneira. Um grão por projeto inscrito; os aprovados passam a linha e ganham a tinta ---------- */
+const C = (() => { const seen = new Set(), rows = []; ED.forEach(d => { if (d.junto) { if (seen.has("j")) return; seen.add("j"); rows.push({ d, label: "LMIC 2017 · Fundo e IF", insc: JUNTO.insc, aprov: JUNTO.aprov, ink: INK }); } else rows.push({ d, label: d.e, insc: d.insc || null, aprov: d.aprov || null, ink: INKS[d.mi] }); });
+  const cols = 4, cw = BW / cols, ch = 208, g = 3.4, per = Math.floor((cw - 24) / g), H = Math.ceil(rows.length / cols) * ch + 6;
+  rows.forEach((r, k) => { r.x = (k % cols) * cw; r.y = Math.floor(k / cols) * ch; }); return { rows, cw, ch, g, per, H }; })();
+mount("hC", C.H, (p, hot) => {
+  C.rows.forEach(r => { const on = !hot || hot === r.d, a = on ? 255 : 80, x0 = r.x + 12, top = r.y + 22, sieve = r.y + 128, rej = r.insc && r.aprov ? r.insc - r.aprov : r.insc && !r.aprov ? r.insc : 0;
+    p.noStroke(); fillc(p, INK, a); p.textAlign(p.LEFT, p.BASELINE); p.textStyle(p.BOLD); p.textSize(10.5); p.text(r.label, x0, r.y + 14); p.textStyle(p.NORMAL);
+    p.noStroke(); p.fill(150, 147, 139, on ? 230 : 70); const rowsRej = Math.ceil(rej / C.per); for (let i = 0; i < rej; i++) { const cx = x0 + (i % C.per) * C.g, cy = sieve - 5 - Math.floor(i / C.per) * C.g; if (cy < top) break; p.circle(cx + 1.2, cy, 2.4); }
+    strokec(p, INK, a); p.strokeWeight(1.2); p.drawingContext.setLineDash([2, 3]); p.line(x0, sieve, r.x + C.cw - 12, sieve); p.drawingContext.setLineDash([]);
+    p.noStroke(); fillc(p, r.ink, a); const ap = r.aprov || 0; for (let i = 0; i < ap; i++) p.circle(x0 + (i % C.per) * C.g + 1.2, sieve + 6 + Math.floor(i / C.per) * C.g, 2.6);
+    fillc(p, INK, a); p.textSize(9.5); const yb = r.y + C.ch - 30; p.text(r.aprov && r.insc ? `${nf(r.aprov)} de ${nf(r.insc)} passaram` : r.aprov ? `${nf(r.aprov)} passaram · inscritos não publicados` : `${nf(r.insc)} inscritos · aprovados não publicados`, x0, yb); p.fill(119); p.text(r.d.junto ? "R$ 20,05 milhões nas duas modalidades" : r.d.total ? mi(r.d.total) + " no edital" : "o edital não fixa valor", x0, yb + 13); });
+}, (mx, my) => { const r = C.rows.find(r => mx >= r.x && mx <= r.x + C.cw && my >= r.y && my <= r.y + C.ch); return r ? r.d : null; }, "rC", "Passe a mão ou toque num quadro.");
+window.Propostas = { redraw: () => mount.all.forEach(p => p.redraw()) };
+})();
+</script>
+</body>
+</html>

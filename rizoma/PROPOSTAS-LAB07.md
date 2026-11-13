@@ -480,6 +480,25 @@ Por que estes dois e não mais formas do mesmo dado: a pergunta 5 dá a medida d
 
 Limite: a pergunta 5 compara o valor do edital com os vinte projetos do corpus do TCC, não com todos os projetos de arte urbana aprovados. As planilhas oficiais mostram projetos de arte urbana fora do corpus (ver `rizoma/FONTES-DADOS-E-METODOLOGIA.md`).
 
+### 3G.6 A pergunta 5 ficou interativa (terceira rodada de 13/11/2026)
+
+O autor gostou do gráfico do valor dos editais e pediu que fosse mais interativo, como os outros, com mais de uma forma de pensar o dado.
+
+- **Três formas em "ver como", todas com o mesmo dado.**
+  - *Barras* (padrão): comparar o tamanho dos editais numa escala comum.
+  - *Quadradinhos*: cada quadradinho vale R$ 100 mil; os claros são o edital e os escuros são os projetos do corpus. Serve para contar em vez de medir, e deixa visível quão pequena é a parte do corpus.
+  - *Média por projeto*: o traço é o valor do edital dividido pelo número de aprovados; cada bolinha é um projeto do corpus no valor dele, na mesma régua. Mostra se o projeto ficou acima ou abaixo da média do edital. Hoje, dos 12 projetos com média calculada, 9 estão acima.
+- **"Arrumar por":** mecanismo, ano, valor do edital ou fatia destes projetos. A ordem muda o que salta aos olhos, como na matriz (BERTIN, 1967).
+- **Leitura ao passar a mão:** uma caixa acima do gráfico escreve em frase os números do edital apontado: valor, projetos do corpus, fatia, aprovados e inscritos, média. No celular, vale o toque.
+- **Lupa:** clicar num edital, na forma de barras, fixa a seleção e abre uma segunda barra que amplia o pedaço escuro e mostra cada projeto com nome e valor. Tocar num projeto abre a ficha. O pedaço do corpus é de 0,4% a 4,4% do edital, pequeno demais para ler sem ampliar. É a ideia de foco e contexto: ampliar o detalhe sem tirar o todo de vista (CARD; MACKINLAY; SHNEIDERMAN, 1999).
+- A seleção continua compartilhada: o edital escolhido acende os mesmos projetos nos outros gráficos e na lista ao lado.
+
+**Avisos que o gráfico dá.** A média é uma conta feita no protótipo com dois números oficiais, não um número publicado. No Incentivo Fiscal ela é só referência, porque o edital limita a renúncia total e cada projeto pode captar até o próprio teto. Em 2017 o traço é tracejado, porque os aprovados foram publicados somando Fundo e Incentivo Fiscal. O LMIC 2023 - IF não tem média.
+
+**Forma descartada:** valor dos editais ao longo do tempo. O corpus não tem todos os editais de cada ano, então a linha mostraria quedas que não existem.
+
+Conferido no navegador em 1280 px e 375 px: as três formas, as quatro ordens, a leitura ao passar a mão, a lupa e a abertura da ficha pelo projeto da lupa, sem erros no console.
+
 Conferido no navegador em 1280 px e 375 px: Recomeçar e Desligar ligações, marca trocando letra por letra, os cinco nomes de seção, os dois gráficos novos com seleção e ajuda, e os cartões da tela Editais com valor, disputa e link do PDF, sem erros no console.
 
 ---
@@ -507,6 +526,8 @@ BRASIL. **Lei nº 9.610, de 19 de fevereiro de 1998**. Altera, atualiza e consol
 BRASIL. **Lei nº 10.406, de 10 de janeiro de 2002**. Institui o Código Civil. Brasília, DF: Presidência da República, 2002.
 
 BRASIL. **Lei nº 13.709, de 14 de agosto de 2018**. Lei Geral de Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.
+
+CARD, Stuart K.; MACKINLAY, Jock D.; SHNEIDERMAN, Ben (ed.). **Readings in information visualization**: using vision to think. San Francisco: Morgan Kaufmann, 1999.
 
 CLEVELAND, William S.; McGILL, Robert. Graphical perception: theory, experimentation, and application to the development of graphical methods. **Journal of the American Statistical Association**, v. 79, n. 387, p. 531-554, 1984.
 

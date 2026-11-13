@@ -340,6 +340,80 @@ Conferido no navegador em 1280 px e 375 px: entrada, mapa com spray, ligações,
 
 ---
 
+## 3F. Lab 08, rodada de 13/11/2026: gráficos por pergunta, formulário com fotos e mural
+
+Pedido do autor: não criar um Lab 09, alterar o Lab 08. Duas frentes. Primeira: os gráficos pareciam repetitivos e não ficava claro se traziam informações diferentes. Segunda: na página do projeto, quem deixa comentário também pode mandar imagens, que vão para um e-mail e podem aparecer no mural de fotos do projeto; para mandar, a pessoa preenche um formulário que ajuda a construir o conhecimento sobre o projeto.
+
+### 3F.1 Auditoria dos gráficos: o autor tinha razão
+
+Os nove gráficos respondiam a poucas perguntas, com formas diferentes.
+
+| Pergunta de fundo | Gráficos que a respondiam no Lab 05 e no Lab 08 anterior |
+|---|---|
+| Em que ano, por qual mecanismo? | colunas por ano, mancha, cordas × ano, células de valor, declive (cinco formas) |
+| Quanto vale cada projeto? | blocos, células de valor, régua de valores, e Lorenz como soma (quatro formas) |
+| Que tipo de projeto cada mecanismo paga? | cordas × escala (a régua já mostra, com as linhas de R$ 30 mil e R$ 100 mil) e cordas × circuito |
+| O que os projetos têm em comum? | matriz |
+| Onde? Quem? | barras de regional (uma barra só, "não verificada") e bloco de dados sociais (vazio) |
+
+Um achado da auditoria: cordas × circuito não mostrava um dado, mostrava uma definição. No corpus, todo projeto de Incentivo Fiscal é monumental e todo projeto de Fundo Municipal e de Descentra é capilar. Isso cabe numa frase, e virou uma frase calculada na nota abaixo da legenda.
+
+### 3F.2 O que mudou nos Indicadores
+
+- **Quatro perguntas, um gráfico por pergunta.** 1. Em que ano e por qual caminho? 2. Quanto foi aprovado para cada projeto? 3. O dinheiro é bem repartido? 4. O que os projetos têm em comum? Um índice no alto leva a cada uma. A ideia de mostrar primeiro o geral e deixar o detalhe para quando a pessoa pede é de Shneiderman (1996).
+- **A resposta vem escrita antes do gráfico.** Cada pergunta tem uma frase em destaque com os números, por exemplo "Os 5 maiores projetos somam 48% de todo o valor aprovado. Os 10 menores, juntos, somam 23%". O título que afirma o achado, em vez de só nomear o gráfico, é recomendação de Knaflic (2015). As frases são calculadas dos dados em `renderAnswers()`, não escritas à mão, então mudam se o corpus mudar e acompanham a medida escolhida.
+- **"Como ler" em palavras simples**, logo acima de cada gráfico, dizendo o que é cada marca. Troca de texto junto com a forma do gráfico.
+- **As outras formas viraram "ver como"**, dentro da mesma pergunta, e o texto avisa que é o mesmo dado. Pergunta 1: colunas (padrão), antes e depois de 2022 (declive), mancha, cordas. Pergunta 2: régua (padrão), blocos, células. Pergunta 3: fita do dinheiro (padrão), curva de Lorenz. Nenhuma proposta foi apagada: todas continuam acessíveis aqui e inteiras nos Labs 05 e 06.
+- **Gráfico novo: fita do dinheiro.** Uma barra única é todo o valor aprovado; cada pedaço é um projeto, do maior para o menor, com chaves marcando os maiores e os menores. Mostra a mesma concentração da curva de Lorenz sem pedir que a pessoa saiba ler uma curva acumulada. Comprimento numa escala comum é das codificações que o olho compara melhor (Cleveland; McGill, 1984). A curva de Lorenz e o Gini ficam em "ver como", para quem conhece.
+- **Matriz corrigida.** Desde o Lab 08 a célula com uma só coisa em comum saía preta e a de duas ou mais saía cinza, o contrário do que o texto dizia. Agora o cinza escurece com a quantidade, de 1 a 5, e há legenda. Com isso os blocos por mecanismo aparecem.
+- **"O que ainda falta saber"** junta regional e perfil dos proponentes num bloco de texto, sem gráfico vazio, e convida a pessoa a contar o que sabe na página do projeto.
+- **Régua e fita se redesenham no celular** com largura própria, para o texto não encolher.
+
+Limite: as frases de resposta descrevem o corpus de vinte projetos do TCC. Não são conclusões sobre todo o fomento de Belo Horizonte.
+
+### 3F.3 Formulário "Conte o que você sabe"
+
+Fica na página de cada projeto, no lugar do campo de relato de teste. A ficha, no item "O que ainda não se sabe", ganhou o atalho "Você sabe? Conte e mande fotos".
+
+As perguntas saem das lacunas do registro, que o próprio protótipo já mostrava como "A verificar". Por isso o formulário abre com a lista "Falta nesta ficha".
+
+| Passo | Pergunta | Lacuna que ajuda a fechar |
+|---|---|---|
+| 1 | Qual é a sua relação com este projeto? (obrigatória) | peso e origem do relato: equipe, artista, vizinho, passante, participante, pesquisador |
+| 2 | Onde fica; qual regional; em que ano viu ou participou; a obra ainda existe; quem fez | regional, local de execução, permanência da obra, proponente e artistas |
+| 3 | Relato livre | relação das pessoas com a obra |
+| 4 | Até três fotos, cada uma com legenda e crédito | fotografias, que o protótipo não tem |
+| 5 | Nome para o crédito e e-mail (opcionais) | contato para tirar dúvida |
+
+Regras: só a relação e a concordância são obrigatórias; a pessoa precisa contar pelo menos uma coisa; com foto, precisa confirmar a autoria ou a autorização. Os erros aparecem em frases, dizendo o passo.
+
+**Fotos.** Cada foto é redesenhada no aparelho da pessoa antes de sair, com lado maior de 1600 px em JPEG. Isso reduz o arquivo e apaga os metadados da câmera, inclusive a localização do GPS. A localização que interessa à pesquisa é a que a pessoa escreve, não a que o celular grava sem ela saber. Três caixas separadas: autoria ou autorização (obrigatória com foto), autorização para o mural (opcional; sem ela a foto fica só no arquivo da pesquisa) e concordância das pessoas que aparecem.
+
+**Privacidade e direitos, na leitura do design.** Consentimento explícito e finalidade declarada antes do envio (BRASIL, 2018, art. 7º, I, e art. 8º); só o necessário, com nome e e-mail opcionais (art. 6º, III); retirada a pedido (art. 18). Crédito ao autor da fotografia (BRASIL, 1998, art. 24, II, e art. 79, § 1º). Uso da imagem de pessoas com autorização (BRASIL, 2002, art. 20). Esta é uma leitura de design, não um parecer jurídico. **A conferir com a orientação:** se a coleta de relatos de pessoas neste TCC precisa passar por comitê de ética em pesquisa (Resolução CNS nº 510/2016).
+
+### 3F.4 Para onde vai: e-mail
+
+O site é estático, hospedado no GitHub Pages: não guarda nada. Para o formulário chegar a um e-mail com anexos é preciso um serviço de formulário no meio.
+
+- **Estado atual: modo de teste.** `ENVIO.url` está vazio em `lab-08-site.html`. O formulário confere tudo, mostra o que seria enviado e avisa, em três lugares, que nada saiu do aparelho. Motivo: o endereço de e-mail e a escolha do serviço são decisão do autor, e o endereço não deve ficar exposto no código de um site público.
+- **Caminho preparado: FormSubmit.** O envio é um formulário comum com `enctype="multipart/form-data"`, que é o que a documentação do serviço descreve para anexos; o limite é de 10 MB somando os arquivos, e três fotos reduzidas ficam bem abaixo disso. O serviço oferece um código aleatório para pôr no lugar do e-mail, de modo que o endereço não aparece na página (FORMSUBMIT, 2026). Depois do envio, o serviço devolve a pessoa à página do projeto (`?enviado=<id>`), que agradece. A documentação não diz se anexos funcionam por AJAX, então o envio não usa AJAX. Os campos chegam com nomes legíveis: `projeto`, `projeto_id`, `relacao`, `onde`, `regional`, `ano_visto`, `situacao_da_obra`, `quem_realizou`, `relato`, `foto1_legenda`, `foto1_credito`, `autoria_ok`, `mural_ok`, `pessoas_ok`, `nome`, `email`, `consentimento`.
+- **Alternativa não implementada:** um script no Google Apps Script do próprio autor, que mandaria o e-mail e guardaria as fotos numa pasta do Drive. Vantagem: nenhum terceiro recebe os dados dos visitantes. Custo: cerca de dez minutos de configuração e um adaptador de envio diferente.
+- **Não verificado:** o envio de verdade. Só foi testado o modo de teste. O FormSubmit guarda os envios por 30 dias segundo a documentação; onde ficam os servidores e o que diz a política de privacidade do serviço não foi lido.
+
+### 3F.5 Mural de fotos
+
+A seção "Galeria" da página do projeto virou "Mural de fotos".
+
+- **Nada é publicado sozinho.** O que o visitante manda aparece só no aparelho dele, com borda tracejada e a marca "Só você vê · aguarda conferência", e some ao fechar o navegador (`sessionStorage`).
+- **O que foi conferido entra por `dados/mural.js`**, com legenda, crédito e ano, e o arquivo da foto em `assets/mural/<id-do-projeto>/`. O passo a passo está em `assets/mural/LEIA-ME.md`.
+- **Mural vazio** mostra a bolinha do projeto e o convite "A primeira pode ser a sua".
+
+Motivo da conferência manual: o TCC separa o que tem fonte do que é suposição, e uma foto publicada sem conferência quebraria essa regra. Também evita publicar imagem de pessoas ou de obras de terceiros sem autorização.
+
+Conferido no navegador em 1280 px e 375 px: as quatro perguntas com todas as formas de gráfico, troca de medida, matriz, abertura da ficha, atalho para o formulário, erros de preenchimento, foto de teste de 3000 × 2000 px reduzida para 1600 × 1067 px, arquivo que não é imagem recusado, envio em modo de teste, foto no mural como pendente e lista do que foi contado, sem erros no console.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.
@@ -347,6 +421,8 @@ Conferido no navegador em 1280 px e 375 px: entrada, mapa com spray, ligações,
 - Régua de valores também nos Indicadores.
 - Fonte variável própria com eixo de desgaste (proposta).
 - Testar no Android real (o emulador não reproduz toque).
+- Ligar o envio do formulário: escolher o serviço e o e-mail e preencher `ENVIO.url` (seção 3F.4). Depois, testar um envio de verdade com foto.
+- Conferir com a orientação se a coleta de relatos precisa de comitê de ética (seção 3F.3).
 
 ---
 
@@ -354,14 +430,28 @@ Conferido no navegador em 1280 px e 375 px: entrada, mapa com spray, ligações,
 
 BERTIN, Jacques. **Sémiologie graphique**: les diagrammes, les réseaux, les cartes. Paris: Mouton; Gauthier-Villars, 1967.
 
+BRASIL. **Lei nº 9.610, de 19 de fevereiro de 1998**. Altera, atualiza e consolida a legislação sobre direitos autorais. Brasília, DF: Presidência da República, 1998.
+
+BRASIL. **Lei nº 10.406, de 10 de janeiro de 2002**. Institui o Código Civil. Brasília, DF: Presidência da República, 2002.
+
+BRASIL. **Lei nº 13.709, de 14 de agosto de 2018**. Lei Geral de Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.
+
+CLEVELAND, William S.; McGILL, Robert. Graphical perception: theory, experimentation, and application to the development of graphical methods. **Journal of the American Statistical Association**, v. 79, n. 387, p. 531-554, 1984.
+
 CRUZ, Crystian. **Brasilêro**: vernacular typeface. 1999. Disponível em: https://crystiancruz.myportfolio.com/brasilero. Acesso em: 12 nov. 2026.
 
 FAVETTA, Giovanna. **Tipografia Vernacular 0800**. Disponível em: https://www.gifavetta.art/tipografia-0800. Acesso em: 12 nov. 2026.
 
+FORMSUBMIT. **Documentation**. 2026. Disponível em: https://formsubmit.co/documentation. Acesso em: 13 nov. 2026.
+
 JONES, Jeff. Characteristics of pattern formation and evolution in approximations of Physarum transport networks. **Artificial Life**, v. 16, n. 2, p. 127-153, 2010.
+
+KNAFLIC, Cole Nussbaumer. **Storytelling with data**: a data visualization guide for business professionals. Hoboken: Wiley, 2015.
 
 MACHADO, Gustavo M.; OLIVEIRA, Manuel M.; FERNANDES, Leandro A. F. A physiologically-based model for simulation of color vision deficiency. **IEEE Transactions on Visualization and Computer Graphics**, v. 15, n. 6, p. 1291-1298, 2009.
 
 OTTOSSON, Björn. **A perceptual color space for image processing** (OKLab). 2020. Disponível em: https://bottosson.github.io/posts/oklab/. Acesso em: 12 nov. 2026.
+
+SHNEIDERMAN, Ben. The eyes have it: a task by data type taxonomy for information visualizations. In: IEEE SYMPOSIUM ON VISUAL LANGUAGES, 1996, Boulder. **Proceedings** [...]. Los Alamitos: IEEE, 1996. p. 336-343.
 
 TUFTE, Edward R. **Envisioning information**. Cheshire: Graphics Press, 1990.

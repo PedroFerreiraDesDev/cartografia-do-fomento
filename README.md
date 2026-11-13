@@ -143,3 +143,5 @@ O laboratório é exploratório: suas decisões visuais não devem ser tratadas 
 - Parte do Lab 05: mantém os nove gráficos dos Indicadores, a seleção compartilhada, os "?" de cada gráfico, a busca, a árvore e a página do projeto. Saem a tipografia em tensão, a marca viva e o painel de fontes.
 - A tela Editais passa a explicar os três mecanismos, os seis tipos de ligação e os 12 editais do corpus, com porta para os Indicadores. `#direto` no endereço pula a entrada.
 - O que mudou em relação ao Lab 05, o que ficou e os limites: `rizoma/PROPOSTAS-LAB07.md`, seção 3E.
+- Rodada de 13/11/2026 (seção 3F): os Indicadores passam de nove gráficos para **quatro perguntas**, cada uma com a resposta escrita, um "como ler" e as outras formas em "ver como"; entra a fita do dinheiro e a matriz ganha escala coerente. Na página do projeto, o formulário **"Conte o que você sabe"** recebe relato e até três fotos, e a galeria vira **mural de fotos**.
+- O envio do formulário por e-mail está em **modo de teste**: falta preencher `ENVIO.url` em `lab-08-site.html` (seção 3F.4). Fotos conferidas entram no mural por `dados/mural.js`; o passo a passo está em `assets/mural/LEIA-ME.md`.

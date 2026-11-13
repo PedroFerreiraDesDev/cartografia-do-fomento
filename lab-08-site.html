@@ -235,6 +235,34 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .hgrid h4{font-size:14px;margin:0 0 6px;display:flex;align-items:center;gap:8px}.hgrid h4 i{width:12px;height:12px;border-radius:50%;background:var(--c);border:1px solid var(--ink);flex:none}
 .hgrid p{font-size:12px;line-height:1.6;margin:0 0 8px;color:#444}.hgrid small{display:block;font-size:10.5px;color:#777;line-height:1.5;margin-top:4px}
 .hgrid .pj{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}.hgrid .pj button{border:1px solid #d4d1c8;background:#fff;padding:5px 7px;font-size:10px}.hgrid .pj button.verind{border-color:var(--ink);font-weight:800}
+/* rodada 7: quatro perguntas, resposta escrita, formulário com fotos e mural */
+.chart [hidden],.cform[hidden],.cfdone[hidden]{display:none!important}
+.chart{scroll-margin-top:58px}
+.qnav{display:flex;gap:5px;flex-wrap:wrap;margin:18px 0 18px}.qnav button{display:flex;align-items:center;gap:7px;border:1px solid #ccc;background:#fff;padding:8px 11px 8px 8px;font-size:10.5px;font-weight:800;text-align:left}.qnav button:hover{border-color:var(--ink)}.qnav button b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ink);color:#fff;font-size:10px}
+.chart>p.answer{margin:8px 0 14px;max-width:660px;font-size:16px;line-height:1.45;font-weight:700;color:var(--ink);border-left:3px solid var(--ink);padding-left:11px}
+.chart>p.how{margin:0 0 14px;max-width:660px;font-size:11.5px;line-height:1.6;color:#5c5c5c}
+.chart .metric{align-items:center;margin:0 0 8px}.chart .metric span{font-size:8.5px;font-weight:900;letter-spacing:.12em;color:#888;min-width:74px}
+.lorenz svg,#slopeChart svg{max-width:540px}
+.mleg{display:flex;align-items:center;gap:5px;margin-top:10px;font-size:9.5px;color:#777}.mleg span{font-size:8.5px;font-weight:900;letter-spacing:.12em;margin-right:6px}.mleg i{display:inline-block;width:14px;height:14px;border:1px solid var(--line);background:rgba(22,22,22,var(--a));margin-left:6px}
+.gapgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 14px}.gapgrid article{border:1px dashed #bbb;padding:12px 14px}.gapgrid h4{margin:0 0 6px;font-size:14px}.gapgrid p{margin:0;font-size:11.5px;line-height:1.6;color:#5c5c5c}
+.mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.mfoto{margin:0;border:1px solid var(--line);background:#fff}.mfoto img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.mfoto figcaption{padding:8px 10px 9px;font-size:11.5px;line-height:1.45}.mfoto small{display:block;margin-top:3px;font-size:9.5px;color:#777}.mfoto em{display:block;margin-top:6px;font-style:normal;font-size:8.5px;font-weight:900;letter-spacing:.08em;color:var(--ink)}.mfoto.pend{border:1.5px dashed var(--ink)}
+.mvazio{grid-column:1/-1;display:grid;justify-items:center;gap:8px;border:1px dashed #bbb;background:rgba(255,255,255,.5);padding:26px 16px;text-align:center}.mvazio p{margin:0;font-size:12.5px;line-height:1.5;color:#5c5c5c}
+.falta{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:0 0 18px}.falta b{font-size:8.5px;letter-spacing:.12em;color:#777;margin-right:4px}.falta span{border:1px dashed #999;padding:5px 8px;font-size:10.5px}
+.cform fieldset{border:0;border-top:1px solid var(--line);margin:0;padding:16px 0 12px;min-width:0}.cform legend{float:left;width:100%;display:flex;align-items:center;gap:8px;padding:0;margin:0 0 10px;font-size:15px;font-weight:800;letter-spacing:-.01em}.cform legend+*{clear:both}.cform legend b{display:grid;place-items:center;flex:none;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:11px}.cform legend small{font-size:10px;font-weight:400;color:#888}
+.cform .hint{margin:0 0 10px;font-size:11px;line-height:1.55;color:#777}
+.cform label,.cform .q{display:block;margin:0 0 12px;font-size:12px;line-height:1.45;color:#333}
+.cform input[type=text],.cform input[type=email],.cform input[type=number],.cform select,.cform textarea{display:block;width:100%;margin-top:5px;border:1px solid #bbb;background:#fff;padding:10px 11px;font:inherit;font-size:14px;border-radius:0}.cform textarea{min-height:110px;resize:vertical}.cform input:focus,.cform select:focus,.cform textarea:focus{outline:2px solid var(--ink);outline-offset:1px}
+.cform .opts{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.cform .opts label{margin:0;position:relative}.cform .opts input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}.cform .opts span{display:block;border:1px solid #bbb;background:#fff;padding:9px 11px;font-size:11.5px;font-weight:700}.cform .opts input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}.cform .opts input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+.cform .chk{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;margin:0 0 9px;font-size:12px;line-height:1.5}.cform .chk input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--ink)}.cform .consent{border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
+.cform .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.filebtn{display:inline-block!important;position:relative;margin:0 0 10px!important}.filebtn input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.filebtn span{display:block;border:1.5px dashed var(--ink);background:#fff;padding:12px 16px;font-size:11px;font-weight:900;letter-spacing:.04em}.filebtn input:disabled+span{border-color:#bbb;color:#999}.filebtn input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+.fotos{display:grid;gap:8px;margin:0 0 12px}.foto{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;border:1px solid var(--line);background:rgba(255,255,255,.6);padding:8px}.foto img{display:block;width:100%;aspect-ratio:1;object-fit:cover}.foto label{margin:0 0 8px;font-size:11px}.foto small{display:block;font-size:9.5px;color:#888;margin-bottom:4px}.foto button{border:0;background:none;padding:0;text-decoration:underline;font-size:11px}
+.cferr{border:1.5px solid var(--ink);background:#fff;padding:10px 12px;margin:10px 0}.cferr p{margin:0 0 4px;font-size:12px;line-height:1.5;color:var(--ink);font-weight:700}.cferr p:last-child{margin:0}
+.cfsend{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}.cfsend span{font-size:10.5px;line-height:1.5;color:#777;max-width:340px}
+.cfdone{border:1.5px solid var(--ink);background:#fff;padding:16px 18px;margin-top:8px;outline:none}.cfdone h3{margin:6px 0 8px;font-size:20px;letter-spacing:-.02em}.cfdone dl{margin:10px 0 14px;border-top:1px solid var(--line)}.cfdone dl div{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:12px}.cfdone dt{color:#777}.cfdone dd{margin:0;overflow-wrap:anywhere}
+.comment .mini{font-size:10.5px;color:#777}
+@media(max-width:780px){.gapgrid{grid-template-columns:1fr}.chart>p.answer{font-size:15px}.chart .metric span{min-width:0;width:100%}.qnav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-right:-16px;padding-right:16px}.qnav::-webkit-scrollbar{display:none}.qnav button{flex:none}.foto{grid-template-columns:84px minmax(0,1fr)}.mural{grid-template-columns:repeat(2,minmax(0,1fr))}.cfdone dl div{grid-template-columns:86px 1fr}}
 </style>
 </head>
 <body class="intro-active">
@@ -313,19 +341,49 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="ind">
     <div class="ind-main">
       <div class="summary" id="summary"><div><span class="kicker" id="sumKicker">CORPUS DO TCC</span><b id="sumTitle">Todos os projetos</b></div><div><button id="sumClear" class="ghost" hidden>LIMPAR SELEÇÃO</button></div></div>
-      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1 data-lt="O FOMENTO|EM MOVIMENTO">O fomento em movimento</h1><p>Passe a mão em qualquer gráfico para ver quais projetos formam aquele resultado: o mesmo conjunto acende em todos os outros gráficos e na lista ao lado, e o resto esmaece. Clique para fixar a seleção; cada projeto abre a mesma ficha do mapa. O "?" de cada gráfico diz, em três frases, o que ele mostra e por que importa. As bolinhas são as mesmas do mapa: cor = mecanismo, tamanho = valor, contorno grosso = circuito monumental.</p></div>
-      <div class="metric" role="group" aria-label="Medida"><button data-metric="count" class="active">Quantidade de projetos</button><button data-metric="value">Valor registrado</button></div>
+      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1 data-lt="O FOMENTO|EM MOVIMENTO">O fomento em movimento</h1><p>Quatro perguntas sobre os vinte projetos. Cada pergunta tem um gráfico só, e a resposta vem escrita antes dele. Toque num gráfico para ver quais projetos estão ali: eles acendem na lista ao lado e nos outros gráficos.</p></div>
+      <nav class="qnav" id="qnav" aria-label="As quatro perguntas"><button data-q="years"><b>1</b>Em que ano?</button><button data-q="dots"><b>2</b>Quanto?</button><button data-q="lorenz"><b>3</b>É bem repartido?</button><button data-q="matrix"><b>4</b>O que têm em comum?</button><button data-q="gaps"><b>?</b>O que falta saber</button></nav>
       <div class="mech-legend" id="mechLegend"></div>
-      <p class="legend-note"><b>Monumental</b> e <b>capilar</b> são construções analíticas do autor (TCC, cap. 5), não categorias dos editais. Os valores são os <b>tetos aprovados</b> nas listas de homologação (DOM-BH, 2017–2024), não o que cada projeto captou. 2018 e 2020 aparecem vazios pelo recorte do corpus, não por falta de edital.</p>
-      <section class="chart" data-chart="region"><div class="kicker"><i></i>REGIONAL · A LIGAÇÃO "REGIONAL" DO MAPA <button type="button" class="help" data-help="region" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Onde os projetos aparecem?</h2><p>Só regionais individualmente verificadas entram. Por enquanto, nenhuma: o site mostra o que falta, em vez de supor.</p><div id="regionChart" class="bars"></div></section>
-      <section class="chart" data-chart="years"><div class="kicker"><i></i>ANO × MECANISMO · A LIGAÇÃO "ANO" <button type="button" class="help" data-help="years" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quando e por qual forma de fomento?</h2><p>À esquerda, as colunas comparam ano a ano. À direita, o fomento se acumula: uma mancha por ano cresce até a área do valor somado, na cor dos mecanismos que o compõem (agregação limitada por difusão, Witten e Sander, 1981; experimento 04 do Lab 06). A mancha é abertura, não medida: a forma muda a cada vez; para comparar, use as colunas.</p><div class="year-row"><div id="yearChart" class="years"></div><div class="mancha" id="mancha"><canvas id="manchaCanvas" role="img" aria-label="Mancha que cresce: uma mancha por ano, área proporcional ao valor somado, cor por mecanismo"></canvas><div class="mancha-foot"><span id="manchaCap"></span><button type="button" id="manchaAgain" class="ghost">CRESCER DE NOVO</button></div></div></div></section>
-      <section class="chart" data-chart="cordas"><div class="kicker"><i></i>CORDAS · DE ONDE VEM, PARA ONDE VAI <button type="button" class="help" data-help="cordas" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Cada mecanismo escoa para onde?</h2><p>Os arcos da esquerda são os mecanismos; os da direita, os anos, as escalas de valor ou os circuitos. Cada fita liga um mecanismo ao que ele alimentou, na medida escolhida acima (diagrama de cordas à maneira do Circos, Krzywinski et al., 2009; experimento 05 do Lab 06). Passe a mão numa fita ou num arco para ver os projetos; clique para fixar.</p><div class="metric" id="cordasSide" role="group" aria-label="Cruzar mecanismo com"><button data-lado="ano" class="active">× ano</button><button data-lado="escala">× escala</button><button data-lado="circuito">× circuito</button></div><div id="cordasChart" class="svgchart cordas"></div></section>
-      <section class="chart" data-chart="walls"><div class="kicker"><i></i>ESCALA FINANCEIRA · A LIGAÇÃO "ESCALA" <button type="button" class="help" data-help="walls" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quanto aparece registrado?</h2><p id="wallsNote">Cada bloco ocupa área proporcional ao valor registrado. Clique para abrir a ficha.</p><div class="metric" id="wallsMode" role="group" aria-label="Forma do gráfico de escala"><button data-walls="muros" class="active">Blocos</button><button data-walls="celulas">Células de valor</button></div><div id="wallsChart" class="walls"></div></section>
-      <section class="chart" data-chart="dots"><div class="kicker"><i></i>RÉGUA DE VALORES · POSIÇÃO, NÃO ÁREA <button type="button" class="help" data-help="dots" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quem chega ao teto?</h2><p>Cada projeto na posição do seu valor registrado, por mecanismo. As linhas tracejadas são os limites de escala (R$ 30 mil e R$ 100 mil); a cheia é o teto do Incentivo Fiscal em 2023 (R$ 165 mil, TCC seção 5.1). Posição ao longo de uma régua é a codificação que o olho lê com mais precisão (Cleveland e McGill, 1984).</p><div id="dotChart" class="svgchart"></div></section>
-      <section class="chart" data-chart="lorenz"><div class="kicker">CONCENTRAÇÃO · CURVA DE LORENZ <button type="button" class="help" data-help="lorenz" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Poucos projetos, quase todo o dinheiro.</h2><p>Projetos em ordem de valor no eixo horizontal, soma acumulada no vertical (Lorenz, 1905). Quanto mais a curva se afasta da diagonal, mais concentrado o fomento; o índice de Gini resume a distância.</p><div id="lorenzChart" class="svgchart"></div></section>
-      <section class="chart" data-chart="matrix"><div class="kicker">MATRIZ DE RELAÇÕES · AS SEIS LIGAÇÕES <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quem se liga a quem, e por quê?</h2><p>Cada célula conta quantas coisas dois projetos têm em comum: ano, mecanismo, edital, escala, regional ou curadoria. Quanto mais escura, mais ligações. Reordenar as linhas faz os blocos aparecerem (a matriz reordenável de Bertin, 1967).</p><div class="metric" id="matrixOrder" role="group" aria-label="Ordem da matriz"><button data-order="mecanismo" class="active">Por mecanismo</button><button data-order="ano">Por ano</button><button data-order="valor">Por valor</button></div><div id="matrixChart" class="matrix"></div></section>
-      <section class="chart" data-chart="slope"><div class="kicker"><i></i>DECLIVE · 2017–2021 → 2022–2024 <button type="button" class="help" data-help="slope" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O que cresceu e o que secou?</h2><p>Cada mecanismo é uma linha entre dois períodos, na medida escolhida acima (gráfico de declive, Tufte, 2001).</p><div id="slopeChart" class="svgchart"></div></section>
-      <section class="chart" data-chart="social"><div class="kicker">DADOS SOCIAIS <button type="button" class="help" data-help="social" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Perfil dos proponentes.</h2><div class="empty">A base atual ainda não sustenta uma visualização quantitativa de gênero, raça, renda ou classe social. Esses dados devem ser autodeclarados e agregados, nunca inferidos a partir da localização.</div></section>
+      <p class="legend-note">Os valores são os <b>tetos aprovados</b> nas listas oficiais (DOM-BH, 2017–2024), não o que cada projeto conseguiu captar. <b>Monumental</b> e <b>capilar</b> são nomes dados pelo autor (TCC, cap. 5), não categorias dos editais. <span id="circNote"></span></p>
+
+      <section class="chart" data-chart="years"><div class="kicker"><i></i>PERGUNTA 1 DE 4 · TEMPO <button type="button" class="help" data-help="years" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Em que ano e por qual caminho?</h2><p class="answer" id="ansYears"></p>
+        <div class="metric" role="group" aria-label="Medida"><span>CONTAR</span><button data-metric="count" class="active">Projetos</button><button data-metric="value">Valor aprovado</button></div>
+        <div class="metric views" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-yview="colunas" class="active">Colunas por ano</button><button data-yview="declive">Antes e depois de 2022</button><button data-yview="mancha">Mancha</button><button data-yview="cordas">Cordas</button></div>
+        <p class="how" id="howYears"></p>
+        <div id="yearChart" class="years"></div>
+        <div id="slopeChart" class="svgchart" hidden></div>
+        <div id="cordasChart" class="svgchart cordas" hidden></div>
+        <div class="mancha" id="mancha" hidden><canvas id="manchaCanvas" role="img" aria-label="Mancha que cresce: uma mancha por ano, área proporcional ao valor somado, cor por mecanismo"></canvas><div class="mancha-foot"><span id="manchaCap"></span><button type="button" id="manchaAgain" class="ghost">CRESCER DE NOVO</button></div></div>
+      </section>
+
+      <section class="chart" data-chart="dots"><div class="kicker"><i></i>PERGUNTA 2 DE 4 · VALOR <button type="button" class="help" data-help="dots" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quanto foi aprovado para cada projeto?</h2><p class="answer" id="ansDots"></p>
+        <div class="metric views" id="wallsMode" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-vview="regua" class="active">Régua</button><button data-vview="muros">Blocos</button><button data-vview="celulas">Células</button></div>
+        <p class="how" id="howDots"></p>
+        <div id="dotChart" class="svgchart"></div>
+        <div id="wallsChart" class="walls" hidden></div>
+      </section>
+
+      <section class="chart" data-chart="lorenz"><div class="kicker"><i></i>PERGUNTA 3 DE 4 · REPARTIÇÃO <button type="button" class="help" data-help="lorenz" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O dinheiro é bem repartido?</h2><p class="answer" id="ansLorenz"></p>
+        <div class="metric views" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-rview="fita" class="active">Fita do dinheiro</button><button data-rview="curva">Curva de Lorenz</button></div>
+        <p class="how" id="howLorenz"></p>
+        <div id="fitaChart" class="svgchart"></div>
+        <div id="lorenzChart" class="svgchart lorenz" hidden></div>
+      </section>
+
+      <section class="chart" data-chart="matrix"><div class="kicker"><i></i>PERGUNTA 4 DE 4 · LIGAÇÕES <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O que os projetos têm em comum?</h2><p class="answer" id="ansMatrix"></p>
+        <div class="metric views" id="matrixOrder" role="group" aria-label="Ordem da matriz"><span>ARRUMAR POR</span><button data-order="mecanismo" class="active">Mecanismo</button><button data-order="ano">Ano</button><button data-order="valor">Valor</button></div>
+        <p class="how">Como ler: cada quadradinho cruza dois projetos, o da linha e o da coluna. Quanto mais escuro, mais coisas eles têm em comum: ano, mecanismo, edital, tamanho do valor ou curadoria. Arrumar por mecanismo junta os parecidos em blocos.</p>
+        <div id="matrixChart" class="matrix"></div>
+        <div class="mleg" aria-hidden="true"><span>COISAS EM COMUM</span><i style="--a:0"></i>0<i style="--a:.27"></i>1<i style="--a:.44"></i>2<i style="--a:.61"></i>3<i style="--a:.78"></i>4<i style="--a:.95"></i>5</div>
+      </section>
+
+      <section class="chart" data-chart="gaps"><div class="kicker">O QUE AINDA FALTA SABER</div><h2>Duas perguntas sem resposta.</h2>
+        <div class="gapgrid">
+          <article><h4>Onde ficam as obras?</h4><p>Nenhum dos vinte projetos tem a regional conferida em documento. Por isso não existe gráfico por região: o site mostra a falta em vez de supor.</p></article>
+          <article><h4>Quem são os proponentes?</h4><p>Gênero, raça, renda e classe social só entram se forem declarados pela própria pessoa e mostrados em conjunto. Nunca são deduzidos pelo bairro.</p></article>
+        </div>
+        <p class="how">Você conhece um desses projetos? Abra a página dele e conte o que sabe. Também dá para mandar fotos.</p>
+      </section>
     </div>
     <aside class="ind-side" id="indSide"><div class="kicker" id="sideKicker">CORPUS DO TCC</div><h3 id="sideTitle">Todos os projetos</h3><p id="sideText">Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Tocar num projeto abre a ficha, sem sair daqui.</p><button id="sideClear" class="ghost" hidden>LIMPAR SELEÇÃO</button><div id="sideList"></div></aside>
   </div>
@@ -374,14 +432,49 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
       <div class="pinfo"><span class="chipst" id="projectStatus"></span><div class="kicker" id="projectMeta"></div><h1 id="projectTitle"></h1><p id="projectSummary"></p><div id="projectFacts"></div></div>
     </div>
   </div>
-  <nav class="ptabs" aria-label="Seções do projeto"><button data-psec="gallery">Galeria</button><button data-psec="project">Projeto</button><button data-psec="lines">Ligações</button><button data-psec="territory">Território</button><button data-psec="funding">Fomento</button><button data-psec="community">Comunidade</button><button data-psec="survey">Questionário</button><button data-psec="sources">Fontes</button></nav>
+  <nav class="ptabs" aria-label="Seções do projeto"><button data-psec="gallery">Mural</button><button data-psec="project">Projeto</button><button data-psec="lines">Ligações</button><button data-psec="territory">Território</button><button data-psec="funding">Fomento</button><button data-psec="community">Contar e mandar foto</button><button data-psec="survey">Questionário</button><button data-psec="sources">Fontes</button></nav>
   <div class="content" style="padding-top:0">
-    <section id="psec-gallery" class="psec"><div class="pgrid"><div><span class="kicker">01</span><h2>Galeria.</h2></div><div class="pbody"><div id="projectGallery" class="gallery"></div><div class="note" style="margin-top:12px">As imagens desta versão são a própria bolinha do projeto. Fotografias reais entram com origem, crédito, legenda e autorização de uso.</div></div></div></section>
+    <section id="psec-gallery" class="psec"><div class="pgrid"><div><span class="kicker">01</span><h2>Mural<br>de fotos.</h2></div><div class="pbody"><div id="projectGallery" class="mural"></div><div class="note" id="muralNote" style="margin-top:12px"></div><div style="margin-top:12px"><button id="muralSend" class="primary">MANDAR UMA FOTO ↓</button></div></div></div></section>
     <section id="psec-project" class="psec"><div class="pgrid"><div><span class="kicker">02</span><h2>O projeto.</h2></div><div id="projectNarrative" class="pbody"></div></div></section>
     <section id="psec-lines" class="psec"><div class="pgrid"><div><span class="kicker">LIGAÇÕES</span><h2>Seguir<br>uma ligação.</h2></div><div class="pbody"><p>Este projeto se liga a outros pelo que têm em comum. O motivo de cada ligação aparece ao lado; as ligações possíveis, ainda não ativas, aparecem com a bolinha vazia.</p><div id="projectLines" class="links"></div><div id="projectTrail" class="note"></div></div></div></section>
     <section id="psec-territory" class="psec"><div class="pgrid"><div><span class="kicker">03</span><h2>Território<br>e sociedade.</h2></div><div id="territoryContent" class="pbody"></div></div></section>
     <section id="psec-funding" class="psec"><div class="pgrid"><div><span class="kicker">04</span><h2>Como foi<br>financiado?</h2></div><div id="fundingContent" class="pbody"></div></div></section>
-    <section id="psec-community" class="psec"><div class="pgrid"><div><span class="kicker">05</span><h2>Vozes<br>da rua.</h2></div><div class="pbody"><p>Este espaço recebe relatos sobre a relação das pessoas com a obra. Comentários não substituem documentação oficial.</p><textarea id="commentText" placeholder="Como você conhece esta obra ou projeto?"></textarea><div style="margin-top:10px"><button id="addComment" class="primary">ADICIONAR RELATO DE TESTE ↗</button></div><div id="commentList"></div></div></div></section>
+    <section id="psec-community" class="psec"><div class="pgrid"><div><span class="kicker">05</span><h2>Conte o que<br>você sabe.</h2></div><div class="pbody">
+      <p>A ficha deste projeto ainda tem buracos. O que você contar aqui ajuda a completar. Seu relato e suas fotos vão por e-mail para o autor da pesquisa, que confere tudo antes de publicar.</p>
+      <div id="gapList" class="falta"></div>
+      <form id="cf" class="cform" novalidate>
+        <input type="hidden" name="projeto" id="cfProjeto"><input type="hidden" name="projeto_id" id="cfProjetoId"><input type="hidden" name="_subject" id="cfSubject"><input type="hidden" name="_template" value="table"><input type="hidden" name="_next" id="cfNext">
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <fieldset id="cfs1"><legend><b>1</b>Qual é a sua relação com este projeto?</legend><div class="opts" id="cfRel"></div></fieldset>
+        <fieldset id="cfs2"><legend><b>2</b>O que você sabe sobre ele?</legend><p class="hint">Responda só o que souber. Pode deixar em branco.</p>
+          <label>Onde fica a obra, ou onde o projeto aconteceu?<input type="text" name="onde" placeholder="Rua, bairro ou ponto de referência" maxlength="160"></label>
+          <label>Em qual regional de Belo Horizonte?<select name="regional" id="cfReg"></select></label>
+          <label>Em que ano você viu ou participou?<input type="number" name="ano_visto" min="2000" max="2030" inputmode="numeric" placeholder="Exemplo: 2022"></label>
+          <div class="q">A obra ainda existe?<div class="opts" id="cfSit"></div></div>
+          <label>Quem fez? Artistas, coletivo ou produtora.<input type="text" name="quem_realizou" maxlength="200"></label>
+        </fieldset>
+        <fieldset id="cfs3"><legend><b>3</b>Seu relato</legend><label>Como você conhece este projeto? O que ele mudou no lugar?<textarea name="relato" id="commentText" maxlength="2000"></textarea></label></fieldset>
+        <fieldset id="cfs4"><legend><b>4</b>Fotos <small>se tiver, até 3</small></legend>
+          <p class="hint">Cada foto é reduzida no seu aparelho antes de sair. A localização que o celular grava na foto é apagada.</p>
+          <label class="filebtn"><input type="file" id="cfFiles" accept="image/*" multiple><span>＋ ESCOLHER FOTOS</span></label>
+          <div id="cfFotos" class="fotos"></div>
+          <div id="cfFotoChecks" hidden>
+            <label class="chk"><input type="checkbox" name="autoria_ok" id="cfAut" value="sim"><span>Eu fiz estas fotos, ou tenho autorização de quem fez.</span></label>
+            <label class="chk"><input type="checkbox" name="mural_ok" id="cfMural" value="sim"><span>As fotos podem aparecer no mural deste projeto, com o crédito. Sem marcar, ficam só no arquivo da pesquisa.</span></label>
+            <label class="chk"><input type="checkbox" name="pessoas_ok" value="sim"><span>Se aparecem pessoas que dá para reconhecer, elas sabem e concordam.</span></label>
+          </div>
+        </fieldset>
+        <fieldset id="cfs5"><legend><b>5</b>Quem está contando <small>se quiser</small></legend>
+          <label>Como você quer aparecer no crédito?<input type="text" name="nome" maxlength="80" autocomplete="name" placeholder="Nome ou apelido. Em branco, fica anônimo"></label>
+          <label>E-mail, só para tirar dúvidas. Não aparece no site.<input type="email" name="email" maxlength="120" autocomplete="email"></label>
+        </fieldset>
+        <label class="chk consent"><input type="checkbox" name="consentimento" id="cfOk" value="sim"><span>Concordo que este relato e estas fotos sejam enviados por e-mail ao autor da pesquisa e usados no trabalho. Posso pedir a retirada quando quiser.</span></label>
+        <div id="cfErr" class="cferr" role="alert" hidden></div>
+        <div class="cfsend"><button type="submit" class="primary" id="cfSend">ENVIAR →</button><span id="cfMode"></span></div>
+      </form>
+      <div id="cfDone" class="cfdone" hidden tabindex="-1"></div>
+      <div id="commentList"></div>
+    </div></div></section>
     <section id="psec-survey" class="psec"><div class="pgrid"><div><span class="kicker">06</span><h2>Entender<br>a informação.</h2></div><div class="pbody"><div class="question"><b>As informações ajudaram a compreender como este projeto foi financiado?</b><div class="rating" data-question="understanding"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div><div class="question"><b>A relação entre projeto, território e edital ficou clara?</b><div class="rating" data-question="territory"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div></div></div></div></section>
     <section id="psec-sources" class="psec"><div class="pgrid"><div><span class="kicker">07</span><h2>Fontes<br>e evidências.</h2></div><div id="sourceContent" class="pbody"></div></div></section>
   </div>
@@ -407,6 +500,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 </aside>
 
 <script src="js/data.js?v=20261112-31"></script>
+<script src="dados/mural.js?v=20261113-41"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
 <script src="js/rizoma.js?v=20261113-40"></script>
 <script src="js/letreiro.js?v=20261113-40"></script>
@@ -544,7 +638,7 @@ function showPage(name) {
   setFieldVisible(name === "discover");
   $("#cClose").textContent = name === "discover" ? "← VOLTAR AO MAPA" : "✕ FECHAR A FICHA"; // o botão diz o que acontece em cada tela
   closeHelp();
-  if (name === "indicators") { renderIndicators(); startMancha(); setTimeout(() => { if (page === "indicators") openIndicators(); }, 220); } else stopOpening(); // 220 ms: o layout da página assenta antes de medir o título
+  if (name === "indicators") { renderIndicators(); if (yView === "mancha") startMancha(); setTimeout(() => { if (page === "indicators") openIndicators(); }, 220); } else stopOpening(); // 220 ms: o layout da página assenta antes de medir o título
   if (name === "editais") renderEditais();
   if ((name === "research" || name === "about") && R && R.state().focus) R.close(); // páginas de leitura fecham a ficha; a trilha fica
   if (typeof closeSearch === "function") closeSearch();
@@ -810,7 +904,7 @@ function showPreview(i) {
   $("#cIcon").innerHTML = wallIcon(DATA[IDX[i.id]], 54); cardTitle.opts({ text: i.title, seed: i.id }); // cada projeto tem a sua mão: a semente é o id
   { const ci = INKS[MECHS.indexOf(i.mechanism)] || INK; $("#cMech").style.setProperty("--bg", hex(tom(ci, "luz"))); $("#cMech").style.setProperty("--fg", hex(tom(ci, "funda"))); $("#cMech").innerHTML = `<i style="--c:${hex(ci)}"></i><span>${esc(i.mechanism)} · ${i.year} · ${i.valueText || "valor a verificar"}</span>`; }
   $("#cExplain").innerHTML = explain(i);
-  $$("#cExplain [data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("#cExplain [data-help]").forEach(b => b.onclick = () => openGloss(b.dataset.help));
+  $$("#cExplain [data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("#cExplain [data-help]").forEach(b => b.onclick = () => openGloss(b.dataset.help)); $$("#cExplain [data-contar]").forEach(b => b.onclick = () => openProject(b.dataset.contar, previewOrigin === "indicators" || previewOrigin === "editais" ? previewOrigin : "discover", "community"));
   const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${esc(Rizoma.shortTitle(c.title))}</span><small>${esc(c.why)}${c.regrown ? " · rebrotou" : ""} →</small></button>`).join("") : `<div class="empty">Nenhuma ligação ativa chega a este projeto. No mapa, escolha uma opção em Ligar os projetos por.</div>`;
   const hid = hiddenSiblings(IDX[i.id]); $("#cHidden").textContent = hid.length ? `${hid.length === 1 ? "Um projeto ligado a este ainda está escondido" : hid.length + " projetos ligados a este ainda estão escondidos"}: ${hid.slice(0, 3).map(g => Rizoma.shortTitle(DATA[g].title)).join(", ")}${hid.length > 3 ? "…" : ""}. No mapa, eles piscam mais forte.` : "Nenhum projeto ligado a este continua escondido.";
   const P = {}; for (const q of (i.potentials || [])) (P[q.type] = P[q.type] || []).push(q);
@@ -933,8 +1027,8 @@ window.addEventListener("resize", () => { if (R && page === "discover") R.resize
 document.addEventListener("visibilitychange", () => setFieldVisible(page === "discover"));
 
 /* ---------- página de projeto ---------- */
-let comments = {}, answers = {};
-function openProject(id, from) {
+let answers = {};
+function openProject(id, from, sec) {
   const d = DATA[IDX[id]]; if (!d) return; previous = { page: from || page, selection }; currentProject = d;
   if (R) R.open(id, true); // entra na trilha mesmo vindo dos gráficos ou editais
   $("#card").classList.remove("open");
@@ -942,7 +1036,8 @@ function openProject(id, from) {
   $$("[data-nav]").forEach(b => b.classList.remove("active"));
   setFieldVisible(false);
   $("#projectBack").textContent = previous.page === "discover" ? "← VOLTAR AO MAPA" : previous.page === "indicators" ? "← VOLTAR AOS INDICADORES" : previous.page === "editais" ? "← VOLTAR AOS EDITAIS" : "← VOLTAR";
-  renderProject(d);
+  renderProject(d); resetContrib();
+  if (sec) requestAnimationFrame(() => $("#psec-" + sec).scrollIntoView({ block: "start" }));
 }
 function closeProject() { const back = previous.page || "discover"; currentProject = null; showPage(back); if (back === "indicators") { selection = previous.selection; renderIndicators(); } previewOrigin = back; if (R) R.refresh(); } // voltar reabre a ficha do mesmo nó
 $("#projectBack").onclick = closeProject;
@@ -953,7 +1048,7 @@ function renderProject(d) {
   $("#projectMeta").textContent = `${d.year} · ${d.mechanism.toUpperCase()} · ${d.circuit.toUpperCase()}`; projTitle.opts({ text: d.title, seed: d.id });
   $("#projectSummary").textContent = Rizoma.TRANSLATE[d.mechanism] || "";
   $("#projectFacts").innerHTML = fact("Ano", String(d.year)) + fact("Mecanismo", d.mechanism) + fact("Edital", d.edital) + fact("Valor registrado", d.value == null ? null : money(d.value)) + fact("Escala", Rizoma.scaleOf(d.value)) + fact("Regional", d.region) + fact("Proponente", d.proponent) + fact("Situação", d.verification);
-  $("#projectGallery").innerHTML = ["OBRA / VISTA GERAL", "DETALHE", "TERRITÓRIO / CONTEXTO"].map((l, k) => `<div class="gitem">${wallIcon(d, 120)}<span class="lab">${l}</span></div>`).join("");
+  renderMural(d); renderGaps(d);
   $("#projectNarrative").innerHTML = `<p>O projeto <strong>${esc(d.title)}</strong> integra o corpus da Cartografia do Fomento no recorte de <strong>${d.year}</strong>, pelo mecanismo <strong>${esc(d.mechanism)}</strong>, circuito ${esc(d.circuit.toLowerCase())}.</p><p>Textos interpretativos específicos devem ser preenchidos somente quando houver documentação suficiente.</p>${d.issue ? `<div class="note"><strong>Atenção documental:</strong><br>${esc(d.issue)}</div>` : ""}`;
   renderProjectLines(d);
   $("#territoryContent").innerHTML = `<p>Esta camada deverá reunir localização de execução, características do entorno, atividades abertas ao público e relatos associados ao projeto.</p><div class="social"><div><small>REGIONAL</small><b>${esc(d.region || "Ainda não verificada")}</b></div><div><small>PERFIL SOCIOECONÔMICO</small><b>Dados ainda não consolidados</b></div><div><small>RELAÇÃO COM A COMUNIDADE</small><b>A investigar</b></div></div><p>Renda, raça, gênero ou classe social não devem ser inferidos a partir do bairro ou da regional.</p>`;
@@ -968,19 +1063,87 @@ function renderProjectLines(d) {
   $$("#projectLines [data-pl]").forEach(b => b.onclick = () => openProject(b.dataset.pl, previous.page));
   $("#projectTrail").innerHTML = s && s.trailTitles.length > 1 ? `<strong>Sua trilha:</strong> ${s.trailTitles.map(esc).join(" → ")}` : ""; $("#projectTrail").hidden = !(s && s.trailTitles.length > 1);
 }
-$("#addComment").onclick = () => { if (!currentProject) return; const t = $("#commentText").value.trim(); if (!t) return; (comments[currentProject.id] ??= []).unshift({ id: Date.now(), text: t }); $("#commentText").value = ""; renderComments(); };
-function renderComments() { if (!currentProject) return; const list = comments[currentProject.id] || []; $("#commentList").innerHTML = list.length ? list.map(c => `<div class="comment"><small>RELATO DE TESTE / VISITANTE</small><p>${esc(c.text)}</p><button data-del="${c.id}">excluir</button></div>`).join("") : `<div class="note" style="margin-top:14px">Ainda não existem relatos nesta sessão.</div>`; $$("[data-del]").forEach(b => b.onclick = () => { comments[currentProject.id] = comments[currentProject.id].filter(c => c.id !== Number(b.dataset.del)); renderComments(); }); }
+/* ---------- rodada 7: contar o que se sabe (formulário com fotos) e mural de fotos ----------
+   O site é estático: não guarda nada. O formulário segue por e-mail para o autor, por um serviço de formulário (ENVIO.url).
+   Com ENVIO.url vazio, a página fica em MODO DE TESTE: confere, mostra o que seria enviado e nada sai do aparelho.
+   As perguntas são as lacunas da ficha (regional, proponente, local, fotos): quem responde ajuda a completar o registro.
+   Privacidade: consentimento explícito e finalidade declarada (Lei 13.709/2018, LGPD, art. 7º, I, e art. 8º); retirada a
+   pedido (art. 18); só o necessário, nome e e-mail opcionais (art. 6º, III). Foto: crédito ao autor e autorização de uso
+   (Lei 9.610/1998, art. 24, II, e art. 79). A foto é redesenhada em canvas antes do envio, o que reduz o arquivo e apaga os
+   metadados EXIF, inclusive a localização do GPS. Nada vai ao mural sem conferência: o que o visitante manda aparece só
+   para ele, marcado como "aguarda conferência"; o que foi conferido entra por dados/mural.js. */
+const ENVIO = { url: "" }; // endereço do serviço que recebe o formulário e repassa ao e-mail do autor. Vazio = modo de teste.
+const MURAL = window.CARTOGRAFIA_MURAL || {};
+const REGIONAIS = ["Barreiro", "Centro-Sul", "Leste", "Nordeste", "Noroeste", "Norte", "Oeste", "Pampulha", "Venda Nova"]; // as nove regionais administrativas de BH
+const RELACOES = ["Fiz parte da equipe", "Sou artista ou proponente", "Moro ou trabalho perto", "Vi a obra na rua", "Participei de oficina ou evento", "Pesquiso o tema", "Outra"];
+const SITUACOES = ["Sim, está lá", "Foi apagada ou coberta", "Não é obra em muro", "Não sei"];
+const MAXF = 3;
+let fotos = [], pend = (() => { try { return JSON.parse(sessionStorage.getItem("cf_pend") || "{}") || {}; } catch (e) { return {}; } })();
+const savePend = () => { try { sessionStorage.setItem("cf_pend", JSON.stringify(pend)); } catch (e) { /* sem espaço: a lista vale só até recarregar */ } };
+$("#cfRel").innerHTML = RELACOES.map(t => `<label><input type="radio" name="relacao" value="${t}"><span>${t}</span></label>`).join("");
+$("#cfSit").innerHTML = SITUACOES.map(t => `<label><input type="radio" name="situacao_da_obra" value="${t}"><span>${t}</span></label>`).join("");
+$("#cfReg").innerHTML = `<option value="">Não sei</option>` + REGIONAIS.map(t => `<option>${t}</option>`).join("");
+$("#cfMode").textContent = ENVIO.url ? "Segue por e-mail para o autor da pesquisa." : "Versão de teste: o envio por e-mail ainda não está ligado. Nada sai do seu aparelho.";
+function reduzir(src, max) { const sw = src.naturalWidth || src.width, sh = src.naturalHeight || src.height, k = Math.min(1, max / Math.max(sw, sh)), c = document.createElement("canvas"); c.width = Math.max(1, Math.round(sw * k)); c.height = Math.max(1, Math.round(sh * k)); const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(src, 0, 0, c.width, c.height); return c; }
+function abrirFoto(file) { return new Promise((ok, no) => { const url = URL.createObjectURL(file), im = new Image(); im.onload = () => { const c = reduzir(im, 1600); URL.revokeObjectURL(url); c.toBlob(b => b ? ok({ blob: b, thumb: reduzir(c, 480).toDataURL("image/jpeg", .72), w: c.width, h: c.height, legenda: "", credito: "" }) : no(new Error("blob")), "image/jpeg", .85); }; im.onerror = () => { URL.revokeObjectURL(url); no(new Error("imagem")); }; im.src = url; }); }
+function cfErro(list, alvo) { const el = $("#cfErr"); el.hidden = !list.length; el.innerHTML = list.map(t => `<p>${esc(t)}</p>`).join(""); if (list.length && alvo) alvo.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); }
+$("#cfFiles").onchange = async e => { const files = [...e.target.files], errs = []; e.target.value = "";
+  for (const f of files) { if (fotos.length >= MAXF) { errs.push(`São até ${MAXF} fotos por envio. As outras ficaram de fora.`); break; } if (!/^image\//.test(f.type)) { errs.push(`"${f.name}" não é uma imagem.`); continue; } try { fotos.push(await abrirFoto(f)); } catch (x) { errs.push(`Não consegui abrir "${f.name}". Tente uma foto em JPG ou PNG.`); } }
+  renderFotos(); cfErro(errs, errs.length ? $("#cfs4") : null); };
+function renderFotos() {
+  $("#cfFotos").innerHTML = fotos.map((f, k) => `<div class="foto"><img src="${f.thumb}" alt="Foto ${k + 1} escolhida"><div><label>O que aparece na foto?<input type="text" name="foto${k + 1}_legenda" data-fk="${k}" data-ff="legenda" maxlength="140" value="${esc(f.legenda)}"></label><label>Quem fotografou?<input type="text" name="foto${k + 1}_credito" data-fk="${k}" data-ff="credito" maxlength="80" value="${esc(f.credito)}"></label><small>${f.w} × ${f.h} px · ${Math.round(f.blob.size / 1024)} KB</small><button type="button" data-fdel="${k}">tirar esta foto</button></div></div>`).join("");
+  $("#cfFotoChecks").hidden = !fotos.length; $(".filebtn span").textContent = fotos.length >= MAXF ? "LIMITE DE 3 FOTOS" : fotos.length ? "＋ ESCOLHER OUTRA FOTO" : "＋ ESCOLHER FOTOS"; $("#cfFiles").disabled = fotos.length >= MAXF;
+  $$("#cfFotos [data-ff]").forEach(i => i.oninput = () => { fotos[+i.dataset.fk][i.dataset.ff] = i.value; });
+  $$("#cfFotos [data-fdel]").forEach(b => b.onclick = () => { fotos.splice(+b.dataset.fdel, 1); renderFotos(); });
+}
+function resetContrib() { $("#cf").reset(); fotos = []; renderFotos(); cfErro([]); $("#cf").hidden = false; $("#cfDone").hidden = true; }
+function contribDone(d, item, teste) {
+  const linhas = [["Relação", item.relacao], ["Onde", item.onde], ["Regional", item.regional], ["Ano", item.ano], ["A obra existe?", item.situacao], ["Quem fez", item.quem], ["Relato", item.relato], ["Fotos", item.fotos.length ? `${item.fotos.length} foto(s), ${item.fotos.some(f => f.mural) ? "com autorização para o mural" : "só para o arquivo da pesquisa"}` : ""], ["Crédito", item.nome], ["E-mail", item.email ? "informado" : ""]].filter(l => l[1]);
+  $("#cfDone").innerHTML = (teste ? `<div class="kicker">MODO DE TESTE · NADA FOI ENVIADO</div><h3>Está tudo certo com o formulário.</h3><p>O envio por e-mail ainda não está ligado nesta versão, então nada saiu do seu aparelho. Com o envio ligado, isto chegaria ao autor da pesquisa:</p>` : `<div class="kicker">RECEBIDO</div><h3>Obrigado por contar.</h3><p>Seu envio seguiu por e-mail para o autor da pesquisa. Ele confere antes de publicar. Até lá, suas fotos aparecem no mural só para você, neste aparelho.</p>`)
+    + (linhas.length ? `<dl>${linhas.map(l => `<div><dt>${l[0]}</dt><dd>${esc(l[1])}</dd></div>`).join("")}</dl>` : "") + `<button type="button" class="ghost" id="cfAgain">CONTAR MAIS UMA COISA</button>`;
+  $("#cf").hidden = true; $("#cfDone").hidden = false; $("#cfAgain").onclick = () => { resetContrib(); $("#cfs1").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); };
+  $("#cfDone").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); $("#cfDone").focus({ preventScroll: true });
+}
+$("#cf").onsubmit = e => { e.preventDefault(); const d = currentProject; if (!d) return; const f = e.target, fd = new FormData(f), v = k => String(fd.get(k) || "").trim(), errs = []; let alvo = null;
+  if (v("_honey")) return; // campo-isca: só robô preenche
+  if (!v("relacao")) { errs.push("Passo 1: marque qual é a sua relação com o projeto."); alvo = alvo || $("#cfs1"); }
+  if (!["onde", "regional", "ano_visto", "situacao_da_obra", "quem_realizou", "relato"].some(v) && !fotos.length) { errs.push("Conte pelo menos uma coisa: responda uma pergunta do passo 2, escreva um relato ou escolha uma foto."); alvo = alvo || $("#cfs2"); }
+  if (fotos.length && !$("#cfAut").checked) { errs.push("Passo 4: para mandar fotos, confirme que você fez as fotos ou tem autorização de quem fez."); alvo = alvo || $("#cfs4"); }
+  if (v("email") && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("email"))) { errs.push("Passo 5: o e-mail parece incompleto. Confira ou deixe em branco."); alvo = alvo || $("#cfs5"); }
+  if (!$("#cfOk").checked) { errs.push("Marque a caixa de concordância, logo acima do botão Enviar."); alvo = alvo || $("#cfOk").closest("label"); }
+  cfErro(errs, alvo); if (errs.length) return;
+  const mural = $("#cfMural").checked, item = { id: Date.now(), relacao: v("relacao"), onde: v("onde"), regional: v("regional"), ano: v("ano_visto"), situacao: v("situacao_da_obra"), quem: v("quem_realizou"), relato: v("relato"), nome: v("nome"), email: v("email") ? "sim" : "", st: ENVIO.url ? "saiu" : "teste", fotos: fotos.map(x => ({ thumb: x.thumb, legenda: x.legenda.trim(), credito: x.credito.trim(), mural })) };
+  (pend[d.id] ??= []).unshift(item); savePend();
+  if (ENVIO.url) { // envio de verdade: formulário comum, com as fotos reduzidas no lugar dos arquivos originais; o serviço devolve a pessoa a esta página
+    try { fotos.forEach((x, k) => { const inp = document.createElement("input"), dt = new DataTransfer(); inp.type = "file"; inp.name = `foto${k + 1}`; inp.hidden = true; dt.items.add(new File([x.blob], `${d.id}-foto${k + 1}.jpg`, { type: "image/jpeg" })); inp.files = dt.files; f.appendChild(inp); }); }
+    catch (x) { pend[d.id].shift(); savePend(); cfErro(["Este navegador não deixou anexar as fotos. Tente em outro navegador ou envie sem fotos."], $("#cfs4")); return; }
+    $("#cfProjeto").value = d.title; $("#cfProjetoId").value = d.id; $("#cfSubject").value = `Cartografia do Fomento: relato sobre ${d.title}`; $("#cfNext").value = location.origin + location.pathname + "?enviado=" + encodeURIComponent(d.id) + "#direto";
+    f.action = ENVIO.url; f.method = "POST"; f.enctype = "multipart/form-data"; $("#cfSend").disabled = true; $("#cfSend").textContent = "ENVIANDO…"; HTMLFormElement.prototype.submit.call(f); return; }
+  renderMural(d); renderComments(); contribDone(d, item, true); fotos = []; f.reset(); renderFotos();
+};
+function renderMural(d) {
+  const ok = (MURAL[d.id] || []).map(f => `<figure class="mfoto"><img loading="lazy" src="${esc(f.src)}" alt="${esc(f.legenda || d.title)}"><figcaption>${esc(f.legenda || "")}<small>Foto: ${esc(f.credito || "crédito a confirmar")}${f.ano ? ", " + esc(String(f.ano)) : ""}</small></figcaption></figure>`);
+  const minhas = (pend[d.id] || []).flatMap(c => c.fotos.filter(f => f.mural).map(f => `<figure class="mfoto pend"><img src="${esc(f.thumb)}" alt="${esc(f.legenda || "Foto enviada por você")}"><figcaption>${esc(f.legenda)}<small>Foto: ${esc(f.credito || c.nome || "você")}</small><em>SÓ VOCÊ VÊ · AGUARDA CONFERÊNCIA</em></figcaption></figure>`));
+  const all = ok.concat(minhas);
+  $("#projectGallery").innerHTML = all.length ? all.join("") : `<div class="mvazio">${wallIcon(d, 96)}<p>Ainda não há fotos deste projeto.<br>A primeira pode ser a sua.</p></div>`;
+  $("#muralNote").textContent = minhas.length ? "As fotos com borda tracejada são as que você mandou. Só você vê, neste aparelho. Elas entram no mural de todos depois da conferência do autor da pesquisa." : ok.length ?"Cada foto entra com legenda, crédito e autorização de quem fez. Fotos enviadas por visitantes passam por conferência antes de aparecer aqui." : "O mural ainda está vazio. Fotos enviadas por visitantes passam por conferência do autor da pesquisa e entram com legenda, crédito e autorização.";
+}
+function renderGaps(d) { const falta = [[d.region == null, "a regional e o endereço"], [d.proponent == null, "quem propôs o projeto"], [!(MURAL[d.id] || []).length, "fotos"], [true, "se a obra ainda existe"]].filter(x => x[0]).map(x => x[1]); $("#gapList").innerHTML = `<b>FALTA NESTA FICHA</b>` + falta.map(t => `<span>${t}</span>`).join(""); }
+function renderComments() { if (!currentProject) return; const id = currentProject.id, list = pend[id] || [];
+  $("#commentList").innerHTML = list.length ? `<div class="kicker" style="margin-top:22px">O QUE VOCÊ JÁ CONTOU NESTE APARELHO</div>` + list.map(c => `<div class="comment"><small>${esc(c.relacao.toUpperCase())} · ${c.st === "ok" ? "ENVIADO" : c.st === "saiu" ? "ENVIO NÃO CONFIRMADO" : "TESTE, NÃO ENVIADO"}</small>${c.relato ? `<p>${esc(c.relato)}</p>` : ""}<p class="mini">${[c.onde, c.regional && "Regional " + c.regional, c.ano, c.situacao && "A obra existe? " + c.situacao, c.quem && "Quem fez: " + c.quem, c.fotos.length && c.fotos.length + " foto(s)"].filter(Boolean).map(esc).join(" · ")}</p><button data-del="${c.id}">tirar desta lista</button></div>`).join("") : "";
+  $$("#commentList [data-del]").forEach(b => b.onclick = () => { pend[id] = (pend[id] || []).filter(c => c.id !== Number(b.dataset.del)); savePend(); renderComments(); renderMural(currentProject); }); }
+$("#muralSend").onclick = () => { $("#psec-community").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); };
 $$(".rating").forEach(g => g.onclick = e => { const b = e.target.closest("button"); if (!b || !currentProject) return; (answers[currentProject.id] ??= {})[g.dataset.question] = Number(b.textContent); [...g.children].forEach(x => x.classList.toggle("selected", x === b)); });
 
 /* ---------- indicadores: mesma lógica do protótipo, com o nó-muro como ícone e a cor por mecanismo ---------- */
 $$("[data-metric]").forEach(b => b.onclick = () => { metric = b.dataset.metric; $$("[data-metric]").forEach(x => x.classList.toggle("active", x.dataset.metric === metric)); renderIndicators(); });
 function aggregate(list, keyFn) { const m = new Map(); list.forEach(p => { const k = keyFn(p); if (!m.has(k)) m.set(k, []); m.get(k).push(p); }); return [...m.entries()].map(([key, projects]) => ({ key, projects, count: projects.length, value: projects.reduce((s, p) => s + (p.value || 0), 0) })); }
 function selectedProjects(sel) { if (!sel) return DATA; if (sel.type === "region") return DATA.filter(p => (p.region || "Não verificada") === sel.key); if (sel.type === "year") return DATA.filter(p => String(p.year) === String(sel.key)); if (sel.type === "mechanism") return DATA.filter(p => p.mechanism === sel.key); if (sel.type === "edital") return DATA.filter(p => p.edital === sel.key); if (sel.type === "project") return DATA.filter(p => p.id === sel.key); if (sel.type === "pair") { const [a, b] = sel.key.split("|"); return DATA.filter(p => p.id === a || p.id === b); } if (sel.type === "scale") return DATA.filter(p => Rizoma.scaleOf(p.value) === sel.key); if (sel.type === "circuit") return DATA.filter(p => p.circuit === sel.key); if (sel.type === "cross") { const [m, t, k] = sel.key.split("|"); return selectedProjects({ type: t, key: k }).filter(p => p.mechanism === m); } return DATA; }
-function renderIndicators() { renderLegend(); renderRegion(); renderYears(); renderCordas(); renderWalls(); renderDots(); renderLorenz(); renderMatrix(); renderSlope(); renderSide(); }
+function renderIndicators() { renderLegend(); renderYears(); renderSlope(); renderCordas(); renderWalls(); renderDots(); renderFita(); renderLorenz(); renderMatrix(); renderAnswers(); renderViews(); renderSide(); }
 /* ---------- gráficos novos (propostos no Lab 05; wireframe em wireframes-svg/12-identidade-e-novos-graficos.svg) ---------- */
 const svgOpen = (w, h, label) => `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">`;
 function renderDots() { // régua de valores: posição numa escala comum (Cleveland e McGill, 1984) com linhas de referência (Few, 2006)
-  const W = 820, rowH = 64, H = rowH * 3 + 46, x = v => 52 + (v / 172000) * (W - 72), focus = R ? R.state().focus : null;
+  const sm = small(), W = sm ? 430 : 820, rowH = sm ? 92 : 64, H = rowH * 3 + 46, x = v => 52 + (v / 172000) * (W - 72), focus = R ? R.state().focus : null;
   let s = svgOpen(W, H, "Régua de valores por mecanismo");
   [[30000, "R$ 30 mil", "micro | médio"], [100000, "R$ 100 mil", "médio | macro"], [165000, "R$ 165 mil", "teto IF 2023"]].forEach(([v, l, sub]) => { const X = f1(x(v)); s += `<line x1="${X}" y1="6" x2="${X}" y2="${H - 30}" stroke="#161616" stroke-opacity="${v === 165000 ? .7 : .3}" ${v === 165000 ? "" : 'stroke-dasharray="2 3"'}/><text x="${X}" y="${H - 18}" text-anchor="middle" class="lab">${l}</text><text x="${X}" y="${H - 7}" text-anchor="middle">${sub}</text>`; });
   MECHS.forEach((m, i) => {
@@ -1017,7 +1180,7 @@ function renderMatrix() { // matriz reordenável (Bertin, 1967): a ordem das lin
     h += `<div class="rl" title="${esc(a.title)}" style="border-left:3px solid ${MECH[a.mechanism]}">${esc(Rizoma.shortTitle(a.title))}</div>`;
     for (const b of order) {
       if (a === b) { h += `<div class="cell diag"></div>`; continue; }
-      const r = relationsOf(a, b), c = r.length === 0 ? "transparent" : r.length === 1 ? LC(r[0]) : `rgba(22,22,22,${(0.22 + 0.13 * r.length).toFixed(2)})`, key = `${a.id}|${b.id}`, lab = `${Rizoma.shortTitle(a.title)} ↔ ${Rizoma.shortTitle(b.title)} · ${r.length ? r.map(t => Rizoma.LINES[t].label).join(", ") : "nada em comum"}`;
+      const r = relationsOf(a, b), c = r.length === 0 ? "transparent" : `rgba(22,22,22,${Math.min(.95, 0.1 + 0.17 * r.length).toFixed(2)})`, key = `${a.id}|${b.id}`, lab = `${Rizoma.shortTitle(a.title)} ↔ ${Rizoma.shortTitle(b.title)} · ${r.length ? r.map(t => Rizoma.LINES[t].label).join(", ") : "nada em comum"}`;
       h += `<button class="cell ${sel === key ? "active" : ""}" style="--c:${c}" data-ct="pair" data-ck="${key}" data-label="${esc(lab)}" title="${esc(lab)}" aria-label="${esc(lab)}"></button>`;
     }
   }
@@ -1035,8 +1198,71 @@ function renderSlope() { // declive (Tufte, 2001): dois períodos, uma linha por
   rows.forEach(r => { const ya = f1(Y(r.a)), yb = f1(Y(r.b)); s += `<g data-ct="mechanism" data-ck="${r.m}" data-label="${r.m}" class="${selection?.type === "mechanism" && selection.key === r.m ? "active" : ""}"><line class="halo" x1="${xA}" y1="${ya}" x2="${xB}" y2="${yb}" stroke="#161616" stroke-opacity=".12" stroke-width="10"/><line x1="${xA}" y1="${ya}" x2="${xB}" y2="${yb}" stroke="${MECH[r.m]}" stroke-width="2.2"/><circle cx="${xA}" cy="${ya}" r="4" fill="${MECH[r.m]}" stroke="#161616"/><circle cx="${xB}" cy="${yb}" r="4" fill="${MECH[r.m]}" stroke="#161616"/><text x="${xA - 10}" y="${f1(r.ay + 3)}" text-anchor="end" class="lab">${fmt(r.a)}</text><text x="${xA - 10}" y="${f1(r.ay + 13)}" text-anchor="end">${r.m}</text><text x="${xB + 10}" y="${f1(r.by + 3)}" class="lab">${fmt(r.b)}</text><title>${r.m}: ${fmt(r.a)} → ${fmt(r.b)}</title></g>`; });
   $("#slopeChart").innerHTML = s + "</svg>"; bindCharts();
 }
+/* ---------- rodada 7: quatro perguntas, um gráfico por pergunta ----------
+   Os nove gráficos do Lab 05 respondiam a quatro perguntas com formas diferentes (ano × mecanismo aparecia cinco vezes; valor por
+   projeto, quatro; as cordas repetiam as duas ou mostravam uma definição, porque no corpus o circuito acompanha o mecanismo).
+   Aqui cada pergunta tem um gráfico principal, a resposta escrita antes dele (título que afirma o achado:
+   Knaflic, 2015) e as outras formas ficam em "ver como", na mesma seção. Uma pergunta por vez e detalhe sob pedido
+   (Shneiderman, 1996). As respostas são calculadas dos dados, nunca escritas à mão. */
+let yView = "colunas", vView = "regua", rView = "fita";
+const pct = x => Math.round(x * 100) + "%", dec = x => x.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+function renderFita() { // fita do dinheiro: uma barra só, parte e todo no mesmo eixo; comprimento numa escala comum (Cleveland e McGill, 1984)
+  const sm = small(), W = sm ? 400 : 820, bh = sm ? 50 : 58, top = 34, H = top + bh + 40, x0 = 3, x1 = W - 3, focus = R ? R.state().focus : null;
+  const list = DATA.filter(p => p.value).sort((a, b) => b.value - a.value), tot = list.reduce((a, p) => a + p.value, 0) || 1, n = list.length, nTop = Math.round(n / 4), nLow = Math.round(n / 2);
+  let s = svgOpen(W, H, "Fita do dinheiro: cada pedaço é um projeto, do maior para o menor valor"), x = x0; const pos = [];
+  list.forEach(p => { const w = (x1 - x0) * p.value / tot; pos.push([x, w]);
+    s += `<g data-ct="project" data-ck="${p.id}" data-label="${esc(Rizoma.shortTitle(p.title))}" class="${focus === p.id ? "active" : ""}"><rect class="halo" x="${f1(x)}" y="${top - 4}" width="${f1(w)}" height="${bh + 8}" fill="#161616" fill-opacity=".14"/><rect x="${f1(x)}" y="${top}" width="${f1(w)}" height="${bh}" fill="${MECH[p.mechanism]}" fill-opacity=".62" stroke="#161616"/>${w > 58 ? `<text x="${f1(x + w / 2)}" y="${top + bh / 2 + 3}" text-anchor="middle" class="lab">${shortMoney(p.value)}</text>` : ""}<title>${esc(p.title)} · ${money(p.value)} · ${pct(p.value / tot)} do total</title></g>`; x += w; });
+  if (n > 3) {
+    const xa = pos[nTop - 1][0] + pos[nTop - 1][1], xb = pos[n - nLow][0], sTop = list.slice(0, nTop).reduce((a, p) => a + p.value, 0) / tot, sLow = list.slice(n - nLow).reduce((a, p) => a + p.value, 0) / tot;
+    s += `<path d="M${x0} ${top - 6}v-6H${f1(xa)}v6" fill="none" stroke="#161616"/><text x="${x0}" y="${top - 18}" class="lab">OS ${nTop} MAIORES · ${pct(sTop)} DO VALOR</text>`;
+    s += `<path d="M${f1(xb)} ${top + bh + 6}v6H${x1}v-6" fill="none" stroke="#161616"/><text x="${x1}" y="${top + bh + 26}" text-anchor="end" class="lab">OS ${nLow} MENORES · ${pct(sLow)} DO VALOR</text>`;
+  }
+  $("#fitaChart").innerHTML = s + "</svg>"; bindCharts();
+}
+function renderAnswers() {
+  const N = DATA.length, V = DATA.filter(p => p.value).sort((a, b) => a.value - b.value), tot = V.reduce((a, p) => a + p.value, 0) || 1;
+  // 1 tempo
+  const byY = aggregate(DATA, p => p.year).sort((a, b) => b[metric] - a[metric] || a.key - b.key), topY = byY[0], after = DATA.filter(p => p.year >= 2022), vAfter = after.reduce((a, p) => a + (p.value || 0), 0);
+  $("#ansYears").textContent = !topY ? "" : metric === "count"
+    ? `${topY.key} foi o ano com mais projetos: ${topY.count}. De 2022 em diante estão ${after.length} dos ${N} projetos.`
+    : `${topY.key} foi o ano com mais valor aprovado: ${shortMoney(topY.value)}. De 2022 em diante está ${pct(vAfter / tot)} de todo o valor.`;
+  // 2 valor
+  if (V.length) { const lo = V[0], hi = V[V.length - 1], ratio = hi.value / lo.value;
+    $("#ansDots").textContent = `O maior valor é ${money(hi.value)} (${Rizoma.shortTitle(hi.title)}). O menor é ${money(lo.value)} (${Rizoma.shortTitle(lo.title)}). O maior vale ${ratio >= 10 ? Math.round(ratio) : dec(ratio)} vezes o menor. Metade dos projetos ficou em até ${money(median(V.map(p => p.value)))}.`; }
+  // 3 repartição
+  if (V.length > 3) { const nTop = Math.round(V.length / 4), nLow = Math.round(V.length / 2), sTop = V.slice(-nTop).reduce((a, p) => a + p.value, 0) / tot, sLow = V.slice(0, nLow).reduce((a, p) => a + p.value, 0) / tot;
+    $("#ansLorenz").textContent = `Os ${nTop} maiores projetos somam ${pct(sTop)} de todo o valor aprovado. Os ${nLow} menores, juntos, somam ${pct(sLow)}.`; }
+  // o circuito não ganha gráfico: no corpus ele acompanha o mecanismo, e isso cabe numa frase
+  const circ = {}; let puro = true; MECHS.forEach(m => { const cs = [...new Set(DATA.filter(p => p.mechanism === m).map(p => p.circuit))]; if (cs.length === 1) (circ[cs[0]] = circ[cs[0]] || []).push(m); else if (cs.length) puro = false; });
+  const lista = a => a.length > 1 ? a.slice(0, -1).join(", ") + " e " + a[a.length - 1] : a[0];
+  $("#circNote").textContent = puro && Object.keys(circ).length ? "Neste corpus o circuito acompanha o mecanismo: " + Object.keys(circ).map(c => `${lista(circ[c])} ${circ[c].length > 1 ? "são" : "é"} ${circ[c].length > 1 ? ({ Monumental: "monumentais", Capilar: "capilares" }[c] || c.toLowerCase()) : c.toLowerCase()}`).join("; ") + "." : "";
+  // 4 ligações
+  let pairs = 0, linked = 0, same = [0, 0], diff = [0, 0];
+  for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) { const r = relationsOf(DATA[i], DATA[j]).length, o = DATA[i].mechanism === DATA[j].mechanism ? same : diff; pairs++; if (r) linked++; o[0] += r; o[1]++; }
+  $("#ansMatrix").textContent = `Dos ${pairs} pares de projetos, ${linked} têm pelo menos uma coisa em comum. Dois projetos do mesmo mecanismo têm em média ${dec(same[1] ? same[0] / same[1] : 0)} coisas em comum. De mecanismos diferentes, ${dec(diff[1] ? diff[0] / diff[1] : 0)}.`;
+}
+function renderViews() {
+  const un = metric === "count" ? "projetos" : "valor aprovado";
+  $("#yearChart").hidden = yView !== "colunas"; $("#slopeChart").hidden = yView !== "declive"; $("#mancha").hidden = yView !== "mancha"; $("#cordasChart").hidden = yView !== "cordas";
+  $("#dotChart").hidden = vView !== "regua"; $("#wallsChart").hidden = vView === "regua";
+  $("#fitaChart").hidden = rView !== "fita"; $("#lorenzChart").hidden = rView !== "curva";
+  $$("[data-yview]").forEach(b => b.classList.toggle("active", b.dataset.yview === yView)); $$("[data-vview]").forEach(b => b.classList.toggle("active", b.dataset.vview === vView)); $$("[data-rview]").forEach(b => b.classList.toggle("active", b.dataset.rview === rView));
+  $("#howYears").textContent = yView === "colunas" ? `Como ler: cada caixa é um ano. Dentro dela, cada faixa colorida é um mecanismo. Quanto mais alta a faixa, mais ${un}. 2018 e 2020 não têm projeto neste recorte, mas tiveram edital.`
+    : yView === "declive" ? `Como ler: à esquerda, a soma de 2017 a 2021. À direita, a de 2022 a 2024. Cada linha é um mecanismo. Linha que sobe, cresceu. Linha que desce, encolheu. É o mesmo dado das colunas, juntado em dois períodos.`
+    : yView === "cordas" ? `Como ler: os arcos coloridos são os três mecanismos. Os arcos pretos são os anos. Cada faixa liga um mecanismo a um ano. Faixa grossa, ${metric === "count" ? "muitos projetos" : "muito valor"}. É o mesmo dado das colunas, desenhado em roda.`
+    : `Como ler: uma mancha para cada ano. Quanto maior a mancha, maior o valor aprovado naquele ano. A cor é o mecanismo. A forma muda a cada vez, então a mancha serve para sentir o tamanho. Para comparar números, use as colunas.`;
+  $("#howDots").textContent = vView === "regua" ? "Como ler: cada bolinha é um projeto. Quanto mais à direita, maior o valor. Cada linha é um mecanismo. As linhas tracejadas marcam R$ 30 mil e R$ 100 mil. A linha cheia marca R$ 165 mil, o teto do Incentivo Fiscal em 2023."
+    : vView === "muros" ? "Como ler: cada bloco é um projeto. Quanto mais largo o bloco, maior o valor. É o mesmo dado da régua, mostrado em tamanho."
+    : "Como ler: cada coluna é um ano. Dentro dela, cada pedaço é um projeto, e o tamanho do pedaço é o valor. O lugar do pedaço não é lugar na cidade. É o mesmo dado da régua, mostrado em tamanho.";
+  $("#howLorenz").textContent = rView === "fita" ? "Como ler: a fita inteira é todo o valor aprovado para os vinte projetos. Cada pedaço é um projeto, do maior para o menor. Pedaço largo, muito valor. Se todos tivessem o mesmo valor, os pedaços seriam iguais."
+    : "Como ler: os projetos entram da esquerda para a direita, do menor para o maior valor. A curva vai somando. Se todos tivessem o mesmo valor, ela andaria em cima da linha tracejada. Quanto mais longe da tracejada, mais concentrado. É o mesmo dado da fita, na forma usada em economia.";
+}
+$$("[data-yview]").forEach(b => b.onclick = () => { yView = b.dataset.yview; renderViews(); if (yView === "mancha") startMancha(); applyHighlight(); });
+$$("[data-vview]").forEach(b => b.onclick = () => { vView = b.dataset.vview; if (vView !== "regua") wallsMode = vView; renderWalls(); renderViews(); applyHighlight(); });
+$$("[data-rview]").forEach(b => b.onclick = () => { rView = b.dataset.rview; renderViews(); applyHighlight(); });
+$$("[data-q]").forEach(b => b.onclick = () => { const s = $(`.chart[data-chart="${b.dataset.q}"]`); if (s) s.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); });
 function renderLegend() { $("#mechLegend").innerHTML = MECHS.map(m => `<button data-leg="${m}" class="${selection?.type === "mechanism" && selection.key === m ? "active" : ""}">${wallIcon(mechSample(m), 34)}<b>${m}</b><small>${esc((Rizoma.TRANSLATE[m] || "").split(".")[0])}</small></button>`).join(""); $$("[data-leg]").forEach(b => b.onclick = () => { const m = b.dataset.leg; selection = selection && selection.type === "mechanism" && selection.key === m ? null : { type: "mechanism", key: m, label: m }; renderIndicators(); }); }
-function renderRegion() {
+function renderRegion() { if (!$("#regionChart")) return; // sem regional verificada não há gráfico: a lacuna virou texto em "o que falta saber"
   const groups = aggregate(DATA, p => p.region || "Não verificada").sort((a, b) => b[metric] - a[metric]), max = Math.max(1, ...groups.map(g => g[metric]));
   $("#regionChart").innerHTML = groups.map(g => `<button class="bar ${selection?.type === "region" && selection.key === g.key ? "active" : ""}" data-ct="region" data-ck="${esc(g.key)}"><span class="lab">${esc(g.key)}</span><span class="track"><span class="fill" style="width:${Math.max(2, g[metric] / max * 100)}%"></span></span><span class="val">${metric === "count" ? g.count + " proj." : shortMoney(g.value)}</span></button>`).join(""); bindCharts();
 }
@@ -1048,9 +1274,7 @@ let wallsMode = "muros", cellsCache = null;
 function renderWalls() {
   if (wallsMode === "celulas") renderCells();
   else { const max = Math.max(...DATA.map(p => p.value || 0)); const el = $("#wallsChart"); el.className = "walls"; el.innerHTML = DATA.map(p => { const span = Math.max(2, Math.min(6, Math.round((p.value || 0) / max * 6))); return `<button class="tile ${R && R.state().focus === p.id ? "active" : ""}" style="grid-column:span ${span}" data-ct="project" data-ck="${p.id}">${wallIcon(p, 30)}<div><b>${esc(Rizoma.shortTitle(p.title))}</b><span>${money(p.value)}</span></div></button>`; }).join(""); }
-  $("#wallsNote").textContent = wallsMode === "celulas" ? "Coluna = ano (largura = valor somado do ano), faixa = mecanismo, célula = projeto: só a área é dado. A posição de cada célula dentro da faixa é cenográfica, não geográfica. 2018 e 2020 são só o traço. Clique para abrir a ficha." : "Cada bloco ocupa área proporcional ao valor registrado. Clique para abrir a ficha.";
   bindCharts();
-  $$("[data-walls]").forEach(b => { b.classList.toggle("active", b.dataset.walls === wallsMode); b.onclick = () => { wallsMode = b.dataset.walls; renderWalls(); applyHighlight(); }; });
 }
 /* Células de valor: adaptado do experimento 03 do Lab 06 (expVoronoi, lab-06-experimentos.html). Lá: vinte sementes soltas,
    dono de cada célula por força bruta numa grade de 4 px e pesos corrigidos por 90 iterações. Aqui: o plano é cortado por
@@ -1098,7 +1322,7 @@ function renderCells() {
 /* Cordas: adaptado do experimento 05 do Lab 06 (expCordas): diagrama de cordas à maneira do Circos (Krzywinski et al., 2009),
    fitas como feixes (Holten, 2006). Lá era canvas p5 com arcos por pontos; aqui é SVG com arcos nativos e curvas quadráticas
    pelo centro, e cada fita e cada arco carregam data-ct/data-ck para a seleção compartilhada e a ficha. */
-let cordasSide = "ano";
+let cordasSide = "ano"; // as cordas ficaram só com mecanismo × ano, como outra forma da pergunta 1
 function renderCordas() {
   const lado = cordasSide, right = lado === "ano" ? YEARS.map(String) : lado === "escala" ? SCALES : CIRCUITS, rtype = lado === "ano" ? "year" : lado === "escala" ? "scale" : "circuit";
   const keyOf = p => lado === "ano" ? String(p.year) : lado === "escala" ? Rizoma.scaleOf(p.value) : p.circuit, meas = p => metric === "count" ? 1 : (p.value || 0), short = k => lado === "escala" ? k.split(" ")[0].toUpperCase() : k;
@@ -1209,15 +1433,10 @@ function highlightCard(ids) { const sel = $("#cSel"); if (!sel) return; const s 
 /* ---------- explicação breve em pop-over: um "?" por gráfico (alvo redondo de 22–28 px, lei de Fitts) e toque longo ou clique no título ---------- */
 const SRC = "DOM-BH e listas de homologação 2017–2024; valores aprovados (tetos), não captados.";
 const HELP = {
-  region: { t: "Onde os projetos aparecem?", o: "Uma barra por regional, com quantidade ou valor. Hoje todas caem em \"não verificada\".", q: "O TCC afirma que o monumental se concentra no centro e o capilar nas bordas; sem regional verificada, o gráfico mostra a lacuna em vez de inferir." },
-  years: { t: "Quando e por qual forma de fomento?", o: "Colunas por ano empilhadas por mecanismo; ao lado, uma mancha por ano cresce até a área do valor somado.", q: "A série mostra o Incentivo Fiscal (monumental) chegando em blocos de alto valor e o Descentra (capilar) em muitos projetos pequenos; 2018 e 2020 são o recorte, não o vazio.", c: "Mancha: agregação limitada por difusão (Witten e Sander, 1981); experimento 04 do Lab 06." },
-  cordas: { t: "Cada mecanismo escoa para onde?", o: "Arcos proporcionais ao total; cada fita liga um mecanismo a um ano, a uma escala de valor ou a um circuito.", q: "É a tese em uma figura: o Incentivo Fiscal escoa inteiro para o circuito monumental e para a escala macro; Fundo e Descentra alimentam o capilar.", c: "Diagrama de cordas à maneira do Circos (Krzywinski et al., 2009), fitas como feixes (Holten, 2006); experimento 05 do Lab 06." },
-  walls: { t: "Quanto aparece registrado?", o: "Área = valor aprovado. Em \"blocos\", cada projeto é um ladrilho; em \"células\", o plano é cortado por ano, por mecanismo e por projeto.", q: "Um projeto monumental vale vários capilares: a área torna visível a assimetria que a tabela só lista.", c: "Células: Voronoi treemap (Balzer e Deussen, 2005), diagrama de potência (Aurenhammer, 1987) e ajuste de pesos (Nocaj e Brandes, 2012); experimento 03 do Lab 06." },
-  dots: { t: "Quem chega ao teto?", o: "Cada projeto na posição do seu valor, numa régua comum por mecanismo, com os limites de escala e o teto do edital.", q: "Os monumentais se encostam no teto do Incentivo Fiscal; os capilares ficam abaixo de R$ 100 mil: duas economias na mesma régua.", c: "Posição numa escala comum (Cleveland e McGill, 1984); linhas de referência do bullet graph (Few, 2006)." },
-  lorenz: { t: "Quão concentrado é o fomento?", o: "Projetos do menor ao maior valor; a curva acumula o valor e o Gini mede a distância da igualdade.", q: "Cinco projetos monumentais somam quase metade do dinheiro: a concentração que o TCC descreve vira um número.", c: "Curva de Lorenz (1905) e índice de Gini (1912)." },
-  matrix: { t: "Quem se liga a quem?", o: "Vinte por vinte: cada célula conta as ligações (ano, mecanismo, edital, escala, regional, curadoria) que dois projetos têm em comum.", q: "Reordenada por mecanismo, a matriz mostra dois blocos quase sem contato: monumental e capilar raramente dividem edital ou escala.", c: "Matriz reordenável (Bertin, 1967)." },
-  slope: { t: "O que cresceu e o que secou?", o: "Uma linha por mecanismo entre 2017–2021 e 2022–2024, na medida escolhida.", q: "Depois de 2022 o Descentra e o Fundo ganham projetos enquanto o Incentivo Fiscal concentra valor: o capilar se multiplica, o monumental engorda.", c: "Gráfico de declive (Tufte, 2001)." },
-  social: { t: "Perfil dos proponentes", o: "Ainda vazio: gênero, raça, renda e classe social só entram autodeclarados e agregados.", q: "Inferir perfil pela regional seria a cartografia que o TCC critica; a lacuna é mostrada, não preenchida." }
+  years: { t: "Em que ano e por qual caminho?", o: "Quantos projetos, ou quanto valor, foram aprovados em cada ano, separados por mecanismo. As quatro formas mostram o mesmo dado: colunas ano a ano, dois períodos lado a lado, uma mancha por ano ou cordas.", q: "Mostra quando cada mecanismo entra no corpus. O Incentivo Fiscal chega em poucos projetos de valor alto. O Descentra, em vários projetos pequenos.", c: "Declive: Tufte (2001). Mancha: agregação limitada por difusão (Witten e Sander, 1981); experimento 04 do Lab 06. Cordas: Circos (Krzywinski et al., 2009), fitas como feixes (Holten, 2006); experimento 05 do Lab 06." },
+  dots: { t: "Quanto foi aprovado para cada projeto?", o: "O valor de cada projeto. Na régua, a posição é o valor. Em blocos e em células, o tamanho é o valor.", q: "Dá para ver quem encosta no teto do edital e quem fica nas faixas mais baixas. É a diferença entre o circuito monumental e o capilar, projeto por projeto.", c: "Régua: posição numa escala comum (Cleveland e McGill, 1984), com linhas de referência (Few, 2006). Células: Voronoi treemap (Balzer e Deussen, 2005), diagrama de potência (Aurenhammer, 1987), ajuste de pesos (Nocaj e Brandes, 2012); experimento 03 do Lab 06." },
+  lorenz: { t: "O dinheiro é bem repartido?", o: "Que parte de todo o valor fica com os maiores projetos e que parte fica com os menores.", q: "A régua mostra cada valor. Aqui aparece a soma: poucos projetos concentram boa parte do valor aprovado. O índice de Gini, na curva, resume isso num número de 0 a 1.", c: "Curva de Lorenz (1905) e índice de Gini (1912)." },
+  matrix: { t: "O que os projetos têm em comum?", o: "Para cada par de projetos, quantas coisas eles dividem: ano, mecanismo, edital, tamanho do valor ou curadoria.", q: "Arrumada por mecanismo, a matriz mostra blocos escuros: projetos do mesmo mecanismo se parecem muito entre si e pouco com os outros.", c: "Matriz reordenável (Bertin, 1967)." }
 };
 let helpOpener = null, pressT = 0, pressed = false;
 function openHelp(key, opener, ev) {
@@ -1317,7 +1536,7 @@ function explain(i) {
     + ex("QUANTO É", `<p>${quanto}</p>${regua(d)}`)
     + ex("CIRCUITO", `<p>${CIRCUITO[d.circuit] || d.circuit} Não é classificação oficial da Prefeitura.</p>`)
     + (rel ? ex("PARENTES DOCUMENTADOS", `<div class="rel">${rel}</div>`) : "")
-    + ex("O QUE AINDA NÃO SE SABE", `<p>Sem verificação: ${falta.join(", ")}. O protótipo deixa em branco em vez de supor.${d.issue ? " Atenção: " + d.issue : ""} Fonte do registro: ${d.verification || "a verificar"}.</p>`);
+    + ex("O QUE AINDA NÃO SE SABE", `<p>Sem verificação: ${falta.join(", ")}. O protótipo deixa em branco em vez de supor.${d.issue ? " Atenção: " + d.issue : ""} Fonte do registro: ${d.verification || "a verificar"}.</p><button class="lnk" data-contar="${d.id}">Você sabe? Conte e mande fotos →</button>`);
 }
 
 /* ---------- rodada 5: animação explicativa da entrada (cinco cenas em canvas, na linguagem do campo) ---------- */
@@ -1399,6 +1618,8 @@ setCount(PH.count); setEvap(PH.evap);
 mountField();
 renderIndicators(); renderEditais();
 DEMO.play(); if (location.hash === "#direto") enter(); // #direto pula a entrada (para testes)
+{ const env = new URLSearchParams(location.search).get("enviado"); // volta do serviço de formulário: abre o projeto e agradece
+  if (env && IDX[env] != null) { const it = (pend[env] || [])[0]; if (it) { it.st = "ok"; savePend(); } openProject(env, "discover", "community"); if (it) contribDone(DATA[IDX[env]], it, false); history.replaceState(null, "", location.pathname + "#direto"); } }
 })();
 </script>
 <script src="js/labs-nav.js?v=20261113-40"></script>

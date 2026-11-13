@@ -679,6 +679,65 @@ Conferido no navegador em 1280 px e 375 px: as seis etapas com as frases, a sequ
 
 ---
 
+## 3L. Lab 08, 13/11/2026: por que as linhas cruzam, e o fecho da história
+
+Arquivo: `lab-08-site.html`, passos 8 e 9 da tela Indicadores.
+
+### 3L.1 O problema
+
+O autor ainda achou a teia confusa por três motivos: passar o mouse não dava informação, o desenho contava quantas linhas cruzam mas não dizia por que cruzam, e o passo não se ligava à história nem aos objetivos do TCC. Pediu um final que faça sentido.
+
+### 3L.2 Os objetivos do TCC, relidos
+
+Do texto do TCC (versão de 02/10/2026, seção 3): o objetivo geral é desenvolver um artefato de Design da Informação que permita visualizar os projetos de arte urbana feitos com recursos de editais municipais em Belo Horizonte, de 2017 a 2024, "com o intuito de tornar mais claro e dinâmico o conhecimento acerca dos mecanismos de fomento a cultura". Entre os específicos estão oferecer o protótipo a artistas de rua, produtores culturais e pesquisadores, e analisar a distribuição geográfica, o perfil e a evolução do investimento. O resumo fala numa "dicotomia estrutural": recursos concentrados em projetos monumentais, pelo Incentivo Fiscal, e verbas pulverizadas em iniciativas capilares, pelo Fundo e pelo Descentra. O texto avisa que monumental e capilar são "construções analíticas" e "não correspondem a classificações oficiais".
+
+A história dos Indicadores passa a terminar nessa dicotomia, com os números que a sustentam e os limites declarados.
+
+### 3L.3 Informação ao passar a mão
+
+- **Numa bolinha:** uma ficha junto do cursor com o nome completo, o ano, o mecanismo, o circuito, o valor e o edital, e a conta das ligações da etapa: quantas ficam no mesmo circuito, quantas vão para o outro e para quais projetos.
+- **Numa linha:** os dois projetos, um selo ("atravessa os dois circuitos" ou "dentro do monumental"), o que eles têm em comum com o dado exato (o ano, o edital, a faixa de valor com os dois valores, o motivo da relação documentada) e, se a linha cruza, o mecanismo e o valor de cada um e o que eles não têm em comum.
+- **No celular** não existe passar a mão: o toque fixa a bolinha ou a linha e a mesma ficha aparece na caixa abaixo do desenho.
+- A mesma seleção vale para a lista ao lado e para os outros gráficos. A linha usa a seleção de par que a tabela já usava.
+
+Detalhe sob pedido, depois da visão geral (SHNEIDERMAN, 1996).
+
+### 3L.4 Por que cruzam: a frase de cada etapa
+
+Cada etapa agora tem um título com o número de travessias e uma frase que diz o que elas são. Tudo calculado na página:
+
+| Etapa | Travessias | O que são |
+|---|---|---|
+| Mesmo ano | 13 | Encontro de calendário: os dois circuitos tiveram projeto aprovado em 2017 (3), 2021 (2) e 2023 (8), em editais diferentes |
+| Mesmo edital | 0 | Cada edital pertence a um mecanismo só |
+| Tamanho do valor | 8 | Todas passam por um projeto, o Graffitinerante (R$ 95 mil), o único do monumental abaixo de R$ 100 mil. O desenho marca esse projeto como "a ponte" |
+| Relação documentada | 0 | As 5 relações ligam sempre projetos do mesmo circuito |
+| Tudo junto | 20 de 96 | O que cruza é o calendário e a faixa de valor |
+
+A marca "a ponte" só aparece se todas as travessias de valor passarem pelo mesmo projeto. Se o corpus mudar e isso deixar de valer, a frase muda para a contagem simples.
+
+Outras duas mudanças no desenho ligam o passo à história: a **área da bolinha é o valor do projeto**, então o lado monumental aparece com bolinhas grandes e o capilar com pequenas, e o título de cada lado mostra a soma (R$ 1,12 milhão em 8 projetos; R$ 573 mil em 12). A primeira etapa diz a média de cada circuito: R$ 140 mil e R$ 48 mil.
+
+O texto de abertura do passo passou a retomar os passos 6 e 7 e a fazer a pergunta: os dois circuitos se encontram em algum ponto?
+
+### 3L.5 O passo 9 vira a conclusão
+
+Antes o passo 9 só listava o que falta. Agora ele fecha a história:
+
+1. **Título:** "Um mesmo fomento, dois circuitos".
+2. **Abertura** com o objetivo do trabalho, em palavras simples.
+3. **Seis achados numerados**, calculados na página, cada um com um atalho para o passo de onde vem: R$ 77,28 milhões nos editais; de 10% a 30% dos inscritos aprovados; 1,3% para o grafite deste trabalho; os 5 maiores projetos somam 48% e são todos do Incentivo Fiscal; médias de R$ 140 mil e R$ 48 mil; 20 de 96 encontros possíveis entre os circuitos.
+4. **A leitura:** o mesmo fomento público sustenta dois circuitos que correm lado a lado. É a dicotomia do TCC, e os números a sustentam. A frase é fixa, como os títulos, e precisa ser relida se o corpus mudar.
+5. **Os limites:** vale para os vinte projetos do TCC, não para o grafite feito sem edital; monumental e capilar não são categorias oficiais.
+6. **O que ainda falta**, como antes: a regional das obras e o perfil dos proponentes. Isso importa para a conclusão, porque o TCC também fala de centro e periferia, e isso o site ainda não mostra.
+7. **Para quem serve:** artistas, produtores e pesquisadores, com os dois botões para o mapa e para os editais.
+
+A estrutura segue a "taça de martíni" da seção 3J (SEGEL; HEER, 2010): a narrativa conduzida termina numa síntese e só então abre a exploração livre. O título que afirma o achado e o fecho com uma recomendação de uso vêm de Knaflic (2015).
+
+Conferido no navegador em 1280 px e 375 px: as frases das seis etapas, a ficha ao passar a mão numa bolinha e numa linha, o toque numa linha no tamanho de celular, a marca da ponte, a lista da conclusão, sem erros no console. Não foi testado num Android real.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.

@@ -270,6 +270,48 @@ Limite a registrar no TCC: o artigo trata de cor sustentável em produtos físic
 
 ---
 
+## 3D. Ajuste de 13/11/2026, terceira rodada: entrada, explicações e interface mais simples
+
+Pedido do autor: gostou do spray; quer implementar as outras telas; no Lab 07, tirar a alternância de agentes (fica 200) e de evaporação (fica média); uma entrada com um "videozinho" explicando o site; fechar a ficha e baixar o mapa mais intuitivos; spray de fundo mais fraco; avisos fáceis de entender; explicação de cada mecanismo, de cada filtro e de cada edital, antes de entrar e depois.
+
+### 3D.1 Tela de entrada
+
+Abre antes do campo, que só acorda quando a pessoa entra. Tem o nome do site em letreiro, uma frase que diz o que é, o botão "Entrar na experiência", um atalho para as explicações e a animação. `#direto` no endereço pula a entrada (para testes).
+
+**A animação é um "vídeo" desenhado em código**, não um arquivo de vídeo: cinco cenas de 4,8 s em canvas, na mesma linguagem do campo (bolinhas, spray, cursor que clica). Motivo: pesa poucos kilobytes, usa as cores reais da paleta em uso, tem pausa e barra de passos, e respeita "menos movimento" (vira cinco quadros parados). As cinco cenas e as cinco legendas são a mesma lista da aba "Como funciona":
+
+1. Os pontos que piscam são projetos escondidos; toque para revelar.
+2. A cor diz de onde veio o dinheiro; o tamanho diz quanto.
+3. Ligue os projetos por ano, mecanismo ou edital; o spray corre entre os que têm aquilo em comum.
+4. Toque numa bolinha para abrir o projeto.
+5. No fim, baixe o mapa da visita.
+
+Leis aplicadas: divulgação progressiva (a explicação vem antes e pode ser revista, não fica na tela), Hick (um botão principal), Miller (cinco passos), reconhecimento em vez de memória (a animação mostra os mesmos elementos que a pessoa vai encontrar).
+
+### 3D.2 Aba "Como funciona": mecanismos, ligações e editais
+
+Uma aba nova, acessível pela entrada, pelo botão "? Como funciona", pelo "?" ao lado de "Ligar os projetos por" e por dois atalhos dentro da ficha ("Como funciona este edital", "Entender este mecanismo"), que abrem a aba já no cartão certo.
+
+- **Mecanismos**: o que é cada um e quantos projetos e que valores tem no corpus. Texto a partir do TCC (fundamentação: Incentivo Fiscal por renúncia fiscal com captação em empresas; Fundo com recurso direto do orçamento; Descentra com valores entre R$ 20 mil e R$ 40 mil e pontuação fora do eixo da Avenida do Contorno).
+- **Ligações** (os antigos "filtros" ou "linhas de fuga"): o que cada uma liga e quantas ligações cria no corpus (Ano 29, Mecanismo 58, Edital 12, Escala 63, Curadoria 5; Regional 0, com o aviso de que o dado não foi verificado).
+- **Editais**: os 12 editais do corpus, cada um com o mecanismo, como funciona, o teto quando o TCC informa, os números da página oficial quando o documento de fontes registra a página como aberta (LMIC 2022 Fundo, LMIC 2023 IF, LMIC 2024 Fundo, Descentra 2024), os projetos do corpus (clicáveis) e o link da Prefeitura. Onde a página do edital não foi aberta, o link vai para o índice de editais anteriores.
+- Limite declarado na própria aba: no Incentivo Fiscal o valor aprovado é o máximo que o projeto pode captar; a captação efetiva não é publicada.
+
+### 3D.3 Interface mais simples
+
+- **Ferramentas.** Saíram os controles de agentes e de evaporação (200 e média, fixos). Ficam: as ligações, "? Como funciona", 3D, Recomeçar e "↓ Baixar meu mapa". Os botões de comparação do lab (cor, linhas, bolinha, rastro, limpar) foram para um menu "Ajustes do lab", que não aparece no celular.
+- **Fechar a ficha.** O botão "Fechar" virou "← Voltar ao mapa", preto, no topo da ficha.
+- **Baixar o mapa.** "Fechar meu mapa" virou "↓ Baixar meu mapa". O painel diz "Meu mapa · a imagem desta visita" e os botões são "↓ Baixar a imagem (PNG)", "← Voltar ao mapa" e "Começar de novo".
+- **Vocabulário.** Saíram "nó", "linha de fuga", "micélio", "estampa" e "agentes" dos textos para o visitante. Entram "projeto", "ligação", "spray", "mapa".
+- **Avisos.** Um passo de cada vez, cada um aparece uma vez: revelar, ligar, abrir, e depois silêncio. Ao ligar uma ligação, uma frase diz o que ela faz e quantas ligações criou. O contador virou "15 de 20 projetos · 16 ligações".
+- **Spray de fundo.** Metade da tinta de antes e mais tom claro, para as bolinhas e as linhas ficarem na frente.
+
+### 3D.4 O que não foi feito nesta rodada
+
+**As outras telas** (Indicadores, Editais como página própria, Pesquisa, Sobre, página do projeto) na linguagem do Lab 07. A entrada e as explicações foram feitas primeiro porque o autor quer testá-las no Lab 07; o padrão delas (letreiro, três tintas, vocabulário simples, ajuda sempre à mão) é o que as outras telas vão herdar.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.

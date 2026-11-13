@@ -86,12 +86,44 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .fam{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}.fam>div{min-width:0}
 .fam i{display:block;height:52px;border:1px solid var(--ink);background:var(--c)}.fam b{display:block;font-size:11px;margin-top:6px}.fam code{font-size:9px;color:#777}.fam span{display:block;font-size:10.5px;line-height:1.45;color:#555;margin-top:2px}
 @media(max-width:780px){.pwrap{padding:18px 16px 110px 34px}.brand{font-size:17px}.play{font-size:clamp(40px,13vw,90px)}}
+/* ---------- rodada 5 (13/11): entrada, ajuda, ferramentas simples ---------- */
+.chiplabel{font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#777;text-align:right}
+.tools .qm{padding:0;width:17px;height:17px;border-radius:50%;font-size:9px;margin-left:4px;border-color:#999}
+.tools .help-btn{border-color:var(--ink)}
+.labmenu{position:relative}.labmenu summary{list-style:none;cursor:pointer;border:1px solid #ccc;background:rgba(255,255,255,.92);padding:8px 10px;font-size:9px;font-weight:800;letter-spacing:.03em;color:#777}.labmenu summary::-webkit-details-marker{display:none}
+.labmenu[open] summary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.labmenu>div{position:absolute;right:0;top:calc(100% + 5px);z-index:5;display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #ccc;padding:6px;box-shadow:0 12px 28px rgba(0,0,0,.1);min-width:180px}.labmenu>div button{text-align:left}
+@media(max-width:780px){.labmenu,.chiplabel{display:none}}
+.card .top .back{border-color:var(--ink);background:var(--ink);color:var(--paper);padding:10px 12px;white-space:nowrap}
+.lnk{display:inline-block;border:0;background:none;padding:0;margin:0 0 9px;font-size:11px;font-weight:800;color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-align:left}
+.intro{position:absolute;z-index:80;inset:0;overflow:auto;background:var(--paper);display:grid;place-items:center;padding:26px 28px 40px 46px}.intro[hidden]{display:none}
+.intro-in{width:min(1080px,100%);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:36px;align-items:center}
+.intro .kicker{font-size:9px;letter-spacing:.14em;font-weight:900;color:#777}
+.intro h1{font-size:clamp(40px,6vw,82px);margin:10px 0 16px}
+.intro p{font-size:15px;line-height:1.6;color:#333;max-width:46ch;margin:0 0 20px}
+.intro .go{display:inline-block;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:16px 22px;font-size:11px;font-weight:900;letter-spacing:.06em}
+.intro .more{display:block;margin-top:14px;border:0;background:none;padding:0;font-size:12px;font-weight:800;text-decoration:underline;text-underline-offset:3px;color:var(--ink);text-align:left}
+.intro small{display:block;margin-top:16px;font-size:10.5px;color:#777;line-height:1.5;max-width:46ch}
+.player{border:1px solid var(--ink);background:#fff;box-shadow:10px 12px 0 rgba(22,22,22,.08);min-width:0}
+.player canvas{display:block;width:100%;height:auto;background:var(--paper)}
+.pcap{padding:12px 14px 2px;font-size:14px;line-height:1.45;font-weight:700;min-height:3.4em}
+.pbar{display:flex;align-items:center;gap:10px;padding:6px 12px 12px}
+.pbar>button{border:1px solid #bbb;background:#fff;font-size:9px;font-weight:900;letter-spacing:.04em;padding:8px 10px;min-width:82px}
+.pdots{display:flex;gap:5px;flex:1}.pdots button{flex:1;height:22px;padding:8px 0;border:0;background:none}.pdots button span{display:block;height:6px;background:#d4d1c8;position:relative;overflow:hidden}.pdots button i{position:absolute;left:0;top:0;bottom:0;width:var(--w,0%);background:var(--ink)}
+.pbar>span{font-size:10px;color:#777;white-space:nowrap}
+@media(max-width:780px){.intro{padding:16px 16px 34px 34px;place-items:start}.intro-in{grid-template-columns:1fr;gap:20px}.intro h1{font-size:clamp(34px,11vw,56px);margin:6px 0 10px}.intro p{font-size:13.5px;margin-bottom:14px}.pcap{font-size:13px}.intro .go{width:100%}}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.hgrid article{border:1px solid var(--line);background:#fff;padding:14px;min-width:0}.hgrid article.hit{outline:2px solid var(--ink);outline-offset:2px}
+.hgrid h4{font-size:14px;margin:0 0 6px;display:flex;align-items:center;gap:8px}.hgrid h4 i{width:12px;height:12px;border-radius:50%;background:var(--c);border:1px solid var(--ink);flex:none}
+.hgrid p{font-size:12px;line-height:1.6;margin:0 0 8px;color:#444}.hgrid small{display:block;font-size:10.5px;color:#777;line-height:1.5;margin-top:4px}
+.hgrid .pj{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}.hgrid .pj button{border:1px solid #d4d1c8;background:#fff;padding:5px 7px;font-size:10px}
+.hsteps{list-style:none;padding:0!important;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;counter-reset:s}.hsteps li{counter-increment:s;border-top:2px solid var(--ink);padding-top:8px;margin:0!important}.hsteps li::before{content:counter(s);display:block;font-size:24px;font-weight:900;line-height:1.1}
 </style>
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="index.html" id="brand">CARTOGRAFIA DO FOMENTO</a>
-  <div class="tabs" role="tablist" aria-label="Partes do lab"><button role="tab" data-tab="campo" class="active">Campo</button><button role="tab" data-tab="letras">Letras</button><button role="tab" data-tab="cores">Cores</button></div>
+  <div class="tabs" role="tablist" aria-label="Partes do lab"><button role="tab" data-tab="campo" class="active">Campo</button><button role="tab" data-tab="ajuda">Como funciona</button><button role="tab" data-tab="letras">Letras</button><button role="tab" data-tab="cores">Cores</button></div>
   <span class="status">LAB 07 · LETRA + COR</span>
 </header>
 
@@ -102,44 +134,66 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="copy"><div class="kicker">LAB 07 / LETRA BRASILEIRA, COR COM FUNDAMENTO</div><h1 id="headline">A RUA ESCREVE O MAPA</h1><div id="mechLegend" class="legend"><span><i style="--c:var(--if)"></i>Incentivo Fiscal</span><span><i style="--c:var(--fundo)"></i>Fundo Municipal</span><span><i style="--c:var(--desc)"></i>Descentra</span><span class="shape">tamanho = valor</span><span class="shape">contorno grosso = monumental</span></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue uma linha: o spray de cada projeto corre até os parentes. São só três tintas, em vários tons; onde duas se encontram, os pontos ficam lado a lado.</p></div>
 
   <div class="tools">
-    <div class="chips" id="chips" aria-label="Linhas de fuga"></div>
+    <div class="chiplabel">Ligar os projetos por<button id="lineHelp" class="qm" title="O que é cada ligação" aria-label="O que é cada ligação">?</button></div>
+    <div class="chips" id="chips" aria-label="Ligar os projetos por"></div>
     <div class="row">
+      <button id="helpBtn" class="help-btn" title="Rever a explicação e entender mecanismos, ligações e editais">? Como funciona</button>
       <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
-      <button id="palBtn" class="active" title="Tecla V · compara as tintas do muro de BH com a paleta anterior">Cor · muro de BH</button>
-      <button id="lineBtn" class="active" title="Tecla L · linhas na tinta dos projetos ou em preto">Linhas · tinta</button>
-      <button id="dotBtn" class="active" title="Tecla B · bolinha com sombra e brilho de grafite, ou lisa">Bolinha · grafite</button>
-      <button id="lookBtn" class="active" title="Tecla G · rastro em grão de spray ou em mancha">Rastro · spray</button>
-      <span class="group" aria-label="Quantidade de agentes"><button id="lessBtn" title="Menos agentes">−</button><button id="countBtn" class="mid" title="Agentes ativos">0 agentes</button><button id="moreBtn" title="Mais agentes">+</button></span>
-      <button id="evapBtn" title="Tecla E">Evaporação · média</button>
-      <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
-      <button id="resetBtn" title="Tecla R">Recomeçar</button>
-      <button id="finalBtn" class="final-btn" title="Tecla M · congela o campo e gera a estampa da sua visita">Fechar meu mapa ↗</button>
+      <button id="resetBtn" title="Tecla R · esconde tudo e começa de novo">Recomeçar</button>
+      <button id="finalBtn" class="final-btn" title="Tecla M · gera uma imagem do mapa desta visita">↓ Baixar meu mapa</button>
+      <details class="labmenu"><summary>Ajustes do lab</summary><div>
+        <button id="palBtn" class="active" title="Tecla V · compara as tintas do muro de BH com a paleta anterior">Cor · muro de BH</button>
+        <button id="lineBtn" class="active" title="Tecla L · linhas na tinta dos projetos ou em preto">Linhas · tinta</button>
+        <button id="dotBtn" class="active" title="Tecla B · bolinha com sombra e brilho de grafite, ou lisa">Bolinha · grafite</button>
+        <button id="lookBtn" class="active" title="Tecla G · rastro em grão de spray ou em mancha">Rastro · spray</button>
+        <button id="clearBtn" title="Tecla X · apaga só o rastro">Limpar rastro</button>
+      </div></details>
     </div>
   </div>
-  <div class="foot"><p>Letras: Tipografia Vernacular 0800, de Gi Favetta (Creative Commons). Aperto no fim da linha: ideia do Brasilêro Profiça, de Crystian Cruz. Micélio: Jones (2010), sobre as posições na tela, não sobre a cidade. Monumental e capilar são categorias de análise do TCC, não classificação oficial.</p><span id="counter">0 / 20 NÓS</span></div>
+  <div class="foot"><p>Letras: Tipografia Vernacular 0800, de Gi Favetta (Creative Commons). Aperto no fim da linha: ideia do Brasilêro Profiça, de Crystian Cruz. Movimento do spray: algoritmo de Jones (2010), sobre as posições na tela, não sobre a cidade. Monumental e capilar são categorias de análise do TCC, não classificação oficial.</p><span id="counter">0 de 20 projetos</span></div>
   <div class="guide" id="guide"></div>
   <div id="hoverTip" class="hover-tip" hidden><b id="htTitle"></b><span id="htMeta"></span><span id="htMore"></span><i id="htBar"></i></div>
-  <section id="final" class="final" hidden aria-label="Meu micélio">
+  <section id="final" class="final" hidden aria-label="Meu mapa">
     <div class="final-card">
-      <div class="kicker">MEU MICÉLIO · ESTAMPA DESTA VISITA</div>
+      <div class="kicker">MEU MAPA · A IMAGEM DESTA VISITA</div>
       <h2 id="finalTitle"></h2>
       <p id="finalText"></p>
-      <div class="final-preview"><img id="finalImg" alt="Estampa do micélio desta visita"></div>
-      <div class="final-actions"><a id="finalDownload" class="primary" download="meu-micelio.png" href="#">BAIXAR PNG ↗</a><button id="finalLast" class="ghost">ABRIR O ÚLTIMO PROJETO</button><button id="finalBack" class="ghost">CONTINUAR EXPLORANDO</button><button id="finalReset" class="ghost">RECOMEÇAR</button></div>
+      <div class="final-preview"><img id="finalImg" alt="Imagem do mapa desta visita"></div>
+      <div class="final-actions"><a id="finalDownload" class="primary" download="meu-mapa.png" href="#">↓ BAIXAR A IMAGEM (PNG)</a><button id="finalBack" class="ghost">← VOLTAR AO MAPA</button><button id="finalLast" class="ghost">ABRIR O ÚLTIMO PROJETO</button><button id="finalReset" class="ghost">COMEÇAR DE NOVO</button></div>
       <p class="final-note">O mapa é seu: cada visita produz outro. Nada aqui é a localização real das obras.</p>
     </div>
   </section>
 
   <aside class="card" id="card" aria-live="polite">
-    <div class="top"><div class="kicker" id="cKicker">NÓ ABERTO</div><button class="ghost" id="cClose">FECHAR</button></div>
+    <div class="top"><div class="kicker" id="cKicker">PROJETO</div><button class="ghost back" id="cClose" title="Tecla Esc">← VOLTAR AO MAPA</button></div>
     <h2 id="cTitle"></h2>
     <div class="mech" id="cMech"></div>
     <div id="cExplain"></div>
-    <a class="primary" id="cOpen" href="index.html">VER NO PROTÓTIPO ↗</a>
-    <div class="sub">AINDA ESCONDIDO</div><p id="cHidden" class="hidden-note"></p>
-    <div class="sub">LINHAS LIGADAS</div><div class="links" id="cLinks"></div>
+    <a class="primary" id="cOpen" href="index.html">VER A PÁGINA COMPLETA NO PROTÓTIPO ↗</a>
+    <div class="sub">AINDA ESCONDIDOS</div><p id="cHidden" class="hidden-note"></p>
+    <div class="sub">LIGAÇÕES ATIVAS</div><div class="links" id="cLinks"></div>
     <div class="sub">LIGAÇÕES POSSÍVEIS</div><div class="links" id="cPot"></div>
   </aside>
+
+  <section id="pAjuda" class="panel" hidden aria-label="Como funciona"><div class="pwrap" id="helpBody"></div></section>
+
+  <section id="intro" class="intro" aria-label="Entrada">
+    <div class="intro-in">
+      <div>
+        <div class="kicker">BELO HORIZONTE · 2017 A 2024</div>
+        <h1 id="introMark">CARTOGRAFIA DO FOMENTO</h1>
+        <p>Vinte projetos de grafite e muralismo pagos com dinheiro público em Belo Horizonte. Aqui cada projeto é uma bolinha. Você descobre de onde veio o dinheiro, quanto foi e como os projetos se ligam.</p>
+        <button id="enterBtn" class="go">ENTRAR NA EXPERIÊNCIA →</button>
+        <button id="introMore" class="more">Antes, entender os mecanismos, as ligações e os editais</button>
+        <small>A animação mostra o que fazer, em cinco passos. Dá para rever depois, no botão Como funciona.</small>
+      </div>
+      <div class="player">
+        <canvas id="demo" role="img" aria-label="Animação em cinco passos. Um: os pontos que piscam são projetos escondidos; toque para revelar. Dois: a cor diz de onde veio o dinheiro e o tamanho diz quanto. Três: ligue os projetos por ano, mecanismo ou edital. Quatro: toque numa bolinha para abrir o projeto. Cinco: baixe o mapa da sua visita."></canvas>
+        <div class="pcap" id="demoCap"></div>
+        <div class="pbar"><button id="demoPlay">PAUSAR</button><div class="pdots" id="demoDots"></div><span id="demoN">1 de 5</span></div>
+      </div>
+    </div>
+  </section>
 
   <section id="pLetras" class="panel" hidden aria-label="Letras">
     <div class="pwrap">
@@ -356,6 +410,42 @@ const TONS = [ // a família de cada tinta: do tom mais fundo ao mais claro (mul
   ["luz", c => c.map((v, i) => v * 0.2 + PAPEL[i] * 0.8), "Fundo de etiqueta e de faixa. Nunca identifica sozinha: vem sempre com texto."]
 ];
 const tom = (c, nome) => TONS.find(t => t[0] === nome)[1](c).map(Math.round);
+let started = false, helpReady = false; // started: a pessoa entrou na experiência; helpReady: a ajuda já pode ser desenhada
+/* explicações em linguagem simples. Mecanismos e tetos marcados "TCC": texto do TCC (fundamentação e análise dos editais).
+   Números de editais: páginas da PBH registradas em rizoma/FONTES-DADOS-E-METODOLOGIA.md, seções 3.2 e 3.3 (consulta de 31/10/2026). */
+const MEC_HELP = {
+  "Incentivo Fiscal": ["Funciona por renúncia fiscal. O projeto é aprovado, mas precisa conseguir o dinheiro com empresas privadas, e a Prefeitura abre mão do imposto correspondente.", "Como as marcas querem aparecer, esse caminho tende a favorecer projetos grandes e muito visíveis, como os festivais de empenas no centro."],
+  "Fundo Municipal": ["É dinheiro direto do orçamento da Prefeitura, pelo Fundo Municipal de Cultura. Não depende de empresa patrocinadora.", "Os projetos são escolhidos em editais públicos. É o principal caminho de desconcentração do fomento."],
+  "Descentra": ["É um edital do Fundo Municipal criado para espalhar o dinheiro pela cidade. Os valores são menores, historicamente entre R$ 20 mil e R$ 40 mil.", "Os critérios dão pontos a proponentes e ações fora do eixo da Avenida do Contorno. Financia arte de base e formação nos bairros."]
+};
+const LINE_HELP = { // [frase curta para o aviso, texto do cartão de ajuda]
+  ano: ["liga projetos aprovados no mesmo ano.", "Liga projetos aprovados no mesmo ano. Serve para ver o que aconteceu junto."],
+  mecanismo: ["liga projetos pagos pelo mesmo mecanismo.", "Liga projetos pagos pelo mesmo mecanismo: Incentivo Fiscal, Fundo Municipal ou Descentra. As ligações ficam todas da mesma cor."],
+  edital: ["liga projetos aprovados no mesmo edital.", "Liga projetos aprovados no mesmo edital, ou seja, na mesma chamada pública do mesmo ano."],
+  escala: ["liga projetos da mesma faixa de valor.", "Liga projetos da mesma faixa de valor: micro (até R$ 30 mil), médio (de R$ 30 mil a R$ 100 mil) ou macro (acima de R$ 100 mil)."],
+  territorio: ["ligaria projetos da mesma regional da cidade. Ainda não liga nada, porque a regional de cada projeto não foi verificada.", "Ligaria projetos da mesma regional de Belo Horizonte. Ainda não funciona: a regional de cada projeto não foi verificada, e o site não supõe esse dado."],
+  curadoria: ["liga projetos com uma relação documentada, como duas edições do mesmo festival.", "Liga pares de projetos com uma relação documentada, uma a uma, como duas edições do mesmo festival. Cada ligação tem motivo e fonte na ficha do projeto."]
+};
+const EDITAL_COMO = {
+  "Incentivo Fiscal": "Edital de Incentivo Fiscal: o projeto aprovado recebe autorização para captar dinheiro com empresas, até um teto.",
+  "Fundo Municipal": "Edital do Fundo Municipal de Cultura: o projeto selecionado recebe o dinheiro direto da Prefeitura.",
+  "Descentra": "Edital Descentra, do Fundo Municipal: valores menores e pontos a mais para quem atua fora do eixo central."
+};
+const PBH = "https://prefeitura.pbh.gov.br/cultura/";
+const EDITAL_INFO = {
+  "LMIC 2017 - IF": { teto: "R$ 110 mil por projeto (TCC).", url: PBH + "editais/lmic-2017-2018" },
+  "LMIC 2021 - IF": { teto: "R$ 150 mil por projeto (TCC).", url: PBH + "editais/editais-anteriores" },
+  "LMIC 2023 - IF": { teto: "R$ 165 mil por projeto (TCC).", nota: "Segundo a página do edital, 487 projetos se inscreveram.", url: PBH + "lmic/if2023" },
+  "LMIC 2017 - Fundo": { url: PBH + "editais/lmic-2017-2018" },
+  "LMIC 2021 - Fundo": { url: PBH + "editais/editais-anteriores" },
+  "LMIC 2022 - Fundo": { nota: "Segundo a página do edital, distribuiu R$ 8,2 milhões e teve 607 inscritos.", url: PBH + "editais/lmic-2022-fundo" },
+  "LMIC 2023 - Fundo": { url: PBH + "editais/editais-anteriores" },
+  "LMIC 2024 - Fundo": { nota: "Segundo a página do edital, distribuiu R$ 9,6 milhões, com 661 inscritos e 124 aprovados.", url: PBH + "editais/lmic-multilinguagens-2024" },
+  "Descentra 2019": { teto: "cerca de R$ 20 mil por projeto (TCC).", url: PBH + "descentra" },
+  "Descentra 2021": { teto: "R$ 20 mil por projeto (TCC).", url: PBH + "descentra" },
+  "Descentra 2022": { url: PBH + "descentra" },
+  "Descentra 2024": { teto: "R$ 40 mil por projeto.", nota: "Segundo a página do edital, distribuiu R$ 1,8 milhão, com 450 inscritos e 46 selecionados.", url: PBH + "descentra-2024" }
+};
 const mechMap = () => { const o = {}; MECHS.forEach((m, i) => o[m] = INKS[i]); return o; };
 function stain(px, k, c, lc, m, dep) { // tinta sobre tinta: média geométrica por canal (subtrativa). Azul sobre amarelo dá verde, não cinza
   if (px[k + 3] < 6) { px[k] = c[0]; px[k + 1] = c[1]; px[k + 2] = c[2]; }
@@ -382,7 +472,7 @@ function sprayAt(x, y, mi, n, sigma, alpha, nevoa) { // x, y em px do palco; mi:
   for (let d = 0; d < n; d++) {
     const r = Math.sqrt(-2 * Math.log(1 - Math.random())) * sigma, a = Math.random() * 6.2832, q = Math.random();
     const px = (x + Math.cos(a) * r) * SS, py = (y + Math.sin(a) * r) * SS;
-    sctx.fillStyle = nevoa ? tons[3] : tons[q < 0.5 ? 2 : q < 0.75 ? 3 : q < 0.95 ? 1 : 0]; // metade na tinta base; o resto varia entre clara, sombra e funda
+    sctx.fillStyle = nevoa ? tons[3] : tons[q < 0.38 ? 2 : q < 0.82 ? 3 : q < 0.97 ? 1 : 0]; // spray de fundo mais leve (pedido do autor): mais tom claro, menos tom escuro
     sctx.globalAlpha = alpha * (0.55 + Math.random() * 0.45);
     const g = Math.random() < 0.06 ? 2.2 + Math.random() * 1.6 : 0.8 + Math.random() * 0.9; // quase tudo é névoa fina; de vez em quando, uma gota
     if (g > 2) { sctx.beginPath(); sctx.arc(px, py, g / 2, 0, 6.2832); sctx.fill(); } else sctx.fillRect(px, py, g, g);
@@ -412,7 +502,7 @@ function makeTrail(p) {
   HTMLCanvasElement.prototype.getContext = function (t, o) { return orig.call(this, t, t === "2d" ? Object.assign({ willReadFrequently: true }, o || {}) : o); };
   SS = Math.min(1, Math.sqrt(1600000 / Math.max(1, p.width * p.height))); // em telas muito grandes a camada de spray tem menos pixels: o custo de fazê-la secar fica limitado
   if (spray) spray.remove();
-  try { trail = p.createGraphics(tw, th); spray = p.createGraphics(Math.ceil(p.width * SS), Math.ceil(p.height * SS)); } finally { HTMLCanvasElement.prototype.getContext = orig; }
+  try { trail = p.createGraphics(tw, th); spray = p.createGraphics(Math.max(2, Math.ceil(p.width * SS)), Math.max(2, Math.ceil(p.height * SS))); } finally { HTMLCanvasElement.prototype.getContext = orig; }
   trail.pixelDensity(1); trail.noStroke(); trail.clear();
   spray.pixelDensity(1); spray.clear(); sctx = spray.drawingContext; wasOn.fill(0);
   if (A.life) A.life.fill(0);
@@ -435,7 +525,7 @@ function updateSources() {
   pos.on.fill(0); spawnPool.length = 0;
   for (const n of R.screen().nodes) { const i = IDX[n.id]; if (i == null) continue; pos.x[i] = n.x / SCALE; pos.y[i] = n.y / SCALE; pos.on[i] = 1; }
   for (let i = 0; i < DATA.length; i++) { if (!pos.on[i]) continue; spawnPool.push(i); if (linkOf(i)) spawnPool.push(i, i); } // nós ligados recebem 3× mais agentes
-  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && PH.look === "spray") sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 80, 9, 0.85, false); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
+  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && PH.look === "spray") sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 60, 9, 0.6, false); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
 }
 function respawn(i) {
   if (!spawnPool.length) return false;
@@ -465,7 +555,7 @@ new p5(p => {
     // 1. evaporação: um retângulo semitransparente apaga o rastro em bloco (destination-out multiplica o alfa)
     const ctx = trail.drawingContext;
     ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = `rgba(0,0,0,${evapF})`; ctx.fillRect(0, 0, tw, th); ctx.globalCompositeOperation = "source-over";
-    if (spray && frameN % 20 === 0) { // o spray seca: a cada 20 quadros todo grão perde um pouco de tinta, até sumir (some em cerca de 6 s, 3 s ou 1,5 s, conforme a evaporação; seca rápido para o grão não ficar para trás quando o campo gira)
+    if (spray && spray.elt.width > 1 && spray.elt.height > 1 && frameN % 20 === 0) { // o spray seca: a cada 20 quadros todo grão perde um pouco de tinta, até sumir (some em cerca de 6 s, 3 s ou 1,5 s, conforme a evaporação; seca rápido para o grão não ficar para trás quando o campo gira)
       const dec = flush > 0 ? 60 : [9, 20, 40][PH.evap], im = sctx.getImageData(0, 0, spray.elt.width, spray.elt.height), d = im.data;
       for (let k = 3, e = d.length; k < e; k += 4) if (d[k]) d[k] = d[k] > dec ? d[k] - dec : 0;
       sctx.putImageData(im, 0, 0);
@@ -503,8 +593,8 @@ new p5(p => {
       if (tinta) { const k2 = k + 4; if (k2 + 3 < px.length) stain(px, k2, c, lc, PH.mix, dep >> 1); } // veia ligada mais grossa
       if (PH.look === "spray" && mi >= 0) { // grão de spray no caminho do agente
         const mao = lure.on && A.home[i] === lure.home; // agente que segue a mão: o rastro de spray acompanha o gesto
-        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, mao ? 4 : 3, mao ? 4 : 2.6, 0.9, false);
-        else if (((frameN + i) & 7) === 0) sprayAt(x * SCALE, y * SCALE, mi, 1, 2.5, 0.3, true); // sem linha ligada: só uma névoa clara, de vez em quando
+        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, mao ? 3 : 2, mao ? 4 : 2.6, 0.5, false); // metade da tinta de antes: o spray fica atrás, as bolinhas e as linhas na frente
+        else if (((frameN + i) & 7) === 0) sprayAt(x * SCALE, y * SCALE, mi, 1, 2.5, 0.2, true); // sem linha ligada: só uma névoa clara, de vez em quando
       }
       A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
     }
@@ -522,8 +612,8 @@ new p5(p => {
   p.clearTrail = () => { if (trail) trail.clear(); if (spray) spray.clear(); };
   window.Lab7Physarum = { PH, fps: () => p.frameRate(), drawMs: () => drawMs, trail: () => trail }; // para testes no console
 });
-function setCount(n) { PH.count = Math.max(PH.min, Math.min(PH.max, n)); $("#countBtn").textContent = PH.on ? `${PH.count} agentes` : "sem agentes"; $("#lessBtn").disabled = !PH.on || PH.count <= PH.min; $("#moreBtn").disabled = !PH.on || PH.count >= PH.max; if (R) sync(R.state()); }
-function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.length; $("#evapBtn").textContent = `Evaporação · ${PH.evapLevels[PH.evap][0]}`; }
+function setCount(n) { PH.count = Math.max(PH.min, Math.min(PH.max, n)); if (R) sync(R.state()); } // 200 agentes fixos (pedido do autor); o governador só mexe se o quadro pesar
+function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.length; } // evaporação fixa em média
 
 /* margens do campo medidas nos elementos reais: o nó nunca fica por trás de texto, ferramentas, contador ou ficha */
 let marginCache = { t: 120, r: 60, b: 80, l: 60, at: 0 };
@@ -557,11 +647,12 @@ function mountField() {
   }
   sync(R.state());
 }
-let lastActiveKey = "";
+let lastActiveKey = "", ligada = null;
 function sync(s) {
   const ak = TYPES.map(t => s.active[t] ? 1 : 0).join("");
   if (ak !== lastActiveKey) { // o conjunto de linhas mudou: todos os agentes renascem; se uma linha saiu, a rede dela evapora depressa
     const removed = [...lastActiveKey].some((c, i) => c === "1" && ak[i] !== "1");
+    ligada = started ? TYPES.find((t, i) => ak[i] === "1" && lastActiveKey[i] !== "1") || null : null; // a ligação que acabou de ser ligada: ganha uma frase de explicação
     lastActiveKey = ak; rebuildSibs(s.active);
     if (A.life) { A.life.fill(0); A.type.fill(-1); A.target.fill(-1); }
     if (removed) flush = 70;
@@ -572,29 +663,43 @@ function sync(s) {
   $("#lineBtn").textContent = s.edgeColor === "nos" ? "Linhas · tinta" : "Linhas · pretas"; $("#lineBtn").classList.toggle("active", s.edgeColor === "nos");
   $("#dotBtn").textContent = s.nodeStyle === "grapixo" ? "Bolinha · grafite" : "Bolinha · lisa"; $("#dotBtn").classList.toggle("active", s.nodeStyle === "grapixo");
 
-  $("#counter").textContent = `${s.revealed} / ${s.total} NÓS · ${s.lines} LINHAS` + (PH.on ? ` · ${PH.count} AGENTES` : "");
+  $("#counter").textContent = `${s.revealed} de ${s.total} projetos` + (s.lines ? ` · ${s.lines} ligações` : "");
   document.body.classList.toggle("card-open", !!s.focus); if (!s.focus) $("#card").classList.remove("open");
-  if (s.revealed >= s.total && !finalHinted) { finalHinted = true; guide("Todos os projetos revelados. Quer fechar o seu mapa? O botão congela o micélio e gera a estampa desta visita."); }
-  if (!PH.on) guide("O sistema pede menos movimento: o micélio fica desligado; nós e linhas continuam funcionando.");
-  else if (s.revealed < 3) guide(touch ? "Os pontos que piscam são projetos escondidos: toque num deles para revelar." : "Os pontos que piscam são projetos escondidos: clique num deles, ou passe a mão, para revelar.");
-  else if (!s.anyLine) guide("Ligue uma linha: o spray de cada projeto corre até os parentes. Onde duas tintas se encontram, os pontos ficam lado a lado.");
-  else guide("Desligue a linha para ver a rede evaporar; arraste o fundo para girar o campo e ver o rastro ficar para trás.");
+  // avisos: uma frase de cada vez, em linguagem simples; cada passo aparece uma vez
+  const passo = coach(s);
+  if (ligada) { const t = ligada, n = s.linesByType ? s.linesByType[t] : 0; ligada = null;
+    guide(`${Rizoma.LINES[t].label}: ${LINE_HELP[t][0]} ${t === "territorio" ? "" : n ? `${n} ligações agora.` : "Nenhuma ligação ainda: revele mais projetos."}`, 6500);
+    if (passo) setTimeout(() => guide(passo, 9000), 6700);
+  } else if (passo) guide(passo, 9000);
 }
-let guideT = 0; function guide(t) { const g = $("#guide"); clearTimeout(guideT); if (!t) { g.classList.remove("show"); return; } g.textContent = t; g.classList.add("show"); guideT = setTimeout(() => g.classList.remove("show"), 6000); }
+let coachStage = -1, opened = 0, avisouMovimento = false;
+function coach(s) { // devolve a frase do passo atual, só quando o passo muda
+  if (!started) return "";
+  if (!PH.on && !avisouMovimento) { avisouMovimento = true; return "Seu aparelho pede menos movimento, então o spray fica desligado. Os projetos e as ligações funcionam normalmente."; }
+  if (s.revealed >= s.total && !finalHinted) { finalHinted = true; coachStage = 3; return "Você revelou os 20 projetos. Para guardar este mapa, use Baixar meu mapa."; }
+  const st = s.revealed < 3 ? 0 : !s.anyLine ? 1 : !opened ? 2 : 3;
+  if (st === coachStage) return ""; coachStage = st;
+  return [touch ? "Passo 1 de 3 · Toque num ponto que pisca para revelar um projeto." : "Passo 1 de 3 · Clique num ponto que pisca para revelar um projeto.",
+    `Passo 2 de 3 · Agora ligue os projetos: escolha Ano, Mecanismo ou Edital ${small() ? "aqui embaixo" : "aqui em cima"}.`,
+    touch ? "Passo 3 de 3 · Toque numa bolinha para abrir o projeto." : "Passo 3 de 3 · Clique numa bolinha para abrir o projeto.",
+    "Pronto. Explore à vontade. Quando quiser, use Baixar meu mapa."][st];
+}
+let guideT = 0; function guide(t, ms) { const g = $("#guide"); clearTimeout(guideT); if (!t) { g.classList.remove("show"); return; } g.textContent = t; g.classList.add("show"); guideT = setTimeout(() => g.classList.remove("show"), ms || 6000); }
 
 /* ---------- ficha ---------- */
 function openCard(i) {
-  $("#cKicker").textContent = ((i.trailIndex > 1 ? `NÓ ${i.trailIndex} DA TRILHA · ` : "NÓ ABERTO · ") + i.circuit).toUpperCase();
+  opened++; $("#cKicker").textContent = ((i.trailIndex > 1 ? `${i.trailIndex}º PROJETO ABERTO · ` : "PROJETO · ") + "CIRCUITO " + i.circuit).toUpperCase();
   cardTitle.opts({ text: i.title, seed: i.id }); // cada projeto tem a sua mão: a semente é o id
   { const ci = INKS[MECHS.indexOf(i.mechanism)] || INK; $("#cMech").style.setProperty("--bg", hex(tom(ci, "luz"))); $("#cMech").style.setProperty("--fg", hex(tom(ci, "funda"))); } // a etiqueta veste a família da tinta: fundo luz, texto fundo
   $("#cMech").innerHTML = `<i style="--c:${hex(INKS[MECHS.indexOf(i.mechanism)] || INK)}"></i><span>${i.mechanism} · ${i.year} · ${i.valueText || "valor a verificar"}</span>`;
   $("#cExplain").innerHTML = explain(i);
   $("#cOpen").href = `index.html#${i.id}`;
-  const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${Rizoma.shortTitle(c.title)}</span><small>${c.why} →</small></button>`).join("") : `<div class="empty">Nenhuma linha ligada chega aqui. Ligue uma linha de fuga nas ferramentas.</div>`;
-  const hid = hiddenSiblings(IDX[i.id]); $("#cHidden").textContent = hid.length ? `${hid.length} nó(s) ligado(s) a este ainda escondido(s): ${hid.slice(0, 3).map(g => Rizoma.shortTitle(DATA[g].title)).join(", ")}${hid.length > 3 ? "…" : ""}. Passe a mão por eles no campo, ou estique o micélio até lá.` : "Nenhum nó ligado a este continua escondido.";
+  const L = i.connections || []; $("#cLinks").innerHTML = L.length ? L.map(c => `<button data-go="${c.id}" style="--sw:rgb(${c.color.join(",")})"><i></i><span>${Rizoma.shortTitle(c.title)}</span><small>${c.why} →</small></button>`).join("") : `<div class="empty">Nenhuma ligação ativa chega a este projeto. Escolha uma opção em Ligar os projetos por.</div>`;
+  const hid = hiddenSiblings(IDX[i.id]); $("#cHidden").textContent = hid.length ? `${hid.length === 1 ? "Um projeto ligado a este ainda está escondido" : hid.length + " projetos ligados a este ainda estão escondidos"}: ${hid.slice(0, 3).map(g => Rizoma.shortTitle(DATA[g].title)).join(", ")}${hid.length > 3 ? "…" : ""}. No mapa, eles piscam mais forte.` : "Nenhum projeto ligado a este continua escondido.";
   const P = {}; for (const q of (i.potentials || [])) (P[q.type] = P[q.type] || []).push(q);
-  $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button data-line="${t}" style="--sw:rgb(${Rizoma.LINES[t].color.join(",")})"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} nó(s)</small></button>`).join("") : `<div class="empty">Revele mais nós para ver ligações possíveis.</div>`;
-  $$("[data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("[data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
+  $("#cPot").innerHTML = Object.keys(P).length ? Object.keys(P).map(t => `<button data-line="${t}" style="--sw:rgb(${Rizoma.LINES[t].color.join(",")})"><i></i><span>Ligar ${Rizoma.LINES[t].label}</span><small>${P[t].length} projeto(s)</small></button>`).join("") : `<div class="empty">Revele mais projetos para ver ligações possíveis.</div>`;
+  $$("#card [data-go]").forEach(b => b.onclick = () => R.open(b.dataset.go)); $$("#card [data-line]").forEach(b => b.onclick = () => { R.setLine(b.dataset.line, true); R.refresh(); });
+  $$("#card [data-help]").forEach(b => b.onclick = () => openHelp(b.dataset.help));
   $("#card").classList.add("open");
 }
 $("#cClose").onclick = () => R.close();
@@ -615,7 +720,7 @@ function onHover(h) {
 stage.addEventListener("pointermove", e => { // a mão puxa o micélio do nó em foco; perto de um escondido, ele se revela
   if (!lure.on || touch) return; const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
   lure.x = x / SCALE; lure.y = y / SCALE; lure.lastMove = performance.now();
-  if (R && !R.state().hover) { const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 34); if (g) { R.revealAt(x, y, 40, 1); guide(`${Rizoma.shortTitle(g.title)} se revelou pelo micélio.`); } }
+  if (R && !R.state().hover) { const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 34); if (g) { R.revealAt(x, y, 40, 1); guide(`Revelado: ${Rizoma.shortTitle(g.title)}.`, 3500); } }
 });
 setInterval(() => { // o atrativo do cursor dura 2,5 s depois do último movimento; o aviso por permanência sobe de camada
   if (lure.on && performance.now() - lure.lastMove > 2500) lure.on = false;
@@ -625,9 +730,9 @@ setInterval(() => { // o atrativo do cursor dura 2,5 s depois do último movimen
   $("#htTitle").textContent = Rizoma.shortTitle(i.title);
   $("#htMeta").textContent = tier >= 1 ? `${i.year} · ${i.mechanism} · ${i.circuit}` : "";
   const hid = hiddenSiblings(IDX[i.id]);
-  $("#htMore").textContent = tier >= 2 ? `${i.valueText || "valor a verificar"} · ${(i.potentials || []).length} ligação(ões) possível(is) · ${hid.length} escondida(s)` : "";
+  $("#htMore").textContent = tier >= 2 ? `${i.valueText || "valor a verificar"} · ${hid.length} parente(s) escondido(s)` : "";
   $("#htBar").style.setProperty("--w", Math.min(100, dwell / 30) + "%");
-  if (tier === 3 && hover.tier < 3 && hid.length) guide(`Fique: ${hid.length} nó(s) ligado(s) a este ainda está(ão) escondido(s). Eles pulsam no micélio.`);
+  if (tier === 3 && hover.tier < 3 && hid.length) guide(`Este projeto tem ${hid.length} parente(s) ainda escondido(s). Eles piscam mais forte.`);
   hover.tier = tier;
 }, 120);
 function drawHints(p) { // radar: cada projeto ainda escondido pisca de leve no lugar onde está; os ligados ao nó em foco piscam mais forte
@@ -642,7 +747,7 @@ function drawHints(p) { // radar: cada projeto ainda escondido pisca de leve no 
 }
 stage.addEventListener("pointerdown", e => { // clicar num ponto que pisca revela aquele projeto
   if (!R || final.on) return; const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-  const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 22); if (g) { R.revealAt(x, y, 26, 1); guide(`${Rizoma.shortTitle(g.title)} revelado.`); }
+  const g = R.ghosts().find(g => Math.hypot(g.x - x, g.y - y) < 22); if (g) { R.revealAt(x, y, 26, 1); guide(`Revelado: ${Rizoma.shortTitle(g.title)}.`, 3500); }
 }, { capture: true });
 
 /* ---------- interação final: Meu micélio ---------- */
@@ -655,7 +760,7 @@ function composeFinal() { // junta rastro e rizoma num PNG com título
   g.drawImage(rc, 0, 0, W, H);
   const s = R.state(), lines = TYPES.filter(t => s.active[t]).map(t => Rizoma.LINES[t].label), d = new Date(), pad = n => String(n).padStart(2, "0");
   const title = `${s.revealed} projeto${s.revealed > 1 ? "s" : ""} · ${lines.length ? lines.join(" e ") : "sem linha ligada"} · ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
-  g.fillStyle = "#161616"; const sc = W / 900; g.font = `${Math.round(34 * sc)}px "TV0800 Cachoeira", Arial`; g.fillText("CARTOGRAFIA DO FOMENTO · MEU MICÉLIO", Math.round(24 * sc), H + Math.round(40 * sc));
+  g.fillStyle = "#161616"; const sc = W / 900; g.font = `${Math.round(34 * sc)}px "TV0800 Cachoeira", Arial`; g.fillText("CARTOGRAFIA DO FOMENTO · MEU MAPA", Math.round(24 * sc), H + Math.round(40 * sc));
   g.font = `${Math.round(18 * sc)}px Arial`; g.fillStyle = "#666"; g.fillText(title + (s.trailTitles && s.trailTitles.length ? " · trilha: " + s.trailTitles.join(" → ") : ""), Math.round(24 * sc), H + Math.round(72 * sc));
   return { url: out.toDataURL("image/png"), title, lines };
 }
@@ -663,8 +768,8 @@ function openFinal() {
   if (!R) return; final.on = true; R.setPaused(true); lure.on = false; $("#hoverTip").hidden = true;
   const f = composeFinal(); if (!f) { final.on = false; R.setPaused(false); return; }
   const s = R.state();
-  $("#finalTitle").textContent = f.title; $("#finalImg").src = f.url; $("#finalDownload").href = f.url; $("#finalDownload").download = `meu-micelio-${Date.now()}.png`;
-  $("#finalText").textContent = `Você revelou ${s.revealed} de ${s.total} projetos e abriu ${s.trail.length}. O micélio congelou do jeito que estava: este é o mapa que a sua visita desenhou, e nenhuma outra visita desenha o mesmo.`;
+  $("#finalTitle").textContent = f.title; $("#finalImg").src = f.url; $("#finalDownload").href = f.url; $("#finalDownload").download = `meu-mapa-${Date.now()}.png`;
+  $("#finalText").textContent = `Você revelou ${s.revealed} de ${s.total} projetos e abriu ${s.trail.length}. A imagem abaixo é o mapa que a sua visita desenhou. Baixe para guardar ou compartilhar.`;
   $("#finalLast").hidden = !s.trail.length;
   $("#final").hidden = false;
 }
@@ -680,15 +785,11 @@ $("#lineBtn").onclick = () => R.setEdgeColor(R.state().edgeColor === "nos" ? "na
 $("#dotBtn").onclick = () => R.setNodeStyle(R.state().nodeStyle === "grapixo" ? "bolinha" : "grapixo");
 function setLook(v) { PH.look = v; $("#lookBtn").textContent = v === "spray" ? "Rastro · spray" : "Rastro · mancha"; $("#lookBtn").classList.toggle("active", v === "spray"); if (trailP) trailP.clearTrail(); wasOn.fill(0); }
 $("#lookBtn").onclick = () => setLook(PH.look === "spray" ? "mancha" : "spray");
-$("#lessBtn").onclick = () => setCount(PH.count - PH.step);
-$("#moreBtn").onclick = () => setCount(PH.count + PH.step);
-$("#countBtn").onclick = () => setCount(200);
-$("#evapBtn").onclick = () => setEvap(PH.evap + 1);
 $("#clearBtn").onclick = () => trailP && trailP.clearTrail();
 $("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
-document.addEventListener("keydown", e => { if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase(); if (k === "e") setEvap(PH.evap + 1); if (k === "v") $("#palBtn").click(); if (k === "g") $("#lookBtn").click(); if (k === "l") $("#lineBtn").click(); if (k === "b") $("#dotBtn").click(); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
+document.addEventListener("keydown", e => { if ((e.target && /input|textarea/i.test(e.target.tagName)) || !$("#intro").hidden) return; const k = e.key.toLowerCase(); if (k === "v") $("#palBtn").click(); if (k === "g") $("#lookBtn").click(); if (k === "l") $("#lineBtn").click(); if (k === "b") $("#dotBtn").click(); if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); } if (e.key === "Escape" && final.on) closeFinal(false); });
 window.addEventListener("resize", () => R && R.resize());
-document.addEventListener("visibilitychange", () => { const hid = document.hidden || tab !== "campo"; if (trailP) hid ? trailP.noLoop() : trailP.loop(); if (R) R.setVisible(!hid); }); // aba oculta: tudo pausa
+document.addEventListener("visibilitychange", () => { const hid = document.hidden || tab !== "campo" || !$("#intro").hidden; if (trailP) hid ? trailP.noLoop() : trailP.loop(); if (R) R.setVisible(!hid); }); // aba oculta: tudo pausa
 
 /* ---------- Lab 07: paleta ---------- */
 function setPaleta(nome) {
@@ -696,6 +797,7 @@ function setPaleta(nome) {
   const rs = document.documentElement.style; rs.setProperty("--if", hex(INKS[0])); rs.setProperty("--fundo", hex(INKS[1])); rs.setProperty("--desc", hex(INKS[2]));
   SPRAY = INKS.map(c => ["funda", "sombra", "base", "clara"].map(n => `rgb(${tom(c, n).join(",")})`)); // os tons que o spray usa
   if (R) { R.setMechColors(mechMap()); if (trailP) trailP.clearTrail(); wasOn.fill(0); }
+  if (helpReady) renderHelp();
   $("#palBtn").textContent = nome === "tintas" ? "Cor · muro de BH" : "Cor · anterior"; $("#palBtn").classList.toggle("active", nome === "tintas");
   $("#palBtn2").textContent = nome === "tintas" ? "Comparar com a paleta anterior" : "Voltar para as tintas do muro de BH"; $("#palBtn2").classList.toggle("active", nome !== "tintas");
   renderCores();
@@ -764,8 +866,8 @@ function explain(i) {
   }
   const rel = REL.filter(r => r.a === d.id || r.b === d.id).map(r => { const o = DATA[IDX[r.a === d.id ? r.b : r.a]]; return o ? `<button data-go="${o.id}">${o.title} (${o.year})<small>${r.why} · fonte: ${r.source}</small></button>` : ""; }).join("");
   const falta = [d.region == null ? "regional" : "", d.proponent == null ? "proponente" : "", "local de execução", "fotos"].filter(Boolean);
-  return ex("O QUE É", `<p>Projeto aprovado em ${d.year} no edital ${d.edital}${d.value != null ? ", com " + Rizoma.money(d.value) : ""}.</p>`)
-    + ex("DE ONDE VEM O DINHEIRO", `<p>${ORIGEM[d.mechanism] || d.mechanism}</p>`)
+  return ex("O QUE É", `<p>Projeto aprovado em ${d.year} no edital ${d.edital}${d.value != null ? ", com " + Rizoma.money(d.value) : ""}.</p><button class="lnk" data-help="h-editais:${d.edital}">Como funciona este edital →</button>`)
+    + ex("DE ONDE VEM O DINHEIRO", `<p>${ORIGEM[d.mechanism] || d.mechanism}</p><button class="lnk" data-help="h-mec:${d.mechanism}">Entender este mecanismo →</button>`)
     + ex("QUANTO É", `<p>${quanto}</p>${regua(d)}`)
     + ex("CIRCUITO", `<p>${CIRCUITO[d.circuit] || d.circuit} Não é classificação oficial da Prefeitura.</p>`)
     + (rel ? ex("PARENTES DOCUMENTADOS", `<div class="rel">${rel}</div>`) : "")
@@ -798,11 +900,11 @@ function renderSpecimens() {
 Letreiro.ready.then(renderSpecimens);
 function setTab(t) {
   tab = t; $$(".tabs button").forEach(b => { const on = b.dataset.tab === t; b.classList.toggle("active", on); b.setAttribute("aria-selected", String(on)); });
-  $("#pLetras").hidden = t !== "letras"; $("#pCores").hidden = t !== "cores";
+  $("#pLetras").hidden = t !== "letras"; $("#pCores").hidden = t !== "cores"; $("#pAjuda").hidden = t !== "ajuda";
   const campo = t === "campo" && !document.hidden; if (trailP) campo ? trailP.loop() : trailP.noLoop(); if (R) R.setVisible(campo);
   if (t === "letras") { play.fit(); specs.forEach(s => s.fit()); } if (t === "cores") coresTitle.fit();
 }
-$$(".tabs button").forEach(b => b.onclick = () => setTab(b.dataset.tab));
+$$(".tabs button").forEach(b => b.onclick = () => { if (!$("#intro").hidden) enter(); setTab(b.dataset.tab); });
 /* controles do letreiro de teste */
 const playState = { mode: "palavra", mutate: 3200, squeeze: true, vazada: false };
 const playApply = () => { play.opts({ mode: playState.mode, mutate: playState.vazada ? 1600 : playState.mutate, squeeze: playState.squeeze, wrap: !playState.squeeze, vazada: playState.vazada, sway: $("#playSway").value / 100 });
@@ -819,7 +921,120 @@ $("#playText").oninput = e => play.set(e.target.value.trim() || "CARTOGRAFIA DO 
 setCount(PH.count); setEvap(PH.evap);
 setPaleta("tintas");
 mountField();
-setTimeout(() => { for (let i = 0; i < 5; i++) R.revealOne(); }, 600); // já nasce com alguns nós: o micélio aparece antes do primeiro gesto
+/* ---------- rodada 5: explicações (mecanismos, ligações, editais) ---------- */
+function renderHelp() {
+  const n2 = n => n * (n - 1) / 2, pares = t => { const L = Rizoma.LINES[t]; if (L.pair) return REL.length; const g = {}; DATA.forEach(d => { const k = L.key(d); if (k != null) g[k] = (g[k] || 0) + 1; }); return Object.values(g).reduce((a, n) => a + n2(n), 0); };
+  const mecs = MECHS.map((m, i) => { const v = DATA.filter(d => d.mechanism === m && d.value != null).map(d => d.value);
+    return `<article data-k="${m}"><h4><i style="--c:${hex(INKS[i])}"></i>${m}</h4><p>${MEC_HELP[m][0]}</p><p>${MEC_HELP[m][1]}</p><small>No corpus: ${v.length} projetos, de ${mil(Math.min(...v))} a ${mil(Math.max(...v))}, mediana de ${mil(median(v))}.</small></article>`; }).join("");
+  const linhas = TYPES.map(t => `<article data-k="${t}"><h4>${Rizoma.LINES[t].label}</h4><p>${LINE_HELP[t][1]}</p><small>${t === "territorio" ? "Hoje não liga nenhum projeto." : `No corpus inteiro, cria ${pares(t)} ligações.`}</small></article>`).join("");
+  const eds = [...new Set(DATA.map(d => d.edital))].sort((a, b) => (DATA.find(d => d.edital === a).year - DATA.find(d => d.edital === b).year) || a.localeCompare(b));
+  const editais = eds.map(e => { const ps = DATA.filter(d => d.edital === e), m = ps[0].mechanism, i = MECHS.indexOf(m), info = EDITAL_INFO[e] || {}, tot = ps.reduce((a, p) => a + (p.value || 0), 0);
+    return `<article data-k="${e}"><h4><i style="--c:${hex(INKS[i] || INK)}"></i>${e}</h4><p>${EDITAL_COMO[m] || ""}</p>${info.teto ? `<p><b>Teto:</b> ${info.teto}</p>` : ""}${info.nota ? `<p>${info.nota}</p>` : ""}
+      <small>${ps.length === 1 ? "Um projeto do corpus" : ps.length + " projetos do corpus"}, somando ${Rizoma.money(tot)}.</small><div class="pj">${ps.map(p => `<button data-ver="${p.id}">${Rizoma.shortTitle(p.title)} →</button>`).join("")}</div>
+      ${info.url ? `<small><a href="${info.url}" target="_blank" rel="noopener">Página na Prefeitura ↗</a></small>` : ""}</article>`; }).join("");
+  $("#helpBody").innerHTML = `<div class="kicker">COMO FUNCIONA</div><h2 id="helpTitle">COMO LER ESTE MAPA</h2>
+    <p class="lead">Em cinco passos. Depois, o que é cada mecanismo, cada tipo de ligação e cada edital.</p>
+    <div class="pctl"><button id="helpIntro">Ver a animação de novo</button><button id="helpGo" class="active">Ir para o mapa →</button></div>
+    <h3 id="h-usar">O que fazer</h3><ol class="hsteps">${DEMO.caps.map(c => `<li>${c.replace(/^\d\. /, "")}</li>`).join("")}</ol>
+    <h3 id="h-mec">Os três mecanismos</h3><p>Mecanismo é o caminho pelo qual o dinheiro público chega ao projeto. No mapa, cada mecanismo tem uma cor.</p><div class="hgrid">${mecs}</div>
+    <h3 id="h-linhas">As ligações</h3><p>As ligações mostram o que dois projetos têm em comum. Você escolhe qual ligar em Ligar os projetos por.</p><div class="hgrid">${linhas}</div>
+    <h3 id="h-editais">Os editais</h3><p>Edital é a chamada pública em que os projetos se inscrevem e são selecionados. Cada edital pertence a um mecanismo.</p><div class="hgrid">${editais}</div>
+    <p style="margin-top:26px;font-size:11px;color:#777">De onde vem cada informação: a descrição dos mecanismos e os tetos marcados com TCC vêm do texto do TCC; os números dos editais vêm das páginas da Prefeitura de Belo Horizonte, consultadas em 31/10/2026; os valores do corpus vêm das Tabelas 1 e 2 do TCC. No Incentivo Fiscal, o valor aprovado é o máximo que o projeto pode captar: quanto foi captado de fato não é publicado.</p>`;
+  $("#helpIntro").onclick = showIntro; $("#helpGo").onclick = () => setTab("campo");
+  $$("#helpBody [data-ver]").forEach(b => b.onclick = () => { setTab("campo"); R.open(b.dataset.ver); });
+  if (window.__helpTitle) window.__helpTitle.destroy(); window.__helpTitle = Letreiro.mount("#helpTitle", { text: "COMO LER\nESTE MAPA", seed: "ajuda", mutate: 5600 });
+}
+function openHelp(a) { // "h-mec" abre a seção; "h-mec:Incentivo Fiscal" abre a seção e destaca o cartão
+  const str = String(a), cut = str.indexOf(":"), sec = cut < 0 ? str : str.slice(0, cut), key = cut < 0 ? "" : str.slice(cut + 1);
+  if (!$("#intro").hidden) enter(); setTab("ajuda");
+  const p = $("#pAjuda"), el = key ? $$("#pAjuda [data-k]").find(e => e.dataset.k === key) : document.getElementById(sec);
+  $$("#pAjuda .hit").forEach(e => e.classList.remove("hit"));
+  if (el) { if (key) el.classList.add("hit"); p.scrollTop += el.getBoundingClientRect().top - p.getBoundingClientRect().top - 70; }
+}
+$("#helpBtn").onclick = () => openHelp("h-usar"); $("#lineHelp").onclick = () => openHelp("h-linhas");
+
+/* ---------- rodada 5: animação explicativa da entrada (cinco cenas em canvas, na linguagem do campo) ---------- */
+const DEMO = (() => {
+  const cv = $("#demo"), g = cv.getContext("2d"), W = 640, H = 360, DUR = 4800, dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const caps = [touch ? "1. Os pontos que piscam são projetos escondidos. Toque num deles para revelar." : "1. Os pontos que piscam são projetos escondidos. Clique num deles para revelar.",
+    "2. A cor diz de onde veio o dinheiro. O tamanho diz quanto dinheiro foi.",
+    "3. Ligue os projetos por ano, mecanismo ou edital. O spray corre entre os que têm aquilo em comum.",
+    touch ? "4. Toque numa bolinha para abrir o projeto e ler a explicação." : "4. Clique numa bolinha para abrir o projeto e ler a explicação.",
+    "5. No fim, baixe o mapa que a sua visita desenhou."];
+  const N = [[150, 135, 0, 17], [300, 100, 1, 10], [440, 155, 0, 14], [235, 238, 2, 7], [385, 268, 1, 9], [520, 238, 2, 6], [110, 268, 1, 8]]; // x, y, mecanismo, raio
+  const LK = [[0, 2], [1, 4], [3, 5], [0, 6], [2, 4]];
+  const rnd = i => { const v = Math.sin(i * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
+  const ease = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x), seg = (t, a, b) => ease((t - a) / (b - a)), lerp = (a, b, k) => a + (b - a) * k;
+  const cor = (m, tone) => hex(tom(INKS[m], tone || "base"));
+  let scene = 0, t0 = 0, tt = 0, playing = true, raf = 0;
+  function dot(n, on, k) {
+    const x = n[0], y = n[1], m = n[2];
+    if (!on) { const ph = reduced ? .5 : (Math.sin(performance.now() / 350 + x) + 1) / 2; g.fillStyle = `rgba(22,22,22,${.35 + .4 * ph})`; g.beginPath(); g.arc(x, y, 2.2, 0, 7); g.fill(); g.strokeStyle = `rgba(22,22,22,${.4 * (1 - ph)})`; g.lineWidth = 1; g.beginPath(); g.arc(x, y, 4 + ph * 9, 0, 7); g.stroke(); return; }
+    const r = n[3] * (k == null ? 1 : k);
+    g.fillStyle = cor(m, "sombra"); g.beginPath(); g.arc(x + r * .2, y + r * .24, r, 0, 7); g.fill();
+    g.fillStyle = cor(m); g.strokeStyle = "#161616"; g.lineWidth = 1.4; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); g.stroke();
+  }
+  function spray(x, y, m, n, sig, seed, a) { for (let i = 0; i < n; i++) { const r = Math.sqrt(-2 * Math.log(1 - rnd(seed + i) * .999)) * sig, an = rnd(seed + i + .5) * 6.283, q = rnd(seed + i + .25); g.globalAlpha = a * (.5 + .5 * rnd(seed + i + .75)); g.fillStyle = cor(m, q < .4 ? "base" : q < .82 ? "clara" : "sombra"); g.fillRect(x + Math.cos(an) * r, y + Math.sin(an) * r, 1.6, 1.6); } g.globalAlpha = 1; }
+  function cursor(x, y, click) {
+    if (click > 0 && click < 1) { g.strokeStyle = `rgba(22,22,22,${1 - click})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 6 + click * 22, 0, 7); g.stroke(); }
+    g.fillStyle = "#161616"; g.strokeStyle = "#fff"; g.lineWidth = 1.5; g.beginPath(); g.moveTo(x, y); g.lineTo(x + 4, y + 17); g.lineTo(x + 8, y + 11); g.lineTo(x + 15, y + 11); g.closePath(); g.fill(); g.stroke();
+  }
+  function label(txt, x, y, al) { g.font = "700 12px Arial"; const w = g.measureText(txt).width + 12, x0 = al === "center" ? x - w / 2 : x - 6; g.fillStyle = "rgba(255,255,255,.96)"; g.fillRect(x0, y - 13, w, 19); g.fillStyle = "#161616"; g.fillText(txt, x0 + 6, y + 1); }
+  function btn(txt, x, y, on) { g.font = "700 11px Arial"; const w = g.measureText(txt).width + 20; g.fillStyle = on ? "#161616" : "#fff"; g.fillRect(x, y, w, 24); g.strokeStyle = on ? "#161616" : "#bbb"; g.lineWidth = 1; g.strokeRect(x + .5, y + .5, w, 24); g.fillStyle = on ? "#f7f6f1" : "#161616"; g.fillText(txt, x + 10, y + 16); return w; }
+  function links(gr) { LK.forEach(([a, b], k) => { const A = N[a], B = N[b], n = Math.floor(22 * gr);
+      for (let i = 0; i < n; i++) { const u = i / 22; spray(lerp(A[0], B[0], u), lerp(A[1], B[1], u), rnd(k * 50 + i) < u ? B[2] : A[2], 5, 4, k * 1000 + i * 7, .7); }
+      g.strokeStyle = cor(A[2]); g.lineWidth = 1.2; g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(lerp(A[0], B[0], gr), lerp(A[1], B[1], gr)); g.stroke(); }); }
+  const clk = (t, a) => t > a && t < a + .14 ? (t - a) / .14 : 0;
+  function draw(t) {
+    g.clearRect(0, 0, W, H); g.fillStyle = "#f7f6f1"; g.fillRect(0, 0, W, H);
+    if (scene === 0) { const c1 = seg(t, .08, .38), k1 = seg(t, .4, .52), c2 = seg(t, .55, .78), k2 = seg(t, .8, .92);
+      if (t > .4) spray(N[0][0], N[0][1], 0, 60, 4 + 10 * k1, 10, .7); if (t > .8) spray(N[2][0], N[2][1], 0, 50, 4 + 9 * k2, 200, .7);
+      N.forEach((n, i) => dot(n, (i === 0 && t > .4) || (i === 2 && t > .8), i === 0 ? .4 + .6 * k1 : .4 + .6 * k2));
+      cursor((c2 > 0 ? lerp(N[0][0], N[2][0], c2) : lerp(560, N[0][0], c1)) + 3, (c2 > 0 ? lerp(N[0][1], N[2][1], c2) : lerp(320, N[0][1], c1)) + 3, clk(t, .4) || clk(t, .8)); }
+    if (scene === 1) { N.forEach((n, i) => dot(n, true, i === 0 ? 1 + .1 * Math.sin(t * 30) * seg(t, .62, .7) * (1 - seg(t, .9, 1)) : 1));
+      if (t > .08) label("Incentivo Fiscal", N[2][0] + 24, N[2][1] - 4); if (t > .25) label("Fundo Municipal", N[1][0] + 18, N[1][1] - 6); if (t > .42) label("Descentra", N[3][0] + 16, N[3][1] + 4);
+      if (t > .62) { label("maior: mais dinheiro", N[0][0], N[0][1] - 32, "center"); label("menor: menos", N[5][0] - 10, N[5][1] + 28, "center"); } }
+    if (scene === 2) { g.font = "700 9px Arial"; g.fillStyle = "#777"; g.fillText("LIGAR OS PROJETOS POR", 20, 14);
+      let x = 20; x += btn("Ano", x, 22, t > .3) + 6; x += btn("Mecanismo", x, 22, false) + 6; btn("Edital", x, 22, false);
+      links(seg(t, .34, .88)); N.forEach(n => dot(n, true));
+      const c = seg(t, .05, .26); cursor(lerp(420, 42, c), lerp(250, 38, c), clk(t, .28)); }
+    if (scene === 3) { links(1); N.forEach(n => dot(n, true)); const c = seg(t, .05, .3), o = seg(t, .42, .62), px = W - 250 * o;
+      if (o) { g.fillStyle = "#fff"; g.fillRect(px, 0, 250, H); g.strokeStyle = "#d4d1c8"; g.lineWidth = 1; g.strokeRect(px + .5, -1, 250, H + 2);
+        btn("← Voltar ao mapa", px + 16, 16, true); g.fillStyle = "#161616"; g.fillRect(px + 16, 62, 176, 15); g.fillRect(px + 16, 83, 122, 15);
+        g.fillStyle = cor(0, "luz"); g.fillRect(px + 16, 112, 156, 22); g.fillStyle = cor(0, "funda"); g.font = "700 10px Arial"; g.fillText("Incentivo Fiscal · 2023", px + 25, 127);
+        g.fillStyle = "#c9c6bd"; for (let i = 0; i < 7; i++) g.fillRect(px + 16, 152 + i * 16, i % 3 === 2 ? 130 : 208, 7); }
+      cursor(lerp(300, N[2][0], c) + 3, lerp(310, N[2][1], c) + 3, clk(t, .32)); }
+    if (scene === 4) { links(1); N.forEach(n => dot(n, true)); btn("↓ Baixar meu mapa", W - 148, 16, t > .3);
+      const c = seg(t, .05, .26), o = seg(t, .44, .7);
+      if (o) { g.fillStyle = "rgba(247,246,241,.82)"; g.fillRect(0, 0, W, H); const ww = 270 * o, hh = 152 * o, x0 = W / 2 - ww / 2, y0 = H / 2 - hh / 2 - 12;
+        g.fillStyle = "#fff"; g.fillRect(x0, y0, ww, hh); g.strokeStyle = "#161616"; g.lineWidth = 1.5; g.strokeRect(x0, y0, ww, hh);
+        g.save(); g.beginPath(); g.rect(x0, y0, ww, hh); g.clip(); g.translate(x0, y0); g.scale(ww / W, hh / H); links(1); N.forEach(n => dot(n, true)); g.restore();
+        if (o >= 1) label("meu-mapa.png · imagem salva", W / 2, y0 + hh + 26, "center"); }
+      cursor(lerp(360, W - 80, c), lerp(250, 34, c), clk(t, .28)); }
+  }
+  function ui() { $("#demoCap").textContent = caps[scene]; $("#demoN").textContent = `${scene + 1} de 5`; $$("#demoDots button").forEach((b, i) => b.querySelector("i").style.setProperty("--w", (i < scene ? 100 : i === scene ? Math.round(tt * 100) : 0) + "%")); }
+  function tick(now) { raf = 0; if ($("#intro").hidden) return;
+    if (playing && !reduced) { tt = (now - t0) / DUR; if (tt >= 1) { go((scene + 1) % 5); return; } }
+    draw(tt); ui(); raf = requestAnimationFrame(tick); }
+  function go(i) { scene = i; t0 = performance.now(); tt = reduced ? 1 : 0; ui(); if (!raf) raf = requestAnimationFrame(tick); }
+  $("#demoDots").innerHTML = caps.map((c, i) => `<button aria-label="Passo ${i + 1}"><span><i></i></span></button>`).join("");
+  $$("#demoDots button").forEach((b, i) => b.onclick = () => go(i));
+  $("#demoPlay").onclick = () => { playing = !playing; if (playing) t0 = performance.now() - tt * DUR; $("#demoPlay").textContent = playing ? "PAUSAR" : "CONTINUAR"; };
+  if (reduced) $("#demoPlay").hidden = true; // menos movimento: a animação não roda sozinha; os cinco passos ficam como quadros, um por traço
+  return { caps, play: () => go(0) };
+})();
+
+/* ---------- rodada 5: tela de entrada ---------- */
+const introMark = Letreiro.mount("#introMark", { text: "CARTOGRAFIA\nDO FOMENTO", seed: "entrada", mutate: 4800 });
+function showIntro() { $("#intro").hidden = false; $("#intro").scrollTop = 0; if (trailP) trailP.noLoop(); if (R) R.setVisible(false); DEMO.play(); introMark.fit(); }
+function enter() { // a experiência só começa aqui: o campo acorda e cinco projetos já aparecem
+  $("#intro").hidden = true; setTab("campo");
+  if (!started) { started = true; setTimeout(() => { for (let i = 0; i < 5; i++) R.revealOne(); }, 500); }
+}
+$("#enterBtn").onclick = enter; $("#introMore").onclick = () => openHelp("h-mec");
+helpReady = true; renderHelp();
+if (location.hash === "#direto") enter(); else showIntro(); // #direto pula a entrada (para testes)
 })();
 </script>
 <script src="js/labs-nav.js?v=20261112-31"></script>

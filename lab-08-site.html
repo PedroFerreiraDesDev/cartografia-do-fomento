@@ -249,6 +249,17 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .chart>p.read{margin:0 0 12px;max-width:none;min-height:38px;border:1px dashed #bbb;background:rgba(255,255,255,.6);padding:9px 11px;font-size:12px;line-height:1.5;color:#777}.chart>p.read.on{border:1.5px solid var(--ink);color:var(--ink);font-weight:700;background:#fff}
 .mini{display:grid;gap:3px;margin:2px 0 10px}.mini span{font-size:9px;color:#777}.mini i{display:block;height:9px;border:1px solid var(--ink);background:#fff}.mini b{display:block;height:100%;border-right:1px solid var(--ink)}
 .verind.big{border:1.5px solid var(--ink);background:#fff;padding:10px 13px;font-size:11px;font-weight:900}
+.summary{flex-wrap:wrap}.prog{flex:1 0 100%;display:flex;align-items:center;gap:10px;margin-top:6px;min-width:0}.prog #progTxt{font-size:8.5px;font-weight:900;letter-spacing:.12em;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.prog .dots{display:flex;gap:3px;margin-left:auto;flex:none}.prog .dots button{width:20px;height:20px;border:1px solid #bbb;border-radius:50%;background:#fff;font-size:9px;font-weight:900;padding:0;color:#888}.prog .dots button.done{background:#d4d1c8;border-color:#d4d1c8;color:var(--ink)}.prog .dots button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.antes{margin:20px 0 8px}.antes p{margin:4px 0 0;font-size:12px;line-height:1.6;color:#5c5c5c;max-width:660px}
+.chart.cap{padding:34px 0 26px;scroll-margin-top:84px}.chart.cap h2{font-size:30px;line-height:1.02;max-width:680px}
+.chart>p.lead{margin:8px 0 12px;max-width:660px;font-size:14px;line-height:1.65;color:#333}
+.chart>p.ponte{margin:22px 0 0;max-width:660px;font-size:14px;line-height:1.5;font-weight:700;color:var(--ink);border-top:1px dashed #bbb;padding-top:14px}
+.p5chart{border:1px solid var(--line);background:rgba(255,255,255,.55);line-height:0}.p5chart canvas{display:block;max-width:100%;cursor:pointer;touch-action:manipulation}
+.bignum{display:flex;align-items:baseline;gap:12px;margin:10px 0 2px}.bignum b{font-family:var(--head);font-size:clamp(64px,11vw,120px);font-weight:900;letter-spacing:-.05em;line-height:.9}.bignum span{font-size:13px;color:#777;max-width:120px;line-height:1.3}
+.fim{margin-top:22px;border-top:2px solid var(--ink);padding-top:14px}.fimbtn{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+@media(prefers-reduced-motion:no-preference){html.story-on .chart.cap .lead,html.story-on .chart.cap .answer,html.story-on .chart.cap .bignum{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}html.story-on .chart.cap.in .lead,html.story-on .chart.cap.in .answer,html.story-on .chart.cap.in .bignum{opacity:1;transform:none}html.story-on .chart.cap .answer{transition-delay:.15s}}
+@media(max-width:780px){.chart.cap h2{font-size:25px}.prog .dots button{width:18px;height:18px;font-size:8.5px}.prog #progTxt{display:none}.prog .dots{margin-left:0}}
 .mleg{display:flex;align-items:center;gap:5px;margin-top:10px;font-size:9.5px;color:#777}.mleg span{font-size:8.5px;font-weight:900;letter-spacing:.12em;margin-right:6px}.mleg i{display:inline-block;width:14px;height:14px;border:1px solid var(--line);background:rgba(22,22,22,var(--a));margin-left:6px}
 .gapgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 14px}.gapgrid article{border:1px dashed #bbb;padding:12px 14px}.gapgrid h4{margin:0 0 6px;font-size:14px}.gapgrid p{margin:0;font-size:11.5px;line-height:1.6;color:#5c5c5c}
 .mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
@@ -346,13 +357,44 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <section id="indicators" class="view hidden" aria-label="Indicadores">
   <div class="ind">
     <div class="ind-main">
-      <div class="summary" id="summary"><div><span class="kicker" id="sumKicker">CORPUS DO TCC</span><b id="sumTitle">Todos os projetos</b></div><div><button id="sumClear" class="ghost" hidden>LIMPAR SELEÇÃO</button></div></div>
-      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1 class="sec">Indicadores</h1><p>Seis perguntas: quatro sobre os vinte projetos e duas sobre os editais de onde eles saíram. Cada pergunta tem um gráfico só, e a resposta vem escrita antes dele. Toque num gráfico para ver quais projetos estão ali: eles acendem na lista ao lado e nos outros gráficos.</p></div>
-      <nav class="qnav" id="qnav" aria-label="As seis perguntas"><button data-q="years"><b>1</b>Em que ano?</button><button data-q="dots"><b>2</b>Quanto?</button><button data-q="lorenz"><b>3</b>É bem repartido?</button><button data-q="matrix"><b>4</b>O que têm em comum?</button><button data-q="pote"><b>5</b>Quanto o edital ofereceu?</button><button data-q="chance"><b>6</b>Quantos passam?</button><button data-q="gaps"><b>?</b>O que falta saber</button></nav>
+      <div class="summary" id="summary"><div><span class="kicker" id="sumKicker">CORPUS DO TCC</span><b id="sumTitle">Todos os projetos</b></div><div><button id="sumClear" class="ghost" hidden>LIMPAR SELEÇÃO</button></div><div class="prog" id="storyProg"><span id="progTxt"></span><span class="dots" id="progDots"></span></div></div>
+      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1 class="sec">Indicadores</h1><p>Esta tela conta uma história em nove passos. Começa no dinheiro que os editais oferecem, passa por quem consegue ser aprovado e chega aos vinte projetos de grafite deste trabalho. Leia de cima para baixo. Em cada passo, toque no gráfico para ver os projetos.</p></div>
+      <div class="antes"><div class="kicker">ANTES DE COMEÇAR · TRÊS CORES</div><p>Cada cor é um caminho pelo qual o dinheiro público chega ao projeto. Elas valem para a tela inteira. Toque numa cor para acender só os projetos dela.</p></div>
       <div class="mech-legend" id="mechLegend"></div>
       <p class="legend-note">Os valores são os <b>tetos aprovados</b> nas listas oficiais (DOM-BH, 2017–2024), não o que cada projeto conseguiu captar. <b>Monumental</b> e <b>capilar</b> são nomes dados pelo autor (TCC, cap. 5), não categorias dos editais. <span id="circNote"></span></p>
 
-      <section class="chart" data-chart="years"><div class="kicker"><i></i>PERGUNTA 1 DE 6 · TEMPO <button type="button" class="help" data-help="years" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Em que ano e por qual caminho?</h2><p class="answer" id="ansYears"></p>
+
+      <section class="chart cap" data-chart="muro" data-cap="O dinheiro"><div class="kicker"><i></i>PASSO 1 DE 9 · O DINHEIRO <button type="button" class="help" data-help="muro" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Tudo começa num edital</h2><p class="lead">Edital é a chamada pública em que a Prefeitura diz quanto dinheiro existe e quem pode pedir. Os vinte projetos de grafite deste trabalho saíram de doze editais. Este muro mostra o tamanho de cada um.</p><p class="answer" id="ansMuro"></p>
+        <p class="how">Como ler: cada faixa é um caminho do dinheiro. Cada bloco é um edital, do mais antigo em cima ao mais novo embaixo. Quanto maior o bloco, mais dinheiro. Os quadrados escuros são os projetos de grafite deste trabalho, na mesma escala. No Incentivo Fiscal, o valor do edital é o imposto de que a Prefeitura abre mão, e o projeto ainda precisa captar com empresas.</p>
+        <p class="read" id="muroRead" aria-live="polite"></p>
+        <div id="muroChart" class="p5chart" role="img" aria-label="Muro de blocos: cada bloco é um edital e o tamanho do bloco é o valor"></div>
+        <details class="fontes"><summary>Ver a fonte de cada valor</summary><ul id="muroFontes"></ul><p>Valores lidos em cada edital, em PDF, no site da Prefeitura de Belo Horizonte, em 13/11/2026.</p></details>
+        <p class="ponte">Esse dinheiro não vai direto para o muro. Antes, cada projeto precisa se inscrever e ser escolhido. ↓</p>
+      </section>
+
+      <section class="chart cap" data-chart="peneira" data-cap="A disputa"><div class="kicker"><i></i>PASSO 2 DE 9 · A DISPUTA <button type="button" class="help" data-help="peneira" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Muita gente pede, pouca gente leva</h2><p class="lead">Cada edital recebe centenas de inscrições, de todas as áreas da cultura: música, teatro, dança, arte urbana. Uma comissão escolhe. Aqui cada grão é um projeto inscrito.</p><p class="answer" id="ansPeneira"></p>
+        <p class="how">Como ler: cada quadro é um edital. Os grãos cinza, em cima da linha, são os inscritos que não passaram. Os grãos coloridos, embaixo, são os aprovados. Em 2017 a Prefeitura publicou só a soma do Fundo com o Incentivo Fiscal.</p>
+        <p class="read" id="peneiraRead" aria-live="polite"></p>
+        <div id="peneiraChart" class="p5chart" role="img" aria-label="Peneira: um grão por projeto inscrito; os aprovados passam a linha"></div>
+        <p class="how" style="margin-top:10px">Inscritos e aprovados: páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidas em 13/11/2026.</p>
+        <p class="ponte">A disputa não é igual em todo edital. Será que edital com mais dinheiro é mais fácil? ↓</p>
+      </section>
+
+      <section class="chart cap" data-chart="bolhas" data-cap="Tamanho e disputa"><div class="kicker"><i></i>PASSO 3 DE 9 · TAMANHO E DISPUTA <button type="button" class="help" data-help="bolhas" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O mais disputado é um dos menores</h2><p class="lead">Agora os dois números juntos. Cada bolinha é um edital: o tamanho é o dinheiro, a altura é a parte dos inscritos que passou.</p><p class="answer" id="ansBolhas"></p>
+        <p class="how">Como ler: da esquerda para a direita, os anos. Quanto mais baixa a bolinha, mais disputado o edital. Bolinha grande, edital com mais dinheiro. As bolinhas escuras dentro são os projetos de grafite deste trabalho. Contorno tracejado quer dizer dado incompleto.</p>
+        <p class="read" id="bolhasRead" aria-live="polite"></p>
+        <div id="bolhasChart" class="p5chart" role="img" aria-label="Bolinhas: tamanho é o valor do edital e altura é a parte dos inscritos aprovada"></div>
+        <p class="ponte">E o grafite? Quanto de todo esse dinheiro chegou aos vinte projetos? ↓</p>
+      </section>
+
+      <section class="chart cap" data-chart="pedaco" data-cap="O pedaço do grafite"><div class="kicker"><i></i>PASSO 4 DE 9 · O PEDAÇO DO GRAFITE</div><h2>O grafite é um pedaço pequeno</h2>
+        <div class="bignum"><b id="pedacoNum"></b><span>do valor dos editais</span></div><p class="answer" id="ansPedaco"></p>
+        <div id="pedacoChart" class="svgchart"></div>
+        <p class="how" style="margin-top:10px">Isso não é todo o grafite de Belo Horizonte. São os vinte projetos estudados no TCC. As listas oficiais têm outros projetos de arte urbana que ficaram fora deste recorte.</p>
+        <p class="ponte">Daqui em diante, a história é só desses vinte. Primeiro: quando eles foram aprovados? ↓</p>
+      </section>
+
+      <section class="chart cap" data-chart="years" data-cap="Tempo"><div class="kicker"><i></i>PASSO 5 DE 9 · TEMPO <button type="button" class="help" data-help="years" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Vinte projetos em oito anos</h2><p class="lead">Os projetos não chegam todo ano, nem pelo mesmo caminho. Aqui cada caixa é um ano e cada cor é um caminho do dinheiro.</p><p class="answer" id="ansYears"></p>
         <div class="metric" role="group" aria-label="Medida"><span>CONTAR</span><button data-metric="count" class="active">Projetos</button><button data-metric="value">Valor aprovado</button></div>
         <div class="metric views" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-yview="colunas" class="active">Colunas por ano</button><button data-yview="declive">Antes e depois de 2022</button><button data-yview="mancha">Mancha</button><button data-yview="cordas">Cordas</button></div>
         <p class="how" id="howYears"></p>
@@ -360,50 +402,40 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
         <div id="slopeChart" class="svgchart" hidden></div>
         <div id="cordasChart" class="svgchart cordas" hidden></div>
         <div class="mancha" id="mancha" hidden><canvas id="manchaCanvas" role="img" aria-label="Mancha que cresce: uma mancha por ano, área proporcional ao valor somado, cor por mecanismo"></canvas><div class="mancha-foot"><span id="manchaCap"></span><button type="button" id="manchaAgain" class="ghost">CRESCER DE NOVO</button></div></div>
+        <p class="ponte">Nem todo projeto recebe o mesmo. Quanto foi aprovado para cada um? ↓</p>
       </section>
 
-      <section class="chart" data-chart="dots"><div class="kicker"><i></i>PERGUNTA 2 DE 6 · VALOR <button type="button" class="help" data-help="dots" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quanto foi aprovado para cada projeto?</h2><p class="answer" id="ansDots"></p>
+      <section class="chart cap" data-chart="dots" data-cap="Valor"><div class="kicker"><i></i>PASSO 6 DE 9 · VALOR <button type="button" class="help" data-help="dots" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Projetos de tamanhos muito diferentes</h2><p class="lead">Na régua, cada bolinha é um projeto, colocado no valor que foi aprovado para ele. Os do Incentivo Fiscal ficam à direita, perto do teto. Os do Descentra ficam à esquerda.</p><p class="answer" id="ansDots"></p>
         <div class="metric views" id="wallsMode" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-vview="regua" class="active">Régua</button><button data-vview="muros">Blocos</button><button data-vview="celulas">Células</button></div>
         <p class="how" id="howDots"></p>
         <div id="dotChart" class="svgchart"></div>
         <div id="wallsChart" class="walls" hidden></div>
+        <p class="ponte">Somando os vinte, o dinheiro fica bem repartido? ↓</p>
       </section>
 
-      <section class="chart" data-chart="lorenz"><div class="kicker"><i></i>PERGUNTA 3 DE 6 · REPARTIÇÃO <button type="button" class="help" data-help="lorenz" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O dinheiro é bem repartido?</h2><p class="answer" id="ansLorenz"></p>
+      <section class="chart cap" data-chart="lorenz" data-cap="Repartição"><div class="kicker"><i></i>PASSO 7 DE 9 · REPARTIÇÃO <button type="button" class="help" data-help="lorenz" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Poucos projetos ficam com quase metade</h2><p class="lead">A fita é todo o valor aprovado para os vinte projetos, cortada em pedaços. Cada pedaço é um projeto, do maior para o menor.</p><p class="answer" id="ansLorenz"></p>
         <div class="metric views" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-rview="fita" class="active">Fita do dinheiro</button><button data-rview="curva">Curva de Lorenz</button></div>
         <p class="how" id="howLorenz"></p>
         <div id="fitaChart" class="svgchart"></div>
         <div id="lorenzChart" class="svgchart lorenz" hidden></div>
+        <p class="ponte">Os projetos grandes e os pequenos têm alguma coisa em comum? ↓</p>
       </section>
 
-      <section class="chart" data-chart="matrix"><div class="kicker"><i></i>PERGUNTA 4 DE 6 · LIGAÇÕES <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O que os projetos têm em comum?</h2><p class="answer" id="ansMatrix"></p>
+      <section class="chart cap" data-chart="matrix" data-cap="Ligações"><div class="kicker"><i></i>PASSO 8 DE 9 · LIGAÇÕES <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Dois grupos que quase não se tocam</h2><p class="lead">Dois projetos podem ter em comum o ano, o mecanismo, o edital, o tamanho do valor ou uma relação documentada. Arrumados por mecanismo, aparecem blocos escuros: projetos do mesmo caminho se parecem entre si e pouco com os outros. O TCC chama esses dois grupos de circuito monumental e circuito capilar.</p><p class="answer" id="ansMatrix"></p>
         <div class="metric views" id="matrixOrder" role="group" aria-label="Ordem da matriz"><span>ARRUMAR POR</span><button data-order="mecanismo" class="active">Mecanismo</button><button data-order="ano">Ano</button><button data-order="valor">Valor</button></div>
         <p class="how">Como ler: cada quadradinho cruza dois projetos, o da linha e o da coluna. Quanto mais escuro, mais coisas eles têm em comum: ano, mecanismo, edital, tamanho do valor ou curadoria. Arrumar por mecanismo junta os parecidos em blocos.</p>
         <div id="matrixChart" class="matrix"></div>
         <div class="mleg" aria-hidden="true"><span>COISAS EM COMUM</span><i style="--a:0"></i>0<i style="--a:.27"></i>1<i style="--a:.44"></i>2<i style="--a:.61"></i>3<i style="--a:.78"></i>4<i style="--a:.95"></i>5</div>
+        <p class="ponte">Essa história tem buracos. O que os documentos ainda não contam? ↓</p>
       </section>
 
-      <section class="chart" data-chart="pote"><div class="kicker"><i></i>PERGUNTA 5 DE 6 · EDITAIS <button type="button" class="help" data-help="pote" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quanto cada edital ofereceu?</h2><p class="answer" id="ansPote"></p>
-        <div class="metric views" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-pview="barras" class="active">Barras</button><button data-pview="quadros">Quadradinhos</button><button data-pview="media">Média por projeto</button></div>
-        <div class="metric views" role="group" aria-label="Ordem dos editais"><span>ARRUMAR POR</span><button data-porder="mecanismo" class="active">Mecanismo</button><button data-porder="ano">Ano</button><button data-porder="valor">Valor do edital</button><button data-porder="fatia">Fatia destes projetos</button></div>
-        <p class="how" id="howPote"></p>
-        <p class="read" id="poteRead" aria-live="polite"></p>
-        <div id="poteChart" class="svgchart"></div>
-        <details class="fontes"><summary>Ver a fonte de cada valor</summary><ul id="poteFontes"></ul><p>Valores lidos em cada edital, em PDF, no site da Prefeitura de Belo Horizonte, em 13/11/2026.</p></details>
-      </section>
-
-      <section class="chart" data-chart="chance"><div class="kicker"><i></i>PERGUNTA 6 DE 6 · DISPUTA <button type="button" class="help" data-help="chance" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>De quem se inscreve, quantos passam?</h2><p class="answer" id="ansChance"></p>
-        <p class="how">Como ler: cada linha é um edital. A barra inteira são todos os projetos inscritos, de todas as áreas da cultura. O pedaço pintado são os aprovados. Em 2017 a Prefeitura publicou só a soma do Fundo com o Incentivo Fiscal. Barra tracejada quer dizer que a página do edital não informa os aprovados.</p>
-        <div id="chanceChart" class="svgchart"></div>
-        <p class="how" style="margin-top:10px">Inscritos e aprovados: páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidas em 13/11/2026.</p>
-      </section>
-
-      <section class="chart" data-chart="gaps"><div class="kicker">O QUE AINDA FALTA SABER</div><h2>Duas perguntas sem resposta.</h2>
+      <section class="chart cap" data-chart="gaps" data-cap="O que falta"><div class="kicker">PASSO 9 DE 9 · O QUE FALTA</div><h2>O que esta história ainda não sabe contar</h2>
         <div class="gapgrid">
           <article><h4>Onde ficam as obras?</h4><p>Nenhum dos vinte projetos tem a regional conferida em documento. Por isso não existe gráfico por região: o site mostra a falta em vez de supor.</p></article>
           <article><h4>Quem são os proponentes?</h4><p>Gênero, raça, renda e classe social só entram se forem declarados pela própria pessoa e mostrados em conjunto. Nunca são deduzidos pelo bairro.</p></article>
         </div>
         <p class="how">Você conhece um desses projetos? Abra a página dele e conte o que sabe. Também dá para mandar fotos.</p>
+        <div class="fim"><div class="kicker">A HISTÓRIA ACABA AQUI. AGORA É COM VOCÊ</div><div class="fimbtn"><button type="button" id="fimMapa" class="primary">VER OS VINTE PROJETOS NO MAPA →</button><button type="button" id="fimEditais" class="ghost">ENTENDER CADA EDITAL →</button></div></div>
       </section>
     </div>
     <aside class="ind-side" id="indSide"><div class="kicker" id="sideKicker">CORPUS DO TCC</div><h3 id="sideTitle">Todos os projetos</h3><p id="sideText">Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Tocar num projeto abre a ficha, sem sair daqui.</p><button id="sideClear" class="ghost" hidden>LIMPAR SELEÇÃO</button><div id="sideList"></div></aside>
@@ -1171,7 +1203,7 @@ $$(".rating").forEach(g => g.onclick = e => { const b = e.target.closest("button
 $$("[data-metric]").forEach(b => b.onclick = () => { metric = b.dataset.metric; $$("[data-metric]").forEach(x => x.classList.toggle("active", x.dataset.metric === metric)); renderIndicators(); });
 function aggregate(list, keyFn) { const m = new Map(); list.forEach(p => { const k = keyFn(p); if (!m.has(k)) m.set(k, []); m.get(k).push(p); }); return [...m.entries()].map(([key, projects]) => ({ key, projects, count: projects.length, value: projects.reduce((s, p) => s + (p.value || 0), 0) })); }
 function selectedProjects(sel) { if (!sel) return DATA; if (sel.type === "region") return DATA.filter(p => (p.region || "Não verificada") === sel.key); if (sel.type === "year") return DATA.filter(p => String(p.year) === String(sel.key)); if (sel.type === "mechanism") return DATA.filter(p => p.mechanism === sel.key); if (sel.type === "edital") return DATA.filter(p => p.edital === sel.key); if (sel.type === "project") return DATA.filter(p => p.id === sel.key); if (sel.type === "pair") { const [a, b] = sel.key.split("|"); return DATA.filter(p => p.id === a || p.id === b); } if (sel.type === "scale") return DATA.filter(p => Rizoma.scaleOf(p.value) === sel.key); if (sel.type === "circuit") return DATA.filter(p => p.circuit === sel.key); if (sel.type === "cross") { const [m, t, k] = sel.key.split("|"); return selectedProjects({ type: t, key: k }).filter(p => p.mechanism === m); } return DATA; }
-function renderIndicators() { renderLegend(); renderYears(); renderSlope(); renderCordas(); renderWalls(); renderDots(); renderFita(); renderLorenz(); renderMatrix(); renderPote(); renderChance(); renderAnswers(); renderEditalAnswers(); renderViews(); renderSide(); }
+function renderIndicators() { renderLegend(); renderYears(); renderSlope(); renderCordas(); renderWalls(); renderDots(); renderFita(); renderLorenz(); renderMatrix(); renderAnswers(); renderStoryAnswers(); renderFontes(); renderViews(); renderSide(); setTimeout(markCaps, 400); }
 /* ---------- gráficos novos (propostos no Lab 05; wireframe em wireframes-svg/12-identidade-e-novos-graficos.svg) ---------- */
 const svgOpen = (w, h, label) => `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">`;
 function renderDots() { // régua de valores: posição numa escala comum (Cleveland e McGill, 1984) com linhas de referência (Few, 2006)
@@ -1320,92 +1352,104 @@ const EDS = [...new Set(DATA.map(d => d.edital))].sort((a, b) => MECHS.indexOf(e
 const edCorpus = e => DATA.filter(d => d.edital === e).reduce((a, p) => a + (p.value || 0), 0);
 const pct1 = x => (x * 100 < 10 ? (x * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) : Math.round(x * 100)) + "%";
 const milhoes = v => "R$ " + (v / 1e6).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + (v >= 2e6 ? " milhões" : " milhão");
-/* Pergunta 5, rodada 9: o mesmo dado (valor de cada edital e a parte dos projetos do corpus) em três formas, com ordenação,
-   leitura ao passar a mão e lupa. Visão geral primeiro, filtro e detalhe sob pedido (Shneiderman, 1996); a lupa é foco e contexto:
-   o pedaço pequeno é ampliado sem tirar a barra inteira de vista (Card, Mackinlay e Shneiderman, 1999).
-   - barras: comprimento numa escala comum (Cleveland e McGill, 1984); clicar num edital abre a lupa com cada projeto;
-   - quadradinhos: gráfico de unidades, um quadrado = R$ 100 mil, para contar em vez de medir;
-   - média: valor do edital ÷ aprovados (conta feita aqui, com dois números oficiais), com cada projeto do corpus na mesma régua. */
-let pView = "barras", pOrder = "mecanismo";
+/* ---------- rodada 11: a tela Indicadores vira uma história em nove passos ----------
+   Pedido do autor: leitura linear, uma história contada pelos gráficos, como um infográfico. Estrutura de "taça de martíni":
+   primeiro a narrativa conduzida pelo autor, do geral ao particular, e só depois a exploração livre no mapa (Segel e Heer, 2010).
+   Cada passo tem título que afirma o achado e número calculado (Knaflic, 2015), um "como ler" e uma ponte para o passo seguinte.
+   Os três desenhos dos editais são em p5.js, na linguagem do site (papel, três tintas, bolinha, grão), e partem das propostas A, B e C
+   aprovadas pelo autor: muro de blocos (McCandless, The Billion Dollar Gram), peneira (Neurath, Isotype) e bolinhas (McCandless,
+   Snake Oil Supplements). Ideias emprestadas, nenhum código copiado. Detalhe em rizoma/PROPOSTAS-LAB07.md, seção 3J. */
 const edAvg = e => { const v = EDITAL_VALOR[e] || {}; if (v.junto) { const j = JUNTOS[v.junto], t = EDS.filter(x => (EDITAL_VALOR[x] || {}).junto === v.junto).reduce((a, x) => a + (EDITAL_VALOR[x].total || 0), 0); return t && j ? t / j.aprov : null; } return v.total && v.aprov ? v.total / v.aprov : null; };
-function poteOrder() { const V = e => EDITAL_VALOR[e] || {}, tot = e => V(e).total || 0, fat = e => V(e).total ? edCorpus(e) / V(e).total : -1, mec = (a, b) => MECHS.indexOf(edMech(a)) - MECHS.indexOf(edMech(b));
-  const by = { mecanismo: (a, b) => mec(a, b) || edYear(a) - edYear(b), ano: (a, b) => edYear(a) - edYear(b) || mec(a, b), valor: (a, b) => tot(b) - tot(a) || mec(a, b), fatia: (a, b) => fat(b) - fat(a) || mec(a, b) };
-  return EDS.slice().sort(by[pOrder] || by.mecanismo); }
-function edRead(e) { const v = EDITAL_VALOR[e] || {}, c = edCorpus(e), n = DATA.filter(d => d.edital === e).length, nf = x => x.toLocaleString("pt-BR"), avg = edAvg(e);
-  return `${e}: ${v.total ? milhoes(v.total) + " no edital" : "o edital não fixa valor"}. ${n === 1 ? "Um projeto deste corpus" : n + " projetos deste corpus"}, ${shortMoney(c)}${v.total ? " (" + pct1(c / v.total) + " do edital)" : ""}.${v.insc && v.aprov ? ` ${nf(v.aprov)} aprovados entre ${nf(v.insc)} inscritos.` : ""}${avg ? ` Média por aprovado: ${shortMoney(avg)}${v.junto ? ", somando Fundo e IF" : ""}.` : ""}`; }
-function renderPote() {
-  const sm = small(), W = sm ? 400 : 820, x0 = 2, x1 = W - 2, order = poteOrder(), selE = selection && selection.type === "edital" ? selection.key : null, focus = R ? R.state().focus : null;
-  const V = e => EDITAL_VALOR[e] || {}, inkOf = e => INKS[MECHS.indexOf(edMech(e))] || INK, max = Math.max(...EDS.map(e => V(e).total || V(e).est || 0), 1);
-  const dirOf = e => { const v = V(e), c = edCorpus(e); return v.total ? `${shortMoney(v.total)} no edital · ${shortMoney(c)} nestes projetos (${pct1(c / v.total)})` : `sem valor no edital · ${shortMoney(c)} nestes projetos`; };
-  const open = (e, y, h, dir) => `<g data-ct="edital" data-ck="${esc(e)}" data-label="${esc(e)}" class="${selE === e ? "active" : ""}"><rect class="halo" x="0" y="${y}" width="${W}" height="${h}" fill="#161616" fill-opacity=".07"/><text x="${x0}" y="${y + 12}" class="lab">${esc(e)}</text><text x="${x1}" y="${y + 12}" text-anchor="end">${dir}</text>`;
-  const tip = e => { const v = V(e); return `<title>${esc(edRead(e))}</title>`; };
-  let body = "", y = 6;
-  if (pView === "quadros") { // um quadrado = R$ 100 mil
-    const sq = sm ? 8 : 9, gap = 2, per = Math.floor((x1 - x0 + gap) / (sq + gap)), U = 100000;
-    for (const e of order) { const v = V(e), c = edCorpus(e), n = Math.max(1, Math.round((v.total || v.est || 0) / U)), cu = c / U, rows = Math.ceil(n / per), ink = inkOf(e), base = hex(ink), luz = hex(tom(ink, "luz")), h = 18 + rows * (sq + gap);
-      body += open(e, y, h + 4, dirOf(e));
-      for (let k = 0; k < n; k++) { const X = x0 + (k % per) * (sq + gap), Y = y + 18 + Math.floor(k / per) * (sq + gap);
-        body += v.total ? `<rect x="${X}" y="${Y}" width="${sq}" height="${sq}" fill="${luz}" stroke="#161616" stroke-opacity=".45" stroke-width=".6"/>` : `<rect x="${X}" y="${Y}" width="${sq}" height="${sq}" fill="none" stroke="#161616" stroke-opacity=".5" stroke-width=".6" stroke-dasharray="1.5 1.5"/>`;
-        const f = Math.min(1, cu - k); if (f > 0) body += `<rect x="${X}" y="${Y}" width="${f1(Math.max(1.2, sq * f))}" height="${sq}" fill="${base}" stroke="#161616" stroke-width=".6"/>`; }
-      body += tip(e) + "</g>"; y += h + 12; }
-  } else if (pView === "media") { // média do edital e cada projeto do corpus na mesma régua
-    const dom = 172000, X = val => x0 + 10 + (val / dom) * (x1 - x0 - 20);
-    for (const e of order) { const v = V(e), avg = edAvg(e), ps = DATA.filter(d => d.edital === e && d.value != null).sort((a, b) => a.value - b.value);
-      const pre = []; ps.forEach(p => { const cx = X(p.value); let lvl = 0; while (pre.some(q => Math.abs(q.cx - cx) < 15 && q.lvl === lvl)) lvl++; pre.push({ cx, lvl }); }); // bolinhas empilhadas pedem linha mais alta
-      const up = Math.max(0, ...pre.map(q => q.lvl)) * 11, rh = 56 + up, ya = y + 38 + up;
-      body += open(e, y, rh - 4, avg ? `média por aprovado: ${shortMoney(avg)}${v.junto ? " (Fundo e IF juntos)" : ""}` : "média não calculada: faltam números publicados") + `<line x1="${x0}" y1="${ya}" x2="${x1}" y2="${ya}" stroke="#d4d1c8"/>`
-        + (avg ? `<line x1="${f1(X(avg))}" y1="${ya - 15}" x2="${f1(X(avg))}" y2="${ya + 9}" stroke="#161616" stroke-width="2.4" ${v.junto ? 'stroke-dasharray="3 2"' : ""}/>` : "") + tip(e) + "</g>";
-      const placed = []; ps.forEach(p => { const cx = X(p.value); let lvl = 0; while (placed.some(q => Math.abs(q.cx - cx) < 15 && q.lvl === lvl)) lvl++; placed.push({ cx, lvl }); const cy = ya - 1 - lvl * 11;
-        body += `<g data-ct="project" data-ck="${p.id}" data-label="${esc(Rizoma.shortTitle(p.title))}" class="${focus === p.id ? "active" : ""}"><circle class="halo" cx="${f1(cx)}" cy="${f1(cy)}" r="12" fill="#161616" fill-opacity=".1"/><svg x="${f1(cx - 10)}" y="${f1(cy - 10)}" width="20" height="20" viewBox="0 0 40 40" stroke-width="1.4">${wallBody(p)}</svg><title>${esc(p.title)} · ${money(p.value)}${avg ? " · " + (p.value > avg ? "acima" : p.value < avg ? "abaixo" : "na") + " da média do edital" : ""}</title></g>`; });
-      y += rh; }
-    [0, 50000, 100000, 150000].forEach(t => { const xx = f1(X(t)); body += `<line x1="${xx}" y1="${y}" x2="${xx}" y2="${y + 5}" stroke="#161616" stroke-opacity=".5"/><text x="${xx}" y="${y + 16}" text-anchor="${t === 0 ? "start" : "middle"}">${t === 0 ? "R$ 0" : "R$ " + t / 1000 + " mil"}</text>`; }); y += 22;
-  } else { // barras, com lupa no edital selecionado
-    for (const e of order) { const v = V(e), c = edCorpus(e), ink = inkOf(e), base = hex(ink), luz = hex(tom(ink, "luz")), clara = hex(tom(ink, "clara")), sel = selE === e && c > 0, rh = 42 + (sel ? 52 : 0);
-      const w = (x1 - x0) * ((v.total || v.est || 0) / max), wc = Math.max(2.5, (x1 - x0) * (c / max));
-      body += open(e, y, rh - 4, dirOf(e))
-        + (v.total ? `<rect x="${x0}" y="${y + 18}" width="${f1(w)}" height="14" fill="${luz}" stroke="#161616"/>` : `<rect x="${x0}" y="${y + 18}" width="${f1(w)}" height="14" fill="url(#hachura)" stroke="#161616" stroke-dasharray="3 3"/>`)
-        + `<rect x="${x0}" y="${y + 18}" width="${f1(wc)}" height="14" fill="${base}" stroke="#161616"/>`
-        + (sel ? `<path d="M${x0} ${y + 32}V${y + 58}M${f1(x0 + wc)} ${y + 32}L${x1} ${y + 58}" fill="none" stroke="#161616" stroke-opacity=".5" stroke-dasharray="2 2"/><text x="${x1}" y="${y + 46}" text-anchor="end">lupa: o pedaço escuro ampliado, projeto por projeto</text>` : "") + tip(e) + "</g>";
-      if (sel) { let px = x0; DATA.filter(d => d.edital === e && d.value).sort((a, b) => b.value - a.value).forEach(p => { const pw = (x1 - x0) * p.value / c, nome = Rizoma.shortTitle(p.title), full = `${nome} · ${shortMoney(p.value)}`, lab = pw > full.length * 5.4 + 14 ? full : pw > 58 ? shortMoney(p.value) : "";
-        body += `<g data-ct="project" data-ck="${p.id}" data-label="${esc(nome)}" class="${focus === p.id ? "active" : ""}"><rect class="halo" x="${f1(px)}" y="${y + 56}" width="${f1(pw)}" height="28" fill="#161616" fill-opacity=".14"/><rect x="${f1(px)}" y="${y + 59}" width="${f1(pw)}" height="22" fill="${clara}" stroke="#161616"/>${lab ? `<text x="${f1(px + 7)}" y="${y + 74}" class="lab">${esc(lab)}</text>` : ""}<title>${esc(p.title)} · ${money(p.value)} · ${pct1(p.value / c)} destes projetos no edital</title></g>`; px += pw; }); }
-      y += rh; }
-  }
-  $("#poteChart").innerHTML = svgOpen(W, y + 4, "Valor total de cada edital e parte que ficou com os projetos do corpus") + `<defs><pattern id="hachura" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#161616" stroke-opacity=".35"/></pattern></defs>` + body + "</svg>";
-  $("#poteFontes").innerHTML = EDS.map(e => { const v = V(e); return `<li><b>${esc(e)}</b>: ${v.total ? money(v.total) : "sem valor fixado"} (${esc(v.tipo || "")}). ${v.obs ? esc(v.obs) + " " : ""}${v.fonte ? `<a href="${v.fonte}" target="_blank" rel="noopener">Edital em PDF ↗</a>` : ""}</li>`; }).join("");
-  bindCharts();
-  const read = $("#poteRead"), rest = () => selE ? edRead(selE) : touch ? "Toque numa linha para ler os números do edital e ver os projetos na lista." : "Passe a mão numa linha para ler os números do edital. Clique para fixar.";
-  read.textContent = rest(); read.classList.toggle("on", !!selE);
-  $$("#poteChart [data-ct=edital]").forEach(g => { g.addEventListener("mouseenter", () => { if (!touch) { read.textContent = edRead(g.dataset.ck); read.classList.add("on"); } }); g.addEventListener("mouseleave", () => { read.textContent = rest(); read.classList.toggle("on", !!selE); }); });
-  $$("[data-pview]").forEach(b => b.classList.toggle("active", b.dataset.pview === pView)); $$("[data-porder]").forEach(b => b.classList.toggle("active", b.dataset.porder === pOrder));
-  const comp = EDS.filter(e => edAvg(e) && !V(e).junto).flatMap(e => DATA.filter(d => d.edital === e && d.value != null).map(p => p.value > edAvg(e))), acima = comp.filter(Boolean).length;
-  $("#howPote").textContent = pView === "quadros" ? "Como ler: cada quadradinho vale R$ 100 mil. Os claros são o valor do edital. Os escuros são os projetos deste corpus. Quadradinho tracejado quer dizer que o edital não fixa valor: o desenho usa a estimativa oficial de um ano."
-    : pView === "media" ? `Como ler: o traço preto é a média do edital, o valor total dividido pelo número de aprovados. Cada bolinha é um projeto deste corpus, no valor dele. Bolinha à direita do traço ficou acima da média. Dos ${comp.length} projetos com média calculada, ${acima} estão acima dela. A média é uma conta feita aqui com dois números oficiais, não um número publicado. No Incentivo Fiscal ela é só referência: o edital limita a renúncia total, e cada projeto pode captar até o próprio teto. Em 2017 o traço é tracejado porque os aprovados foram publicados somando Fundo e IF.`
-    : `Como ler: cada linha é um edital. A barra clara é todo o valor que o edital pôs à disposição. O pedaço escuro, à esquerda, é a soma dos projetos deste corpus naquele edital. ${touch ? "Toque" : "Clique"} num edital para abrir a lupa, que amplia o pedaço escuro e mostra cada projeto. Barra tracejada quer dizer que o edital não fixa valor. No Incentivo Fiscal, o valor do edital é a renúncia fiscal prevista, e o valor de cada projeto é o teto que ele pode captar com empresas.`;
+function edRead(e) { const v = EDITAL_VALOR[e] || {}, c = edCorpus(e), n = DATA.filter(d => d.edital === e).length, nf = x => x.toLocaleString("pt-BR"), j = v.junto ? JUNTOS[v.junto] : null;
+  return `${e}: ${v.total ? milhoes(v.total) + " no edital" : "o edital não fixa valor"}. ${n === 1 ? "Um projeto de grafite deste trabalho" : n + " projetos de grafite deste trabalho"}, ${shortMoney(c)}${v.total ? " (" + pct1(c / v.total) + " do edital)" : ""}. ${j ? `${nf(j.aprov)} aprovados entre ${nf(j.insc)} inscritos, somando Fundo e Incentivo Fiscal.` : v.insc && v.aprov ? `${nf(v.aprov)} aprovados entre ${nf(v.insc)} inscritos (${pct1(v.aprov / v.insc)}).` : v.taxa ? `${nf(v.aprov)} aprovados, ${pct1(v.taxa)} dos inscritos.` : v.insc ? `${nf(v.insc)} inscritos; aprovados não informados.` : ""}`; }
+const ED8 = EDS.map(e => { const v = EDITAL_VALOR[e] || {}, ps = DATA.filter(d => d.edital === e && d.value).sort((a, b) => b.value - a.value), j = v.junto ? JUNTOS[v.junto] : null;
+  return { e, v, ps, corpus: ps.reduce((a, p) => a + p.value, 0), mi: MECHS.indexOf(edMech(e)), year: edYear(e), total: v.total || null, est: v.est || null, junto: !!v.junto, insc: v.insc || null, aprov: v.aprov || null, rate: j ? j.aprov / j.insc : v.insc && v.aprov ? v.aprov / v.insc : v.taxa || null }; });
+const PRETO = [22, 22, 22]; // o preto do pixo: texto, contorno e o que não é de um mecanismo só (INK, nesta página, é o cinza do rastro livre)
+const mixInk = (c, k) => c.map((x, i) => Math.round(x * k + [247, 246, 241][i] * (1 - k))), easeO = t => 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
+const ST = { sk: {}, prog: {}, playing: {}, hov: null };
+const edHot = () => { const s = hoverSel || selection; return s && s.type === "edital" ? s.key : null; };
+function redrawStory() { if (page !== "indicators") return; for (const k in ST.sk) ST.sk[k].redraw(); const h = edHot(), rest = touch ? "Toque num edital para ler os números dele." : "Passe a mão num edital para ler os números dele. Clique para fixar.";
+  ["muroRead", "peneiraRead", "bolhasRead"].forEach(id => { const el = $("#" + id); if (!el) return; el.textContent = h ? edRead(h) : rest; el.classList.toggle("on", !!h); }); }
+function playStory(key) { if (!(key in ST.prog) || ST.prog[key] >= 1 || ST.playing[key]) return; if (reduced) { ST.prog[key] = 1; ST.sk[key].redraw(); return; }
+  ST.playing[key] = true; const t0 = performance.now(), step = () => { const t = Math.min(1, (performance.now() - t0) / 1100); ST.prog[key] = t; ST.sk[key].redraw(); if (t < 1) requestAnimationFrame(step); else ST.playing[key] = false; }; requestAnimationFrame(step);
+  setTimeout(() => { if (ST.prog[key] < 1) { ST.prog[key] = 1; ST.playing[key] = false; ST.sk[key].redraw(); } }, 2600); } // se o navegador segurar a animação, o desenho aparece inteiro
+function mountSketch(key, holder, layout, draw, pick) {
+  ST.prog[key] = reduced || !("IntersectionObserver" in window) ? 1 : 0;
+  ST.sk[key] = new p5(p => { let k = 1, L = null, elt = null;
+    const fit = () => { const el = $("#" + holder), w = el ? el.clientWidth : 0; if (!w) return false; const sm = w < 560, bw = sm ? 400 : 820; if (!L || L.bw !== bw) L = layout(bw, sm); k = w / bw; const cw = Math.round(w), ch = Math.round(L.H * k); if (p.width !== cw || p.height !== ch) p.resizeCanvas(cw, ch, true); return true; };
+    p.setup = () => { const c = p.createCanvas(10, 10); c.parent(holder); elt = c.elt; p.noLoop(); };
+    p.draw = () => { if (!fit()) return; p.clear(); p.textFont("Arial"); p.push(); p.scale(k); const ids = highlightIds(); draw(p, L, edHot(), d => !ids || d.ps.some(x => ids.has(x.id)), easeO(ST.prog[key])); p.pop(); };
+    const at = () => L && page === "indicators" && p.mouseX >= 0 && p.mouseY >= 0 && p.mouseX <= p.width && p.mouseY <= p.height ? pick(L, p.mouseX / k, p.mouseY / k) : undefined;
+    p.mouseMoved = ev => { if (touch) return; const h = ev && ev.target === elt ? at() : undefined; if (h === undefined) { if (ST.hov === key) { ST.hov = null; hoverSel = null; renderSide(); } return; }
+      const cur = hoverSel && hoverSel.type === "edital" ? hoverSel.key : null; if ((h || null) !== cur) { hoverSel = h ? { type: "edital", key: h, label: h } : null; ST.hov = h ? key : null; renderSide(); } };
+    p.mouseClicked = ev => { const h = ev && ev.target === elt ? at() : undefined; if (!h) return; /* só o clique no próprio desenho conta, não o que cai numa ficha por cima */ selection = selection && selection.type === "edital" && selection.key === h ? null : { type: "edital", key: h, label: h }; hoverSel = null; renderIndicators(); };
+  });
 }
-$$("[data-pview]").forEach(b => b.onclick = () => { pView = b.dataset.pview; renderPote(); applyHighlight(); });
-$$("[data-porder]").forEach(b => b.onclick = () => { pOrder = b.dataset.porder; renderPote(); applyHighlight(); });
-function chanceRows() { const seen = new Set(), rows = [];
-  for (const e of EDS) { const v = EDITAL_VALOR[e] || {}; if (v.junto) { if (seen.has(v.junto)) continue; seen.add(v.junto); const j = JUNTOS[v.junto]; rows.push({ label: j.label, insc: j.insc, aprov: j.aprov, rate: j.aprov / j.insc, ink: INK, key: null, fonte: v.fonteN }); continue; }
-    rows.push({ label: e, insc: v.insc || null, aprov: v.aprov || null, rate: v.insc && v.aprov ? v.aprov / v.insc : v.taxa || null, soTaxa: !v.insc && !!v.taxa, ink: INKS[MECHS.indexOf(edMech(e))] || INK, key: e, fonte: v.fonteN, obs: v.obs }); }
-  return rows; }
-function renderChance() { // disputa: de todos os inscritos, a parte aprovada. Parte e todo numa barra de 0 a 100%
-  const sm = small(), W = sm ? 400 : 820, rh = 42, top = 6, rows = chanceRows(), H = top + rows.length * rh + 22, x0 = 2, x1 = W - 2, nf = n => n.toLocaleString("pt-BR");
-  let s = svgOpen(W, H, "De todos os inscritos em cada edital, quantos foram aprovados");
-  rows.forEach((r, k) => { const y = top + k * rh, base = hex(r.ink);
-    const dir = r.rate == null ? `${r.insc ? nf(r.insc) + " inscritos · " : ""}aprovados não informados` : r.soTaxa ? `${nf(r.aprov)} aprovados · ${pct1(r.rate)} dos inscritos` : `${nf(r.aprov)} de ${nf(r.insc)} inscritos · ${pct1(r.rate)}`;
-    s += `<g ${r.key ? `data-ct="edital" data-ck="${esc(r.key)}" data-label="${esc(r.key)}"` : ""} class="${r.key && selection?.type === "edital" && selection.key === r.key ? "active" : ""}"><rect class="halo" x="0" y="${y}" width="${W}" height="${rh - 4}" fill="#161616" fill-opacity=".06"/><text x="${x0}" y="${y + 12}" class="lab">${esc(r.label)}</text><text x="${x1}" y="${y + 12}" text-anchor="end">${dir}</text>`
-      + `<rect x="${x0}" y="${y + 18}" width="${x1 - x0}" height="14" fill="${r.rate == null ? "url(#hachura)" : "#fff"}" stroke="#161616" ${r.rate == null ? 'stroke-dasharray="3 3"' : ""}/>`
-      + (r.rate != null ? `<rect x="${x0}" y="${y + 18}" width="${f1((x1 - x0) * r.rate)}" height="14" fill="${base}" stroke="#161616"/>` : "") + `<title>${esc(r.label)} · ${dir}${r.obs ? " · " + esc(r.obs) : ""}</title></g>`; });
-  const ya = top + rows.length * rh + 4; [0, .25, .5, .75, 1].forEach(t => { const X = f1(x0 + (x1 - x0) * t); s += `<line x1="${X}" y1="${ya - 6}" x2="${X}" y2="${ya}" stroke="#161616" stroke-opacity=".5"/><text x="${X}" y="${ya + 11}" text-anchor="${t === 0 ? "start" : t === 1 ? "end" : "middle"}">${Math.round(t * 100)}% dos inscritos</text>`; });
-  $("#chanceChart").innerHTML = s + "</svg>"; bindCharts();
+const fl = (p, c, a) => p.fill(c[0], c[1], c[2], a == null ? 255 : a), sk = (p, c, a) => p.stroke(c[0], c[1], c[2], a == null ? 255 : a);
+/* passo 1: muro de blocos. Faixa = mecanismo (largura = soma dos editais), bloco = edital (altura = valor): a área é o valor */
+mountSketch("muro", "muroChart", (bw, sm) => { const H = sm ? 540 : 470, top = 24, bot = 6, comp = ED8.filter(d => d.total), tot = comp.reduce((a, d) => a + d.total, 0) || 1, boxes = []; let x = 0;
+  MECHS.forEach((m, i) => { const l = comp.filter(d => d.mi === i).sort((a, b) => a.year - b.year), s = l.reduce((a, d) => a + d.total, 0), w = bw * s / tot; let y = top; l.forEach(d => { const h = (H - top - bot) * d.total / s; boxes.push({ d, x, y, w, h }); y += h; }); x += w; });
+  return { bw, H, boxes, px2: bw * (H - top - bot) / tot }; },
+(p, L, hot, on, t) => { p.textAlign(p.LEFT, p.BASELINE); const seen = {};
+  L.boxes.forEach(b => { if (!seen[b.d.mi]) { seen[b.d.mi] = 1; p.noStroke(); fl(p, PRETO); p.textStyle(p.BOLD); p.textSize(10); p.text(b.w > 110 ? MECHS[b.d.mi].toUpperCase() : b.w > 44 ? "DESC." : "D.", b.x + 3, 15); } });
+  L.boxes.forEach(b => { const ink = INKS[b.d.mi], o = on(b.d), a = o ? 255 : 70, h = b.h * t; sk(p, PRETO, a); p.strokeWeight(hot === b.d.e ? 2.6 : 1); fl(p, mixInk(ink, .2), a); p.rect(b.x + 1, b.y + 1, b.w - 2, Math.max(0, h - 2));
+    if (t < 1) return; let qx = b.x + 5, qy = b.y + b.h - 5, rowH = 0; b.d.ps.forEach(pr => { const s = Math.sqrt(pr.value * L.px2); if (qx + s > b.x + b.w - 3) { qx = b.x + 5; qy -= rowH + 3; rowH = 0; } sk(p, PRETO, a); p.strokeWeight(1); fl(p, ink, a); p.rect(qx, qy - s, s, s); qx += s + 3; rowH = Math.max(rowH, s); });
+    p.noStroke(); fl(p, PRETO, o ? 255 : 110); const wide = b.w > 110; p.textStyle(p.BOLD); p.textSize(wide ? 11 : 9); if (b.h > 24 && b.w > 26) p.text(wide ? b.d.e : String(b.d.year), b.x + 5, b.y + 15); p.textStyle(p.NORMAL); p.textSize(wide ? 10 : 8.5); if (b.h > 40 && b.w > 40) p.text(wide ? milhoes(b.d.total) : (b.d.total / 1e6).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + " mi", b.x + 5, b.y + 29); }); },
+(L, mx, my) => { const b = L.boxes.find(b => mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h); return b ? b.d.e : null; });
+/* passo 2: peneira. Um grão por projeto inscrito; os aprovados passam a linha e ganham a tinta do mecanismo */
+mountSketch("peneira", "peneiraChart", (bw, sm) => { const seen = new Set(), rows = []; ED8.forEach(d => { if (d.junto) { if (seen.has("j")) return; seen.add("j"); const j = JUNTOS[d.v.junto]; rows.push({ d, label: j.label.replace("juntos", "").trim(), insc: j.insc, aprov: j.aprov, ink: PRETO, keys: ED8.filter(x => x.junto).map(x => x.e) }); } else rows.push({ d, label: d.e, insc: d.insc, aprov: d.aprov, ink: INKS[d.mi], keys: [d.e] }); });
+  const cols = sm ? 2 : 4, cw = bw / cols, ch = 208, g = 3.4, per = Math.floor((cw - 24) / g); rows.forEach((r, k) => { r.x = (k % cols) * cw; r.y = Math.floor(k / cols) * ch; }); return { bw, H: Math.ceil(rows.length / cols) * ch + 4, rows, cw, ch, g, per }; },
+(p, L, hot, on, t) => { const nf = n => n.toLocaleString("pt-BR");
+  L.rows.forEach(r => { const o = r.keys.some(e => on(ED8.find(d => d.e === e))), a = o ? 255 : 70, x0 = r.x + 12, top = r.y + 22, sieve = r.y + 128, rej = r.insc ? r.insc - (r.aprov || 0) : 0, isHot = r.keys.includes(hot);
+    p.noStroke(); fl(p, PRETO, a); p.textAlign(p.LEFT, p.BASELINE); p.textStyle(p.BOLD); p.textSize(10.5); p.text(r.label, x0, r.y + 14); p.textStyle(p.NORMAL);
+    p.fill(150, 147, 139, o ? 235 : 60); const nr = Math.round(rej * t); for (let i = 0; i < nr; i++) { const cy = sieve - 5 - Math.floor(i / L.per) * L.g; if (cy < top) break; p.circle(x0 + (i % L.per) * L.g + 1.2, cy, 2.4); }
+    sk(p, PRETO, a); p.strokeWeight(isHot ? 2.4 : 1.2); p.drawingContext.setLineDash([2, 3]); p.line(x0, sieve, r.x + L.cw - 12, sieve); p.drawingContext.setLineDash([]);
+    p.noStroke(); fl(p, r.ink, a); const na = Math.round((r.aprov || 0) * Math.max(0, t * 1.6 - .6)); for (let i = 0; i < na; i++) p.circle(x0 + (i % L.per) * L.g + 1.2, sieve + 6 + Math.floor(i / L.per) * L.g, 2.6);
+    fl(p, PRETO, a); p.textSize(9.5); const yb = r.y + L.ch - 30; p.text(r.aprov && r.insc ? `${nf(r.aprov)} de ${nf(r.insc)} passaram` : r.aprov ? `${nf(r.aprov)} passaram · inscritos não publicados` : `${nf(r.insc)} inscritos · aprovados não publicados`, x0, yb);
+    p.fill(119, 119, 119, a); p.text(r.d.junto ? milhoes(r.keys.reduce((s, e) => s + (EDITAL_VALOR[e].total || 0), 0)) + " nas duas modalidades" : r.d.total ? milhoes(r.d.total) + " no edital" : "o edital não fixa valor", x0, yb + 13); }); },
+(L, mx, my) => { const r = L.rows.find(r => mx >= r.x && mx <= r.x + L.cw && my >= r.y && my <= r.y + L.ch); return r ? r.keys[0] : null; });
+/* passo 3: bolinhas. x = ano, y = parte dos inscritos aprovada, área = valor do edital; dentro, os projetos do corpus */
+mountSketch("bolhas", "bolhasChart", (bw, sm) => { const H = sm ? 470 : 500, Lm = sm ? 44 : 104, Rm = sm ? 34 : 70, T = 24, Bm = 96, ymax = 0.35, rmax = sm ? 34 : 54, vmax = Math.max(...ED8.map(d => d.total || d.est || 0), 1), f = sm ? .62 : 1;
+  const X = y => Lm + (y - 2017) / 7 * (bw - Lm - Rm), Y = r => T + (1 - r / ymax) * (H - T - Bm), rad = v => rmax * Math.sqrt(v / vmax);
+  return { bw, sm, H, Lm, Rm, T, Bm, X, Y, rad, nodes: ED8.map(d => ({ d, x: X(d.year) + f * (d.junto ? (d.mi === 0 ? -40 : 34) : d.mi === 1 ? 20 : d.mi === 2 ? -32 : 0), y: d.rate != null ? Y(d.rate) : H - 46, r: rad(d.total || d.est || 0), dash: !d.total || d.junto || d.rate == null })) }; },
+(p, L, hot, on, t) => { p.textStyle(p.NORMAL); p.textSize(10);
+  [0.1, 0.2, 0.3].forEach(v => { p.stroke(212, 209, 200); p.strokeWeight(1); p.line(L.Lm, L.Y(v), L.bw - L.Rm, L.Y(v)); p.noStroke(); p.fill(119); p.textAlign(p.RIGHT, p.CENTER); p.text(Math.round(v * 100) + "%", L.Lm - 7, L.Y(v)); });
+  p.noStroke(); p.fill(119); p.textAlign(p.LEFT, p.BASELINE); p.text("parte dos inscritos que foi aprovada", L.Lm, 14);
+  sk(p, PRETO, 90); p.drawingContext.setLineDash([3, 4]); p.line(L.Lm, L.H - L.Bm + 14, L.bw - L.Rm, L.H - L.Bm + 14); p.drawingContext.setLineDash([]); p.noStroke(); p.fill(119); p.text("sem número de aprovados publicado", L.Lm, L.H - L.Bm + 28);
+  p.textAlign(p.CENTER, p.BASELINE); for (let y = 2017; y <= 2024; y++) { p.fill(y === 2018 || y === 2020 ? 175 : 60); p.text(L.sm ? "'" + String(y).slice(2) : y, L.X(y), L.H - 6); }
+  L.nodes.slice().sort((a, b) => b.r - a.r).forEach(n => { const ink = INKS[n.d.mi], a = on(n.d) ? 255 : 55, r = n.r * t;
+    if (!n.dash) { p.noStroke(); fl(p, mixInk(ink, .45), on(n.d) ? 210 : 40); p.circle(n.x + r * .16, n.y + r * .2, r * 2); }
+    sk(p, PRETO, a); p.strokeWeight(hot === n.d.e ? 2.8 : 1.4); if (n.dash) p.drawingContext.setLineDash([4, 4]); if (n.d.total) fl(p, mixInk(ink, .2), a); else p.noFill(); p.circle(n.x, n.y, r * 2); p.drawingContext.setLineDash([]);
+    if (t < 1) return; const rs = n.d.ps.map(pr => L.rad(pr.value)), ws = rs.reduce((s, x) => s + x * 2 + 2, -2); let px = n.x - ws / 2; n.d.ps.forEach((pr, i) => { sk(p, PRETO, a); p.strokeWeight(1); fl(p, ink, a); p.circle(px + rs[i], n.y, Math.max(3, rs[i] * 2)); px += rs[i] * 2 + 2; }); });
+  if (t < 1) return; L.nodes.forEach(n => { const a = on(n.d) ? 255 : 70, tx = n.d.e.replace("LMIC ", "").replace(/ - /, " ").replace("Descentra", L.sm ? "Desc." : "Descentra"); p.textAlign(p.CENTER, p.BASELINE); p.textStyle(p.BOLD); p.textSize(L.sm ? 8.5 : 9.5); const ty = n.r < 20 ? n.y + n.r + 13 : n.y - n.r - 5, tw = p.textWidth(tx);
+    p.noStroke(); p.fill(247, 246, 241, 215); p.rect(n.x - tw / 2 - 3, ty - 10, tw + 6, 13); fl(p, PRETO, a); p.text(tx, n.x, ty); p.textStyle(p.NORMAL); }); },
+(L, mx, my) => { const hit = L.nodes.filter(n => Math.hypot(mx - n.x, my - n.y) <= Math.max(14, n.r)).sort((a, b) => a.r - b.r)[0]; return hit ? hit.d.e : null; });
+function renderStoryAnswers() {
+  const com = ED8.filter(d => d.total), soma = com.reduce((a, d) => a + d.total, 0) || 1, corp = com.reduce((a, d) => a + d.corpus, 0), maior = com.slice().sort((a, b) => b.total - a.total)[0], sem = ED8.filter(d => !d.total).map(d => d.e);
+  const porMec = MECHS.map((m, i) => com.filter(d => d.mi === i).reduce((a, d) => a + d.total, 0)), menorMec = porMec.indexOf(Math.min(...porMec));
+  $("#ansMuro").textContent = `Os ${com.length} editais com valor publicado ofereceram ${milhoes(soma)} ao todo. O maior é o ${maior.e}, com ${milhoes(maior.total)}. Os editais do ${MECHS[menorMec]} somam ${milhoes(porMec[menorMec])}, ${pct1(porMec[menorMec] / soma)} do total.${sem.length ? ` O ${sem.join(", ")} não fixa valor e fica fora do muro.` : ""}`;
+  const rs = ED8.filter(d => d.rate != null && !d.junto).sort((a, b) => a.rate - b.rate), lo = rs[0], hi = rs[rs.length - 1], nf = n => n.toLocaleString("pt-BR");
+  $("#ansPeneira").textContent = rs.length > 1 ? `Nos editais com os números publicados, passaram de ${pct1(lo.rate)} a ${pct1(hi.rate)} dos inscritos. O mais disputado foi o ${lo.e}: ${lo.insc ? `${nf(lo.aprov)} aprovados entre ${nf(lo.insc)} inscritos` : pct1(lo.rate)}.` : "";
+  $("#ansBolhas").textContent = rs.length > 1 && maior.rate != null ? `O edital com mais dinheiro, o ${maior.e}, aprovou ${pct1(maior.rate)} dos inscritos. O mais disputado, o ${lo.e}, ofereceu ${milhoes(lo.total)} e aprovou ${pct1(lo.rate)}.` : "";
+  const share = corp / soma, cem = (share * 100).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  $("#pedacoNum").textContent = pct1(share); $("#ansPedaco").textContent = `De cada R$ 100 oferecidos nesses editais, R$ ${cem} foram aprovados para os projetos de grafite deste trabalho: ${milhoes(corp)} de ${milhoes(soma)}.`;
+  const W = small() ? 400 : 820, wd = Math.max(4, (W - 4) * share);
+  $("#pedacoChart").innerHTML = svgOpen(W, 58, "Parte do valor dos editais aprovada para os projetos do corpus") + `<rect x="2" y="8" width="${W - 4}" height="22" fill="#fff" stroke="#161616"/><rect x="2" y="8" width="${f1(wd)}" height="22" fill="#161616"/><path d="M${f1(2 + wd / 2)} 32v8" stroke="#161616"/><text x="2" y="52" class="lab">GRAFITE DESTE TRABALHO · ${pct1(share)}</text><text x="${W - 2}" y="52" text-anchor="end">todo o valor dos ${com.length} editais · 100%</text></svg>`;
 }
-function renderEditalAnswers() {
-  const com = EDS.filter(e => (EDITAL_VALOR[e] || {}).total), soma = com.reduce((a, e) => a + EDITAL_VALOR[e].total, 0), corp = com.reduce((a, e) => a + edCorpus(e), 0);
-  const maior = com.slice().sort((a, b) => EDITAL_VALOR[b].total - EDITAL_VALOR[a].total)[0], fatia = com.map(e => ({ e, f: edCorpus(e) / EDITAL_VALOR[e].total })).sort((a, b) => b.f - a.f)[0], sem = EDS.filter(e => !(EDITAL_VALOR[e] || {}).total);
-  $("#ansPote").textContent = com.length ? `Os ${com.length} editais com valor publicado ofereceram ${milhoes(soma)} ao todo. Os projetos deste corpus somam ${milhoes(corp)}, ou ${pct1(corp / soma)} disso. O maior edital é o ${maior}, com ${milhoes(EDITAL_VALOR[maior].total)}. A maior fatia do corpus está no ${fatia.e}: ${pct1(fatia.f)}.${sem.length ? ` O ${sem.join(", ")} não fixa valor no edital.` : ""}` : "";
-  const rs = chanceRows().filter(r => r.rate != null).sort((a, b) => a.rate - b.rate), lo = rs[0], hi = rs[rs.length - 1];
-  $("#ansChance").textContent = rs.length > 1 ? `O edital mais disputado foi o ${lo.label}: ${lo.insc ? `passaram ${lo.aprov.toLocaleString("pt-BR")} de ${lo.insc.toLocaleString("pt-BR")} inscritos` : "passaram"} (${pct1(lo.rate)}). O menos disputado foi o ${hi.label.split(" · ")[0]}: ${pct1(hi.rate)}.` : "";
-}
+function renderFontes() { $("#muroFontes").innerHTML = EDS.map(e => { const v = EDITAL_VALOR[e] || {}; return `<li><b>${esc(e)}</b>: ${v.total ? money(v.total) : "sem valor fixado"} (${esc(v.tipo || "")}). ${v.obs ? esc(v.obs) + " " : ""}${v.fonte ? `<a href="${v.fonte}" target="_blank" rel="noopener">Edital em PDF ↗</a>` : ""}</li>`; }).join(""); }
+/* progresso da história: a barra do topo diz em que passo a leitura está; cada desenho em p5 entra em cena quando o passo aparece */
+const CAPS = [...document.querySelectorAll(".chart.cap")], capName = s => s.dataset.cap || "";
+function setStep(i) { const s = CAPS[i]; if (!s) return; $("#progTxt").textContent = `PASSO ${i + 1} DE ${CAPS.length} · ${capName(s).toUpperCase()}`; $$("#progDots button").forEach((b, k) => { b.classList.toggle("on", k === i); b.classList.toggle("done", k < i); }); }
+$("#progDots").innerHTML = CAPS.map((s, i) => `<button type="button" data-q="${s.dataset.chart}" title="Passo ${i + 1}: ${capName(s)}" aria-label="Ir para o passo ${i + 1}: ${capName(s)}">${i + 1}</button>`).join(""); setStep(0);
+$$("#progDots [data-q]").forEach(b => b.onclick = () => { const s = $(`.chart[data-chart="${b.dataset.q}"]`); if (s) s.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); });
+if ("IntersectionObserver" in window) { document.documentElement.classList.add("story-on");
+  const mid = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setStep(CAPS.indexOf(e.target)); }), { rootMargin: "-40% 0px -55% 0px" });
+  const enter = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); playStory(e.target.dataset.chart); } }), { threshold: 0.12 });
+  CAPS.forEach(s => { mid.observe(s); enter.observe(s); }); } else CAPS.forEach(s => s.classList.add("in"));
+function markCaps() { if (page !== "indicators") return; const vh = innerHeight; let cur = -1; CAPS.forEach((s, i) => { const r = s.getBoundingClientRect(); if (r.top < vh * 0.88 && r.bottom > 0) { s.classList.add("in"); playStory(s.dataset.chart); } if (r.top < vh * 0.45) cur = i; }); if (cur >= 0) setStep(cur); } // reserva para quando o observador demora: mede a posição de cada passo
+{ let mt = 0; const onScroll = () => { if (mt) return; mt = setTimeout(() => { mt = 0; markCaps(); }, 120); }; addEventListener("scroll", onScroll, { passive: true }); $("#indicators .ind-main").addEventListener("scroll", onScroll, { passive: true }); $("#indicators").addEventListener("scroll", onScroll, { passive: true, capture: true }); }
+$("#fimMapa").onclick = () => showPage("discover"); $("#fimEditais").onclick = () => showPage("editais");
+addEventListener("resize", () => { if (page === "indicators") { redrawStory(); renderStoryAnswers(); } });
 function renderLegend() { $("#mechLegend").innerHTML = MECHS.map(m => `<button data-leg="${m}" class="${selection?.type === "mechanism" && selection.key === m ? "active" : ""}">${wallIcon(mechSample(m), 34)}<b>${m}</b><small>${esc((Rizoma.TRANSLATE[m] || "").split(".")[0])}</small></button>`).join(""); $$("[data-leg]").forEach(b => b.onclick = () => { const m = b.dataset.leg; selection = selection && selection.type === "mechanism" && selection.key === m ? null : { type: "mechanism", key: m, label: m }; renderIndicators(); }); }
 function renderRegion() { if (!$("#regionChart")) return; // sem regional verificada não há gráfico: a lacuna virou texto em "o que falta saber"
   const groups = aggregate(DATA, p => p.region || "Não verificada").sort((a, b) => b[metric] - a[metric]), max = Math.max(1, ...groups.map(g => g[metric]));
@@ -1566,7 +1610,7 @@ $("#sumClear").onclick = $("#sideClear").onclick = () => { selection = null; ren
    define acende em cada um e o resto esmaece, na lista lateral e na ficha. Cada elemento declara o que representa em
    data-ct/data-ck, então um só realce serve a todos os gráficos em DOM/SVG; a mancha (canvas) tem o seu. */
 function highlightIds() { const sel = hoverSel || selection; return sel ? new Set(selectedProjects(sel).map(p => p.id)) : null; }
-function applyHighlight() { const ids = highlightIds(), root = $("#indicators"); root.classList.toggle("hl", !!ids); highlightDom(root, ids); highlightMancha(ids); highlightCard(ids); }
+function applyHighlight() { const ids = highlightIds(), root = $("#indicators"); root.classList.toggle("hl", !!ids); highlightDom(root, ids); highlightMancha(ids); highlightCard(ids); redrawStory(); }
 function highlightDom(root, ids) { root.querySelectorAll("[data-ct],[data-leg]").forEach(el => { if (!ids) { el.classList.remove("on", "dim"); return; } const type = el.dataset.leg ? "mechanism" : el.dataset.ct, key = el.dataset.leg || el.dataset.ck, on = selectedProjects({ type, key }).some(p => ids.has(p.id)); el.classList.toggle("on", on); el.classList.toggle("dim", !on); }); }
 const CARD_LINES = [["ano", "year", p => String(p.year)], ["mecanismo", "mechanism", p => p.mechanism], ["edital", "edital", p => p.edital], ["escala", "scale", p => Rizoma.scaleOf(p.value)], ["territorio", "region", p => p.region]];
 function renderCardLines(d) { // os chips das linhas de fuga na ficha também criam a seleção dos indicadores
@@ -1581,8 +1625,9 @@ const HELP = {
   years: { t: "Em que ano e por qual caminho?", o: "Quantos projetos, ou quanto valor, foram aprovados em cada ano, separados por mecanismo. As quatro formas mostram o mesmo dado: colunas ano a ano, dois períodos lado a lado, uma mancha por ano ou cordas.", q: "Mostra quando cada mecanismo entra no corpus. O Incentivo Fiscal chega em poucos projetos de valor alto. O Descentra, em vários projetos pequenos.", c: "Declive: Tufte (2001). Mancha: agregação limitada por difusão (Witten e Sander, 1981); experimento 04 do Lab 06. Cordas: Circos (Krzywinski et al., 2009), fitas como feixes (Holten, 2006); experimento 05 do Lab 06." },
   dots: { t: "Quanto foi aprovado para cada projeto?", o: "O valor de cada projeto. Na régua, a posição é o valor. Em blocos e em células, o tamanho é o valor.", q: "Dá para ver quem encosta no teto do edital e quem fica nas faixas mais baixas. É a diferença entre o circuito monumental e o capilar, projeto por projeto.", c: "Régua: posição numa escala comum (Cleveland e McGill, 1984), com linhas de referência (Few, 2006). Células: Voronoi treemap (Balzer e Deussen, 2005), diagrama de potência (Aurenhammer, 1987), ajuste de pesos (Nocaj e Brandes, 2012); experimento 03 do Lab 06." },
   lorenz: { t: "O dinheiro é bem repartido?", o: "Que parte de todo o valor fica com os maiores projetos e que parte fica com os menores.", q: "A régua mostra cada valor. Aqui aparece a soma: poucos projetos concentram boa parte do valor aprovado. O índice de Gini, na curva, resume isso num número de 0 a 1.", c: "Curva de Lorenz (1905) e índice de Gini (1912)." },
-  pote: { t: "Quanto cada edital ofereceu?", o: "O valor total que cada edital pôs à disposição e, dentro dele, a soma dos projetos de grafite deste corpus. As três formas mostram o mesmo dado: barras para comparar tamanhos, quadradinhos de R$ 100 mil para contar, e a média por aprovado com cada projeto na mesma régua.", q: "Dá a medida: os vinte projetos são uma parte pequena de editais que atendem todas as áreas da cultura. Também mostra que o Descentra inteiro é muito menor que os outros dois.", c: "Barras numa escala comum (Cleveland e McGill, 1984). Visão geral primeiro e detalhe sob pedido (Shneiderman, 1996). Lupa: foco e contexto (Card, Mackinlay e Shneiderman, 1999).", f: "Editais em PDF no site da Prefeitura de Belo Horizonte, lidos em 13/11/2026. O link de cada um está abaixo do gráfico." },
-  chance: { t: "De quem se inscreve, quantos passam?", o: "Em cada edital, a parte dos inscritos que foi aprovada.", q: "Mostra a disputa. Um edital pode ter muito dinheiro e ainda assim aprovar poucos, se muita gente se inscreve.", c: "Parte e todo numa barra de 0 a 100%.", f: "Páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidas em 13/11/2026. Contam todos os projetos inscritos, não só os de arte urbana." },
+  muro: { t: "Tudo começa num edital", o: "Cada bloco é um edital e o tamanho do bloco é o valor que ele pôs à disposição. Os quadrados escuros são os projetos de grafite deste trabalho, na mesma escala.", q: "Dá a medida de tudo: os vinte projetos são uma parte pequena de editais que atendem todas as áreas da cultura, e o Descentra inteiro é muito menor que os outros dois caminhos.", c: "Valores como retângulos encaixados, lidos pelo tamanho: ideia de The Billion Dollar Gram (McCandless, Information is Beautiful). Desenho em p5.js.", f: "Editais em PDF no site da Prefeitura de Belo Horizonte, lidos em 13/11/2026. O link de cada um está abaixo do desenho." },
+  peneira: { t: "Muita gente pede, pouca gente leva", o: "Um grão para cada projeto inscrito em cada edital. Os aprovados passam a linha e ganham a cor do caminho.", q: "Mostra a disputa de um jeito que dá para contar: centenas de grãos em cima, dezenas embaixo.", c: "Quantidade pela repetição de uma marca, uma para cada unidade: Isotype (Neurath, 1936). Desenho em p5.js.", f: "Páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidas em 13/11/2026. Contam todos os projetos inscritos, não só os de arte urbana." },
+  bolhas: { t: "O mais disputado é um dos menores", o: "Cada bolinha é um edital. O tamanho é o valor, a altura é a parte dos inscritos que foi aprovada e a posição da esquerda para a direita é o ano.", q: "Junta dinheiro e disputa: ter mais dinheiro num edital não quer dizer que é mais fácil passar nele, nem o contrário.", c: "Bolhas em que o tamanho é uma medida e a posição é outra: ideia de Snake Oil Supplements e World's Biggest Data Breaches & Hacks (McCandless, Information is Beautiful). Desenho em p5.js.", f: "Editais em PDF, páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidos em 13/11/2026." },
   matrix: { t: "O que os projetos têm em comum?", o: "Para cada par de projetos, quantas coisas eles dividem: ano, mecanismo, edital, tamanho do valor ou curadoria.", q: "Arrumada por mecanismo, a matriz mostra blocos escuros: projetos do mesmo mecanismo se parecem muito entre si e pouco com os outros.", c: "Matriz reordenável (Bertin, 1967)." }
 };
 let helpOpener = null, pressT = 0, pressed = false;
@@ -1631,7 +1676,7 @@ function renderEditais() { // mecanismos, ligações e editais explicados (mesmo
   $$("#editalList [data-mech]").forEach(b => b.onclick = () => { selection = { type: "mechanism", key: b.dataset.mech, label: b.dataset.mech }; showPage("indicators"); });
   $$("#editalList [data-ed]").forEach(b => b.onclick = () => { selection = { type: "edital", key: b.dataset.ed, label: "Edital " + b.dataset.ed }; showPage("indicators"); });
   $$("#editalList [data-ver]").forEach(b => b.onclick = () => openPreview(b.dataset.ver, "editais"));
-  $("#verGraficosEd").onclick = () => { showPage("indicators"); requestAnimationFrame(() => $('.chart[data-chart="pote"]').scrollIntoView({ block: "start" })); };
+  $("#verGraficosEd").onclick = () => { showPage("indicators"); requestAnimationFrame(() => $('.chart[data-chart="muro"]').scrollIntoView({ block: "start" })); };
 }
 function openGloss(a) { // "h-mec:Incentivo Fiscal" abre a tela Editais no cartão certo
   const str = String(a), cut = str.indexOf(":"), sec = cut < 0 ? str : str.slice(0, cut), key = cut < 0 ? "" : str.slice(cut + 1);

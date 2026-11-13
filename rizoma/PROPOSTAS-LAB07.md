@@ -570,6 +570,60 @@ As referências foram conferidas no site em 13/11/2026 só quanto ao título e a
 
 ---
 
+## 3J. Lab 08, 13/11/2026: a tela Indicadores vira uma história em nove passos
+
+Resposta do autor às três propostas da seção 3I: gostou das soluções, mas sentiu falta de leitura linear. Nas palavras dele, a página é um infográfico e precisa contar uma história através dos gráficos; do jeito que estava, "não conta nada".
+
+### 3J.1 O problema
+
+A tela tinha seis perguntas soltas, cada uma com resposta e gráfico. Faltava o fio: por que esta pergunta vem depois daquela, e aonde o conjunto quer chegar. A ordem também estava invertida para quem não conhece o tema. Começava nos vinte projetos e só no fim mostrava os editais de onde eles saem.
+
+### 3J.2 A estrutura
+
+A referência é a narrativa visual descrita por Segel e Heer (2010). Dos modelos que eles descrevem, o adotado é a "taça de martíni": primeiro um trecho conduzido pelo autor, em ordem fixa, e só no fim a exploração livre. Aqui o trecho conduzido são os nove passos, e a exploração livre é o mapa, para onde o último passo leva.
+
+A história vai do geral ao particular, na ordem em que o dinheiro anda:
+
+| Passo | Título, que afirma o achado | Desenho | Ponte para o passo seguinte |
+|---|---|---|---|
+| 1. O dinheiro | Tudo começa num edital | muro de blocos (p5.js) | "Esse dinheiro não vai direto para o muro. Antes, cada projeto precisa se inscrever e ser escolhido." |
+| 2. A disputa | Muita gente pede, pouca gente leva | peneira de grãos (p5.js) | "A disputa não é igual em todo edital. Será que edital com mais dinheiro é mais fácil?" |
+| 3. Tamanho e disputa | O mais disputado é um dos menores | bolinhas (p5.js) | "E o grafite? Quanto de todo esse dinheiro chegou aos vinte projetos?" |
+| 4. O pedaço do grafite | O grafite é um pedaço pequeno | número grande e uma barra | "Daqui em diante, a história é só desses vinte. Primeiro: quando eles foram aprovados?" |
+| 5. Tempo | Vinte projetos em oito anos | colunas por ano | "Nem todo projeto recebe o mesmo. Quanto foi aprovado para cada um?" |
+| 6. Valor | Projetos de tamanhos muito diferentes | régua de valores | "Somando os vinte, o dinheiro fica bem repartido?" |
+| 7. Repartição | Poucos projetos ficam com quase metade | fita do dinheiro | "Os projetos grandes e os pequenos têm alguma coisa em comum?" |
+| 8. Ligações | Dois grupos que quase não se tocam | matriz | "Essa história tem buracos. O que os documentos ainda não contam?" |
+| 9. O que falta | O que esta história ainda não sabe contar | texto | botões "Ver os vinte projetos no mapa" e "Entender cada edital" |
+
+Cada passo tem as mesmas cinco peças, sempre na mesma ordem: título que afirma o achado, um parágrafo que conta o que está acontecendo, a frase com os números calculados dos dados, o "como ler" e o desenho. No fim, a ponte para o passo seguinte, em negrito.
+
+### 3J.3 O que conduz a leitura
+
+- **Barra de progresso** fixa no alto: "Passo 3 de 9 · Tamanho e disputa", com nove pontos. O ponto do passo atual fica preto e os já lidos, cinza. Tocar num ponto leva ao passo.
+- **Entrada em cena.** Quando o passo aparece na tela, o texto sobe de leve e o desenho se monta: os blocos do muro crescem, os grãos da peneira caem, as bolinhas incham. Quem pediu menos movimento no sistema vê tudo pronto.
+- **Seleção que atravessa a história.** Tocar num edital em qualquer dos três desenhos acende os projetos dele nos outros passos e na lista ao lado, e escreve os números dele numa caixa acima do desenho.
+- **Antes de começar:** as três cores são explicadas uma vez, no alto, e valem para a tela inteira.
+
+### 3J.4 Os três desenhos em p5.js
+
+O autor gostou das três propostas, então as três entraram, cada uma no passo em que ajuda mais. Substituem os dois gráficos de barras das rodadas 8 e 9, que saíram. As referências e as ideias emprestadas são as da seção 3I. Os desenhos são instâncias de p5.js paradas, que só redesenham quando algo muda, para a página ficar leve. No celular cada desenho tem um arranjo próprio: a peneira passa de quatro para duas colunas e o muro e as bolinhas são recalculados para a tela estreita.
+
+### 3J.5 O que os títulos afirmam e o que os sustenta
+
+Os títulos são fixos e os números ao lado são calculados. Se o corpus mudar, os números mudam sozinhos, mas os títulos precisam ser relidos. Hoje:
+
+- "O mais disputado é um dos menores": o Descentra 2024 aprovou 10% dos inscritos e ofereceu R$ 1,8 milhão; o maior edital, o LMIC 2021 - IF, com R$ 14 milhões, aprovou 30%.
+- "O grafite é um pedaço pequeno": R$ 1,04 milhão de R$ 77,28 milhões, 1,3%.
+- "Poucos projetos ficam com quase metade": os 5 maiores somam 48%.
+- "Dois grupos que quase não se tocam": projetos do mesmo mecanismo têm em média 2,1 coisas em comum; de mecanismos diferentes, 0,3.
+
+Limites declarados na própria tela: o passo 4 fala dos vinte projetos do TCC, não de todo o grafite de Belo Horizonte; os inscritos dos passos 2 e 3 são de todas as áreas da cultura; no Incentivo Fiscal o valor do edital é renúncia fiscal, e o projeto ainda precisa captar.
+
+Conferido no navegador em 1280 px e 375 px: os nove passos na ordem, a barra de progresso, a entrada em cena, o clique num edital nos três desenhos e a seleção acendendo nos outros gráficos, sem erros no console.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.
@@ -619,6 +673,8 @@ MACHADO, Gustavo M.; OLIVEIRA, Manuel M.; FERNANDES, Leandro A. F. A physiologic
 NEURATH, Otto. **International picture language**: the first rules of Isotype. London: Kegan Paul, Trench, Trubner & Co., 1936.
 
 OTTOSSON, Björn. **A perceptual color space for image processing** (OKLab). 2020. Disponível em: https://bottosson.github.io/posts/oklab/. Acesso em: 12 nov. 2026.
+
+SEGEL, Edward; HEER, Jeffrey. Narrative visualization: telling stories with data. **IEEE Transactions on Visualization and Computer Graphics**, v. 16, n. 6, p. 1139-1148, 2010.
 
 SHNEIDERMAN, Ben. The eyes have it: a task by data type taxonomy for information visualizations. In: IEEE SYMPOSIUM ON VISUAL LANGUAGES, 1996, Boulder. **Proceedings** [...]. Los Alamitos: IEEE, 1996. p. 336-343.
 

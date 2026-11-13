@@ -18,8 +18,9 @@
      2. balanço: cada letra sai um pouco da linha de base, gira e muda de corpo (opts.sway 0..1);
      3. aperto: se a linha não cabe, as últimas letras se comprimem aos poucos (opts.squeeze);
      4. repintura: de tempos em tempos uma palavra troca de mão, letra por letra, com névoa de spray (opts.mutate em ms);
+        no modo "letra" a troca é de letras soltas: opts.mutateN letras por vez (padrão 1);
      5. vazada → cheia: a letra de contorno se enche quando ganha foco (L.encher(true));
-     6. limite de leitura: o pixo (Te Amo Jéssica) só entra em palavras curtas; fonte sem o acento da palavra não entra.
+     6. limite de leitura: o pixo (Te Amo Jéssica) só entra em palavras curtas, também no modo "letra"; fonte sem o acento da palavra não entra.
 
    Uso:  const L = Letreiro.mount(el, { text: "CARTOGRAFIA\nDO FOMENTO", seed: "capa", mode: "palavra", mutate: 4200 });
          L.set(texto)  L.opts({...})  L.sortear()  L.mutar()  L.encher(bool)  L.state()  L.destroy()
@@ -78,17 +79,17 @@
 
   function mount(el, o) {
     if (typeof el === "string") el = document.querySelector(el);
-    const opt = Object.assign({ text: el.textContent.trim(), seed: "cartografia", mode: "palavra", pool: null, sway: 0.6, squeeze: true, wrap: false, mutate: 0, vazada: false }, o || {});
+    const opt = Object.assign({ text: el.textContent.trim(), seed: "cartografia", mode: "palavra", pool: null, sway: 0.6, squeeze: true, wrap: false, mutate: 0, mutateN: 1, vazada: false }, o || {});
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let R = rng(opt.seed), units = [], timer = 0, alive = true, cheia = false, round = 0;
     el.classList.add("lt");
     const pool = () => (opt.pool || MAOS.filter(m => m.peso > 0).map(m => m.id)).map(id => BY[id]).filter(Boolean);
     const escreve = (m, ch) => tem(m, ch) || (TROCA[ch] && tem(m, TROCA[ch]));
-    const serve = (m, word) => (!m.curta || word.length <= m.curta) && [...word].every(ch => escreve(m, ch));
-    function pick(word, avoid) { // sorteia uma mão que consiga escrever a palavra inteira, de preferência diferente da vizinha
+    const serve = (m, word, len) => (!m.curta || (len || word.length) <= m.curta) && [...word].every(ch => escreve(m, ch)); // len: tamanho da palavra a que a letra pertence (modo letra)
+    function pick(word, avoid, len) { // sorteia uma mão que consiga escrever a palavra inteira, de preferência diferente da vizinha
       if (opt.vazada) return cheia ? BY.gelinho : BY.gelinhoV;
       const P = pool(); if (P.length === 1) return P[0]; // uma mão escolhida à mão: sem sorteio nem limite de leitura
-      let c = P.filter(m => serve(m, word)); if (!c.length) c = pool().filter(m => !m.curta); if (!c.length) c = [BY.cachoeira];
+      let c = P.filter(m => serve(m, word, len)); if (!c.length) c = pool().filter(m => !m.curta); if (!c.length) c = [BY.cachoeira];
       const d = c.filter(m => m !== avoid); if (d.length) c = d;
       const bag = []; c.forEach(m => { for (let i = 0; i < Math.max(1, m.peso); i++) bag.push(m); });
       return bag[(R() * bag.length) | 0];
@@ -110,7 +111,7 @@
           for (const ch of word) {
             const l = document.createElement("span"), q = document.createElement("span"), g = document.createElement("span"); l.className = "lt-l"; q.className = "lt-q"; g.className = "lt-g"; q.appendChild(g); l.appendChild(q); we.appendChild(l);
             const u = { ch, l, q, g, we, le, word, m: null }; units.push(u);
-            const m = wm || pick(ch, last); if (!wm) last = m; dress(u, m);
+            const m = wm || pick(ch, last, word.length); if (!wm) last = m; dress(u, m);
           }
           if (opt.wrap) le.appendChild(document.createTextNode("​")); // só uma oportunidade de quebra: o espaço entre palavras é a margem, sem largura escondida
         }
@@ -150,7 +151,10 @@
       if (!units.length) return;
       if (opt.vazada) { cheia = !cheia; repaint(units, cheia ? BY.gelinho : BY.gelinhoV); return; }
       if (opt.mode === "mao") { repaint(units, pick(opt.text.replace(/\s+/g, ""), units[0].m)); return; }
-      if (opt.mode === "letra") { const u = units[(Math.random() * units.length) | 0]; repaint([u], pick(u.ch, u.m)); return; }
+      if (opt.mode === "letra") { // troca letra por letra: opt.mutateN letras sorteadas por vez, uma depois da outra
+        const bag = units.slice(), n = Math.max(1, Math.min(bag.length, opt.mutateN | 0 || 1));
+        for (let i = 0; i < n; i++) { const u = bag.splice((Math.random() * bag.length) | 0, 1)[0]; setTimeout(() => { if (alive) repaint([u], pick(u.ch, u.m, u.word.length)); }, reduced ? 0 : i * 160); }
+        return; }
       const words = [...new Set(units.map(u => u.we))], we = words[(Math.random() * words.length) | 0], list = units.filter(u => u.we === we);
       repaint(list, pick(list[0].word, list[0].m));
     }

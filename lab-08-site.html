@@ -243,6 +243,9 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .chart>p.how{margin:0 0 14px;max-width:660px;font-size:11.5px;line-height:1.6;color:#5c5c5c}
 .chart .metric{align-items:center;margin:0 0 8px}.chart .metric span{font-size:8.5px;font-weight:900;letter-spacing:.12em;color:#888;min-width:74px}
 .lorenz svg,#slopeChart svg{max-width:540px}
+.hero h1.sec{font-size:clamp(30px,4.2vw,52px);text-transform:uppercase;line-height:1;margin:8px 0 14px}.copy h1.sec{font-size:26px;text-transform:uppercase}
+@media(max-width:780px){.hero h1.sec{font-size:32px}.copy h1.sec{font-size:17px}}
+.fontes{margin-top:12px;font-size:11.5px;line-height:1.55;color:#555;max-width:720px}.fontes summary{cursor:pointer;font-size:10.5px;font-weight:900;color:var(--ink)}.fontes ul{margin:10px 0 8px;padding-left:16px}.fontes li{margin:0 0 7px}.fontes a{color:var(--ink);font-weight:700}.fontes p{margin:0;font-size:10.5px;color:#777}
 .mleg{display:flex;align-items:center;gap:5px;margin-top:10px;font-size:9.5px;color:#777}.mleg span{font-size:8.5px;font-weight:900;letter-spacing:.12em;margin-right:6px}.mleg i{display:inline-block;width:14px;height:14px;border:1px solid var(--line);background:rgba(22,22,22,var(--a));margin-left:6px}
 .gapgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 14px}.gapgrid article{border:1px dashed #bbb;padding:12px 14px}.gapgrid h4{margin:0 0 6px;font-size:14px}.gapgrid p{margin:0;font-size:11.5px;line-height:1.6;color:#5c5c5c}
 .mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
@@ -304,7 +307,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <section id="discover" class="stage" aria-label="Descobrir">
   <div id="trailStage" class="layer" aria-hidden="true"></div>
   <div id="rizomaStage" class="layer"></div>
-  <div class="copy" id="copy"><div class="kicker">01 / DESCOBRIR</div><h1 id="fieldHead">A RUA ESCREVE O MAPA</h1><div class="legend" id="fieldLegend"></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue os projetos por ano, mecanismo ou edital: o spray de cada um corre até os parentes.</p></div>
+  <div class="copy" id="copy"><div class="kicker">01 / MAPA DOS PROJETOS</div><h1 id="fieldHead" class="sec">Descobrir</h1><div class="legend" id="fieldLegend"></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue os projetos por ano, mecanismo ou edital: o spray de cada um corre até os parentes.</p></div>
   <div class="tools" id="tools">
     <div class="search"><input id="search" type="search" autocomplete="off" placeholder="Buscar projeto, ano ou mecanismo…" aria-label="Buscar no corpus"><div id="results" class="results" hidden></div></div>
     <div class="chiplabel">Ligar os projetos por</div>
@@ -312,12 +315,12 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
     <div class="row">
       <button id="helpBtn" class="help-btn" title="Rever a animação que explica o site">? Como funciona</button>
       <button id="depthBtn" class="active" title="Tecla D">3D · arraste para girar</button>
-      <button id="resetBtn" title="Tecla R · esconde tudo e começa de novo">Recomeçar</button>
+      <button id="resetBtn" title="Tecla R · esconde os projetos, desliga as ligações, limpa o spray e volta o mapa ao começo">Recomeçar</button>
       <button id="finalBtn" class="final-btn" title="Tecla M · gera uma imagem do mapa desta visita">↓ Baixar meu mapa</button>
       <details class="morebox"><summary>Mais</summary><div>
         <button id="treeBtn" title="Tecla A · os mesmos projetos em ordem: mecanismo, ano, projeto">Ver como árvore</button>
         <button id="cutBtn" title="Tecla C · arraste sobre uma ligação para cortá-la">Cortar ligação</button>
-        <button id="clearBtn" title="Tecla X · apaga só o spray">Limpar o spray</button>
+        <button id="clearBtn" title="Tecla X · desliga as ligações e apaga o spray; os projetos revelados ficam">Desligar ligações e limpar</button>
       </div></details>
     </div>
   </div>
@@ -341,12 +344,12 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
   <div class="ind">
     <div class="ind-main">
       <div class="summary" id="summary"><div><span class="kicker" id="sumKicker">CORPUS DO TCC</span><b id="sumTitle">Todos os projetos</b></div><div><button id="sumClear" class="ghost" hidden>LIMPAR SELEÇÃO</button></div></div>
-      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1 data-lt="O FOMENTO|EM MOVIMENTO">O fomento em movimento</h1><p>Quatro perguntas sobre os vinte projetos. Cada pergunta tem um gráfico só, e a resposta vem escrita antes dele. Toque num gráfico para ver quais projetos estão ali: eles acendem na lista ao lado e nos outros gráficos.</p></div>
-      <nav class="qnav" id="qnav" aria-label="As quatro perguntas"><button data-q="years"><b>1</b>Em que ano?</button><button data-q="dots"><b>2</b>Quanto?</button><button data-q="lorenz"><b>3</b>É bem repartido?</button><button data-q="matrix"><b>4</b>O que têm em comum?</button><button data-q="gaps"><b>?</b>O que falta saber</button></nav>
+      <div class="hero"><span class="mark"></span><div class="kicker">02 / LER OS DADOS</div><h1 class="sec">Indicadores</h1><p>Seis perguntas: quatro sobre os vinte projetos e duas sobre os editais de onde eles saíram. Cada pergunta tem um gráfico só, e a resposta vem escrita antes dele. Toque num gráfico para ver quais projetos estão ali: eles acendem na lista ao lado e nos outros gráficos.</p></div>
+      <nav class="qnav" id="qnav" aria-label="As seis perguntas"><button data-q="years"><b>1</b>Em que ano?</button><button data-q="dots"><b>2</b>Quanto?</button><button data-q="lorenz"><b>3</b>É bem repartido?</button><button data-q="matrix"><b>4</b>O que têm em comum?</button><button data-q="pote"><b>5</b>Quanto o edital ofereceu?</button><button data-q="chance"><b>6</b>Quantos passam?</button><button data-q="gaps"><b>?</b>O que falta saber</button></nav>
       <div class="mech-legend" id="mechLegend"></div>
       <p class="legend-note">Os valores são os <b>tetos aprovados</b> nas listas oficiais (DOM-BH, 2017–2024), não o que cada projeto conseguiu captar. <b>Monumental</b> e <b>capilar</b> são nomes dados pelo autor (TCC, cap. 5), não categorias dos editais. <span id="circNote"></span></p>
 
-      <section class="chart" data-chart="years"><div class="kicker"><i></i>PERGUNTA 1 DE 4 · TEMPO <button type="button" class="help" data-help="years" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Em que ano e por qual caminho?</h2><p class="answer" id="ansYears"></p>
+      <section class="chart" data-chart="years"><div class="kicker"><i></i>PERGUNTA 1 DE 6 · TEMPO <button type="button" class="help" data-help="years" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Em que ano e por qual caminho?</h2><p class="answer" id="ansYears"></p>
         <div class="metric" role="group" aria-label="Medida"><span>CONTAR</span><button data-metric="count" class="active">Projetos</button><button data-metric="value">Valor aprovado</button></div>
         <div class="metric views" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-yview="colunas" class="active">Colunas por ano</button><button data-yview="declive">Antes e depois de 2022</button><button data-yview="mancha">Mancha</button><button data-yview="cordas">Cordas</button></div>
         <p class="how" id="howYears"></p>
@@ -356,25 +359,37 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
         <div class="mancha" id="mancha" hidden><canvas id="manchaCanvas" role="img" aria-label="Mancha que cresce: uma mancha por ano, área proporcional ao valor somado, cor por mecanismo"></canvas><div class="mancha-foot"><span id="manchaCap"></span><button type="button" id="manchaAgain" class="ghost">CRESCER DE NOVO</button></div></div>
       </section>
 
-      <section class="chart" data-chart="dots"><div class="kicker"><i></i>PERGUNTA 2 DE 4 · VALOR <button type="button" class="help" data-help="dots" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quanto foi aprovado para cada projeto?</h2><p class="answer" id="ansDots"></p>
+      <section class="chart" data-chart="dots"><div class="kicker"><i></i>PERGUNTA 2 DE 6 · VALOR <button type="button" class="help" data-help="dots" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quanto foi aprovado para cada projeto?</h2><p class="answer" id="ansDots"></p>
         <div class="metric views" id="wallsMode" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-vview="regua" class="active">Régua</button><button data-vview="muros">Blocos</button><button data-vview="celulas">Células</button></div>
         <p class="how" id="howDots"></p>
         <div id="dotChart" class="svgchart"></div>
         <div id="wallsChart" class="walls" hidden></div>
       </section>
 
-      <section class="chart" data-chart="lorenz"><div class="kicker"><i></i>PERGUNTA 3 DE 4 · REPARTIÇÃO <button type="button" class="help" data-help="lorenz" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O dinheiro é bem repartido?</h2><p class="answer" id="ansLorenz"></p>
+      <section class="chart" data-chart="lorenz"><div class="kicker"><i></i>PERGUNTA 3 DE 6 · REPARTIÇÃO <button type="button" class="help" data-help="lorenz" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O dinheiro é bem repartido?</h2><p class="answer" id="ansLorenz"></p>
         <div class="metric views" role="group" aria-label="Forma do gráfico"><span>VER COMO</span><button data-rview="fita" class="active">Fita do dinheiro</button><button data-rview="curva">Curva de Lorenz</button></div>
         <p class="how" id="howLorenz"></p>
         <div id="fitaChart" class="svgchart"></div>
         <div id="lorenzChart" class="svgchart lorenz" hidden></div>
       </section>
 
-      <section class="chart" data-chart="matrix"><div class="kicker"><i></i>PERGUNTA 4 DE 4 · LIGAÇÕES <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O que os projetos têm em comum?</h2><p class="answer" id="ansMatrix"></p>
+      <section class="chart" data-chart="matrix"><div class="kicker"><i></i>PERGUNTA 4 DE 6 · LIGAÇÕES <button type="button" class="help" data-help="matrix" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>O que os projetos têm em comum?</h2><p class="answer" id="ansMatrix"></p>
         <div class="metric views" id="matrixOrder" role="group" aria-label="Ordem da matriz"><span>ARRUMAR POR</span><button data-order="mecanismo" class="active">Mecanismo</button><button data-order="ano">Ano</button><button data-order="valor">Valor</button></div>
         <p class="how">Como ler: cada quadradinho cruza dois projetos, o da linha e o da coluna. Quanto mais escuro, mais coisas eles têm em comum: ano, mecanismo, edital, tamanho do valor ou curadoria. Arrumar por mecanismo junta os parecidos em blocos.</p>
         <div id="matrixChart" class="matrix"></div>
         <div class="mleg" aria-hidden="true"><span>COISAS EM COMUM</span><i style="--a:0"></i>0<i style="--a:.27"></i>1<i style="--a:.44"></i>2<i style="--a:.61"></i>3<i style="--a:.78"></i>4<i style="--a:.95"></i>5</div>
+      </section>
+
+      <section class="chart" data-chart="pote"><div class="kicker"><i></i>PERGUNTA 5 DE 6 · EDITAIS <button type="button" class="help" data-help="pote" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>Quanto cada edital ofereceu?</h2><p class="answer" id="ansPote"></p>
+        <p class="how">Como ler: cada linha é um edital. A barra clara é todo o valor que o edital pôs à disposição. O pedaço escuro, à esquerda, é a soma dos projetos de grafite deste corpus naquele edital. Barra tracejada quer dizer que o edital não fixa valor. No Incentivo Fiscal, o valor do edital é a renúncia fiscal prevista, e o valor de cada projeto é o teto que ele pode captar com empresas.</p>
+        <div id="poteChart" class="svgchart"></div>
+        <details class="fontes"><summary>Ver a fonte de cada valor</summary><ul id="poteFontes"></ul><p>Valores lidos em cada edital, em PDF, no site da Prefeitura de Belo Horizonte, em 13/11/2026.</p></details>
+      </section>
+
+      <section class="chart" data-chart="chance"><div class="kicker"><i></i>PERGUNTA 6 DE 6 · DISPUTA <button type="button" class="help" data-help="chance" aria-label="Explicar este gráfico" title="O que este gráfico mostra e por que importa">?</button></div><h2>De quem se inscreve, quantos passam?</h2><p class="answer" id="ansChance"></p>
+        <p class="how">Como ler: cada linha é um edital. A barra inteira são todos os projetos inscritos, de todas as áreas da cultura. O pedaço pintado são os aprovados. Em 2017 a Prefeitura publicou só a soma do Fundo com o Incentivo Fiscal. Barra tracejada quer dizer que a página do edital não informa os aprovados.</p>
+        <div id="chanceChart" class="svgchart"></div>
+        <p class="how" style="margin-top:10px">Inscritos e aprovados: páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidas em 13/11/2026.</p>
       </section>
 
       <section class="chart" data-chart="gaps"><div class="kicker">O QUE AINDA FALTA SABER</div><h2>Duas perguntas sem resposta.</h2>
@@ -392,7 +407,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <!-- 03 Editais -->
 <section id="editais" class="view hidden" aria-label="Editais">
   <div class="content">
-    <div class="hero"><span class="mark"></span><div class="kicker">03 / MECANISMOS, LIGAÇÕES E EDITAIS</div><h1 data-lt="DE ONDE VEM|O DINHEIRO">De onde vem o dinheiro</h1><p>Três mecanismos levam dinheiro público aos projetos, e cada um tem a sua cor no mapa. Abaixo, o que é cada mecanismo, cada tipo de ligação e cada edital do corpus.</p></div>
+    <div class="hero"><span class="mark"></span><div class="kicker">03 / MECANISMOS, LIGAÇÕES E EDITAIS</div><h1 class="sec">Editais</h1><p>Três mecanismos levam dinheiro público aos projetos, e cada um tem a sua cor no mapa. Abaixo, o que é cada mecanismo, cada tipo de ligação e cada edital do corpus.</p></div>
     <div id="editalList" class="gl"></div>
   </div>
 </section>
@@ -400,7 +415,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <!-- 04 Pesquisa -->
 <section id="research" class="view hidden" aria-label="Pesquisa">
   <div class="content narrow">
-    <div class="hero"><span class="mark"></span><div class="kicker">04 / CAMADA SOCIAL</div><h1 data-lt="QUEM ACESSA|O FOMENTO?">Quem acessa o fomento?</h1><p>A pesquisa com pessoas poderá complementar os registros documentais. Nada aqui é inferido: perguntas, não deduções.</p></div>
+    <div class="hero"><span class="mark"></span><div class="kicker">04 / CAMADA SOCIAL</div><h1 class="sec">Pesquisa</h1><p>A pesquisa com pessoas poderá complementar os registros documentais. Nada aqui é inferido: perguntas, não deduções.</p></div>
     <div style="height:30px"></div>
     <article class="block"><div><span class="kicker">01</span><h2>Experiência com editais</h2></div><p>Investigar se artistas e produtores já participaram, tentaram participar ou nunca submeteram propostas.</p></article>
     <article class="block"><div><span class="kicker">02</span><h2>Barreiras percebidas</h2></div><p>Encontrar oportunidades, compreender regras, elaborar orçamento, reunir documentos e realizar prestação de contas.</p></article>
@@ -411,10 +426,10 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <!-- 05 Sobre -->
 <section id="about" class="view hidden" aria-label="Sobre">
   <div class="content narrow">
-    <div class="hero"><span class="mark"></span><div class="kicker">05 / PROJETO ACADÊMICO</div><h1 data-lt="UMA CARTOGRAFIA|SEM MAPA OBRIGATÓRIO">Uma cartografia sem mapa obrigatório</h1><p>O território continua nos dados e relatos, mas a experiência pode começar pelo muro, pelo valor, pelo ano ou pelo edital. O modelo conceitual é o rizoma de Deleuze e Guattari: conexões heterogêneas, sem raiz nem centro. O movimento do spray segue o modelo de Jones (2010) para as redes do <em>Physarum polycephalum</em>.</p></div>
+    <div class="hero"><span class="mark"></span><div class="kicker">05 / PROJETO ACADÊMICO</div><h1 class="sec">Sobre</h1><p>O território continua nos dados e relatos, mas a experiência pode começar pelo muro, pelo valor, pelo ano ou pelo edital. O modelo conceitual é o rizoma de Deleuze e Guattari: conexões heterogêneas, sem raiz nem centro. O movimento do spray segue o modelo de Jones (2010) para as redes do <em>Physarum polycephalum</em>.</p></div>
     <div style="height:30px"></div>
     <article class="block"><div><span class="kicker">COR</span><h2>O muro, o pixo e três tintas</h2></div><div><p>O fundo claro é o cimento do muro. O preto é o pixo, que é escrita de uma cor só: texto, número e contorno. A cor entra só onde carrega informação, e são três tintas tiradas do muro de Belo Horizonte: magenta de spray para o Incentivo Fiscal, azul de azulejo para o Fundo Municipal e ocre de minério para o Descentra. Elas nunca se misturam numa quarta cor: no encontro, os pontos de spray ficam lado a lado. A defesa está em <code>rizoma/PROPOSTAS-LAB07.md</code>.</p><div class="legend" id="aboutLegend"></div></div></article>
-    <article class="block"><div><span class="kicker">LETRA</span><h2>Várias mãos</h2></div><p>Os títulos são escritos com letras de placa, de muro e de pixo fotografadas em cidades brasileiras (Tipografia Vernacular 0800, de Gi Favetta). Cada palavra tem uma mão, e de tempos em tempos uma palavra é repintada por outra. Quando a linha não cabe, as últimas letras se apertam, como quem pinta e fica sem muro (ideia do Brasilêro, de Crystian Cruz). Dados, fichas e textos de leitura ficam sempre parados, em Arial.</p></article>
+    <article class="block"><div><span class="kicker">LETRA</span><h2>Várias mãos</h2></div><p>O site tem um título só, Cartografia do Fomento. Ele e o nome de cada projeto são escritos com letras de placa, de muro e de pixo fotografadas em cidades brasileiras (Tipografia Vernacular 0800, de Gi Favetta). No título, cada letra tem uma mão, e de tempos em tempos algumas letras são repintadas por outra mão. Quando a linha não cabe, as últimas letras se apertam, como quem pinta e fica sem muro (ideia do Brasilêro, de Crystian Cruz). O nome das telas, os dados, as fichas e os textos de leitura ficam sempre parados, em Arial.</p></article>
     <article class="block"><div><span class="kicker">O PROJETO</span><h2>Uma bolinha</h2></div><div><p>Cada projeto é uma bolinha com a fórmula do grapixo: contorno preto, cor por dentro, sombra na mesma tinta. A cor é o mecanismo, o tamanho é o valor e o contorno grosso marca o circuito monumental. A mesma bolinha aparece no mapa, nos indicadores, nos editais e na página de cada projeto.</p><div id="aboutWalls" style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap"></div></div></article>
     <article class="block"><div><span class="kicker">DESCOBRIR</span><h2>O gesto revela</h2></div><p>O mapa começa com poucos projetos. Os escondidos piscam; tocar revela. Ao ligar os projetos por ano, mecanismo ou edital, o spray de cada um corre até os parentes, e seca em poucos segundos quando a ligação é desligada.</p></article>
     <article class="block"><div><span class="kicker">ABRIR</span><h2>Uma só ficha</h2></div><p>No mapa, nos indicadores ou nos editais, abrir um projeto abre a mesma ficha, que explica em frases o que é, de onde veio o dinheiro e quanto foi. A página inteira do projeto fica a um toque. Voltar devolve ao lugar de onde se veio.</p></article>
@@ -468,7 +483,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
           <label>Como você quer aparecer no crédito?<input type="text" name="nome" maxlength="80" autocomplete="name" placeholder="Nome ou apelido. Em branco, fica anônimo"></label>
           <label>E-mail, só para tirar dúvidas. Não aparece no site.<input type="email" name="email" maxlength="120" autocomplete="email"></label>
         </fieldset>
-        <label class="chk consent"><input type="checkbox" name="consentimento" id="cfOk" value="sim"><span>Concordo que este relato e estas fotos sejam enviados por e-mail ao autor da pesquisa e usados no trabalho. Posso pedir a retirada quando quiser.</span></label>
+        <label class="chk consent"><input type="checkbox" name="consentimento" id="cfOk" value="sim"><span>Concordo que este relato e estas fotos sejam enviados por e-mail ao autor da pesquisa e usados no trabalho. Posso pedir a retirada quando quiser.<i id="cfVia" style="font-style:normal"></i></span></label>
         <div id="cfErr" class="cferr" role="alert" hidden></div>
         <div class="cfsend"><button type="submit" class="primary" id="cfSend">ENVIAR →</button><span id="cfMode"></span></div>
       </form>
@@ -503,7 +518,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <script src="dados/mural.js?v=20261113-41"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
 <script src="js/rizoma.js?v=20261113-40"></script>
-<script src="js/letreiro.js?v=20261113-40"></script>
+<script src="js/letreiro.js?v=20261113-41"></script>
 <script>
 /* Lab 08 — O site inteiro na linguagem do Lab 07 (13/11/2026, pedido do autor).
    Parte do Lab 05 (as telas, os gráficos, a seleção compartilhada, a ficha única, a página de projeto) e troca a linguagem:
@@ -577,19 +592,19 @@ const EDITAL_COMO = {
   "Descentra": "Edital Descentra, do Fundo Municipal: valores menores e pontos a mais para quem atua fora do eixo central."
 };
 const PBH = "https://prefeitura.pbh.gov.br/cultura/";
-const EDITAL_INFO = {
-  "LMIC 2017 - IF": { teto: "R$ 110 mil por projeto (TCC).", url: PBH + "editais/lmic-2017-2018" },
-  "LMIC 2021 - IF": { teto: "R$ 150 mil por projeto (TCC).", url: PBH + "editais/editais-anteriores" },
-  "LMIC 2023 - IF": { teto: "R$ 165 mil por projeto (TCC).", nota: "Segundo a página do edital, 487 projetos se inscreveram.", url: PBH + "lmic/if2023" },
-  "LMIC 2017 - Fundo": { url: PBH + "editais/lmic-2017-2018" },
-  "LMIC 2021 - Fundo": { url: PBH + "editais/editais-anteriores" },
-  "LMIC 2022 - Fundo": { nota: "Segundo a página do edital, distribuiu R$ 8,2 milhões e teve 607 inscritos.", url: PBH + "editais/lmic-2022-fundo" },
-  "LMIC 2023 - Fundo": { url: PBH + "editais/editais-anteriores" },
-  "LMIC 2024 - Fundo": { nota: "Segundo a página do edital, distribuiu R$ 9,6 milhões, com 661 inscritos e 124 aprovados.", url: PBH + "editais/lmic-multilinguagens-2024" },
-  "Descentra 2019": { teto: "cerca de R$ 20 mil por projeto (TCC).", url: PBH + "descentra" },
-  "Descentra 2021": { teto: "R$ 20 mil por projeto (TCC).", url: PBH + "descentra" },
-  "Descentra 2022": { url: PBH + "descentra" },
-  "Descentra 2024": { teto: "R$ 40 mil por projeto.", nota: "Segundo a página do edital, distribuiu R$ 1,8 milhão, com 450 inscritos e 46 selecionados.", url: PBH + "descentra-2024" }
+const EDITAL_INFO = { // teto por projeto lido em cada edital (PDF, site da PBH, 13/11/2026); o valor total e a disputa estão em EDITAL_VALOR
+  "LMIC 2017 - IF": { teto: "limites por categoria, até R$ 160 mil (edital).", url: PBH + "editais/lmic-2017-2018" },
+  "LMIC 2021 - IF": { teto: "limites por categoria, até R$ 150 mil (edital).", url: PBH + "editais/lmic-2021-incentivo-fiscal" },
+  "LMIC 2023 - IF": { teto: "limites por categoria, até R$ 165 mil (edital).", url: PBH + "lmic/if2023" },
+  "LMIC 2017 - Fundo": { teto: "limites por categoria (edital).", url: PBH + "editais/lmic-2017-2018" },
+  "LMIC 2021 - Fundo": { teto: "limites por categoria, até R$ 90 mil (edital).", url: PBH + "editais/lmic-2021-fundo" },
+  "LMIC 2022 - Fundo": { teto: "limites por categoria, até R$ 90 mil (edital).", url: PBH + "editais/lmic-2022-fundo" },
+  "LMIC 2023 - Fundo": { teto: "limites por categoria, até R$ 100 mil (edital).", url: PBH + "editais/lmic-2023-multilinguagens" },
+  "LMIC 2024 - Fundo": { teto: "limites por categoria, até R$ 100 mil (edital).", url: PBH + "editais/lmic-multilinguagens-2024" },
+  "Descentra 2019": { teto: "R$ 20 mil por projeto (edital).", url: PBH + "descentra-2019" },
+  "Descentra 2021": { teto: "R$ 20 mil por projeto (edital).", url: PBH + "editais/lmic-2021-descentra" },
+  "Descentra 2022": { teto: "R$ 40 mil por projeto (edital).", url: PBH + "editais/descentra-2022" },
+  "Descentra 2024": { teto: "R$ 40 mil por projeto (edital).", url: PBH + "descentra-2024" }
 };
 
 const LC = t => `rgb(${Rizoma.LINES[t].color.join(",")})`;
@@ -621,10 +636,9 @@ $("#aboutWalls").innerHTML = DATA.filter(d => ["p05", "p09", "p17", "p11"].inclu
 /* ---------- títulos: letreiros (js/letreiro.js) no lugar da tipografia em tensão e da marca viva do Lab 05 ---------- */
 const COVER = { setVisible() { } }; function markTip() { } function openIndicators() { } function stopOpening() { } function initTension() { } // o resto do Lab 05 ainda chama estes nomes
 const LT = []; let jaEntrou = false; // só a primeira entrada revela os cinco projetos iniciais
-const brandLT = Letreiro.mount("#brandBtn", { text: "CARTOGRAFIA DO FOMENTO", seed: "marca", sway: 0.5, mutate: 6000 }); LT.push(brandLT);
-const introMark = Letreiro.mount("#introMark", { text: "CARTOGRAFIA\nDO FOMENTO", seed: "entrada", mutate: 4800 }); LT.push(introMark);
-LT.push(Letreiro.mount("#fieldHead", { text: "A RUA ESCREVE\nO MAPA", seed: "campo", mutate: 4200 }));
-$$("[data-lt]").forEach((el, k) => LT.push(Letreiro.mount(el, { text: el.dataset.lt.replace(/\|/g, "\n"), seed: "tela" + k, mutate: 5200 + k * 400 })));
+const brandLT = Letreiro.mount("#brandBtn", { text: "CARTOGRAFIA DO FOMENTO", seed: "marca", mode: "letra", sway: 0.5, mutate: 2600, mutateN: 2 }); LT.push(brandLT);
+const introMark = Letreiro.mount("#introMark", { text: "CARTOGRAFIA\nDO FOMENTO", seed: "entrada", mode: "letra", mutate: 2200, mutateN: 3 }); LT.push(introMark);
+// rodada 8: o site tem um título só, "Cartografia do Fomento". As telas levam o nome da seção em Arial; o letreiro fica na marca, na entrada e no nome dos projetos.
 const cardTitle = Letreiro.mount("#cTitle", { text: "", seed: "ficha", wrap: true, sway: 0.45 });
 const projTitle = Letreiro.mount("#projectTitle", { text: "", seed: "projeto", wrap: true, sway: 0.45 });
 
@@ -853,6 +867,10 @@ function mountField() {
     onChange: sync, onOpen: showPreview, onHover: onHover
   });
   window.Lab8Rizoma = R;
+  { const engineReset = R.reset.bind(R); // Recomeçar zera tudo: projetos, ligações, cortes, zoom, giro, spray, busca e seleção dos indicadores
+    R.reset = () => { TYPES.forEach(t => R.setLine(t, false)); engineReset(); R.zoomReset(); if (R.state().depth) R.setDepth(true);
+      if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); const se = $("#search"), re = $("#results"); if (se) se.value = ""; if (re) re.hidden = true;
+      selection = null; hoverSel = null; guide("Começou de novo: projetos escondidos, ligações desligadas e spray limpo.", 4200); }; }
   for (const t of TYPES) {
     const L = Rizoma.LINES[t], b = document.createElement("button"); b.className = "chip"; b.style.setProperty("--sw", LC(t));
     b.innerHTML = `<i></i><span>${L.label}</span><small>0</small>`; b.onclick = () => { R.toggleLine(t); if (R.state().focus) R.refresh(); }; $("#chips").appendChild(b); chips[t] = b;
@@ -1013,15 +1031,16 @@ function renderSearch() {
 searchEl.addEventListener("input", renderSearch);
 searchEl.addEventListener("keydown", e => { if (e.key === "Escape") { closeSearch(); searchEl.blur(); } if (e.key === "Enter") { const f = resultsEl.querySelector("[data-sid]"); if (f) f.click(); } });
 document.addEventListener("click", e => { if (!e.target.closest(".search")) closeSearch(); });
-$("#clearBtn").onclick = () => trailP && trailP.clearTrail();
-$("#resetBtn").onclick = () => { R.reset(); if (trailP) trailP.clearTrail(); if (A.life) A.life.fill(0); };
+function limpar() { TYPES.forEach(t => R.setLine(t, false)); if (trailP) trailP.clearTrail(); guide("Ligações desligadas e spray limpo. Os projetos que você revelou continuam no mapa.", 4200); } // limpar: desliga as ligações, senão o spray volta sozinho
+$("#clearBtn").onclick = limpar;
+$("#resetBtn").onclick = () => R.reset();
 document.addEventListener("keydown", e => {
   if (e.target && /input|textarea/i.test(e.target.tagName)) return; const k = e.key.toLowerCase();
   if (e.key === "Escape") { if (final.on) closeFinal(false); else if (R && R.state().focus && page !== "discover") R.close(); return; } // no campo, o motor já fecha com Esc
   if (page !== "discover" || introOn) return;
   if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); searchEl.focus(); return; }
 
-  if (k === "x") trailP && trailP.clearTrail(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); }
+  if (k === "x") limpar(); if (k === "m") { final.on ? closeFinal(false) : openFinal(); }
 });
 window.addEventListener("resize", () => { if (R && page === "discover") R.resize(); marginCache.at = 0; });
 document.addEventListener("visibilitychange", () => setFieldVisible(page === "discover"));
@@ -1083,7 +1102,8 @@ const savePend = () => { try { sessionStorage.setItem("cf_pend", JSON.stringify(
 $("#cfRel").innerHTML = RELACOES.map(t => `<label><input type="radio" name="relacao" value="${t}"><span>${t}</span></label>`).join("");
 $("#cfSit").innerHTML = SITUACOES.map(t => `<label><input type="radio" name="situacao_da_obra" value="${t}"><span>${t}</span></label>`).join("");
 $("#cfReg").innerHTML = `<option value="">Não sei</option>` + REGIONAIS.map(t => `<option>${t}</option>`).join("");
-$("#cfMode").textContent = ENVIO.url ? "Segue por e-mail para o autor da pesquisa." : "Versão de teste: o envio por e-mail ainda não está ligado. Nada sai do seu aparelho.";
+if (ENVIO.url) $("#cfVia").textContent = " O envio passa pelo serviço FormSubmit, que entrega a mensagem ao e-mail do autor."; // transparência: há um terceiro no caminho (LGPD, art. 9º)
+$("#cfMode").textContent = ENVIO.url ?"Segue por e-mail para o autor da pesquisa." : "Versão de teste: o envio por e-mail ainda não está ligado. Nada sai do seu aparelho.";
 function reduzir(src, max) { const sw = src.naturalWidth || src.width, sh = src.naturalHeight || src.height, k = Math.min(1, max / Math.max(sw, sh)), c = document.createElement("canvas"); c.width = Math.max(1, Math.round(sw * k)); c.height = Math.max(1, Math.round(sh * k)); const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(src, 0, 0, c.width, c.height); return c; }
 function abrirFoto(file) { return new Promise((ok, no) => { const url = URL.createObjectURL(file), im = new Image(); im.onload = () => { const c = reduzir(im, 1600); URL.revokeObjectURL(url); c.toBlob(b => b ? ok({ blob: b, thumb: reduzir(c, 480).toDataURL("image/jpeg", .72), w: c.width, h: c.height, legenda: "", credito: "" }) : no(new Error("blob")), "image/jpeg", .85); }; im.onerror = () => { URL.revokeObjectURL(url); no(new Error("imagem")); }; im.src = url; }); }
 function cfErro(list, alvo) { const el = $("#cfErr"); el.hidden = !list.length; el.innerHTML = list.map(t => `<p>${esc(t)}</p>`).join(""); if (list.length && alvo) alvo.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }); }
@@ -1139,7 +1159,7 @@ $$(".rating").forEach(g => g.onclick = e => { const b = e.target.closest("button
 $$("[data-metric]").forEach(b => b.onclick = () => { metric = b.dataset.metric; $$("[data-metric]").forEach(x => x.classList.toggle("active", x.dataset.metric === metric)); renderIndicators(); });
 function aggregate(list, keyFn) { const m = new Map(); list.forEach(p => { const k = keyFn(p); if (!m.has(k)) m.set(k, []); m.get(k).push(p); }); return [...m.entries()].map(([key, projects]) => ({ key, projects, count: projects.length, value: projects.reduce((s, p) => s + (p.value || 0), 0) })); }
 function selectedProjects(sel) { if (!sel) return DATA; if (sel.type === "region") return DATA.filter(p => (p.region || "Não verificada") === sel.key); if (sel.type === "year") return DATA.filter(p => String(p.year) === String(sel.key)); if (sel.type === "mechanism") return DATA.filter(p => p.mechanism === sel.key); if (sel.type === "edital") return DATA.filter(p => p.edital === sel.key); if (sel.type === "project") return DATA.filter(p => p.id === sel.key); if (sel.type === "pair") { const [a, b] = sel.key.split("|"); return DATA.filter(p => p.id === a || p.id === b); } if (sel.type === "scale") return DATA.filter(p => Rizoma.scaleOf(p.value) === sel.key); if (sel.type === "circuit") return DATA.filter(p => p.circuit === sel.key); if (sel.type === "cross") { const [m, t, k] = sel.key.split("|"); return selectedProjects({ type: t, key: k }).filter(p => p.mechanism === m); } return DATA; }
-function renderIndicators() { renderLegend(); renderYears(); renderSlope(); renderCordas(); renderWalls(); renderDots(); renderFita(); renderLorenz(); renderMatrix(); renderAnswers(); renderViews(); renderSide(); }
+function renderIndicators() { renderLegend(); renderYears(); renderSlope(); renderCordas(); renderWalls(); renderDots(); renderFita(); renderLorenz(); renderMatrix(); renderPote(); renderChance(); renderAnswers(); renderEditalAnswers(); renderViews(); renderSide(); }
 /* ---------- gráficos novos (propostos no Lab 05; wireframe em wireframes-svg/12-identidade-e-novos-graficos.svg) ---------- */
 const svgOpen = (w, h, label) => `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label}">`;
 function renderDots() { // régua de valores: posição numa escala comum (Cleveland e McGill, 1984) com linhas de referência (Few, 2006)
@@ -1261,6 +1281,69 @@ $$("[data-yview]").forEach(b => b.onclick = () => { yView = b.dataset.yview; ren
 $$("[data-vview]").forEach(b => b.onclick = () => { vView = b.dataset.vview; if (vView !== "regua") wallsMode = vView; renderWalls(); renderViews(); applyHighlight(); });
 $$("[data-rview]").forEach(b => b.onclick = () => { rView = b.dataset.rview; renderViews(); applyHighlight(); });
 $$("[data-q]").forEach(b => b.onclick = () => { const s = $(`.chart[data-chart="${b.dataset.q}"]`); if (s) s.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); });
+/* ---------- rodada 8: o valor total de cada edital e a disputa por ele ----------
+   Pedido do autor: gráficos sobre o valor total disponibilizado em cada edital. Cada número foi lido no próprio edital (PDF no
+   site da Prefeitura de Belo Horizonte) em 13/11/2026; inscritos e aprovados vêm das páginas dos editais e das notícias da PBH.
+   Nada foi estimado. Onde a fonte não traz o número, o gráfico mostra a falta. Detalhe em rizoma/PROPOSTAS-LAB07.md, seção 3G.
+   total: valor que o edital pôs à disposição. est: estimativa oficial que NÃO é valor do edital. insc/aprov: inscritos e aprovados.
+   taxa: aprovados sobre inscritos, quando a página só publica a porcentagem. junto: edição em que Fundo e IF foram contados juntos. */
+const PF = "https://prefeitura.pbh.gov.br/sites/default/files/estrutura-de-governo/", PN = "https://prefeitura.pbh.gov.br/noticias/";
+const EDITAL_VALOR = {
+  "LMIC 2017 - IF": { total: 12050000, tipo: "renúncia fiscal prevista na Lei 11.070/2017", fonte: "https://prefeitura.pbh.gov.br/sites/default/files/noticia/EDITAL%20-%20Lei%20Municipal%20de%20Incentivo%20%C3%A0%20Cultura%202017-2018%20(2).pdf", junto: "LMIC 2017", fonteN: PN + "prefeitura-divulga-resultado-do-edital-da-lei-municipal-de-incentivo-cultura" },
+  "LMIC 2017 - Fundo": { total: 8000000, tipo: "dotação do Fundo Municipal de Cultura", fonte: "https://prefeitura.pbh.gov.br/sites/default/files/noticia/EDITAL%20-%20Lei%20Municipal%20de%20Incentivo%20%C3%A0%20Cultura%202017-2018%20(2).pdf", junto: "LMIC 2017", fonteN: PN + "prefeitura-divulga-resultado-do-edital-da-lei-municipal-de-incentivo-cultura" },
+  "LMIC 2021 - IF": { total: 14000000, tipo: "montante máximo de renúncia fiscal", fonte: PF + "cultura/edital-lmic-2021-incentivo-fiscal.pdf", insc: 420, aprov: 128, fonteN: PBH + "editais/lmic-2021-incentivo-fiscal", obs: "A página do edital diz 32,47% dos inscritos; 128 sobre 420 dá 30%." },
+  "LMIC 2021 - Fundo": { total: 8200000, tipo: "recursos do Fundo", fonte: PF + "cultura/edital-fundo-multilinguagens-2021.pdf", insc: 1189, aprov: 136, fonteN: PBH + "editais/lmic-2021-fundo" },
+  "LMIC 2022 - Fundo": { total: 8200000, tipo: "recursos do Fundo", fonte: PF + "cultura/edital-multilinguagens-fundo-2022.pdf", insc: 607, aprov: 131, fonteN: PN + "fundo-municipal-de-cultura-destina-r-10-milhoes-para-projetos-ate-dezembro" },
+  "LMIC 2023 - IF": { total: null, est: 16000000, tipo: "o edital não fixa valor: remete à Lei 11.594/2023. A página informa só uma estimativa média de R$ 16 milhões de renúncia por ano", fonte: PF + "fundacao-municipal-de-cultura/edital-lmic-if-2023.pdf", insc: 487, aprov: null, fonteN: PBH + "lmic/if2023" },
+  "LMIC 2023 - Fundo": { total: 11250000, inicial: 9000000, tipo: "recursos do Fundo, depois de suplementação", fonte: PF + "cultura/edital-fundo-multilinguagens-2023.pdf", insc: 991, aprov: 148, fonteN: PN + "editais-do-fundo-de-cultura-destinam-r13-milhoes-182-projetos", obs: "O edital saiu com R$ 9 milhões e passou a R$ 11,25 milhões por suplementação (DOM, ato 429526). O gráfico usa o valor final." },
+  "LMIC 2024 - Fundo": { total: 9598374, tipo: "recursos do Fundo", fonte: PF + "cultura/edital-fundo-multilinguagens-2024.pdf", insc: 661, aprov: 124, fonteN: PN + "editais-do-fundo-municipal-de-cultura-destinam-r-115-milhoes-155-projetos" },
+  "Descentra 2019": { total: 1060000, tipo: "recursos do Fundo", fonte: PF + "cultura/edital-descentra-2019_0.pdf", aprov: 54, taxa: 0.131, fonteN: PBH + "descentra-2019", obs: "A página informa 54 aprovados, 13,10% dos inscritos, sem dizer quantos se inscreveram." },
+  "Descentra 2021": { total: 1560000, tipo: "recursos do Fundo", fonte: PF + "fundacao-municipal-de-cultura/edital-descentra-2021-.pdf", insc: 488, aprov: 79, fonteN: PBH + "editais/lmic-2021-descentra" },
+  "Descentra 2022": { total: 1560000, tipo: "recursos do Fundo", fonte: PF + "cultura/EDITAL%20DESCENTRA%202022%20-%20FUNDO.pdf", insc: 324, aprov: 41, fonteN: PN + "pbh-divulga-resultado-de-mais-dois-editais-do-fundo-de-cultura-que-somam-r2-mi" },
+  "Descentra 2024": { total: 1800000, tipo: "recursos do Fundo", fonte: PF + "cultura/edital-descentra-2024.pdf", insc: 450, aprov: 46, fonteN: PN + "pbh-divulga-resultados-de-editais-de-fomento-cultura", obs: "O documento Perguntas e Respostas do edital diz R$ 1,7 milhão. O edital, a página e a notícia dizem R$ 1,8 milhão. Vale o edital." }
+};
+const JUNTOS = { "LMIC 2017": { label: "LMIC 2017 · Fundo e IF juntos", insc: 1663, aprov: 275 } }; // a Prefeitura só publicou a soma das duas modalidades
+const edYear = e => (DATA.find(d => d.edital === e) || {}).year || 0, edMech = e => (DATA.find(d => d.edital === e) || {}).mechanism;
+const EDS = [...new Set(DATA.map(d => d.edital))].sort((a, b) => MECHS.indexOf(edMech(a)) - MECHS.indexOf(edMech(b)) || edYear(a) - edYear(b));
+const edCorpus = e => DATA.filter(d => d.edital === e).reduce((a, p) => a + (p.value || 0), 0);
+const pct1 = x => (x * 100 < 10 ? (x * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) : Math.round(x * 100)) + "%";
+const milhoes = v => "R$ " + (v / 1e6).toLocaleString("pt-BR", { maximumFractionDigits: 2 }) + (v >= 2e6 ? " milhões" : " milhão");
+function renderPote() { // quanto cada edital ofereceu, e a parte que ficou com os projetos do corpus: barras numa escala comum (Cleveland e McGill, 1984)
+  const sm = small(), W = sm ? 400 : 820, rh = 42, top = 6, H = top + EDS.length * rh + 8, x0 = 2, x1 = W - 2, max = Math.max(...EDS.map(e => (EDITAL_VALOR[e] || {}).total || (EDITAL_VALOR[e] || {}).est || 0), 1);
+  let s = svgOpen(W, H, "Valor total de cada edital e parte que ficou com os projetos do corpus");
+  s += `<defs><pattern id="hachura" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#161616" stroke-opacity=".35"/></pattern></defs>`;
+  EDS.forEach((e, k) => { const v = EDITAL_VALOR[e] || {}, y = top + k * rh, c = edCorpus(e), i = MECHS.indexOf(edMech(e)), ink = INKS[i] || INK, base = hex(ink), luz = hex(tom(ink, "luz")), n = DATA.filter(d => d.edital === e).length;
+    const w = (x1 - x0) * ((v.total || v.est || 0) / max), wc = v.total ? Math.max(2.5, (x1 - x0) * (c / max)) : (x1 - x0) * (c / max);
+    const dir = v.total ? `${shortMoney(v.total)} no edital · ${shortMoney(c)} nestes projetos (${pct1(c / v.total)})` : `sem valor no edital · ${shortMoney(c)} nestes projetos`;
+    s += `<g data-ct="edital" data-ck="${esc(e)}" data-label="${esc(e)}" class="${selection?.type === "edital" && selection.key === e ? "active" : ""}"><rect class="halo" x="0" y="${y}" width="${W}" height="${rh - 4}" fill="#161616" fill-opacity=".06"/><text x="${x0}" y="${y + 12}" class="lab">${esc(e)}</text><text x="${x1}" y="${y + 12}" text-anchor="end">${dir}</text>`
+      + (v.total ? `<rect x="${x0}" y="${y + 18}" width="${f1(w)}" height="14" fill="${luz}" stroke="#161616"/>` : `<rect x="${x0}" y="${y + 18}" width="${f1(w)}" height="14" fill="url(#hachura)" stroke="#161616" stroke-dasharray="3 3"/>`)
+      + `<rect x="${x0}" y="${y + 18}" width="${f1(wc)}" height="14" fill="${base}" stroke="#161616"/><title>${esc(e)} · ${v.total ? "valor do edital: " + money(v.total) : "o edital não fixa valor; estimativa oficial de " + milhoes(v.est) + " por ano"} · ${n} projeto(s) do corpus, somando ${money(c)}</title></g>`; });
+  $("#poteChart").innerHTML = s + "</svg>";
+  $("#poteFontes").innerHTML = EDS.map(e => { const v = EDITAL_VALOR[e] || {}; return `<li><b>${esc(e)}</b>: ${v.total ? money(v.total) : "sem valor fixado"} (${esc(v.tipo || "")}). ${v.obs ? esc(v.obs) + " " : ""}${v.fonte ? `<a href="${v.fonte}" target="_blank" rel="noopener">Edital em PDF ↗</a>` : ""}</li>`; }).join("");
+  bindCharts();
+}
+function chanceRows() { const seen = new Set(), rows = [];
+  for (const e of EDS) { const v = EDITAL_VALOR[e] || {}; if (v.junto) { if (seen.has(v.junto)) continue; seen.add(v.junto); const j = JUNTOS[v.junto]; rows.push({ label: j.label, insc: j.insc, aprov: j.aprov, rate: j.aprov / j.insc, ink: INK, key: null, fonte: v.fonteN }); continue; }
+    rows.push({ label: e, insc: v.insc || null, aprov: v.aprov || null, rate: v.insc && v.aprov ? v.aprov / v.insc : v.taxa || null, soTaxa: !v.insc && !!v.taxa, ink: INKS[MECHS.indexOf(edMech(e))] || INK, key: e, fonte: v.fonteN, obs: v.obs }); }
+  return rows; }
+function renderChance() { // disputa: de todos os inscritos, a parte aprovada. Parte e todo numa barra de 0 a 100%
+  const sm = small(), W = sm ? 400 : 820, rh = 42, top = 6, rows = chanceRows(), H = top + rows.length * rh + 22, x0 = 2, x1 = W - 2, nf = n => n.toLocaleString("pt-BR");
+  let s = svgOpen(W, H, "De todos os inscritos em cada edital, quantos foram aprovados");
+  rows.forEach((r, k) => { const y = top + k * rh, base = hex(r.ink);
+    const dir = r.rate == null ? `${r.insc ? nf(r.insc) + " inscritos · " : ""}aprovados não informados` : r.soTaxa ? `${nf(r.aprov)} aprovados · ${pct1(r.rate)} dos inscritos` : `${nf(r.aprov)} de ${nf(r.insc)} inscritos · ${pct1(r.rate)}`;
+    s += `<g ${r.key ? `data-ct="edital" data-ck="${esc(r.key)}" data-label="${esc(r.key)}"` : ""} class="${r.key && selection?.type === "edital" && selection.key === r.key ? "active" : ""}"><rect class="halo" x="0" y="${y}" width="${W}" height="${rh - 4}" fill="#161616" fill-opacity=".06"/><text x="${x0}" y="${y + 12}" class="lab">${esc(r.label)}</text><text x="${x1}" y="${y + 12}" text-anchor="end">${dir}</text>`
+      + `<rect x="${x0}" y="${y + 18}" width="${x1 - x0}" height="14" fill="${r.rate == null ? "url(#hachura)" : "#fff"}" stroke="#161616" ${r.rate == null ? 'stroke-dasharray="3 3"' : ""}/>`
+      + (r.rate != null ? `<rect x="${x0}" y="${y + 18}" width="${f1((x1 - x0) * r.rate)}" height="14" fill="${base}" stroke="#161616"/>` : "") + `<title>${esc(r.label)} · ${dir}${r.obs ? " · " + esc(r.obs) : ""}</title></g>`; });
+  const ya = top + rows.length * rh + 4; [0, .25, .5, .75, 1].forEach(t => { const X = f1(x0 + (x1 - x0) * t); s += `<line x1="${X}" y1="${ya - 6}" x2="${X}" y2="${ya}" stroke="#161616" stroke-opacity=".5"/><text x="${X}" y="${ya + 11}" text-anchor="${t === 0 ? "start" : t === 1 ? "end" : "middle"}">${Math.round(t * 100)}% dos inscritos</text>`; });
+  $("#chanceChart").innerHTML = s + "</svg>"; bindCharts();
+}
+function renderEditalAnswers() {
+  const com = EDS.filter(e => (EDITAL_VALOR[e] || {}).total), soma = com.reduce((a, e) => a + EDITAL_VALOR[e].total, 0), corp = com.reduce((a, e) => a + edCorpus(e), 0);
+  const maior = com.slice().sort((a, b) => EDITAL_VALOR[b].total - EDITAL_VALOR[a].total)[0], fatia = com.map(e => ({ e, f: edCorpus(e) / EDITAL_VALOR[e].total })).sort((a, b) => b.f - a.f)[0], sem = EDS.filter(e => !(EDITAL_VALOR[e] || {}).total);
+  $("#ansPote").textContent = com.length ? `Os ${com.length} editais com valor publicado ofereceram ${milhoes(soma)} ao todo. Os projetos deste corpus somam ${milhoes(corp)}, ou ${pct1(corp / soma)} disso. O maior edital é o ${maior}, com ${milhoes(EDITAL_VALOR[maior].total)}. A maior fatia do corpus está no ${fatia.e}: ${pct1(fatia.f)}.${sem.length ? ` O ${sem.join(", ")} não fixa valor no edital.` : ""}` : "";
+  const rs = chanceRows().filter(r => r.rate != null).sort((a, b) => a.rate - b.rate), lo = rs[0], hi = rs[rs.length - 1];
+  $("#ansChance").textContent = rs.length > 1 ? `O edital mais disputado foi o ${lo.label}: ${lo.insc ? `passaram ${lo.aprov.toLocaleString("pt-BR")} de ${lo.insc.toLocaleString("pt-BR")} inscritos` : "passaram"} (${pct1(lo.rate)}). O menos disputado foi o ${hi.label.split(" · ")[0]}: ${pct1(hi.rate)}.` : "";
+}
 function renderLegend() { $("#mechLegend").innerHTML = MECHS.map(m => `<button data-leg="${m}" class="${selection?.type === "mechanism" && selection.key === m ? "active" : ""}">${wallIcon(mechSample(m), 34)}<b>${m}</b><small>${esc((Rizoma.TRANSLATE[m] || "").split(".")[0])}</small></button>`).join(""); $$("[data-leg]").forEach(b => b.onclick = () => { const m = b.dataset.leg; selection = selection && selection.type === "mechanism" && selection.key === m ? null : { type: "mechanism", key: m, label: m }; renderIndicators(); }); }
 function renderRegion() { if (!$("#regionChart")) return; // sem regional verificada não há gráfico: a lacuna virou texto em "o que falta saber"
   const groups = aggregate(DATA, p => p.region || "Não verificada").sort((a, b) => b[metric] - a[metric]), max = Math.max(1, ...groups.map(g => g[metric]));
@@ -1436,12 +1519,14 @@ const HELP = {
   years: { t: "Em que ano e por qual caminho?", o: "Quantos projetos, ou quanto valor, foram aprovados em cada ano, separados por mecanismo. As quatro formas mostram o mesmo dado: colunas ano a ano, dois períodos lado a lado, uma mancha por ano ou cordas.", q: "Mostra quando cada mecanismo entra no corpus. O Incentivo Fiscal chega em poucos projetos de valor alto. O Descentra, em vários projetos pequenos.", c: "Declive: Tufte (2001). Mancha: agregação limitada por difusão (Witten e Sander, 1981); experimento 04 do Lab 06. Cordas: Circos (Krzywinski et al., 2009), fitas como feixes (Holten, 2006); experimento 05 do Lab 06." },
   dots: { t: "Quanto foi aprovado para cada projeto?", o: "O valor de cada projeto. Na régua, a posição é o valor. Em blocos e em células, o tamanho é o valor.", q: "Dá para ver quem encosta no teto do edital e quem fica nas faixas mais baixas. É a diferença entre o circuito monumental e o capilar, projeto por projeto.", c: "Régua: posição numa escala comum (Cleveland e McGill, 1984), com linhas de referência (Few, 2006). Células: Voronoi treemap (Balzer e Deussen, 2005), diagrama de potência (Aurenhammer, 1987), ajuste de pesos (Nocaj e Brandes, 2012); experimento 03 do Lab 06." },
   lorenz: { t: "O dinheiro é bem repartido?", o: "Que parte de todo o valor fica com os maiores projetos e que parte fica com os menores.", q: "A régua mostra cada valor. Aqui aparece a soma: poucos projetos concentram boa parte do valor aprovado. O índice de Gini, na curva, resume isso num número de 0 a 1.", c: "Curva de Lorenz (1905) e índice de Gini (1912)." },
+  pote: { t: "Quanto cada edital ofereceu?", o: "O valor total que cada edital pôs à disposição e, dentro dele, a soma dos projetos de grafite deste corpus.", q: "Dá a medida: os vinte projetos são uma parte pequena de editais que atendem todas as áreas da cultura. Também mostra que o Descentra inteiro é muito menor que os outros dois.", c: "Barras numa escala comum (Cleveland e McGill, 1984).", f: "Editais em PDF no site da Prefeitura de Belo Horizonte, lidos em 13/11/2026. O link de cada um está abaixo do gráfico." },
+  chance: { t: "De quem se inscreve, quantos passam?", o: "Em cada edital, a parte dos inscritos que foi aprovada.", q: "Mostra a disputa. Um edital pode ter muito dinheiro e ainda assim aprovar poucos, se muita gente se inscreve.", c: "Parte e todo numa barra de 0 a 100%.", f: "Páginas dos editais e notícias da Prefeitura de Belo Horizonte, lidas em 13/11/2026. Contam todos os projetos inscritos, não só os de arte urbana." },
   matrix: { t: "O que os projetos têm em comum?", o: "Para cada par de projetos, quantas coisas eles dividem: ano, mecanismo, edital, tamanho do valor ou curadoria.", q: "Arrumada por mecanismo, a matriz mostra blocos escuros: projetos do mesmo mecanismo se parecem muito entre si e pouco com os outros.", c: "Matriz reordenável (Bertin, 1967)." }
 };
 let helpOpener = null, pressT = 0, pressed = false;
 function openHelp(key, opener, ev) {
   const h = HELP[key]; if (!h) return; const pop = $("#helpPop");
-  $("#helpTitle").textContent = h.t; $("#helpBody").innerHTML = `<p><b>O QUE MOSTRA</b>${esc(h.o)}</p><p><b>POR QUE IMPORTA</b>${esc(h.q)}</p><p><b>FONTE DOS DADOS</b>${esc(SRC)}</p>${h.c ? `<p><b>ALGORITMO</b>${esc(h.c)}</p>` : ""}`;
+  $("#helpTitle").textContent = h.t; $("#helpBody").innerHTML = `<p><b>O QUE MOSTRA</b>${esc(h.o)}</p><p><b>POR QUE IMPORTA</b>${esc(h.q)}</p><p><b>FONTE DOS DADOS</b>${esc(h.f || SRC)}</p>${h.c ? `<p><b>ALGORITMO</b>${esc(h.c)}</p>` : ""}`;
   helpOpener = opener || null; pop.hidden = false; pop.classList.remove("up"); $("#helpScrim").hidden = !small();
   if (!small()) { // ancorado onde se clicou (desktop); no celular é folha inferior, pelo CSS
     const r = opener ? opener.getBoundingClientRect() : null, px = ev && ev.clientX ? ev.clientX : r ? r.left + r.width / 2 : innerWidth / 2, py = ev && ev.clientY ? ev.clientY : r ? r.bottom : innerHeight / 2;
@@ -1470,8 +1555,9 @@ function renderEditais() { // mecanismos, ligações e editais explicados (mesmo
     return `<article data-k="${m}"><h4>${wallIcon(mechSample(m), 30)}${m}</h4><p>${MEC_HELP[m][0]}</p><p>${MEC_HELP[m][1]}</p><small>No corpus: ${v.length} projetos, de ${mil(Math.min(...v))} a ${mil(Math.max(...v))}, mediana de ${mil(median(v))}.</small><div class="pj"><button class="verind" data-mech="${m}">Ver nos indicadores →</button></div></article>`; }).join("");
   const linhas = TYPES.map(t => `<article data-k="${t}"><h4>${Rizoma.LINES[t].label}</h4><p>${LINE_HELP[t][1]}</p><small>${t === "territorio" ? "Hoje não liga nenhum projeto." : `No corpus inteiro, cria ${pares(t)} ligações.`}</small></article>`).join("");
   const eds = [...new Set(DATA.map(d => d.edital))].sort((a, b) => (DATA.find(d => d.edital === a).year - DATA.find(d => d.edital === b).year) || a.localeCompare(b));
-  const editais = eds.map(e => { const ps = DATA.filter(d => d.edital === e), m = ps[0].mechanism, i = MECHS.indexOf(m), info = EDITAL_INFO[e] || {}, tot = ps.reduce((a, p) => a + (p.value || 0), 0);
-    return `<article data-k="${esc(e)}"><h4><i style="--c:${hex(INKS[i] || INK)}"></i>${esc(e)}</h4><p>${EDITAL_COMO[m] || ""}</p>${info.teto ? `<p><b>Teto:</b> ${info.teto}</p>` : ""}${info.nota ? `<p>${info.nota}</p>` : ""}
+  const editais = eds.map(e => { const ps = DATA.filter(d => d.edital === e), m = ps[0].mechanism, i = MECHS.indexOf(m), info = EDITAL_INFO[e] || {}, ev = EDITAL_VALOR[e] || {}, nf = n => n.toLocaleString("pt-BR"), tot = ps.reduce((a, p) => a + (p.value || 0), 0);
+    const disputa = ev.insc && ev.aprov ? `${nf(ev.aprov)} aprovados entre ${nf(ev.insc)} inscritos.` : ev.junto ? `${nf(JUNTOS[ev.junto].aprov)} aprovados entre ${nf(JUNTOS[ev.junto].insc)} inscritos, somando Fundo e Incentivo Fiscal.` : ev.taxa ? `${nf(ev.aprov)} aprovados, ${pct1(ev.taxa)} dos inscritos.` : ev.insc ? `${nf(ev.insc)} inscritos.` : "";
+    return `<article data-k="${esc(e)}"><h4><i style="--c:${hex(INKS[i] || INK)}"></i>${esc(e)}</h4><p>${EDITAL_COMO[m] || ""}</p>${info.teto ? `<p><b>Teto por projeto:</b> ${info.teto}</p>` : ""}<p><b>Valor do edital:</b> ${ev.total ? milhoes(ev.total) + "." : "não fixado no edital."}${disputa ? " " + disputa : ""}${ev.obs ? " " + esc(ev.obs) : ""}${ev.fonte ? ` <a href="${ev.fonte}" target="_blank" rel="noopener">Edital em PDF ↗</a>` : ""}</p>
       <small>${ps.length === 1 ? "Um projeto do corpus" : ps.length + " projetos do corpus"}, somando ${money(tot)}.</small><div class="pj">${ps.map(p => `<button data-ver="${p.id}">${esc(Rizoma.shortTitle(p.title))} →</button>`).join("")}<button class="verind" data-ed="${esc(e)}">Ver nos indicadores →</button></div>
       ${info.url ? `<small><a href="${info.url}" target="_blank" rel="noopener">Página na Prefeitura ↗</a></small>` : ""}</article>`; }).join("");
   $("#editalList").innerHTML = `<h3 id="h-mec">Os três mecanismos</h3><p>Mecanismo é o caminho pelo qual o dinheiro público chega ao projeto. No mapa, cada mecanismo tem uma cor.</p><div class="hgrid">${mecs}</div>

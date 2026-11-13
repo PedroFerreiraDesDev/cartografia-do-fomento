@@ -371,3 +371,11 @@ Regras para a integração (mesmas do Lab 05): papel e tinta, cor só por mecani
 As referências bibliográficas já estão em formato ABNT nas seções 4 e 5 (metodologia e visualização) e na tabela 3.17 (fontes de dados). As referências de identidade visual, leis de UX e cores estão em `IDENTIDADE-COESAO-LAB05.md`, seção 8; as dos algoritmos do Lab 06, em `README-RIZOMA.md`, seção 7. Antes de levar ao TCC, conferir na biblioteca os itens marcados **não confirmado**.
 
 Cópias das planilhas oficiais do Incentivo Fiscal (fonte: PBH, acesso em 31 out. 2026) estão em `dados/fontes/pbh-incentivo-fiscal/`.
+
+---
+
+## Adendo de 13/11/2026: valor total, inscritos e aprovados de cada edital
+
+Os doze editais do corpus foram abertos em PDF no site da Prefeitura e o valor total de cada um foi lido no texto. A tabela, as divergências encontradas e os endereços estão em `rizoma/PROPOSTAS-LAB07.md`, seção 3G.4, e em `EDITAL_VALOR`, dentro de `lab-08-site.html`.
+
+Correção à linha "Teto de cada edital por ano" da tabela acima: os editais dão limites por categoria no Incentivo Fiscal (até R$ 160 mil em 2017, R$ 150 mil em 2021, R$ 165 mil em 2023) e, no Descentra, R$ 20 mil em 2019 e 2021 e R$ 40 mil em 2022 e 2024. "R$ 110 mil" não aparece como teto único em 2017 e "R$ 38,4 mil" não aparece como teto em nenhum edital lido. O LMIC 2023 - IF não fixa valor total: remete à Lei 11.594/2023.

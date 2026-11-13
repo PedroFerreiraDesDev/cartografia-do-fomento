@@ -414,6 +414,76 @@ Conferido no navegador em 1280 px e 375 px: as quatro perguntas com todas as for
 
 ---
 
+## 3G. Lab 08, segunda rodada de 13/11/2026: recomeçar, letra por letra, um título só e os editais em números
+
+Pedidos do autor: ao limpar ou recomeçar, as ligações e os filtros continuavam; a troca de letra é boa, mas deve ser letra por letra; havia vários nomes pelo site com cara de título, e ele quer um só; mais um ou dois gráficos sobre o valor total disponibilizado em cada edital, com os valores tirados dos PDFs oficiais.
+
+### 3G.1 Recomeçar zera tudo
+
+- **Recomeçar** (botão e tecla R) agora esconde os projetos, desliga todas as ligações, apaga os cortes, volta o zoom e o giro ao começo, limpa o spray, esvazia a busca e desfaz a seleção dos Indicadores. Antes, o motor só escondia os projetos; as ligações ligadas continuavam e o spray voltava sozinho.
+- **"Limpar o spray" virou "Desligar ligações e limpar"** (menu Mais e tecla X). Mantém os projetos revelados. Limpar só o spray não fazia efeito visível, porque as ligações ligadas repintavam o rastro em seguida.
+- Cada um dos dois avisa em uma frase o que fez.
+- Feito na página, sem mexer no motor `js/rizoma.js`: o `R.reset()` do Lab 08 passa a chamar `setLine(t, false)` para cada ligação, `zoomReset()` e `setDepth(true)`. Os outros labs não mudam.
+
+### 3G.2 A letra troca letra por letra
+
+- Na marca e na tela de entrada, cada letra tem a sua mão (`mode: "letra"` em `js/letreiro.js`) e a repintura troca letras soltas, duas ou três por vez, uma depois da outra (`mutateN`, opção nova). Antes, a palavra inteira trocava de mão de uma vez.
+- O limite de leitura passou a valer também nesse modo: o pixo (Te Amo Jéssica) só entra em letras de palavras de até três letras. Antes, no modo por letra, ele podia cair em qualquer palavra.
+- O nome dos projetos, na ficha e na página do projeto, continua com uma mão por palavra e sem troca, para a leitura do nome não oscilar.
+- A ideia de variar a letra dentro da mesma palavra, como no letreiro pintado à mão, continua vindo do Brasilêro (CRUZ, 1999).
+
+### 3G.3 Um título só
+
+O site tinha cinco frases em letreiro, cada uma com cara de título: "A rua escreve o mapa", "O fomento em movimento", "De onde vem o dinheiro", "Quem acessa o fomento?" e "Uma cartografia sem mapa obrigatório". Agora o título é um só, **Cartografia do Fomento**, na marca e na entrada. Cada tela leva só o nome da seção, igual ao do menu, em Arial: Descobrir, Indicadores, Editais, Pesquisa, Sobre. O letreiro fica no título do site e no nome dos projetos.
+
+### 3G.4 Os editais em números: de onde vem cada valor
+
+Cada valor foi lido no texto do próprio edital, em PDF, no site da Prefeitura de Belo Horizonte, em 13/11/2026. Inscritos e aprovados vêm das páginas dos editais e das notícias da Prefeitura. Nada foi estimado.
+
+| Edital | Valor total | O que o número é | Inscritos | Aprovados |
+|---|---|---|---|---|
+| LMIC 2017 - IF | R$ 12.050.000,00 | renúncia fiscal prevista na Lei 11.070/2017 | 1.663 (Fundo e IF juntos) | 275 (juntos) |
+| LMIC 2017 - Fundo | R$ 8.000.000,00 | dotação do Fundo | (ver acima) | (ver acima) |
+| LMIC 2021 - IF | R$ 14.000.000,00 | montante máximo de renúncia fiscal | 420 | 128 |
+| LMIC 2021 - Fundo | R$ 8.200.000,00 | recursos do Fundo | 1.189 | 136 |
+| LMIC 2022 - Fundo | R$ 8.200.000,00 | recursos do Fundo | 607 | 131 |
+| LMIC 2023 - IF | não fixado no edital | o edital remete à Lei 11.594/2023; a página informa só estimativa média de R$ 16 milhões de renúncia por ano | 487 | não informado na página |
+| LMIC 2023 - Fundo | R$ 11.250.000,00 | recursos do Fundo após suplementação; o edital saiu com R$ 9.000.000,00 | 991 | 148 |
+| LMIC 2024 - Fundo | R$ 9.598.374,00 | recursos do Fundo | 661 | 124 |
+| Descentra 2019 | R$ 1.060.000,00 | recursos do Fundo | não informado | 54 (13,10% dos inscritos, segundo a página) |
+| Descentra 2021 | R$ 1.560.000,00 | recursos do Fundo | 488 | 79 |
+| Descentra 2022 | R$ 1.560.000,00 | recursos do Fundo | 324 | 41 |
+| Descentra 2024 | R$ 1.800.000,00 | recursos do Fundo | 450 | 46 |
+
+O endereço de cada PDF e de cada página está em `EDITAL_VALOR`, em `lab-08-site.html`, e aparece para o visitante em "Ver a fonte de cada valor", abaixo do gráfico, e em cada cartão da tela Editais.
+
+**Escolhas e divergências, declaradas.**
+
+- **LMIC 2023 - Fundo:** o gráfico usa o valor final, R$ 11,25 milhões, e o cartão informa o valor de lançamento.
+- **LMIC 2023 - IF:** não entra na soma. A barra aparece tracejada, no tamanho da estimativa anual, com o aviso de que o edital não fixa valor.
+- **LMIC 2021 - IF:** a página do edital diz 32,47% dos inscritos; 128 sobre 420 dá 30%. O gráfico usa as duas contagens e o cartão registra a diferença.
+- **Descentra 2024:** o documento Perguntas e Respostas diz R$ 1,7 milhão; o edital, a página e a notícia dizem R$ 1,8 milhão. Vale o edital.
+- **Descentra 2019:** a página dá os aprovados e a porcentagem, sem o número de inscritos. O gráfico usa a porcentagem publicada e não calcula os inscritos.
+- **Incentivo Fiscal:** o valor do edital é renúncia fiscal prevista, e o valor de cada projeto é o teto que ele pode captar. São grandezas diferentes das do Fundo, e o "como ler" do gráfico avisa.
+- **Planilhas oficiais do IF** (`dados/fontes/pbh-incentivo-fiscal/`): a soma da coluna "valor aprovado" dá R$ 12.325.000,00 em 2017 (141 projetos), R$ 15.684.974,00 em 2021 (144) e R$ 40.089.472,93 em 2023 (299). Não coincide com o montante dos editais e a causa não foi investigada. Essas somas não foram usadas.
+
+**Correção de tetos.** Os cartões da tela Editais mostravam tetos anotados a partir do TCC. Agora mostram o que está em cada edital: Incentivo Fiscal com limites por categoria, até R$ 160 mil em 2017, R$ 150 mil em 2021 e R$ 165 mil em 2023; Fundo até R$ 90 mil em 2021 e 2022 e até R$ 100 mil em 2023 e 2024; Descentra R$ 20 mil em 2019 e 2021 e R$ 40 mil em 2022 e 2024. O "teto de R$ 110 mil" de 2017 não aparece no edital como teto único, e "R$ 38,4 mil" não aparece como teto em nenhum edital lido. **A conferir pelo autor no texto do TCC.**
+
+### 3G.5 Os dois gráficos novos
+
+A tela Indicadores passa a ter seis perguntas: quatro sobre os vinte projetos e duas sobre os editais.
+
+- **Pergunta 5: quanto cada edital ofereceu?** Uma linha por edital. A barra clara é o valor total do edital; o pedaço escuro é a soma dos projetos do corpus naquele edital. Todas as barras na mesma escala, para o Descentra aparecer do tamanho que tem (CLEVELAND; McGILL, 1984). Resposta escrita calculada: os onze editais com valor publicado somam R$ 77,28 milhões; os projetos do corpus somam R$ 1,04 milhão, 1,3% disso.
+- **Pergunta 6: de quem se inscreve, quantos passam?** Uma linha por edital, de 0 a 100% dos inscritos, com a parte aprovada pintada. O mais disputado é o Descentra 2024, com 46 aprovados entre 450 inscritos (10%). Os inscritos são de todas as áreas da cultura, não só de arte urbana, e o gráfico diz isso.
+
+Por que estes dois e não mais formas do mesmo dado: a pergunta 5 dá a medida do corpus dentro do edital, que nenhum gráfico anterior dava; a pergunta 6 traz um dado novo, a disputa. As duas respondem ao pedido sem repetir as perguntas 1 a 4.
+
+Limite: a pergunta 5 compara o valor do edital com os vinte projetos do corpus do TCC, não com todos os projetos de arte urbana aprovados. As planilhas oficiais mostram projetos de arte urbana fora do corpus (ver `rizoma/FONTES-DADOS-E-METODOLOGIA.md`).
+
+Conferido no navegador em 1280 px e 375 px: Recomeçar e Desligar ligações, marca trocando letra por letra, os cinco nomes de seção, os dois gráficos novos com seleção e ajuda, e os cartões da tela Editais com valor, disputa e link do PDF, sem erros no console.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.
@@ -427,6 +497,8 @@ Conferido no navegador em 1280 px e 375 px: as quatro perguntas com todas as for
 ---
 
 ## Referências
+
+BELO HORIZONTE. Secretaria Municipal de Cultura. Fundação Municipal de Cultura. **Editais da Lei Municipal de Incentivo à Cultura (Fundo e Incentivo Fiscal) e do Descentra, 2017 a 2024**: textos dos editais, páginas de resultado e notícias. Belo Horizonte: PBH, 2017-2025. Disponível em: https://prefeitura.pbh.gov.br/cultura/editais/editais-anteriores. Acesso em: 13 nov. 2026.
 
 BERTIN, Jacques. **Sémiologie graphique**: les diagrammes, les réseaux, les cartes. Paris: Mouton; Gauthier-Villars, 1967.
 

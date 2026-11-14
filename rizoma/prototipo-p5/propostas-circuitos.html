@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Propostas para o gráfico dos dois circuitos · Cartografia do Fomento</title>
+<meta name="description" content="Três propostas de gráfico, em p5.js, para mostrar os dois circuitos do grafite financiado em Belo Horizonte. Para o autor escolher.">
+<style>
+:root{--ink:#161616;--paper:#F7F6F1;--line:#d4d1c8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 Arial,Helvetica,sans-serif}
+main{max-width:900px;margin:0 auto;padding:28px 18px 90px}
+.k{font-size:10px;font-weight:900;letter-spacing:.14em;color:#777}
+h1{font-size:34px;line-height:1.05;letter-spacing:-.03em;margin:6px 0 12px;text-transform:uppercase}
+h2{font-size:25px;line-height:1.1;letter-spacing:-.02em;margin:4px 0 8px;text-transform:uppercase}
+p{margin:0 0 10px;color:#444;max-width:700px}
+section{border-top:1px solid var(--line);padding:26px 0 30px}
+.frase{font-size:18px;line-height:1.4;font-weight:700;color:var(--ink);border-left:3px solid var(--ink);padding-left:11px;margin:10px 0 14px;max-width:700px}
+.passos{margin:8px 0 14px;padding:0;list-style:none;counter-reset:ps;max-width:720px}.passos li{counter-increment:ps;display:grid;grid-template-columns:28px 1fr;gap:8px;padding:6px 0;font-size:14px;line-height:1.5;color:#333}
+.passos li::before{content:counter(ps);display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:var(--ink);color:#fff;font-size:10px;font-weight:900;margin-top:1px}
+.meta{display:grid;grid-template-columns:120px 1fr;gap:4px 14px;margin:12px 0 0;font-size:13px;line-height:1.5;max-width:760px}
+.meta b{font-size:9.5px;letter-spacing:.12em;color:#777;padding-top:3px}
+.holder{border:1px solid var(--line);background:rgba(255,255,255,.55);line-height:0}
+.holder canvas{display:block;max-width:100%;height:auto!important;touch-action:manipulation}
+.read{min-height:40px;margin:8px 0 0;border:1px dashed #bbb;background:rgba(255,255,255,.6);padding:9px 11px;font-size:13px;line-height:1.5;color:#777;max-width:none}
+.read.on{border:1.5px solid var(--ink);color:var(--ink);font-weight:700;background:#fff}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;max-width:760px}.pc div{border:1px dashed #bbb;padding:10px 12px;font-size:13px;line-height:1.5}.pc b{display:block;font-size:9.5px;letter-spacing:.12em;color:#777;margin-bottom:3px}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}.nav a{border:1px solid #bbb;background:#fff;padding:8px 11px;font-size:12px;font-weight:800;color:var(--ink);text-decoration:none}
+.note{border:1px dashed #999;padding:12px 14px;font-size:13px;color:#555;max-width:760px}
+@media(max-width:640px){h1{font-size:27px}h2{font-size:21px}.meta{grid-template-columns:1fr}.pc{grid-template-columns:1fr}.frase{font-size:16px}}
+</style>
+</head>
+<body>
+<main>
+<div class="k">CARTOGRAFIA DO FOMENTO · PROPOSTAS · 14/11/2026</div>
+<h1>Três formas para mostrar os dois circuitos</h1>
+<p>O autor achou a teia do passo 8 confusa, mesmo depois de duas rodadas de ajuste. O problema não era a explicação: era a forma. Uma teia de ligações pede que a pessoa aprenda a ler linhas antes de entender a ideia. Aqui estão três formas mais diretas, desenhadas em p5.js com os vinte projetos reais, para escolher.</p>
+<p class="frase">O que o passo 8 precisa dizer, numa frase: o mesmo fomento público sustenta dois circuitos de grafite. Um tem poucos projetos grandes. O outro tem muitos projetos pequenos. E eles não se misturam.</p>
+<p>Cada proposta abaixo diz isso de um jeito. Todas têm a frase que o desenho quer provar, três passos de leitura e o que dá para concluir. Passe a mão ou toque em cada desenho.</p>
+<div class="nav"><a href="#a">A · Caminho da tinta</a><a href="#b">B · Duas pistas</a><a href="#c">C · Frente a frente</a><a href="../../lab-08-site.html#direto">Voltar ao Lab 08</a></div>
+
+<section id="a">
+<div class="k">PROPOSTA A</div><h2>Caminho da tinta</h2>
+<p class="frase" id="fA"></p>
+<p>O dinheiro sai da esquerda como um jato de tinta, se divide pelos três mecanismos e chega a cada projeto à direita. A largura de cada faixa é o valor aprovado.</p>
+<ol class="passos">
+<li>Comece pela esquerda: a barra inteira é todo o valor aprovado para os vinte projetos.</li>
+<li>Siga as três faixas. Cada cor é um mecanismo. Faixa larga, mais dinheiro.</li>
+<li>Chegue à direita: cada ponta é um projeto. Em cima, poucas pontas largas. Embaixo, muitas pontas finas.</li>
+</ol>
+<div class="holder" id="hA"></div><p class="read" id="rA">Passe a mão ou toque numa faixa.</p>
+<div class="meta">
+<b>CONCLUSÃO</b><span id="cA"></span>
+<b>REFERÊNCIA</b><span>Diagrama de fluxo em que a largura é a quantidade, conhecido como diagrama de Sankey (SCHMIDT, 2008). Ideia emprestada, desenho próprio.</span>
+</div>
+<div class="pc"><div><b>BOM PARA</b>Contar uma história com começo, meio e fim, no sentido da leitura. Mostra de onde o dinheiro vem, por onde passa e aonde chega. É a forma que mais se liga ao objetivo do TCC: tornar claro o caminho do fomento.</div><div><b>LIMITE</b>Não mostra o tempo. No celular as faixas finas do Descentra ficam difíceis de tocar, e os nomes precisam de um arranjo próprio.</div></div>
+</section>
+
+<section id="b">
+<div class="k">PROPOSTA B</div><h2>Duas pistas</h2>
+<p class="frase" id="fB"></p>
+<p>Uma linha do tempo com duas pistas, uma para cada circuito. Cada bolinha é um projeto, no ano em que foi aprovado. O tamanho é o valor. A caixa tracejada junta os projetos do mesmo edital.</p>
+<ol class="passos">
+<li>Leia da esquerda para a direita: são os anos, de 2017 a 2024.</li>
+<li>Compare a pista de cima com a de baixo: em cima, bolinhas grandes. Embaixo, bolinhas pequenas.</li>
+<li>Olhe as caixas tracejadas: cada uma é um edital. Nenhuma caixa passa de uma pista para a outra.</li>
+</ol>
+<div class="holder" id="hB"></div><p class="read" id="rB">Passe a mão ou toque numa bolinha.</p>
+<div class="meta">
+<b>CONCLUSÃO</b><span id="cB"></span>
+<b>REFERÊNCIA</b><span>Linha do tempo com faixas paralelas, forma que vem de Joseph Priestley, no século XVIII (ROSENBERG; GRAFTON, 2010). Ideia emprestada, desenho próprio.</span>
+</div>
+<div class="pc"><div><b>BOM PARA</b>Mostrar que os dois circuitos correm lado a lado, no mesmo calendário, sem se encontrar. Usa a bolinha do mapa e a ideia de tempo, que todo mundo já sabe ler.</div><div><b>LIMITE</b>Repete parte do passo 5, que também fala de tempo. Não mostra a soma do dinheiro de cada circuito, só o tamanho de cada projeto.</div></div>
+</section>
+
+<section id="c">
+<div class="k">PROPOSTA C</div><h2>Frente a frente</h2>
+<p class="frase" id="fC"></p>
+<p>Uma ficha de comparação, sem eixo e sem linha. Cada fileira responde a uma pergunta só, com um desenho de cada lado.</p>
+<ol class="passos">
+<li>Leia uma fileira de cada vez, de cima para baixo. O nome da fileira está no meio.</li>
+<li>Compare o desenho da esquerda com o da direita. O número ao lado confirma o que o olho viu.</li>
+<li>No fim, junte as cinco respostas: é o retrato dos dois circuitos.</li>
+</ol>
+<div class="holder" id="hC"></div><p class="read" id="rC">Passe a mão ou toque numa fileira.</p>
+<div class="meta">
+<b>CONCLUSÃO</b><span id="cC"></span>
+<b>REFERÊNCIA</b><span>Quantidade mostrada pela repetição de uma marca, uma para cada unidade: Isotype (NEURATH, 1936). Ideia emprestada, desenho próprio.</span>
+</div>
+<div class="pc"><div><b>BOM PARA</b>Entender em dez segundos, sem aprender nada antes. Cabe bem no celular. Serve também como resumo na conclusão da história.</div><div><b>LIMITE</b>É a menos exploratória: mostra os totais, não cada projeto. Sozinha, parece mais uma tabela ilustrada que um gráfico.</div></div>
+</section>
+
+<section>
+<h2>O que eu recomendo</h2>
+<p>A proposta A, <b>Caminho da tinta</b>, no lugar da teia do passo 8. Ela conta a história no sentido da leitura e mostra concentração e pulverização no mesmo desenho, que são as palavras do resumo do TCC. A proposta C, <b>Frente a frente</b>, pode entrar na conclusão, no passo 9, como resumo visual dos dois circuitos.</p>
+<p>A teia não precisa ser apagada. Ela pode ficar guardada em "ver como", para quem quiser explorar as ligações, ou sair de vez.</p>
+<div class="note">Os valores são os aprovados em cada edital, lidos no Diário Oficial do Município e nas listas de homologação, de 2017 a 2024. No Incentivo Fiscal, valor aprovado é autorização para captar, não dinheiro recebido. Monumental e capilar são nomes criados no TCC para comparar os projetos, não são categorias oficiais. A decisão fica registrada em <code>rizoma/PROPOSTAS-LAB07.md</code>, seção 3M.</div>
+</section>
+</main>
+
+<script src="../../js/data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<script>
+(function () {
+"use strict";
+const DATA = (window.CARTOGRAFIA_DATA || []).filter(p => p.value);
+const MECHS = ["Incentivo Fiscal", "Fundo Municipal", "Descentra"], INKS = [[201, 24, 106], [18, 115, 201], [185, 127, 0]], PAPER = [247, 246, 241], INK = [22, 22, 22], CIRC = ["Monumental", "Capilar"];
+const mix = (c, k) => c.map((v, i) => Math.round(v * k + PAPER[i] * (1 - k))), dark = c => c.map(v => Math.round(v * 0.5));
+const mi = p => MECHS.indexOf(p.mechanism), ci = p => CIRC.indexOf(p.circuit), sum = l => l.reduce((a, p) => a + p.value, 0);
+const curto = p => String(p.title).split(" – ")[0].split(":")[0].split(" (")[0];
+const mil = v => v >= 1e6 ? "R$ " + (v / 1e6).toFixed(2).replace(".", ",") + " mi" : "R$ " + Math.round(v / 1000) + " mil";
+const reais = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }), pc = x => Math.round(x * 100) + "%";
+const TOT = sum(DATA) || 1, VMAX = Math.max(...DATA.map(p => p.value)), LADO = CIRC.map(c => DATA.filter(p => p.circuit === c)), POR = MECHS.map(m => DATA.filter(p => p.mechanism === m));
+const fl = (p, c, a) => p.fill(c[0], c[1], c[2], a == null ? 255 : a), sk = (p, c, a) => p.stroke(c[0], c[1], c[2], a == null ? 255 : a);
+const fraseP = p => `${p.title}: ${reais(p.value)} aprovados em ${p.year}, pelo ${p.mechanism}, no edital ${p.edital}. Circuito ${String(p.circuit).toLowerCase()}.`;
+const fraseM = m => { const l = POR[m]; return `${MECHS[m]}: ${l.length} projetos, ${mil(sum(l))} aprovados, ${pc(sum(l) / TOT)} do total. Em média, ${mil(sum(l) / l.length)} por projeto.`; };
+const say = (id, txt, rest) => { const el = document.getElementById(id); el.textContent = txt || rest; el.classList.toggle("on", !!txt); };
+const set = (id, t) => { document.getElementById(id).textContent = t; };
+const BW = 820;
+function mount(holder, H, draw, pick, readId, rest, texto) {
+  new p5(p => { let k = 1, hot = null; const same = (a, b) => (!a && !b) || (a && b && a.t === b.t && a.id === b.id);
+    const size = () => { k = Math.min(1, document.getElementById(holder).clientWidth / BW); return [Math.round(BW * k), Math.round(H * k)]; };
+    p.setup = () => { const [w, h] = size(); p.createCanvas(w, h).parent(holder); p.textFont("Arial"); p.noLoop(); };
+    p.windowResized = () => { const [w, h] = size(); p.resizeCanvas(w, h); p.redraw(); };
+    p.draw = () => { p.clear(); p.push(); p.scale(k); draw(p, hot); p.pop(); };
+    const move = () => { const inside = p.mouseX >= 0 && p.mouseY >= 0 && p.mouseX <= p.width && p.mouseY <= p.height, h = inside ? pick(p.mouseX / k, p.mouseY / k) : null; if (!same(h, hot)) { hot = h; say(readId, hot ? texto(hot) : "", rest); p.redraw(); } };
+    p.mouseMoved = move; p.touchStarted = () => { move(); }; p.mousePressed = move;
+  });
+}
+
+/* ---------- frases e conclusões, calculadas dos dados ---------- */
+const nL = LADO[0].length, nR = LADO[1].length, sL = sum(LADO[0]), sR = sum(LADO[1]), minL = Math.min(...LADO[0].map(p => p.value)), maxR = Math.max(...LADO[1].map(p => p.value));
+const edL = new Set(LADO[0].map(p => p.edital)).size, edR = new Set(LADO[1].map(p => p.edital)).size;
+set("fA", `De cada R$ 100 aprovados para os vinte projetos, R$ ${Math.round(sL / TOT * 100)} foram para ${nL} projetos do circuito monumental. Os outros R$ ${Math.round(sR / TOT * 100)} se dividiram entre ${nR} projetos do capilar.`);
+set("cA", `O ${MECHS[0]} leva ${pc(sum(POR[0]) / TOT)} do valor para ${POR[0].length} projetos. O ${MECHS[1]} e o ${MECHS[2]}, juntos, levam ${pc(sR / TOT)} para ${nR}. É a concentração de um lado e a pulverização do outro.`);
+set("fB", `Os dois circuitos correm lado a lado de 2017 a 2024. Em cima, ${nL} projetos grandes. Embaixo, ${nR} projetos pequenos. Nenhum edital junta os dois.`);
+set("cB", `O menor projeto do monumental tem ${mil(minL)}. O maior do capilar tem ${mil(maxR)}. ${minL > maxR ? "O menor de cima ainda é maior que o maior de baixo." : "Os tamanhos se encostam."} E cada edital fica numa pista só.`);
+set("fC", `Monumental: ${nL} projetos, ${mil(sL)}, em média ${mil(sL / nL)} cada. Capilar: ${nR} projetos, ${mil(sR)}, em média ${mil(sR / nR)} cada.`);
+set("cC", `O capilar tem ${nR > nL ? "mais" : "menos"} projetos e ${sR < sL ? "menos" : "mais"} dinheiro. Um projeto monumental vale, em média, ${(sL / nL / (sR / nR)).toFixed(1).replace(".", ",")} projetos capilares.`);
+
+/* ---------- A: caminho da tinta (fluxo em que a largura é o valor) ---------- */
+const A = (() => { const H = 610, top = 58, x0 = 24, w0 = 16, x1 = 262, w1 = 14, x2 = 556, w2 = 10, sc = 372 / TOT, gapM = 24, rows = [], mech = []; let y = top, ys = top + 40;
+  MECHS.forEach((m, i) => { const l = POR[i].slice().sort((a, b) => a.year - b.year || b.value - a.value), h = sum(l) * sc; let yy = y; const my = top + 26 + i * gapM + sum(POR.slice(0, i).flat()) * sc; let acc = 0;
+    l.forEach(p => { const hh = p.value * sc, pitch = Math.max(hh + 5, 14); rows.push({ p, i, y: yy, h: hh, sy: my + acc }); acc += hh; yy += pitch; });
+    mech.push({ i, y: my, h, sy: ys, y0: y, y1: yy - 5 }); ys += h; y = yy + 16; });
+  return { H: Math.max(top + 40 + 372 + 30, y + 4), top, x0, w0, x1, w1, x2, w2, sc, rows, mech, bottom: y }; })();
+function faixa(p, xa, ya, ha, xb, yb, hb) { const c = (xb - xa) * 0.5; p.beginShape(); p.vertex(xa, ya); p.bezierVertex(xa + c, ya, xb - c, yb, xb, yb); p.vertex(xb, yb + hb); p.bezierVertex(xb - c, yb + hb, xa + c, ya + ha, xa, ya + ha); p.endShape(p.CLOSE); }
+mount("hA", A.H, (p, hot) => { const hp = hot && hot.t === "p" ? hot.id : null, hm = hot && hot.t === "m" ? hot.id : null;
+  p.noStroke(); fl(p, INK); p.textStyle(p.BOLD); p.textSize(10); p.textAlign(p.LEFT, p.BASELINE); p.text("VALOR APROVADO", A.x0, 20); p.text("MECANISMO", A.x1 - 30, 20); p.text("PROJETO", A.x2 + A.w2 + 8, 20);
+  p.textSize(20); p.text(mil(TOT), A.x0, 44); p.textStyle(p.NORMAL); p.textSize(10); p.fill(119); p.text("para os vinte projetos", A.x0, A.top + 40 + 372 + 16);
+  A.mech.forEach(m => { const ink = INKS[m.i], on = (hm == null && hp == null) || hm === m.i || (hp && mi(hp) === m.i); p.noStroke(); fl(p, mix(ink, .55), on ? 215 : 60); faixa(p, A.x0 + A.w0, m.sy, m.h, A.x1, m.y, m.h); sk(p, INK); p.strokeWeight(1); fl(p, ink); p.rect(A.x0, m.sy, A.w0, m.h); p.rect(A.x1, m.y, A.w1, m.h);
+  });
+  A.mech.forEach(m => { const ink = INKS[m.i], t1 = MECHS[m.i].toUpperCase(), t2 = `${mil(sum(POR[m.i]))} · ${pc(sum(POR[m.i]) / TOT)}`; p.noStroke(); p.textAlign(p.RIGHT, p.BASELINE); p.textStyle(p.BOLD); p.textSize(9.5); const w = Math.max(p.textWidth(t1), p.textWidth(t2)) + 8; p.fill(247, 246, 241, 235); p.rect(A.x1 - 6 - w + 4, m.y - 24, w, 23, 2);
+    fl(p, dark(ink)); p.text(t1, A.x1 - 6, m.y - 13); fl(p, INK); p.textStyle(p.NORMAL); p.textSize(10); p.text(t2, A.x1 - 6, m.y - 3); });
+  A.rows.forEach(r => { const ink = INKS[r.i], on = (hm == null && hp == null) || hm === r.i || hp === r.p, a = on ? 255 : 55; p.noStroke(); fl(p, mix(ink, hp === r.p ? 1 : .55), on ? (hp === r.p ? 255 : 205) : 45); faixa(p, A.x1 + A.w1, r.sy, r.h, A.x2, r.y, r.h); sk(p, INK, a); p.strokeWeight(hp === r.p ? 2 : 1); fl(p, ink, a); p.rect(A.x2, r.y, A.w2, Math.max(2, r.h));
+    p.noStroke(); p.textAlign(p.LEFT, p.CENTER); p.textStyle(hp === r.p ? p.BOLD : p.NORMAL); p.textSize(10.5); fl(p, INK, a); const nome = curto(r.p), ty = r.y + Math.max(2, r.h) / 2; p.text(nome, A.x2 + A.w2 + 8, ty); const tw = p.textWidth(nome); p.textStyle(p.NORMAL); p.textSize(9.5); p.fill(119, 119, 119, a); p.text(`${r.p.year} · ${mil(r.p.value)}`, A.x2 + A.w2 + 14 + tw, ty); });
+  // os dois circuitos, à direita: um traço que abraça os projetos de cada um
+  [[0, [0]], [1, [1, 2]]].forEach(([c, ms]) => { const y0 = A.mech[ms[0]].y0, y1 = A.mech[ms[ms.length - 1]].y1, l = LADO[c]; sk(p, INK); p.strokeWeight(1.5); p.noFill(); p.line(BW - 14, y0, BW - 14, y1); p.line(BW - 20, y0, BW - 14, y0); p.line(BW - 20, y1, BW - 14, y1);
+    p.push(); p.translate(BW - 4, (y0 + y1) / 2); p.rotate(-Math.PI / 2); p.noStroke(); fl(p, INK); p.textStyle(p.BOLD); p.textSize(9.5); p.textAlign(p.CENTER, p.BASELINE); p.text(`${CIRC[c].toUpperCase()} · ${l.length} PROJETOS · ${pc(sum(l) / TOT)}`, 0, 0); p.pop(); }); },
+(x, y) => { if (x >= A.x1 + A.w1 + 30) { const r = A.rows.find(r => y >= r.y - 2.5 && y <= r.y + Math.max(r.h, 9) + 2.5); return r ? { t: "p", id: r.p } : null; } const m = A.mech.find(m => x <= A.x1 + A.w1 + 30 && y >= Math.min(m.y, m.sy) && y <= Math.max(m.y, m.sy) + m.h); return m ? { t: "m", id: m.i } : null; },
+"rA", "Passe a mão ou toque numa faixa.", h => h.t === "p" ? fraseP(h.id) : fraseM(h.id));
+
+/* ---------- B: duas pistas (linha do tempo, uma pista por circuito) ---------- */
+const B = (() => { const H = 452, X = y => 124 + (y - 2017 + .5) * 85, R = v => 21 * Math.sqrt(v / VMAX), linhas = [{ m: 0, cy: 122, lab: 1 }, { m: 1, cy: 300, lab: -1 }, { m: 2, cy: 380, lab: 1 }], nodes = [], boxes = [];
+  linhas.forEach(ln => { for (let y = 2017; y <= 2024; y++) { const l = POR[ln.m].filter(p => p.year === y).sort((a, b) => b.value - a.value); if (!l.length) continue; const per = l.length > 2 ? 2 : l.length, n = Math.ceil(l.length / per), cell = []; let yy = ln.cy - (n - 1) * 22;
+    for (let i = 0; i < n; i++) { const part = l.slice(i * per, i * per + per), w = part.reduce((a, p) => a + R(p.value) * 2 + 4, -4); let xx = X(y) - w / 2; part.forEach(p => { const r = R(p.value), nd = { p, x: xx + r, y: yy, r }; nodes.push(nd); cell.push(nd); xx += r * 2 + 4; }); yy += 44; }
+    const x0 = Math.min(...cell.map(c => c.x - c.r)) - 6, x1 = Math.max(...cell.map(c => c.x + c.r)) + 6, y0 = Math.min(...cell.map(c => c.y - c.r)) - 6, y1 = Math.max(...cell.map(c => c.y + c.r)) + 6; boxes.push({ e: l[0].edital, m: ln.m, x: x0, y: y0, w: x1 - x0, h: y1 - y0, lab: ln.lab }); } });
+  return { H, X, nodes, boxes, linhas, big: nodes.slice().sort((a, b) => b.p.value - a.p.value)[0], small: nodes.slice().sort((a, b) => a.p.value - b.p.value)[0] }; })();
+mount("hB", B.H, (p, hot) => { const hp = hot ? hot.id : null;
+  p.stroke(212, 209, 200); p.strokeWeight(1); p.fill(255, 255, 255, 175); p.rect(112, 34, BW - 120, 178, 5); p.rect(112, 250, BW - 120, 178, 5);
+  for (let y = 2017; y <= 2024; y++) { const vazio = !DATA.some(d => d.year === y); p.stroke(226, 223, 215); p.line(B.X(y), 40, B.X(y), 206); p.line(B.X(y), 256, B.X(y), 422); p.noStroke(); p.fill(vazio ? 170 : 40); p.textStyle(p.BOLD); p.textSize(11); p.textAlign(p.CENTER, p.CENTER); p.text(y, B.X(y), 231); }
+  p.noStroke(); fl(p, INK); p.textAlign(p.LEFT, p.BASELINE); p.textStyle(p.BOLD); p.textSize(10.5); p.text("CIRCUITO", 8, 52); p.text("MONUMENTAL", 8, 65); p.text("CIRCUITO", 8, 268); p.text("CAPILAR", 8, 281);
+  p.textStyle(p.NORMAL); p.textSize(9.5); p.fill(119); p.text(`${LADO[0].length} projetos`, 8, 80); p.text(mil(sum(LADO[0])), 8, 92); p.text(`${LADO[1].length} projetos`, 8, 296); p.text(mil(sum(LADO[1])), 8, 308);
+  B.linhas.forEach(ln => { p.noStroke(); fl(p, dark(INKS[ln.m])); p.textStyle(p.BOLD); p.textSize(8.5); p.textAlign(p.LEFT, p.CENTER); p.text(MECHS[ln.m].toUpperCase().replace(" ", "\n"), 8, ln.cy + (ln.m === 1 ? 24 : 0)); });
+  B.boxes.forEach(b => { sk(p, INK, 130); p.strokeWeight(1); p.noFill(); p.drawingContext.setLineDash([3, 3]); p.rect(b.x, b.y, b.w, b.h, 6); p.drawingContext.setLineDash([]); p.noStroke(); p.fill(119); p.textStyle(p.NORMAL); p.textSize(8); p.textAlign(p.CENTER, p.BASELINE); p.text(b.e.replace("LMIC ", "").replace(" - ", " "), b.x + b.w / 2, b.lab > 0 ? b.y + b.h + 10 : b.y - 4); });
+  B.nodes.forEach(n => { const ink = INKS[mi(n.p)], on = !hp || hp === n.p, a = on ? 255 : 70; p.noStroke(); fl(p, mix(ink, .45), on ? 200 : 40); p.circle(n.x + n.r * .16, n.y + n.r * .2, n.r * 2); sk(p, INK, a); p.strokeWeight(hp === n.p ? 2.6 : 1.2); fl(p, ink, a); p.circle(n.x, n.y, n.r * 2); });
+  const nota = (n, tx, dx, dy) => { p.stroke(22, 22, 22, 150); p.strokeWeight(1); p.line(n.x + Math.sign(dx) * (n.r + 3), n.y, n.x + dx - Math.sign(dx) * 4, n.y + dy); p.noStroke(); fl(p, INK); p.textStyle(p.BOLD); p.textSize(9.5); p.textAlign(dx > 0 ? p.LEFT : p.RIGHT, p.CENTER); p.text(tx, n.x + dx, n.y + dy); };
+  nota(B.big, `o maior: ${mil(B.big.p.value)}`, 62, -44); nota(B.small, `o menor: ${mil(B.small.p.value)}`, 58, 0); },
+(x, y) => { const n = B.nodes.filter(n => Math.hypot(x - n.x, y - n.y) <= Math.max(n.r, 9)).sort((a, b) => a.r - b.r)[0]; return n ? { t: "p", id: n.p } : null; },
+"rB", "Passe a mão ou toque numa bolinha.", h => fraseP(h.id));
+
+/* ---------- C: frente a frente (uma pergunta por fileira, um desenho de cada lado) ---------- */
+const C = (() => { const H = 500, xl = 345, xr = 475, F = [["PROJETOS", 58, 62], ["DINHEIRO\nAPROVADO", 120, 96], ["MÉDIA POR\nPROJETO", 216, 92], ["DO MENOR\nAO MAIOR", 308, 70], ["EDITAIS", 378, 100]].map(([n, y, h], i) => ({ n, y, h, i }));
+  const txt = [
+    `Projetos: ${nL} no circuito monumental e ${nR} no capilar. O capilar tem ${nR - nL} projetos a mais.`,
+    `Dinheiro aprovado: ${mil(sL)} no monumental e ${mil(sR)} no capilar. Cada quadradinho vale R$ 10 mil.`,
+    `Média por projeto: ${mil(sL / nL)} no monumental e ${mil(sR / nR)} no capilar. A área da bolinha é o valor.`,
+    `Do menor ao maior: no monumental, de ${mil(minL)} a ${mil(Math.max(...LADO[0].map(p => p.value)))}. No capilar, de ${mil(Math.min(...LADO[1].map(p => p.value)))} a ${mil(maxR)}. ${minL > maxR ? "A faixa do monumental começa onde a do capilar termina." : "As duas faixas se sobrepõem."}`,
+    `Editais: os projetos do monumental saíram de ${edL} editais. Os do capilar, de ${edR}. Nenhum edital aparece dos dois lados.`];
+  return { H, xl, xr, F, txt }; })();
+mount("hC", C.H, (p, hot) => { const hr = hot ? hot.id : null;
+  p.noStroke(); fl(p, INK); p.textStyle(p.BOLD); p.textSize(12); p.textAlign(p.RIGHT, p.BASELINE); p.text("CIRCUITO MONUMENTAL", C.xl, 26); p.textAlign(p.LEFT, p.BASELINE); p.text("CIRCUITO CAPILAR", C.xr, 26);
+  p.textStyle(p.NORMAL); p.textSize(10); p.fill(119); p.textAlign(p.RIGHT, p.BASELINE); p.text(MECHS[0], C.xl, 40); p.textAlign(p.LEFT, p.BASELINE); p.text(`${MECHS[1]} e ${MECHS[2]}`, C.xr, 40);
+  C.F.forEach(f => { const on = hr == null || hr === f.i, a = on ? 255 : 70, cy = f.y + f.h / 2; if (hr === f.i) { p.noStroke(); p.fill(255, 255, 255, 200); p.rect(4, f.y, BW - 8, f.h, 4); } p.stroke(212, 209, 200); p.strokeWeight(1); p.line(10, f.y, BW - 10, f.y);
+    p.noStroke(); fl(p, INK, a); p.textStyle(p.BOLD); p.textSize(9.5); p.textAlign(p.CENTER, p.CENTER); p.text(f.n, (C.xl + C.xr) / 2, cy);
+    const num = (t, lado, x) => { p.noStroke(); fl(p, INK, a); p.textStyle(p.BOLD); p.textSize(15); p.textAlign(lado ? p.LEFT : p.RIGHT, p.CENTER); p.text(t, x, cy); };
+    if (f.i === 0) { LADO.forEach((l, s) => { l.slice().sort((x, y) => mi(x) - mi(y)).forEach((q, k) => { const x = s ? C.xr + 9 + k * 21 : C.xl - 9 - k * 21; sk(p, INK, a); p.strokeWeight(1.1); fl(p, INKS[mi(q)], a); p.circle(x, cy, 16); }); num(String(l.length), s, s ? C.xr + 14 + l.length * 21 : C.xl - 14 - l.length * 21); }); }
+    if (f.i === 1) { LADO.forEach((l, s) => { const blocos = []; MECHS.forEach((m, i) => { const n = Math.round(sum(l.filter(q => mi(q) === i)) / 10000); for (let k = 0; k < n; k++) blocos.push(i); }); const per = 20, g = 9; blocos.forEach((i, k) => { const cx = k % per, ry = Math.floor(k / per), x = s ? C.xr + cx * g : C.xl - 7 - cx * g, y = f.y + 12 + ry * g; p.noStroke(); fl(p, INKS[i], a); p.rect(x, y, 7, 7); }); num(mil(sum(l)), s, s ? C.xr + per * g + 10 : C.xl - per * g - 10); }); }
+    if (f.i === 2) { LADO.forEach((l, s) => { const v = sum(l) / l.length, r = 36 * Math.sqrt(v / (sL / nL)), x = s ? C.xr + 40 : C.xl - 40, ink = s ? INKS[1] : INKS[0]; p.noStroke(); fl(p, mix(ink, .45), on ? 200 : 40); p.circle(x + r * .14, cy + r * .18, r * 2); sk(p, INK, a); p.strokeWeight(1.3); fl(p, ink, a); p.circle(x, cy, r * 2); num(mil(v), s, s ? C.xr + 90 : C.xl - 90); }); }
+    if (f.i === 3) { const W = 300, esc = v => v / VMAX * W; LADO.forEach((l, s) => { const lo = Math.min(...l.map(q => q.value)), hi = Math.max(...l.map(q => q.value)), ink = s ? INKS[1] : INKS[0], x = v => s ? C.xr + esc(v) : C.xl - W + esc(v); p.stroke(190, 187, 178); p.strokeWeight(1); p.line(x(0), cy, x(VMAX), cy); sk(p, INK, a); p.strokeWeight(1); fl(p, ink, a); p.rect(x(lo), cy - 6, esc(hi) - esc(lo), 12, 3);
+      p.noStroke(); fl(p, INK, a); p.textStyle(p.NORMAL); p.textSize(9.5); p.textAlign(p.CENTER, p.BASELINE); p.text(mil(lo), x(lo), cy - 11); p.text(mil(hi), x(hi), cy - 11); p.fill(150); p.textAlign(p.CENTER, p.TOP); p.text("R$ 0", x(0), cy + 10); p.text(mil(VMAX), x(VMAX), cy + 10); }); }
+    if (f.i === 4) { LADO.forEach((l, s) => { const eds = [...new Set(l.slice().sort((x, y) => mi(x) - mi(y) || x.year - y.year).map(q => q.edital))]; eds.forEach((e, k) => { const col = k % 3, row = Math.floor(k / 3), w = 100, cols = Math.min(3, eds.length), x = s ? C.xr + col * (w + 5) : C.xl - w - (cols - 1 - col) * (w + 5), y = f.y + 12 + row * 26, ink = INKS[mi(l.find(q => q.edital === e))]; sk(p, INK, a); p.strokeWeight(1); fl(p, mix(ink, .22), a); p.rect(x, y, w, 20, 3); p.noStroke(); fl(p, INK, a); p.textStyle(p.NORMAL); p.textSize(9); p.textAlign(p.CENTER, p.CENTER); p.text(e.replace("LMIC ", "").replace(" - ", " "), x + w / 2, y + 10); }); }); } });
+  p.stroke(212, 209, 200); p.line(10, C.F[4].y + C.F[4].h, BW - 10, C.F[4].y + C.F[4].h); },
+(x, y) => { const f = C.F.find(f => y >= f.y && y <= f.y + f.h); return f ? { t: "f", id: f.i } : null; },
+"rC", "Passe a mão ou toque numa fileira.", h => C.txt[h.id]);
+})();
+</script>
+</body>
+</html>

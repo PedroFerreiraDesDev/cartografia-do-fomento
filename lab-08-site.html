@@ -213,7 +213,8 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .lnk{display:inline-block;border:0;background:none;padding:0;margin:0 0 9px;font-size:11px;font-weight:800;color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-align:left}
 /* entrada */
 .intro.entry{display:grid;place-items:center;padding:26px 28px 40px;background:var(--paper);backdrop-filter:none}.intro.entry[hidden]{display:none}
-.entry-in{width:min(1080px,100%);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:36px;align-items:center}
+#entryBg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.34}
+.entry-in{position:relative;z-index:1;width:min(1080px,100%);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:36px;align-items:center}
 .entry h1{font-size:clamp(40px,6vw,82px);margin:10px 0 16px;text-transform:none}
 .entry p{font-size:15px;line-height:1.6;color:#333;max-width:46ch;margin:0 0 20px}
 .entry .go{display:inline-block;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:16px 22px;font-size:11px;font-weight:900;letter-spacing:.06em}
@@ -312,6 +313,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 
 <!-- capa: o campo já vive atrás dela -->
 <section id="intro" class="intro entry" aria-label="Entrada">
+  <canvas id="entryBg" aria-hidden="true"></canvas>
   <div class="entry-in">
     <div>
       <div class="kicker">BELO HORIZONTE · 2017 A 2024</div>
@@ -745,7 +747,7 @@ function enter() {
   marginCache.at = 0;
 }
 $("#enterBtn").onclick = enter;
-function showIntro() { introOn = true; document.body.classList.add("intro-active"); $("#intro").hidden = false; $("#intro").scrollTop = 0; DEMO.play(); introMark.fit(); if (R && R.state().focus) R.close(); }
+function showIntro() { introOn = true; document.body.classList.add("intro-active"); $("#intro").hidden = false; $("#intro").scrollTop = 0; DEMO.play(); FUNDO.play(); introMark.fit(); if (R && R.state().focus) R.close(); }
 $("#brandBtn").onclick = showIntro; $("#helpBtn").onclick = showIntro;
 $$("[data-door]").forEach(b => b.onclick = () => { enter(); showPage(b.dataset.door); });
 
@@ -774,14 +776,17 @@ let trail = null, tw = 0, th = 0, trailP = null;
    O mapa de baixa resolução continua existindo, mas só para os agentes sentirem o caminho; o que se vê é esta camada. */
 let spray = null, sctx = null, SS = 1, SPRAY = [];
 const wasOn = new Uint8Array(DATA.length);
-function sprayAt(x, y, mi, n, sigma, alpha, nevoa) { // x, y em px do palco; mi: índice do mecanismo; nevoa: só o tom claro (agente sem linha)
-  const tons = SPRAY[mi]; if (!tons || !sctx) return;
+function sprayAt(x, y, mi, n, sigma, alpha, nevoa, f) { // x, y em px do palco; mi: índice do mecanismo; nevoa: agente sem linha; f: quanta tinta já há ali (0 a 1)
+  const tons = SPRAY[mi]; if (!tons || !sctx) return; f = f || 0;
+  // rodada 14 (pedido do autor): rastro mais opaco, e a cor fica mais forte onde a tinta se acumula. Com pouca tinta sai o tom claro;
+  // com muita, entram o tom base, a sombra e o tom fundo da MESMA tinta (família de tons da seção 3B; continua sem mistura de pigmento).
+  const c1 = 0.6 - 0.48 * f, c2 = c1 + 0.3 + 0.12 * f, c3 = c2 + 0.07 + 0.2 * f, forte = Math.min(1, alpha * (0.85 + 0.75 * f));
   for (let d = 0; d < n; d++) {
     const r = Math.sqrt(-2 * Math.log(1 - Math.random())) * sigma, a = Math.random() * 6.2832, q = Math.random();
     const px = (x + Math.cos(a) * r) * SS, py = (y + Math.sin(a) * r) * SS;
-    sctx.fillStyle = nevoa ? tons[3] : tons[q < 0.38 ? 2 : q < 0.82 ? 3 : q < 0.97 ? 1 : 0]; // spray de fundo mais leve (pedido do autor): mais tom claro, menos tom escuro
-    sctx.globalAlpha = alpha * (0.55 + Math.random() * 0.45);
-    const g = Math.random() < 0.06 ? 2.2 + Math.random() * 1.6 : 0.8 + Math.random() * 0.9; // quase tudo é névoa fina; de vez em quando, uma gota
+    sctx.fillStyle = nevoa ? tons[f > 0.45 && q < f ? 2 : 3] : tons[q < c1 ? 3 : q < c2 ? 2 : q < c3 ? 1 : 0];
+    sctx.globalAlpha = forte * (0.6 + Math.random() * 0.4);
+    const g = Math.random() < 0.06 + 0.06 * f ? 2.2 + Math.random() * 1.6 : 0.8 + Math.random() * (0.9 + 0.5 * f); // quase tudo é névoa fina; de vez em quando, uma gota
     if (g > 2) { sctx.beginPath(); sctx.arc(px, py, g / 2, 0, 6.2832); sctx.fill(); } else sctx.fillRect(px, py, g, g);
   }
   sctx.globalAlpha = 1;
@@ -830,7 +835,7 @@ function updateSources() {
   pos.on.fill(0); spawnPool.length = 0;
   for (const n of R.screen().nodes) { const i = IDX[n.id]; if (i == null) continue; pos.x[i] = n.x / SCALE; pos.y[i] = n.y / SCALE; pos.on[i] = 1; }
   for (let i = 0; i < DATA.length; i++) { if (!pos.on[i]) continue; spawnPool.push(i); if (linkOf(i)) spawnPool.push(i, i); } // nós ligados recebem 3× mais agentes
-  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && !introOn) sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 60, 9, 0.6, false); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
+  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && !introOn) sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 70, 9, 0.75, false, 0.5); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
 }
 function respawn(i) {
   if (!spawnPool.length) return false;
@@ -860,7 +865,7 @@ new p5(p => {
     const ctx = trail.drawingContext;
     ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = `rgba(0,0,0,${evapF})`; ctx.fillRect(0, 0, tw, th); ctx.globalCompositeOperation = "source-over";
     if (spray && spray.elt.width > 1 && spray.elt.height > 1 && frameN % 20 === 0) { // o spray seca: a cada 20 quadros todo grão perde um pouco de tinta
-      const dec = flush > 0 ? 60 : 20, im = sctx.getImageData(0, 0, spray.elt.width, spray.elt.height), d = im.data;
+      const dec = flush > 0 ? 60 : 13, im = sctx.getImageData(0, 0, spray.elt.width, spray.elt.height), d = im.data;
       for (let k = 3, e = d.length; k < e; k += 4) if (d[k]) d[k] = d[k] > dec ? d[k] - dec : 0;
       sctx.putImageData(im, 0, 0);
     }
@@ -894,8 +899,9 @@ new p5(p => {
       if (tinta) { const k2 = k + 4; if (k2 + 3 < px.length) stain(px, k2, c, lc, PH.mix, dep >> 1); }
       if (mi >= 0) { // grão de spray no caminho do agente, em tons da tinta dele
         const mao = lure.on && A.home[i] === lure.home;
-        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, mao ? 3 : 2, mao ? 4 : 2.6, 0.5, false);
-        else if (((frameN + i) & 7) === 0) sprayAt(x * SCALE, y * SCALE, mi, 1, 2.5, 0.2, true);
+        const acc = Math.min(1, px[k + 3] / 200); // quanta tinta já passou por aqui: é o que deixa a cor mais forte
+        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, mao ? 3 : 2, mao ? 4 : 2.6, 0.72, false, acc);
+        else if (((frameN + i) & 3) === 0) sprayAt(x * SCALE, y * SCALE, mi, 1, 2.5, 0.42, true, acc);
       }
       A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
     }
@@ -905,7 +911,7 @@ new p5(p => {
     drawMs += (performance.now() - t0 - drawMs) * 0.05; if (++frameN % 180 === 0 && drawMs > 12 && PH.count > PH.floor) setCount(Math.max(PH.floor, PH.count - PH.step));
   };
   p.clearTrail = () => { if (trail) trail.clear(); if (spray) spray.clear(); wasOn.fill(0); };
-  window.Lab8Physarum = { PH, fps: () => p.frameRate(), drawMs: () => drawMs, trail: () => trail };
+  window.Lab8Physarum = { PH, fps: () => p.frameRate(), drawMs: () => drawMs, trail: () => trail, step: k => { for (let i = 0; i < k; i++) p.redraw(); } }; // step: avança quadros à mão, para testes
 });
 function setCount(n) { PH.count = Math.max(PH.min, Math.min(PH.max, n)); if (R) sync(R.state()); } // 200 agentes fixos
 function setEvap(i) { PH.evap = (i + PH.evapLevels.length) % PH.evapLevels.length; } // evaporação fixa em média
@@ -1962,6 +1968,52 @@ const DEMO = (() => {
 })();
 
 
+
+/* ---------- rodada 14: fundo da entrada, o grafite sendo feito em marca d'água ----------
+   Pedido do autor: no fundo da tela inicial, uma marca d'água em movimento, o grafite sendo feito. Uma lata invisível varre a
+   tela em ziguezague e pinta, em grão de spray, o nome de um projeto do corpus, na letra vernacular e na tinta do mecanismo dele.
+   No fim a tinta escorre, seca aos poucos e outro nome começa em outro lugar: o muro repintado (palimpsesto). É fundo: fica bem
+   claro, atrás do texto, não recebe toque e para quando a entrada fecha. Com movimento reduzido, pinta dois nomes de uma vez e para. */
+const FUNDO = (() => {
+  const cv = $("#entryBg"); if (!cv) return { play() { }, stop() { } };
+  const g = cv.getContext("2d", { willReadFrequently: true }), mk = document.createElement("canvas"), mg = mk.getContext("2d", { willReadFrequently: true });
+  const FAM = Letreiro.MAOS.filter(m => m.peso >= 3).map(m => m.fam);
+  const NOMES = DATA.map((d, i) => ({ w: Rizoma.shortTitle(d.title).split(" (")[0].toUpperCase(), mi: MIDX[i] })).filter(o => o.mi >= 0 && o.w.length <= 16 && /^[A-Z ]+$/.test(o.w));
+  let W = 0, H = 0, jobs = [], raf = 0, n = 0, on = false, pronto = false;
+  function fit() { const w = innerWidth, h = innerHeight, s = Math.min(1, Math.sqrt(1000000 / Math.max(1, w * h))), cw = Math.round(w * s), ch = Math.round(h * s); if (cv.width !== cw || cv.height !== ch) { cv.width = cw; cv.height = ch; } W = cw; H = ch; }
+  function novo(slot) { // sorteia um nome, mede, guarda a forma das letras e traça o caminho da lata
+    const usados = jobs.filter(Boolean).map(j => j.w), pool = NOMES.filter(o => !usados.includes(o.w)), o = (pool.length ? pool : NOMES)[(Math.random() * (pool.length || NOMES.length)) | 0]; if (!o) return null;
+    const fam = FAM[(Math.random() * FAM.length) | 0]; let size = H * (W < 620 ? 0.2 : 0.3); mg.font = `${size}px "${fam}"`; let tw = mg.measureText(o.w).width; const maxW = W * (W < 620 ? 0.92 : 0.7); if (tw > maxW) { size *= maxW / tw; tw = maxW; }
+    const mw = Math.ceil(tw + size * 0.3), mh = Math.ceil(size * 1.4); mk.width = mw; mk.height = mh; mg.font = `${size}px "${fam}"`; mg.textBaseline = "middle"; mg.fillStyle = "#000"; mg.fillText(o.w, size * 0.15, mh / 2);
+    const d = mg.getImageData(0, 0, mw, mh).data, a = new Uint8Array(mw * mh); for (let i = 0; i < a.length; i++) a[i] = d[i * 4 + 3];
+    const rowH = size * 0.2, rows = Math.ceil(mh / rowH), half = H / 2;
+    return { w: o.w, mi: o.mi, a, mw, mh, size, x0: Math.max(0, Math.random() * (W - mw)), y0: Math.max(0, Math.min(H - mh, slot * half + Math.random() * Math.max(1, half - mh))), rowH, rows, row: 0, u: 0, vel: mw / 52, hold: 0, drips: [] };
+  }
+  function grao(j, x, y, alpha, claro) { const t = SPRAY[j.mi], q = Math.random(); g.fillStyle = claro ? t[3] : t[q < 0.5 ? 2 : q < 0.8 ? 3 : q < 0.95 ? 1 : 0]; g.globalAlpha = alpha * (0.6 + Math.random() * 0.4); const s = Math.random() < 0.05 ? 2.4 + Math.random() * 1.4 : 0.9 + Math.random(); g.fillRect(j.x0 + x, j.y0 + y, s, s); }
+  function pinta(j, k) { // um quadro da lata: grão forte onde há letra, respingo claro e raro onde não há
+    if (j.row >= j.rows) return false; const ida = j.row % 2 === 0, cx = ida ? j.u : j.mw - j.u, cy = (j.row + 0.5) * j.rowH + Math.sin(j.u * 0.04) * j.rowH * 0.2, sg = j.size * 0.085;
+    for (let i = 0; i < k; i++) { const r = Math.sqrt(-2 * Math.log(1 - Math.random())) * sg, an = Math.random() * 6.2832, x = cx + Math.cos(an) * r, y = cy + Math.sin(an) * r; if (x < 0 || y < 0 || x >= j.mw || y >= j.mh) continue;
+      if (j.a[(y | 0) * j.mw + (x | 0)] > 70) grao(j, x, y, 0.6, false); else if (Math.random() < 0.03) grao(j, x, y, 0.2, true); }
+    j.u += j.vel; if (j.u >= j.mw) { j.u = 0; j.row++; } return true;
+  }
+  function escorre(j) { // três gotas que descem do pé de uma letra
+    for (let t = 0; t < 40 && j.drips.length < 3; t++) { const x = (Math.random() * j.mw) | 0; let y = j.mh - 1; while (y > 0 && j.a[y * j.mw + x] <= 70) y--; if (y > j.mh * 0.35) j.drips.push({ x, y, len: 0, max: j.size * (0.12 + Math.random() * 0.2) }); }
+  }
+  function passo() { if (!on) return; raf = requestAnimationFrame(passo); if ($("#intro").hidden) { stop(); return; } quadro(); }
+  function quadro() { n++;
+    if (n % 24 === 0) { const im = g.getImageData(0, 0, W, H), d = im.data; for (let k = 3, e = d.length; k < e; k += 4) if (d[k]) d[k] = d[k] > 4 ? d[k] - 4 : 0; g.putImageData(im, 0, 0); } // a tinta seca por igual, sem deixar resto
+    const vagas = W < 620 ? 1 : 2;
+    for (let s = 0; s < vagas; s++) { let j = jobs[s]; if (!j) { if (s === 1 && jobs[0] && jobs[0].row < 2) continue; j = jobs[s] = novo(s); if (!j) continue; }
+      if (!pinta(j, 240)) { if (!j.hold) escorre(j); j.hold++; j.drips.forEach(dp => { if (dp.len < dp.max) { dp.len += 0.45; for (let i = 0; i < 3; i++) grao(j, dp.x + (Math.random() - 0.5) * 1.6, dp.y + dp.len, 0.55, false); } }); if (j.hold > 170) jobs[s] = null; } }
+    g.globalAlpha = 1; }
+  function parado() { for (let s = 0; s < (W < 620 ? 1 : 2); s++) { const j = jobs[s] = novo(s); if (!j) continue; while (pinta(j, 240)) { } } g.globalAlpha = 1; }
+  function stop() { on = false; cancelAnimationFrame(raf); }
+  function play() { if (!pronto) return; fit(); if (reduced) { g.clearRect(0, 0, W, H); jobs = []; parado(); return; } if (on) return; on = true; raf = requestAnimationFrame(passo); }
+  Letreiro.ready.then(() => { pronto = true; if (!$("#intro").hidden) play(); });
+  addEventListener("resize", () => { if (!pronto || $("#intro").hidden) return; fit(); jobs = []; if (reduced) parado(); });
+  return { play, stop, tick: k => { for (let i = 0; i < k; i++) quadro(); } }; // tick: avança quadros à mão, para testar com a animação parada
+})();
+window.Lab8Fundo = FUNDO;
 
 /* ---------- partida ---------- */
 setCount(PH.count); setEvap(PH.evap);

@@ -738,7 +738,55 @@ Conferido no navegador em 1280 px e 375 px: as frases das seis etapas, a ficha a
 
 ---
 
+## 3M. 14/11/2026: outro gráfico para os dois circuitos (propostas), fundo da entrada e rastro mais forte
+
+### 3M.1 O problema
+
+Depois de duas rodadas de ajuste (3K e 3L), o autor continuou achando a teia do passo 8 muito confusa e pediu para pensar em outro gráfico. Na mesma mensagem pediu duas mudanças de imagem: no fundo da tela inicial, uma marca d'água em movimento, o grafite sendo feito; e, no mapa, o rastro de tinta mais opaco, com a cor ficando mais forte à medida que se destaca.
+
+Leitura do problema da teia: a explicação melhorou duas vezes e a confusão ficou, então o defeito está na forma. Uma teia de ligações obriga a pessoa a aprender a ler linhas antes de chegar à ideia. O passo 8 precisa dizer uma frase só: o mesmo fomento sustenta dois circuitos, um de poucos projetos grandes e outro de muitos projetos pequenos, e eles não se misturam.
+
+### 3M.2 As três propostas
+
+Página: `rizoma/prototipo-p5/propostas-circuitos.html`. Três desenhos em p5.js com os vinte projetos reais. Cada um traz a frase que quer provar, três passos de leitura, a conclusão calculada, para que serve e o limite.
+
+| Proposta | Forma | O que mostra melhor | Limite | Referência |
+|---|---|---|---|---|
+| A. Caminho da tinta | Fluxo da esquerda para a direita: valor aprovado, mecanismo, projeto. A largura da faixa é o valor | Concentração de um lado e pulverização do outro: 66% do valor para 8 projetos, 34% para 12 | Não mostra o tempo; faixas finas no celular | Diagrama de Sankey (SCHMIDT, 2008) |
+| B. Duas pistas | Linha do tempo com uma pista por circuito; bolinha = projeto, área = valor, caixa tracejada = edital | Os dois circuitos correm lado a lado e nenhum edital junta os dois | Repete parte do passo 5; não mostra a soma | Linha do tempo em faixas (ROSENBERG; GRAFTON, 2010) |
+| C. Frente a frente | Ficha de comparação em cinco fileiras: projetos, dinheiro, média, do menor ao maior, editais | Entende-se em segundos, sem aprender nada antes | Mostra totais, não cada projeto | Isotype (NEURATH, 1936) |
+
+Ideias emprestadas, desenho próprio, nenhum código copiado. As referências de Schmidt e de Rosenberg e Grafton precisam ser conferidas na fonte antes de entrar no TCC.
+
+**Recomendação:** A no lugar da teia, porque conta a história no sentido da leitura e usa as palavras do resumo do TCC (concentração e pulverização). C pode entrar na conclusão, no passo 9, como resumo visual. **A decisão é do autor e está pendente.** Enquanto isso a teia continua no passo 8.
+
+Números das propostas, calculados na página: R$ 1,69 milhão aprovado para os vinte projetos; monumental R$ 1,12 milhão (66%) em 8 projetos, média de R$ 140 mil; capilar R$ 573 mil (34%) em 12 projetos, média de R$ 48 mil; o menor projeto do monumental tem R$ 95 mil e o maior do capilar, R$ 90 mil; 3 editais de um lado e 9 do outro. No Incentivo Fiscal, valor aprovado é autorização para captar, não dinheiro recebido.
+
+### 3M.3 Fundo da entrada: o grafite sendo feito
+
+Arquivo: `lab-08-site.html`, objeto `FUNDO`, canvas `#entryBg`.
+
+- Uma lata invisível varre a tela em ziguezague e pinta, em grão de spray, **o nome de um projeto do corpus**, numa das letras vernaculares do letreiro e **na tinta do mecanismo dele**. O fundo passa a dizer do que o site trata: são os nomes dos projetos financiados aparecendo no muro.
+- No fim da palavra a tinta escorre em três gotas. Depois seca aos poucos e outro nome começa em outro lugar. É a ideia do muro repintado, o palimpsesto, que já estava no Lab 03.
+- É marca d'água: o canvas fica com 34% de opacidade, atrás do texto, não recebe toque e para quando a entrada fecha. No computador pinta dois nomes por vez, no celular um.
+- Com a preferência de movimento reduzido, pinta dois nomes de uma vez e fica parado.
+- Só entram nomes de até 16 letras e sem acento, para não depender de letra que a fonte não tem.
+
+### 3M.4 Rastro de tinta mais opaco e mais forte onde se acumula
+
+Arquivo: `lab-08-site.html`, função `sprayAt` e o laço dos agentes.
+
+- **Mais opaco:** a tinta do rastro ligado subiu de 0,50 para 0,72 de opacidade, a névoa dos projetos sem ligação de 0,20 para 0,42 e ficou duas vezes mais frequente, e a secagem ficou mais lenta (cada grão dura cerca de metade a mais).
+- **Mais forte onde se acumula:** cada grão agora sabe quanta tinta já passou naquele ponto. Com pouca tinta sai o tom claro. Com muita, entram o tom base, a sombra e o tom fundo da mesma tinta, e as gotas ficam um pouco maiores. Os caminhos por onde muitos projetos se ligam ficam visivelmente mais carregados.
+- Continua valendo a regra da seção 3C: só as três tintas, em tons da mesma família, sem mistura de pigmento.
+
+Conferido no navegador em tamanho de computador: os nomes aparecendo no fundo da entrada com o texto legível por cima, o rastro mais carregado no mapa com a ligação por mecanismo, e as três propostas desenhando com os números certos, sem erros no console. Não foi conferido em tamanho de celular nesta rodada, nem num Android real.
+
+---
+
 ## 4. O que fica para depois
+
+- **Escolher o gráfico do passo 8** entre as três propostas da seção 3M.2.
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.
 - Levar letreiro e tintas para o Lab 05 (o sistema inteiro) e para o protótipo principal, se o autor aprovar.
@@ -783,6 +831,10 @@ McCANDLESS, David. **Snake Oil Supplements**. Information is Beautiful. Disponí
 McCANDLESS, David. **World's Biggest Data Breaches & Hacks**. Information is Beautiful. Disponível em: https://informationisbeautiful.net/visualizations/worlds-biggest-data-breaches-hacks/. Acesso em: 13 nov. 2026.
 
 MACHADO, Gustavo M.; OLIVEIRA, Manuel M.; FERNANDES, Leandro A. F. A physiologically-based model for simulation of color vision deficiency. **IEEE Transactions on Visualization and Computer Graphics**, v. 15, n. 6, p. 1291-1298, 2009.
+
+ROSENBERG, Daniel; GRAFTON, Anthony. **Cartographies of time**: a history of the timeline. New York: Princeton Architectural Press, 2010.
+
+SCHMIDT, Mario. The Sankey diagram in energy and material flow management: part I: history. **Journal of Industrial Ecology**, v. 12, n. 1, p. 82-94, 2008.
 
 NEURATH, Otto. **International picture language**: the first rules of Isotype. London: Kegan Paul, Trench, Trubner & Co., 1936.
 

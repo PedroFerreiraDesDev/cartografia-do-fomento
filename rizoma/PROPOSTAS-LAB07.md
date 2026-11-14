@@ -842,9 +842,40 @@ Conferido no navegador em 1280 px e 375 px: o painel inteiro, as frases dos oito
 
 ---
 
+## 3O. 14/11/2026: o painel sai; os nove passos passam a andar na horizontal
+
+Arquivo: `lab-08-site.html`, tela Indicadores.
+
+### 3O.1 O que o autor disse
+
+O painel único da seção 3N foi reprovado ("ficou horrível"). O autor quer os gráficos e as interações que já tinham sido feitos, em continuidade, **na horizontal em vez de na vertical**.
+
+Leitura do erro da rodada anterior: da referência eu tirei a forma (uma tabela de linhas e colunas) e joguei fora o que já funcionava. O que ele queria da referência era a continuidade da leitura para o lado, não uma grade nova.
+
+### 3O.2 O que foi feito
+
+- **O painel saiu da tela.** A tela voltou ao estado anterior, com os nove passos e todas as interações: muro de blocos, peneira, bolinhas, o pedaço do grafite, tempo, valor, repartição, teia e conclusão. O painel continua registrado na seção 3N e no histórico do repositório (commit efe34eb), não na página.
+- **Os passos ficam lado a lado**, numa faixa que rola para o lado, um passo por vez. O começo do passo seguinte fica sempre à vista na borda direita, para a pessoa saber que a história continua.
+- **A abertura virou o primeiro quadro**, com o título, as três cores e o botão "Começar a leitura".
+- **Cinco jeitos de andar:** as setas dos lados; os números do trilho no alto, agora ligados por uma linha; as setas do teclado; a rolagem do mouse, que desce dentro do passo e, no fim dele, leva ao passo seguinte; e a frase de ponte no fim de cada passo, que virou botão com seta para a direita.
+- **Cada passo rola para baixo por dentro** quando o gráfico é alto, como a peneira.
+- **A lista de projetos** continua à direita no computador. No celular ela abre por cima, pelo botão "Ver projetos".
+- **O que já existia continua igual:** a seleção compartilhada entre os gráficos, as fichas, a entrada em cena de cada desenho quando o passo aparece e a sequência automática da teia, que agora só começa quando o passo 8 está na tela.
+
+A leitura para o lado, com um quadro por vez e navegação por setas e pontos, é o formato que Segel e Heer (2010) chamam de sequência de quadros.
+
+### 3O.3 O que falta resolver
+
+- A teia do passo 8 continua a mesma que o autor achou confusa. As propostas A, B e C da seção 3M.2 voltam a valer como opções para trocar esse passo.
+- O autor disse que mandaria mais referências.
+
+Conferido no navegador em 1280 px e 375 px: os dez quadros lado a lado, as setas, os números do trilho, o teclado, a ponte do passo 8 e o atalho da conclusão levando ao passo certo, os desenhos em p5.js no tamanho certo, e a lista de projetos abrindo por cima no celular. A rolagem do mouse entre passos não pôde ser conferida no painel de teste. Não foi testado num Android real.
+
+---
+
 ## 4. O que fica para depois
 
-- **Dizer se o painel único da seção 3N é o caminho** e mandar as outras referências que o autor disse que enviaria.
+- **Escolher o gráfico do passo 8** entre as propostas A, B e C da seção 3M.2, e mandar as outras referências que o autor disse que enviaria.
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.
 - Levar letreiro e tintas para o Lab 05 (o sistema inteiro) e para o protótipo principal, se o autor aprovar.

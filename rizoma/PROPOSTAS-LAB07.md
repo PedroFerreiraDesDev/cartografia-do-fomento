@@ -784,9 +784,67 @@ Conferido no navegador em tamanho de computador: os nomes aparecendo no fundo da
 
 ---
 
+## 3N. 14/11/2026: os Indicadores viram um painel único
+
+Arquivo: `lab-08-site.html`, tela Indicadores.
+
+### 3N.1 O problema
+
+O autor disse que não percebia os gráficos como uma história conectada, que nenhum estava bem entendível e que o layout estava longe disso. Mandou uma referência: "Money Too Tight to Mention?", de David McCandless, no Information is Beautiful (versão de 03/03/2018, vista na imagem enviada pelo autor). Nela há uma linha por serviço de música e várias colunas, cada coluna com uma marca diferente (curvas, anel, fileira de pontos, fileira de blocos, bolha). Tudo parece uma coisa só, embora cada coluna dê uma informação diferente. Pediu isso nos Indicadores, com legendas, títulos, continuidade e interatividade.
+
+Por que a referência funciona, e o que faltava na tela:
+
+- **Uma unidade só.** Toda marca pertence a uma linha, e a linha é sempre o mesmo objeto. Na tela anterior cada passo tinha uma unidade diferente: edital, grão, bolinha, projeto, par de projetos.
+- **Uma cor por linha, do começo ao fim.** A identidade não muda de coluna para coluna.
+- **Colunas como frases.** Cada coluna responde a uma pergunta, e ler a linha da esquerda para a direita junta as respostas.
+- **Um só quadro.** Não é preciso rolar a página nem reaprender a ler a cada gráfico.
+
+### 3N.2 O painel "Do edital ao muro"
+
+- **Linha = edital.** São doze, e a cor é o mecanismo. O edital é a unidade que tem mais informação e é onde a história começa.
+- **Colunas = passos da história**, numeradas, da esquerda para a direita:
+
+| Coluna | Pergunta | Marca | Unidade |
+|---|---|---|---|
+| 1. O dinheiro | Quanto o edital ofereceu? | Régua à esquerda, ligada à linha por uma curva | Posição na régua = valor |
+| 2. Quem pediu | Quantos projetos se inscreveram? | Fileira de pontos, coloridos os aprovados | 1 ponto = 50 projetos |
+| 3. Quem passou | Que parte foi aprovada? | Anel | Parte preenchida = aprovados |
+| 4. O grafite | Quais eram os projetos deste trabalho? | Bolinhas | Área = valor do projeto |
+| 5. Quanto levou | Quanto foi para o grafite? | Fileira de blocos | 1 bloco = R$ 50 mil |
+| 6. Que parte | Quanto isso pesa no edital? | Bolha e porcentagem | Área = parte do edital |
+
+- **7. Os dois circuitos:** embaixo, as mesmas colunas somadas em duas linhas, monumental e capilar. A conclusão do TCC aparece como soma do que está em cima, no mesmo desenho.
+- **Onde falta dado, o painel diz.** "Não fixa valor" (LMIC 2023 - IF), "inscritos não publicados" (Descentra 2019), "sem dado", "sem conta". Em 2017 a Prefeitura publicou só a soma do Fundo com o Incentivo Fiscal: os pontos ficam vazados e o número leva asterisco.
+
+Ideias emprestadas da referência: a régua ligada às linhas por curvas, o anel, a fileira de pontos, a fileira de blocos e a bolha. Nenhum código copiado. O conteúdo, as unidades e a linha de soma são próprios.
+
+### 3N.3 Continuidade e interatividade
+
+- **Leitura guiada:** oito botões acima do painel (Tudo, as seis colunas e os dois circuitos). Cada um acende uma parte do painel, apaga o resto e escreve a frase daquele passo, com números calculados. O desenho não muda: muda o foco. É o mesmo princípio da sequência de quadros (SEGEL; HEER, 2010), agora sobre uma imagem só.
+- **Passar a mão ou tocar numa linha** acende o edital em todas as colunas e escreve a história dele numa frase. Exemplo: "LMIC 2021 - IF: ofereceu R$ 14 milhões. 420 projetos pediram e 128 passaram (30%). Um era de grafite deste trabalho (CURA), com R$ 150 mil, 1,1% do edital."
+- **Passar a mão no nome de uma coluna** explica como ler. Clicar no nome acende só aquela coluna.
+- **Clicar numa bolinha** abre a ficha do projeto.
+- **Arrumar as linhas** por mecanismo, ano, valor do edital, disputa ou valor para o grafite. As linhas trocam de lugar com animação e as curvas da régua acompanham, o que mostra na hora se edital com mais dinheiro é mais ou menos disputado.
+- **As três cores do alto da tela** continuam valendo: tocar numa cor acende só as linhas daquele mecanismo.
+- **No celular** o painel rola para o lado, com o nome do edital preso à esquerda, e a régua vira uma barra.
+
+### 3N.4 O que aconteceu com o resto da tela
+
+- A ordem agora é: as três cores, o painel, a conclusão ("Um mesmo fomento, dois circuitos") e, recolhidos, os gráficos separados.
+- Os oito passos anteriores (muro, peneira, bolinhas, pedaço, tempo, valor, repartição e teia) não foram apagados. Ficam em "Ver cada gráfico em separado", fechados. A lista lateral de projetos e a barra de passos só aparecem quando essa parte é aberta.
+- A escolha entre as propostas A, B e C da seção 3M.2 deixou de ser necessária para a tela principal: os dois circuitos entraram no painel como linha de soma. A página de propostas continua publicada. A teia continua no passo 8 dos gráficos separados.
+
+### 3N.5 Números que o painel afirma hoje
+
+R$ 77,28 milhões em 11 editais com valor publicado; os 4 editais do Descentra somam R$ 5,98 milhões, 7,7% do total; o mais procurado foi o LMIC 2021 - Fundo, com 1.189 inscritos; passaram de 10% a 30% dos inscritos; o LMIC 2023 - IF tem 4 projetos de grafite e R$ 655 mil, 39% do valor do grafite; o grafite ficou com 1,3% do dinheiro dos editais, e o edital em que ele pesa mais é o Descentra 2024, com 4,4%; R$ 140 mil contra R$ 48 mil por projeto nos dois circuitos. Tudo é calculado na página. As frases em volta são fixas e precisam ser relidas se o corpus mudar.
+
+Conferido no navegador em 1280 px e 375 px: o painel inteiro, as frases dos oito passos, a linha acesa ao passar a mão e ao clicar, a ficha aberta pela bolinha, a ordenação por disputa, a abertura dos gráficos separados com a lista lateral, e a rolagem lateral no celular com o nome preso. Não foi testado num Android real.
+
+---
+
 ## 4. O que fica para depois
 
-- **Escolher o gráfico do passo 8** entre as três propostas da seção 3M.2.
+- **Dizer se o painel único da seção 3N é o caminho** e mandar as outras referências que o autor disse que enviaria.
 
 - Conferir e guardar a licença CC do pacote TV0800; decidir sobre o Brasilêro.
 - Levar letreiro e tintas para o Lab 05 (o sistema inteiro) e para o protótipo principal, se o autor aprovar.
@@ -825,6 +883,8 @@ JONES, Jeff. Characteristics of pattern formation and evolution in approximation
 KNAFLIC, Cole Nussbaumer. **Storytelling with data**: a data visualization guide for business professionals. Hoboken: Wiley, 2015.
 
 McCANDLESS, David. **The Billion Dollar Gram**. Information is Beautiful. Disponível em: https://informationisbeautiful.net/visualizations/the-billion-dollar-gram/. Acesso em: 13 nov. 2026.
+
+McCANDLESS, David. **Money Too Tight to Mention?**: major music streaming services compared. Information is Beautiful, 2018. Imagem enviada pelo autor em 14 nov. 2026; endereço da página a conferir.
 
 McCANDLESS, David. **Snake Oil Supplements**. Information is Beautiful. Disponível em: https://informationisbeautiful.net/visualizations/snake-oil-scientific-evidence-for-nutritional-supplements-vizsweet/. Acesso em: 13 nov. 2026.
 

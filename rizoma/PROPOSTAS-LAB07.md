@@ -873,6 +873,48 @@ Conferido no navegador em 1280 px e 375 px: os dez quadros lado a lado, as setas
 
 ---
 
+## 3P. 19/11/2026: rastro claro, opaco e fino; grupos em anel
+
+Arquivos: `lab-08-site.html` (rastro) e `js/rizoma.js` (linhas e bolinhas, opção nova).
+
+### 3P.1 O pedido
+
+No mapa do Lab 08, o autor pediu rastros mais claros e opacos, mais finos, para as sobreposições não confundirem, e linhas e círculos mais bem organizados.
+
+Isso corrige a rodada 14 (seção 3M.4), em que o rastro ficou mais carregado e escurecia onde se acumulava. Em grupos grandes o resultado era uma mancha escura por cima das bolinhas.
+
+### 3P.2 O rastro
+
+- **Claro:** o grão usa só os tons leves da tinta. Entrou um quinto tom, a névoa, que é a tinta bem diluída no papel (32% de tinta). Com pouca tinta acumulada, cerca de 70% dos grãos são névoa e o resto é o tom claro. Onde muita tinta se acumula, o tom base aparece em até 20% dos grãos. Sombra e tom fundo saíram do rastro.
+- **Opaco:** o grão deixou de ser transparente. Antes, dois rastros cruzados somavam transparências e escureciam. Agora os grãos ficam lado a lado, e o cruzamento continua legível. É a mesma regra de justaposição da seção 3C, levada até o fim.
+- **Fino:** o jato ficou com metade da largura (de 2,6 para 1,25) e as gotas grandes ficaram raras (de 6% para 2%).
+- **Menos névoa solta:** os projetos sem ligação soltam um grão a cada oito quadros, não a cada quatro.
+- **Seca um pouco mais rápido**, para não acumular.
+- **O spray corre pelas linhas desenhadas.** Antes ele ia de cada projeto para todos os outros do grupo e cruzava o grupo inteiro. Agora vai só até os vizinhos ligados por linha, e o rastro acompanha a linha.
+
+Continua valendo: só as três tintas, em tons da mesma família.
+
+### 3P.3 Linhas e bolinhas: cada grupo vira um anel
+
+Problema: com uma ligação ativa, o motor desenhava todos ligados com todos. Um grupo de 8 projetos tinha 28 linhas, e a ligação por mecanismo inteira, 58. As bolinhas se juntavam num bolo.
+
+Solução, na opção nova `lineShape: "anel"` do motor:
+
+- **Cada grupo vira um anel.** Cada projeto se liga só aos dois vizinhos. Um grupo de 8 passa de 28 linhas para 8, e a ligação por mecanismo, de 58 para 20.
+- **A ordem do anel** é a dos projetos em volta do centro do grupo, calculada quando o grupo se forma, e só muda quando entra ou sai um projeto.
+- **As bolinhas se arrumam em roda.** A mola age só nas linhas do anel, mais firme e mais curta, e a repulsão abre o grupo. Cada grupo ocupa o seu lugar em vez de se misturar com os outros.
+- **Nenhuma ligação se perde.** As outras continuam existindo na ficha e na contagem, e aparecem todas quando se passa a mão num projeto. É visão geral primeiro e detalhe sob pedido (SHNEIDERMAN, 1996).
+- **As bolinhas vagam menos** (deriva de 0,9 para 0,5).
+- As relações documentadas, que são par a par, continuam como eram.
+
+A opção só vale para quem a liga. O site principal e os outros labs não mudam.
+
+A contagem no rodapé do mapa ("58 ligações") continua contando os pares de projetos ligados, não as linhas desenhadas.
+
+Conferido no navegador em 1280 px, com os vinte projetos revelados e a ligação por mecanismo: três anéis separados (8, 6 e 6 projetos), 20 linhas desenhadas de 58 pares, rastro claro e fino junto das linhas, sem erros no console. Não foi conferido em tamanho de celular nesta rodada, nem com várias ligações ativas ao mesmo tempo, nem num Android real.
+
+---
+
 ## 4. O que fica para depois
 
 - **Escolher o gráfico do passo 8** entre as propostas A, B e C da seção 3M.2, e mandar as outras referências que o autor disse que enviaria.

@@ -608,7 +608,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <script src="js/data.js?v=20261112-31"></script>
 <script src="dados/mural.js?v=20261113-41"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
-<script src="js/rizoma.js?v=20261113-41"></script>
+<script src="js/rizoma.js?v=20261119-42"></script>
 <script src="js/letreiro.js?v=20261113-41"></script>
 <script>
 /* Lab 08 — O site inteiro na linguagem do Lab 07 (13/11/2026, pedido do autor).
@@ -805,20 +805,24 @@ function sprayAt(x, y, mi, n, sigma, alpha, nevoa, f) { // x, y em px do palco; 
   const tons = SPRAY[mi]; if (!tons || !sctx) return; f = f || 0;
   // rodada 14 (pedido do autor): rastro mais opaco, e a cor fica mais forte onde a tinta se acumula. Com pouca tinta sai o tom claro;
   // com muita, entram o tom base, a sombra e o tom fundo da MESMA tinta (família de tons da seção 3B; continua sem mistura de pigmento).
-  const c1 = 0.6 - 0.48 * f, c2 = c1 + 0.3 + 0.12 * f, c3 = c2 + 0.07 + 0.2 * f, forte = Math.min(1, alpha * (0.85 + 0.75 * f));
+  // rodada 17 (pedido do autor, 19/11): o rastro fica CLARO, OPACO e FINO, para as sobreposições não virarem mancha escura.
+  // Claro: só os tons leves da tinta (névoa e clara); o tom base entra em pouca quantidade onde muita tinta se acumula. Opaco: o
+  // grão não é mais transparente, então dois rastros que se cruzam ficam lado a lado em vez de escurecer. Fino: jato mais estreito.
+  const c1 = 0.72 - 0.47 * f, c2 = c1 + 0.28 + 0.27 * f; // parte de névoa, depois de clara; o resto (até 20%) é o tom base
   for (let d = 0; d < n; d++) {
     const r = Math.sqrt(-2 * Math.log(1 - Math.random())) * sigma, a = Math.random() * 6.2832, q = Math.random();
     const px = (x + Math.cos(a) * r) * SS, py = (y + Math.sin(a) * r) * SS;
-    sctx.fillStyle = nevoa ? tons[f > 0.45 && q < f ? 2 : 3] : tons[q < c1 ? 3 : q < c2 ? 2 : q < c3 ? 1 : 0];
-    sctx.globalAlpha = forte * (0.6 + Math.random() * 0.4);
-    const g = Math.random() < 0.06 + 0.06 * f ? 2.2 + Math.random() * 1.6 : 0.8 + Math.random() * (0.9 + 0.5 * f); // quase tudo é névoa fina; de vez em quando, uma gota
+    sctx.fillStyle = nevoa ? tons[4] : tons[q < c1 ? 4 : q < c2 ? 3 : 2];
+    sctx.globalAlpha = Math.min(1, alpha);
+    const g = Math.random() < 0.02 ? 2 + Math.random() * 1.2 : 0.8 + Math.random() * 0.8; // grão fino; gota rara
     if (g > 2) { sctx.beginPath(); sctx.arc(px, py, g / 2, 0, 6.2832); sctx.fill(); } else sctx.fillRect(px, py, g, g);
   }
   sctx.globalAlpha = 1;
 }
-SPRAY = INKS.map(c => ["funda", "sombra", "base", "clara"].map(n => `rgb(${tom(c, n).join(",")})`));
+SPRAY = INKS.map(c => ["funda", "sombra", "base", "clara"].map(n => `rgb(${tom(c, n).join(",")})`).concat(`rgb(${c.map((v, i) => Math.round(v * 0.32 + PAPEL[i] * 0.68)).join(",")})`)); // o quinto tom é a névoa: a tinta bem diluída no papel
 const A = { x: null, y: null, h: null, home: null, target: null, type: null, mech: null, age: null, life: null };
 const pos = { x: new Float32Array(DATA.length), y: new Float32Array(DATA.length), on: new Uint8Array(DATA.length) }; // posição de tela (escala do rastro) de cada nó
+let sibSig = "";                                     // assinatura das linhas desenhadas: quando muda, os vizinhos do spray são refeitos
 let sibs = DATA.map(() => []);                       // por nó: [{ j, t }] nós irmãos pela linha t ligada
 let spawnPool = [];                                  // índices dos nós revelados, com peso maior para os ligados
 let drawMs = 0, frameN = 0;                          // custo médio (ms) do quadro do micélio, para o governador
@@ -857,10 +861,14 @@ function rebuildSibs(active) { // nós irmãos por linha ligada: só quando o es
 }
 const linkOf = i => { for (const s of sibs[i]) if (pos.on[s.j]) return s; return null; };
 function updateSources() {
-  pos.on.fill(0); spawnPool.length = 0;
-  for (const n of R.screen().nodes) { const i = IDX[n.id]; if (i == null) continue; pos.x[i] = n.x / SCALE; pos.y[i] = n.y / SCALE; pos.on[i] = 1; }
+  pos.on.fill(0); spawnPool.length = 0; const sc = R.screen();
+  for (const n of sc.nodes) { const i = IDX[n.id]; if (i == null) continue; pos.x[i] = n.x / SCALE; pos.y[i] = n.y / SCALE; pos.on[i] = 1; }
+  // rodada 17: o spray só corre pelas linhas que estão desenhadas (os vizinhos do anel), não mais entre todos os pares do grupo.
+  // Assim o rastro acompanha a linha em vez de cruzar o grupo inteiro. A chave da linha é "índice|índice|tipo".
+  const sig = sc.edges.map(e => e.key).join(";");
+  if (sig !== sibSig) { sibSig = sig; sibs = DATA.map(() => []); for (const e of sc.edges) { const k = e.key.split("|"), a = +k[0], b = +k[1], ti = TYPES.indexOf(k[2]); if (!sibs[a] || !sibs[b] || ti < 0) continue; sibs[a].push({ j: b, t: ti }); sibs[b].push({ j: a, t: ti }); } }
   for (let i = 0; i < DATA.length; i++) { if (!pos.on[i]) continue; spawnPool.push(i); if (linkOf(i)) spawnPool.push(i, i); } // nós ligados recebem 3× mais agentes
-  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && !introOn) sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 70, 9, 0.75, false, 0.5); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
+  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && !introOn) sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 45, 7, 1, false, 0.2); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
 }
 function respawn(i) {
   if (!spawnPool.length) return false;
@@ -890,7 +898,7 @@ new p5(p => {
     const ctx = trail.drawingContext;
     ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = `rgba(0,0,0,${evapF})`; ctx.fillRect(0, 0, tw, th); ctx.globalCompositeOperation = "source-over";
     if (spray && spray.elt.width > 1 && spray.elt.height > 1 && frameN % 20 === 0) { // o spray seca: a cada 20 quadros todo grão perde um pouco de tinta
-      const dec = flush > 0 ? 60 : 13, im = sctx.getImageData(0, 0, spray.elt.width, spray.elt.height), d = im.data;
+      const dec = flush > 0 ? 60 : 17, im = sctx.getImageData(0, 0, spray.elt.width, spray.elt.height), d = im.data;
       for (let k = 3, e = d.length; k < e; k += 4) if (d[k]) d[k] = d[k] > dec ? d[k] - dec : 0;
       sctx.putImageData(im, 0, 0);
     }
@@ -925,8 +933,8 @@ new p5(p => {
       if (mi >= 0) { // grão de spray no caminho do agente, em tons da tinta dele
         const mao = lure.on && A.home[i] === lure.home;
         const acc = Math.min(1, px[k + 3] / 200); // quanta tinta já passou por aqui: é o que deixa a cor mais forte
-        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, mao ? 3 : 2, mao ? 4 : 2.6, 0.72, false, acc);
-        else if (((frameN + i) & 3) === 0) sprayAt(x * SCALE, y * SCALE, mi, 1, 2.5, 0.42, true, acc);
+        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, 2, mao ? 2.2 : 1.25, 1, false, acc);
+        else if (((frameN + i) & 7) === 0) sprayAt(x * SCALE, y * SCALE, mi, 1, 1.2, 1, true, acc);
       }
       A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
     }
@@ -962,7 +970,7 @@ function uiMargin() {
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: true, transparent: true, reduced, panelWidth: 380, drift: 0.9, nodeStyle: "grapixo", mechColors: mechMap(), edgeColor: "natureza", lineExact: true, lineInk: { mecanismo: true }, lineDash: { edital: 3, escala: 2 }, lineWeights: { curadoria: 1.7 }, edgeMix: "optica", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
+    container: "#rizomaStage", paper: true, depth: true, intro: true, transparent: true, reduced, panelWidth: 380, drift: 0.5, lineShape: "anel", nodeStyle: "grapixo", mechColors: mechMap(), edgeColor: "natureza", lineExact: true, lineInk: { mecanismo: true }, lineDash: { edital: 3, escala: 2 }, lineWeights: { curadoria: 1.7 }, edgeMix: "optica", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
     margin: uiMargin, lineCycle: 2.2,
     treeTop: () => uiMargin().t, treeBottom: () => uiMargin().b, // a árvore (decalque) respeita as mesmas faixas da interface
     onChange: sync, onOpen: showPreview, onHover: onHover
@@ -987,7 +995,7 @@ function sync(s) {
 
   renderTrail(s);
   const ak = TYPES.map(t => s.active[t] ? 1 : 0).join("");
-  if (ak !== lastActiveKey) { const removed = [...lastActiveKey].some((c, i) => c === "1" && ak[i] !== "1"); ligada = started ? TYPES.find((t, i) => ak[i] === "1" && lastActiveKey[i] !== "1") || null : null; lastActiveKey = ak; rebuildSibs(s.active); if (A.life) { A.life.fill(0); A.type.fill(-1); A.target.fill(-1); } if (removed) flush = 70; }
+  if (ak !== lastActiveKey) { const removed = [...lastActiveKey].some((c, i) => c === "1" && ak[i] !== "1"); ligada = started ? TYPES.find((t, i) => ak[i] === "1" && lastActiveKey[i] !== "1") || null : null; lastActiveKey = ak; sibSig = "\u0000"; if (A.life) { A.life.fill(0); A.type.fill(-1); A.target.fill(-1); } if (removed) flush = 70; }
   for (const t in chips) { chips[t].classList.toggle("active", !!s.active[t]); chips[t].querySelector("small").textContent = s.linesByType ? s.linesByType[t] : 0; }
   $("#depthBtn").classList.toggle("active", s.depth);
   $("#counter").textContent = `${s.revealed} de ${s.total} projetos` + (s.lines ? ` · ${s.lines} ligações` : "") + (s.cuts ? ` · ${s.cuts} cortes` : "");

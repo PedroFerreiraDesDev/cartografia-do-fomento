@@ -84,6 +84,21 @@
     // Lab 08, rodada 10: cada tipo de ligação pode ter cor exata (sem escurecer), traço e espessura próprios; lineInk lista os tipos que levam a tinta dos projetos
     const LINE_EXACT = !!opts.lineExact, LINE_INK = opts.lineInk || {}, LINE_DASH = opts.lineDash || {}, LINE_WEIGHTS = opts.lineWeights || {};
     const edgeCol = (type, node) => LINE_INK[type] && node ? (MECH_COLOR[node.p.mechanism] || LINES[type].color) : LINES[type].color;
+    /* Lab 08, rodada 17 (opcional, opts.lineShape: "anel"): em vez de desenhar todos ligados com todos, cada grupo de projetos
+       que divide a mesma coisa (um ano, um edital...) vira um anel: cada projeto se liga só aos dois vizinhos. Um grupo de 8 passa
+       de 28 linhas para 8. As outras ligações continuam existindo (ficha, contagem, potenciais) e aparecem ao pairar no projeto.
+       A mola age só nas linhas do anel, mais firme e mais curta, e a repulsão abre o grupo em roda. Sem a opção, nada muda. */
+    const ANEL = opts.lineShape === "anel", ringOrder = new Map(); let ringSig = "";
+    const ringRest = n => Math.max(46, 34 + 300 / Math.max(2, n)) * SPREAD / 1.45;
+    function shapeRings() {
+      const groups = new Map(), ringKeys = new Map();
+      for (const t in LINES) { if (!active[t] || LINES[t].pair) continue; for (const n of nodes) { if (!n.revealed) continue; const k = LINES[t].key(n.p); if (k == null) continue; const g = t + "\u0001" + k; if (!groups.has(g)) groups.set(g, []); groups.get(g).push(n); } }
+      for (const [g, list] of groups) { if (list.length < 2) continue; const t = g.split("\u0001")[0], old = ringOrder.get(g);
+        let ord = old && old.length === list.length && list.every(n => old.includes(n)) ? old : null; // a ordem só muda quando o grupo muda
+        if (!ord) { let cx = 0, cy = 0; for (const n of list) { cx += n.pos.x; cy += n.pos.y; } cx /= list.length; cy /= list.length; ord = list.slice().sort((a, b) => Math.atan2(a.pos.y - cy, a.pos.x - cx) - Math.atan2(b.pos.y - cy, b.pos.x - cx)); ringOrder.set(g, ord); }
+        const m = ord.length; for (let i = 0; i < (m === 2 ? 1 : m); i++) ringKeys.set(edgeKey(ord[i], ord[(i + 1) % m], t), m); }
+      for (const e of edges) { if (LINES[e.t].pair || e.regrown) { e.hide = false; e.ringN = 0; continue; } e.ringN = ringKeys.get(e.key) || 0; e.hide = !e.ringN; }
+    }
 
     /* ---------- relações possíveis entre dois nós (todas as naturezas) ---------- */
     function relationsBetween(a, b) {
@@ -246,11 +261,13 @@
       }
       for (const e of edges) {
         if (!(e.a.revealed && e.b.revealed)) continue;
+        if (ANEL && e.hide) continue; // no anel, só as linhas desenhadas puxam
+        const ring = ANEL && e.ringN > 0;
         // puxão: nos primeiros instantes a mola é mais forte e curta; os nós se aproximam enquanto a linha se forma
         const age = (now - e.born) / (PULL_MS * (opts.lineCycle || 1)), pull = S.reduced ? 0 : Math.max(0, 1 - age); // lineCycle: × duração do puxão e do crescimento
         const d = p5.Vector.sub(e.b.pos, e.a.pos); const m = d.mag();
-        const target = e.rest * (1 - 0.25 * pull), boost = m > target ? 1 + 3 * pull : 1; // o puxão só aproxima; nunca empurra (medido: 80→21→171 px com 5×; 3× suaviza o rebote)
-        d.setMag((m - target) * SPRING * boost); e.a.acc.add(d); e.b.acc.sub(d);
+        const target = (ring ? ringRest(e.ringN) : e.rest) * (1 - 0.25 * pull), boost = m > target ? 1 + 3 * pull : 1; // o puxão só aproxima; nunca empurra (medido: 80→21→171 px com 5×; 3× suaviza o rebote)
+        d.setMag((m - target) * SPRING * (ring ? 7 : 1) * boost); e.a.acc.add(d); e.b.acc.sub(d);
       }
       const cx = p.width / 2, cy = p.height / 2, drift = S.reduced ? 0 : DRIFT * (opts.drift || 1), D = depthRange(); // opts.drift: quanto os nós vagam (Lab 04 usa 2,4)
       const anchor = S.hover || S.focus; // vizinhança estável
@@ -403,6 +420,7 @@
       p.cursor(S.cutting ? "crosshair" : S.hover ? "pointer" : S.hoverEdge ? "help" : "default");
       const lit = S.hover || S.focus; // nó que acende as suas linhas
       if (S.mode === "rizoma") {
+        if (ANEL) { const sig = edges.length + ":" + nodes.reduce((a, n) => a + (n.revealed ? 1 : 0), 0) + ":" + Object.keys(LINES).filter(t => active[t]).join(","); if (sig !== ringSig) { ringSig = sig; shapeRings(); } }
         if (!S.paused) simulate(dt);
         if (S.intro) drawIntroWeb();
         const litEdges = lit ? edges.filter(e => (e.a === lit || e.b === lit) && e.a.revealed && e.b.revealed) : [];
@@ -410,6 +428,7 @@
           if (!(e.a.revealed && e.b.revealed)) { e.pts = []; continue; }
           if (!S.paused) e.growth = Math.min(1, e.growth + (S.reduced ? 1 : 0.025 / (opts.lineCycle || 1) * dt));
           const isLit = litEdges.includes(e), isHov = e === S.hoverEdge;
+          if (ANEL && e.hide && !isLit) { e.pts = []; continue; } // fora do anel a linha só aparece ao pairar no projeto
           drawEdge(e, isHov ? 255 : isLit ? 230 : lit ? 50 : 150, isHov ? 2.8 : isLit ? 2 : e.regrown ? 1 : 1.4);
         }
         if (lit && lit.revealed) drawPotentials(lit);

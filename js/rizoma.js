@@ -88,6 +88,10 @@
        que divide a mesma coisa (um ano, um edital...) vira um anel: cada projeto se liga só aos dois vizinhos. Um grupo de 8 passa
        de 28 linhas para 8. As outras ligações continuam existindo (ficha, contagem, potenciais) e aparecem ao pairar no projeto.
        A mola age só nas linhas do anel, mais firme e mais curta, e a repulsão abre o grupo em roda. Sem a opção, nada muda. */
+    /* Lab 08, rodada 18 (opcionais): nodeSize { min, max, breathe, period: [a, b] } faz o tamanho da bolinha variar o tempo todo,
+       cada uma no seu ritmo, com o valor pesando só um pouco: nenhuma é sempre a maior (o mapa não desenha hierarquia).
+       lineWobble (0 a 1) controla o quanto a linha ondula; 0 = linha reta, um padrão só. evenOutline dá o mesmo contorno a todas. */
+    const SIZE = opts.nodeSize || null, WOBBLE = opts.lineWobble == null ? 1 : Math.max(0, opts.lineWobble), EVEN = !!opts.evenOutline;
     const ANEL = opts.lineShape === "anel", ringOrder = new Map(); let ringSig = "";
     const ringRest = n => Math.max(46, 34 + 300 / Math.max(2, n)) * SPREAD / 1.45;
     function shapeRings() {
@@ -556,7 +560,7 @@
       for (let i = 0; i <= steps; i++) {
         const t = i / steps; if (t > e.growth) break;
         const q = depthOn() ? project(p5.Vector.lerp(e.a.pos, e.b.pos, t)) : { x: A.x + dx * t, y: A.y + dy * t };
-        const amp = Math.sin(t * p.PI) * Math.min(30, L * 0.2);
+        const amp = Math.sin(t * p.PI) * Math.min(30, L * 0.2) * WOBBLE;
         const off = (p.noise(e.seed + t * 2.2, p.frameCount * 0.0025) - 0.5) * 2 * amp;
         if ((e.regrown && i % 3 === 1) || (dash > 1 && i % dash === dash - 1)) { p.endShape(); p.beginShape(); } // pontilhado = linha que rebrotou; tracejado = traço do tipo
         const x = q.x + nx * off, y = q.y + ny * off;
@@ -606,7 +610,7 @@
       const c = MECH_COLOR[n.p.mechanism] || [120, 120, 120], ink = S.paper ? 22 : 240, a = 255 * dim;
       const gx = S.nodeStyle === "grapixo" && !ghost; // anatomia da letra de grafite: sombra ("3D"), preenchimento, contorno, brilho; tudo na mesma tinta
       if (gx) { const o = Math.max(1.5, r * 0.11); p.noStroke(); p.fill(c[0] * 0.72, c[1] * 0.72, c[2] * 0.72, a); p.circle(o, o * 1.15, r); } // sombra: a tinta 28% mais escura, deslocada
-      p.stroke(ink, a); p.strokeWeight(mon ? 1.9 : 1.1); // o contorno garante leitura da tinta clara sobre o papel
+      p.stroke(ink, a); p.strokeWeight(mon && !EVEN ? 1.9 : 1.1); // o contorno garante leitura da tinta clara sobre o papel
       if (ghost) p.noFill(); else p.fill(c[0], c[1], c[2], a);
       p.circle(0, 0, r);
       if (gx && r > 9 && !isF) { const pw = S.paper ? [247, 246, 241] : [255, 255, 255]; p.noFill(); p.stroke(c[0] * 0.55 + pw[0] * 0.45, c[1] * 0.55 + pw[1] * 0.45, c[2] * 0.55 + pw[2] * 0.45, a); p.strokeWeight(Math.max(1.2, r * 0.09)); p.strokeCap(p.ROUND); p.arc(0, 0, r * 0.6, r * 0.6, p.PI * 1.08, p.PI * 1.42); } // brilho: a tinta 45% mais clara, no alto à esquerda
@@ -618,6 +622,10 @@
       const age = ghost ? 1 : Math.min(1, (p.millis() - n.born) / 600);
       const ease = 1 - Math.pow(1 - age, 3);
       const focusScale = S.focus ? (n === S.focus ? 1.3 : (edges.some(e => (e.a === S.focus || e.b === S.focus) && (e.a === n || e.b === n)) ? 1.1 : 1)) : 1; // o aberto cresce; quem se liga a ele, um pouco
+      if (SIZE) { // tamanho que respira: base comprimida pelo valor, vezes uma onda lenta própria de cada bolinha
+        if (n.r0 == null) { const v = n.p.value == null ? 0.5 : p.constrain((n.p.value - 19740) / (165000 - 19740), 0, 1), pr = SIZE.period || [7, 13]; n.r0 = SIZE.min + (SIZE.max - SIZE.min) * Math.sqrt(v); n.per = pr[0] + (pr[1] - pr[0]) * ((n.seed * 0.618) % 1); }
+        n.r = n.r0 * (1 + (SIZE.breathe || 0) * Math.sin(n.seed * 6.2832 + (S.reduced ? 0 : p.millis() / 1000 * 6.2832 / n.per)));
+      }
       const r = n.r * (0.6 + 0.4 * ease) * n.scr.s * focusScale;
       const mon = n.p.circuit === "Monumental";
       const fog = depthOn() ? 0.45 + 0.55 * p.constrain((n.scr.s / view.zoom - 0.6) / 0.8, 0, 1) : 1; // névoa: longe = mais apagado

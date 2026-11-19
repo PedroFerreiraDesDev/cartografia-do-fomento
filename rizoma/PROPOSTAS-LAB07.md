@@ -915,6 +915,45 @@ Conferido no navegador em 1280 px, com os vinte projetos revelados e a ligação
 
 ---
 
+## 3Q. 19/11/2026, segundo pedido: menos elementos no mapa, linha num padrão só, tamanho sem hierarquia
+
+Arquivos: `lab-08-site.html` e `js/rizoma.js` (três opções novas, todas opcionais).
+
+### 3Q.1 O pedido
+
+O autor ainda não conseguia interpretar a tela Descobrir, por excesso de informação e de elementos. Pediu tons ainda mais claros no rastro e no fundo, linhas obedecendo a um padrão, e que o tamanho das bolinhas não venha só do valor do projeto: todas devem variar de tamanho, para o mapa não obedecer a hierarquias.
+
+### 3Q.2 O que mudou
+
+| Pedido | Antes | Agora |
+|---|---|---|
+| Rastro mais claro | Tons de 32% e 55% de tinta, e o tom base onde acumulava | Só dois tons bem diluídos, 18% e 30% de tinta sobre o papel |
+| Menos rastro | Projeto sem ligação soltava névoa | O rastro só existe onde há linha ligada ou onde a mão passa |
+| Fundo mais claro | O papel do site, `#F7F6F1` | O mapa tem fundo próprio, `#FCFCFA`, quase branco |
+| Linhas num padrão | Cada linha ondulava sozinha, com ruído | Linha reta entre os dois projetos (`lineWobble: 0`). O que distingue uma ligação da outra continua sendo a cor e o traço da seção 3H |
+| Tamanho sem hierarquia | Diâmetro de 7 a 22 pelo valor, três vezes de diferença | Todas as bolinhas mudam de tamanho o tempo todo, cada uma no seu ritmo (`nodeSize`). O valor pesa só um pouco |
+| Contorno | Grosso no circuito monumental | Igual para todas (`evenOutline`) |
+| Bolinha | Com sombra e brilho (grapixo) | Chapada, só cor e contorno |
+| Legenda do mapa | Três cores, "tamanho = valor" e "contorno grosso = circuito monumental" | Só as três cores |
+| Textos | Parágrafo e rodapé longos | Uma frase a menos em cada |
+
+### 3Q.3 O tamanho que respira
+
+- A base de cada bolinha vai de 13 a 19 de diâmetro, pela raiz do valor. A diferença máxima caiu de três vezes para uma vez e meia.
+- Sobre a base, cada bolinha cresce e encolhe 30%, numa onda lenta de 7 a 13 segundos, com fase e ritmo próprios.
+- As faixas se cruzam: a menor, no pico, chega a 16,9. A maior, no vale, desce a 13,3. Nenhuma bolinha é sempre a maior.
+- Com a preferência de movimento reduzido, as bolinhas ficam paradas, cada uma num ponto diferente da onda.
+
+Defesa: o mapa é a camada de rizoma do trabalho, e o rizoma não tem centro nem ordem de importância (DELEUZE; GUATTARI, 1995). Tamanho fixo pelo valor punha os projetos do Incentivo Fiscal sempre na frente. O valor não some do site: continua na ficha de cada projeto e é o assunto da tela Indicadores, onde o tamanho segue sendo o valor.
+
+**Ponto para o autor conferir:** deixei o valor pesando um pouco no tamanho. Se a intenção for tirar o valor de vez, basta igualar o mínimo e o máximo.
+
+A página Sobre e a animação de entrada foram ajustadas para não dizer mais que, no mapa, o tamanho é o valor.
+
+Conferido no navegador em 1280 px, com os vinte projetos e as ligações por mecanismo e por ano ativas juntas: linhas retas, anéis legíveis, rastro muito leve, fundo claro, legenda só com as três cores, sem erros no console. Não foi conferido em tamanho de celular nem num Android real.
+
+---
+
 ## 4. O que fica para depois
 
 - **Escolher o gráfico do passo 8** entre as propostas A, B e C da seção 3M.2, e mandar as outras referências que o autor disse que enviaria.
@@ -946,6 +985,8 @@ CARD, Stuart K.; MACKINLAY, Jock D.; SHNEIDERMAN, Ben (ed.). **Readings in infor
 CLEVELAND, William S.; McGILL, Robert. Graphical perception: theory, experimentation, and application to the development of graphical methods. **Journal of the American Statistical Association**, v. 79, n. 387, p. 531-554, 1984.
 
 CRUZ, Crystian. **Brasilêro**: vernacular typeface. 1999. Disponível em: https://crystiancruz.myportfolio.com/brasilero. Acesso em: 12 nov. 2026.
+
+DELEUZE, Gilles; GUATTARI, Félix. **Mil platôs**: capitalismo e esquizofrenia. v. 1. Tradução de Aurélio Guerra Neto e Celia Pinto Costa. São Paulo: Editora 34, 1995.
 
 FAVETTA, Giovanna. **Tipografia Vernacular 0800**. Disponível em: https://www.gifavetta.art/tipografia-0800. Acesso em: 12 nov. 2026.
 

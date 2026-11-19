@@ -262,6 +262,8 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 @media(prefers-reduced-motion:no-preference){html.story-on .chart.cap .lead,html.story-on .chart.cap .answer,html.story-on .chart.cap .bignum{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}html.story-on .chart.cap.in .lead,html.story-on .chart.cap.in .answer,html.story-on .chart.cap.in .bignum{opacity:1;transform:none}html.story-on .chart.cap .answer{transition-delay:.15s}}
 @media(max-width:780px){.chart.cap h2{font-size:25px}.prog .dots button{width:18px;height:18px;font-size:8.5px}.prog #progTxt{display:none}.prog .dots{margin-left:0}}
 .mleg{display:flex;align-items:center;gap:5px;margin-top:10px;font-size:9.5px;color:#777}.mleg span{font-size:8.5px;font-weight:900;letter-spacing:.12em;margin-right:6px}.mleg i{display:inline-block;width:14px;height:14px;border:1px solid var(--line);background:rgba(22,22,22,var(--a));margin-left:6px}
+/* rodada 18: o fundo do mapa fica mais claro que o papel do resto do site, para o rastro leve e as linhas se lerem melhor */
+#discover.stage{background:#FCFCFA}
 /* rodada 16: os nove passos lado a lado, numa faixa que anda para o lado */
 #indicators .ind-main{position:relative;display:flex;flex-direction:column;overflow:hidden;padding:0}
 #indicators .summary{position:static;flex:none;margin:0;padding:10px 26px}
@@ -356,7 +358,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <section id="discover" class="stage" aria-label="Descobrir">
   <div id="trailStage" class="layer" aria-hidden="true"></div>
   <div id="rizomaStage" class="layer"></div>
-  <div class="copy" id="copy"><div class="kicker">01 / MAPA DOS PROJETOS</div><h1 id="fieldHead" class="sec">Descobrir</h1><div class="legend" id="fieldLegend"></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro; o tamanho, quanto. Ligue os projetos por ano, mecanismo ou edital: o spray de cada um corre até os parentes.</p></div>
+  <div class="copy" id="copy"><div class="kicker">01 / MAPA DOS PROJETOS</div><h1 id="fieldHead" class="sec">Descobrir</h1><div class="legend" id="fieldLegend"></div><p>Cada bolinha é um projeto. A cor diz de onde veio o dinheiro. Ligue os projetos por ano, mecanismo ou edital para ver quem anda junto.</p></div>
   <div class="tools" id="tools">
     <div class="search"><input id="search" type="search" autocomplete="off" placeholder="Buscar projeto, ano ou mecanismo…" aria-label="Buscar no corpus"><div id="results" class="results" hidden></div></div>
     <div class="chiplabel">Ligar os projetos por</div>
@@ -373,7 +375,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
       </div></details>
     </div>
   </div>
-  <div class="foot" id="foot"><div class="foot-left"><div id="trail" class="trail" hidden></div><p>Os pontos que piscam são projetos escondidos. Roda do mouse ou pinça aproximam; shift + arrastar desloca. O movimento do spray segue o algoritmo de Jones (2010) sobre as posições na tela, não sobre a cidade.</p></div><span id="counter">0 de 20 projetos</span></div>
+  <div class="foot" id="foot"><div class="foot-left"><div id="trail" class="trail" hidden></div><p>Os pontos que piscam são projetos escondidos. O movimento do spray segue o algoritmo de Jones (2010), sobre as posições na tela, não sobre a cidade.</p></div><span id="counter">0 de 20 projetos</span></div>
   <div class="guide" id="guide"></div>
   <div id="hoverTip" class="hover-tip" hidden><b id="htTitle"></b><span id="htMeta"></span><span id="htMore"></span><i id="htBar"></i></div>
   <section id="final" class="final" hidden aria-label="Meu mapa">
@@ -521,7 +523,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
     <div style="height:30px"></div>
     <article class="block"><div><span class="kicker">COR</span><h2>O muro, o pixo e três tintas</h2></div><div><p>O fundo claro é o cimento do muro. O preto é o pixo, que é escrita de uma cor só: texto, número e contorno. A cor entra só onde carrega informação, e são três tintas tiradas do muro de Belo Horizonte: magenta de spray para o Incentivo Fiscal, azul de azulejo para o Fundo Municipal e ocre de minério para o Descentra. No spray elas não se misturam: no encontro, os pontos ficam lado a lado. As ligações têm cor e traço próprios, para não se confundirem com as tintas: verde contínua para ano, violeta tracejada para edital, ferrugem pontilhada para escala e preta grossa para curadoria. Verde, violeta e ferrugem são as misturas das tintas duas a duas, escurecidas. A ligação por mecanismo leva a tinta do próprio mecanismo. A defesa está em <code>rizoma/PROPOSTAS-LAB07.md</code>.</p><div class="legend" id="aboutLegend"></div></div></article>
     <article class="block"><div><span class="kicker">LETRA</span><h2>Várias mãos</h2></div><p>O site tem um título só, Cartografia do Fomento. Ele e o nome de cada projeto são escritos com letras de placa, de muro e de pixo fotografadas em cidades brasileiras (Tipografia Vernacular 0800, de Gi Favetta). No título, cada letra tem uma mão, e de tempos em tempos algumas letras são repintadas por outra mão. Quando a linha não cabe, as últimas letras se apertam, como quem pinta e fica sem muro (ideia do Brasilêro, de Crystian Cruz). O nome das telas, os dados, as fichas e os textos de leitura ficam sempre parados, em Arial.</p></article>
-    <article class="block"><div><span class="kicker">O PROJETO</span><h2>Uma bolinha</h2></div><div><p>Cada projeto é uma bolinha com a fórmula do grapixo: contorno preto, cor por dentro, sombra na mesma tinta. A cor é o mecanismo, o tamanho é o valor e o contorno grosso marca o circuito monumental. A mesma bolinha aparece no mapa, nos indicadores, nos editais e na página de cada projeto.</p><div id="aboutWalls" style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap"></div></div></article>
+    <article class="block"><div><span class="kicker">O PROJETO</span><h2>Uma bolinha</h2></div><div><p>Cada projeto é uma bolinha com a fórmula do grapixo: contorno preto, cor por dentro, sombra na mesma tinta. A cor é o mecanismo. Nos indicadores, nos editais e nas listas, o tamanho é o valor e o contorno grosso marca o circuito monumental. No mapa é diferente: o tamanho de cada bolinha muda o tempo todo e o contorno é igual para todas, porque o mapa mostra ligações, não uma ordem de importância.</p><div id="aboutWalls" style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap"></div></div></article>
     <article class="block"><div><span class="kicker">DESCOBRIR</span><h2>O gesto revela</h2></div><p>O mapa começa com poucos projetos. Os escondidos piscam; tocar revela. Ao ligar os projetos por ano, mecanismo ou edital, o spray de cada um corre até os parentes, e seca em poucos segundos quando a ligação é desligada.</p></article>
     <article class="block"><div><span class="kicker">ABRIR</span><h2>Uma só ficha</h2></div><p>No mapa, nos indicadores ou nos editais, abrir um projeto abre a mesma ficha, que explica em frases o que é, de onde veio o dinheiro e quanto foi. A página inteira do projeto fica a um toque. Voltar devolve ao lugar de onde se veio.</p></article>
     <article class="block"><div><span class="kicker">GUARDAR</span><h2>Meu mapa</h2></div><p>A visita termina quando a pessoa quiser: "Baixar meu mapa" gera uma imagem com o spray, as bolinhas, as ligações e a data. Cada visita produz um mapa diferente.</p></article>
@@ -608,7 +610,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <script src="js/data.js?v=20261112-31"></script>
 <script src="dados/mural.js?v=20261113-41"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js'"></script>
-<script src="js/rizoma.js?v=20261119-42"></script>
+<script src="js/rizoma.js?v=20261119-43"></script>
 <script src="js/letreiro.js?v=20261113-41"></script>
 <script>
 /* Lab 08 — O site inteiro na linguagem do Lab 07 (13/11/2026, pedido do autor).
@@ -727,7 +729,8 @@ function wallBody(d) { // a bolinha do mapa em SVG (viewBox 0 0 40 40): cor = me
 const wallIcon = (d, size, cls) => `<svg class="wall ${cls || ""}" viewBox="0 0 40 40" width="${size}" height="${size}" stroke-width="1" aria-hidden="true">${wallBody(d)}</svg>`;
 const mechSample = m => ({ mechanism: m, circuit: m === "Incentivo Fiscal" ? "Monumental" : "Capilar", value: m === "Incentivo Fiscal" ? 150000 : m === "Fundo Municipal" ? 70000 : 30000 });
 const legendHTML = () => MECHS.map(m => `<span><i style="--c:${MECH[m]}"></i>${m}</span>`).join("") + `<span>tamanho = valor</span><span>contorno grosso = circuito monumental</span>`;
-$("#introLegend").innerHTML = legendHTML(); $("#fieldLegend").innerHTML = legendHTML(); $("#aboutLegend").innerHTML = legendHTML();
+const mapLegendHTML = () => MECHS.map(m => `<span><i style="--c:${MECH[m]}"></i>${m}</span>`).join(""); // rodada 18: no mapa a legenda são só as três cores; o tamanho da bolinha não é mais o valor
+$("#introLegend").innerHTML = mapLegendHTML(); $("#fieldLegend").innerHTML = mapLegendHTML(); $("#aboutLegend").innerHTML = legendHTML();
 $("#aboutWalls").innerHTML = DATA.filter(d => ["p05", "p09", "p17", "p11"].includes(d.id)).map(d => `<div style="text-align:center"><div>${wallIcon(d, 84)}</div><small style="font-size:9px;color:#777">${esc(Rizoma.shortTitle(d.title))}</small></div>`).join("");
 
 /* ---------- títulos: letreiros (js/letreiro.js) no lugar da tipografia em tensão e da marca viva do Lab 05 ---------- */
@@ -808,18 +811,20 @@ function sprayAt(x, y, mi, n, sigma, alpha, nevoa, f) { // x, y em px do palco; 
   // rodada 17 (pedido do autor, 19/11): o rastro fica CLARO, OPACO e FINO, para as sobreposições não virarem mancha escura.
   // Claro: só os tons leves da tinta (névoa e clara); o tom base entra em pouca quantidade onde muita tinta se acumula. Opaco: o
   // grão não é mais transparente, então dois rastros que se cruzam ficam lado a lado em vez de escurecer. Fino: jato mais estreito.
-  const c1 = 0.72 - 0.47 * f, c2 = c1 + 0.28 + 0.27 * f; // parte de névoa, depois de clara; o resto (até 20%) é o tom base
+  // rodada 18 (19/11, segundo pedido): mais claro ainda. O rastro usa só dois tons bem diluídos da tinta (18% e 30% sobre o papel);
+  // onde a tinta se acumula entra mais do segundo. Os tons claro, base, sombra e fundo ficam para a bolinha e para a linha.
+  const c1 = 0.85 - 0.35 * f; // parte de névoa; o resto é o tom leve
   for (let d = 0; d < n; d++) {
     const r = Math.sqrt(-2 * Math.log(1 - Math.random())) * sigma, a = Math.random() * 6.2832, q = Math.random();
     const px = (x + Math.cos(a) * r) * SS, py = (y + Math.sin(a) * r) * SS;
-    sctx.fillStyle = nevoa ? tons[4] : tons[q < c1 ? 4 : q < c2 ? 3 : 2];
+    sctx.fillStyle = nevoa || q < c1 ? tons[4] : tons[5];
     sctx.globalAlpha = Math.min(1, alpha);
     const g = Math.random() < 0.02 ? 2 + Math.random() * 1.2 : 0.8 + Math.random() * 0.8; // grão fino; gota rara
     if (g > 2) { sctx.beginPath(); sctx.arc(px, py, g / 2, 0, 6.2832); sctx.fill(); } else sctx.fillRect(px, py, g, g);
   }
   sctx.globalAlpha = 1;
 }
-SPRAY = INKS.map(c => ["funda", "sombra", "base", "clara"].map(n => `rgb(${tom(c, n).join(",")})`).concat(`rgb(${c.map((v, i) => Math.round(v * 0.32 + PAPEL[i] * 0.68)).join(",")})`)); // o quinto tom é a névoa: a tinta bem diluída no papel
+SPRAY = INKS.map(c => ["funda", "sombra", "base", "clara"].map(n => `rgb(${tom(c, n).join(",")})`).concat([0.18, 0.3].map(k => `rgb(${c.map((v, i) => Math.round(v * k + PAPEL[i] * (1 - k))).join(",")})`))); // quinto e sexto tons: a névoa (18% de tinta) e o tom leve (30%), só para o rastro
 const A = { x: null, y: null, h: null, home: null, target: null, type: null, mech: null, age: null, life: null };
 const pos = { x: new Float32Array(DATA.length), y: new Float32Array(DATA.length), on: new Uint8Array(DATA.length) }; // posição de tela (escala do rastro) de cada nó
 let sibSig = "";                                     // assinatura das linhas desenhadas: quando muda, os vizinhos do spray são refeitos
@@ -868,7 +873,7 @@ function updateSources() {
   const sig = sc.edges.map(e => e.key).join(";");
   if (sig !== sibSig) { sibSig = sig; sibs = DATA.map(() => []); for (const e of sc.edges) { const k = e.key.split("|"), a = +k[0], b = +k[1], ti = TYPES.indexOf(k[2]); if (!sibs[a] || !sibs[b] || ti < 0) continue; sibs[a].push({ j: b, t: ti }); sibs[b].push({ j: a, t: ti }); } }
   for (let i = 0; i < DATA.length; i++) { if (!pos.on[i]) continue; spawnPool.push(i); if (linkOf(i)) spawnPool.push(i, i); } // nós ligados recebem 3× mais agentes
-  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && !introOn) sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 45, 7, 1, false, 0.2); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
+  for (let i = 0; i < DATA.length; i++) { if (pos.on[i] && !wasOn[i] && !introOn) sprayAt(pos.x[i] * SCALE, pos.y[i] * SCALE, MIDX[i], 26, 6, 1, false, 0.1); wasOn[i] = pos.on[i]; } // o projeto aparece com um jato da tinta dele
 }
 function respawn(i) {
   if (!spawnPool.length) return false;
@@ -933,8 +938,7 @@ new p5(p => {
       if (mi >= 0) { // grão de spray no caminho do agente, em tons da tinta dele
         const mao = lure.on && A.home[i] === lure.home;
         const acc = Math.min(1, px[k + 3] / 200); // quanta tinta já passou por aqui: é o que deixa a cor mais forte
-        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, 2, mao ? 2.2 : 1.25, 1, false, acc);
-        else if (((frameN + i) & 7) === 0) sprayAt(x * SCALE, y * SCALE, mi, 1, 1.2, 1, true, acc);
+        if (tinta || mao) sprayAt(x * SCALE, y * SCALE, mi, 2, mao ? 2.2 : 1.25, 1, false, acc); // rodada 18: projeto sem ligação não solta mais névoa; o rastro só existe onde há linha ou onde a mão passa
       }
       A.x[i] = x; A.y[i] = y; A.h[i] = h; A.age[i]++;
     }
@@ -970,7 +974,7 @@ function uiMargin() {
 const chips = {};
 function mountField() {
   R = Rizoma.mount({
-    container: "#rizomaStage", paper: true, depth: true, intro: true, transparent: true, reduced, panelWidth: 380, drift: 0.5, lineShape: "anel", nodeStyle: "grapixo", mechColors: mechMap(), edgeColor: "natureza", lineExact: true, lineInk: { mecanismo: true }, lineDash: { edital: 3, escala: 2 }, lineWeights: { curadoria: 1.7 }, edgeMix: "optica", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
+    container: "#rizomaStage", paper: true, depth: true, intro: true, transparent: true, reduced, panelWidth: 380, drift: 0.5, lineShape: "anel", lineWobble: 0, evenOutline: true, nodeSize: { min: 13, max: 19, breathe: 0.3, period: [7, 13] }, nodeStyle: "bolinha", mechColors: mechMap(), edgeColor: "natureza", lineExact: true, lineInk: { mecanismo: true }, lineDash: { edital: 3, escala: 2 }, lineWeights: { curadoria: 1.7 }, edgeMix: "optica", lineWeight: 0.7, spread: 1.45, focusZoom: true, spray: false,
     margin: uiMargin, lineCycle: 2.2,
     treeTop: () => uiMargin().t, treeBottom: () => uiMargin().b, // a árvore (decalque) respeita as mesmas faixas da interface
     onChange: sync, onOpen: showPreview, onHover: onHover
@@ -1950,7 +1954,7 @@ const DEMO = (() => {
   const cv = $("#demo"), g = cv.getContext("2d"), W = 640, H = 360, DUR = 4800, dpr = Math.min(2, window.devicePixelRatio || 1);
   cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0);
   const caps = [touch ? "1. Os pontos que piscam são projetos escondidos. Toque num deles para revelar." : "1. Os pontos que piscam são projetos escondidos. Clique num deles para revelar.",
-    "2. A cor diz de onde veio o dinheiro. O tamanho diz quanto dinheiro foi.",
+    "2. A cor diz de onde veio o dinheiro. O tamanho muda o tempo todo: no mapa nenhum projeto é maior por regra.",
     "3. Ligue os projetos por ano, mecanismo ou edital. O spray corre entre os que têm aquilo em comum.",
     touch ? "4. Toque numa bolinha para abrir o projeto e ler a explicação." : "4. Clique numa bolinha para abrir o projeto e ler a explicação.",
     "5. No fim, baixe o mapa que a sua visita desenhou."];
@@ -1986,7 +1990,7 @@ const DEMO = (() => {
       cursor((c2 > 0 ? lerp(N[0][0], N[2][0], c2) : lerp(560, N[0][0], c1)) + 3, (c2 > 0 ? lerp(N[0][1], N[2][1], c2) : lerp(320, N[0][1], c1)) + 3, clk(t, .4) || clk(t, .8)); }
     if (scene === 1) { N.forEach((n, i) => dot(n, true, i === 0 ? 1 + .1 * Math.sin(t * 30) * seg(t, .62, .7) * (1 - seg(t, .9, 1)) : 1));
       if (t > .08) label("Incentivo Fiscal", N[2][0] + 24, N[2][1] - 4); if (t > .25) label("Fundo Municipal", N[1][0] + 18, N[1][1] - 6); if (t > .42) label("Descentra", N[3][0] + 16, N[3][1] + 4);
-      if (t > .62) { label("maior: mais dinheiro", N[0][0], N[0][1] - 32, "center"); label("menor: menos", N[5][0] - 10, N[5][1] + 28, "center"); } }
+      } // rodada 18: a cena já não rotula o maior e o menor, porque no mapa o tamanho deixou de ser o valor
     if (scene === 2) { g.font = "700 9px Arial"; g.fillStyle = "#777"; g.fillText("LIGAR OS PROJETOS POR", 20, 14);
       let x = 20; x += btn("Ano", x, 22, t > .3) + 6; x += btn("Mecanismo", x, 22, false) + 6; btn("Edital", x, 22, false);
       links(seg(t, .34, .88)); N.forEach(n => dot(n, true));

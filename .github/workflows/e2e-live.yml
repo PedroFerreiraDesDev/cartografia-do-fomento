@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'prototipo-anterior.html'
       - 'css/**'
       - 'js/**'
       - '.github/workflows/e2e-live.yml'
@@ -33,6 +34,9 @@ jobs:
           import { chromium, devices } from 'playwright';
 
           const site=process.env.SITE;
+          // Since 2026-11-22 the site root is the final prototype (built from Lab 08). The previous site lives on at
+          // prototipo-anterior.html and keeps its full flow below; the final prototype has its own smoke test (finalFlow).
+          const old=site+'prototipo-anterior.html';
           const browser=await chromium.launch({headless:true});
           const report=[];
 
@@ -61,7 +65,7 @@ jobs:
             const context=await browser.newContext(contextOptions);
             const page=await context.newPage();
             await collect(page,name,async()=>{
-              await page.goto(site+'?e2e='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              await page.goto(old+'?e2e='+Date.now(),{waitUntil:'networkidle',timeout:60000});
               await page.evaluate(()=>localStorage.clear());
               await page.reload({waitUntil:'networkidle'});
               await enter(page,'start');
@@ -156,11 +160,52 @@ jobs:
             await context.close();
           }
 
+          async function finalFlow(name,contextOptions){
+            const context=await browser.newContext(contextOptions);
+            const page=await context.newPage();
+            await collect(page,'final-'+name,async()=>{
+              await page.goto(site+'?final='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              if(await page.locator('.labsnav').count()!==0) throw new Error('final prototype must not show the labs button');
+              await page.locator('#enterBtn').click({timeout:10000});
+              await page.waitForTimeout(300);
+              if(!(await page.locator('#intro').evaluate(el=>el.hidden))) throw new Error('final: intro did not hide');
+              if(!(await page.evaluate(()=>!!window.CartografiaRizoma))) throw new Error('final: engine did not initialize');
+              if(await page.locator('.chip[data-t]').count()!==6) throw new Error('final: expected 6 line chips');
+
+              // Reveal all -> link by year -> pairs exist.
+              await page.evaluate(()=>{CartografiaRizoma.revealAll();CartografiaRizoma.tick(3);CartografiaRizoma.setLine('ano',true);CartografiaRizoma.tick(3)});
+              await page.waitForTimeout(150);
+              const st=await page.evaluate(()=>CartografiaRizoma.state());
+              if(st.revealed!==20||st.lines<1) throw new Error('final: linking by year created no relations');
+
+              // Every screen opens.
+              for(const v of ['indicators','editais','research','about']){
+                await page.locator('[data-nav="'+v+'"]').click(); await page.waitForTimeout(150);
+                if(!(await page.locator('#'+v).isVisible())) throw new Error('final: '+v+' did not open');
+              }
+
+              // Indicators: one direction only, drawings present, the 1.3% switch works.
+              await page.locator('[data-nav="indicators"]').click(); await page.waitForTimeout(300);
+              if(await page.locator('#muroChart canvas').count()<1) throw new Error('final: step 1 drawing missing');
+              if(await page.locator('[data-yview],[data-vview],[data-rview],[data-lview]').count()!==0) throw new Error('final: alternative chart switches should be gone');
+              await page.evaluate(()=>document.querySelector('[data-pz="graf"]').click()); await page.waitForTimeout(150);
+              if((await page.locator('#pz').getAttribute('data-state'))!=='graf') throw new Error('final: 1.3% switch failed');
+
+              await page.locator('[data-nav="discover"]').click(); await page.waitForTimeout(150);
+              if(!(await page.locator('#discover').isVisible())) throw new Error('final: discover did not open');
+
+              // No horizontal overflow.
+              const dims=await page.evaluate(()=>({iw:innerWidth,scroll:document.documentElement.scrollWidth}));
+              if(dims.scroll>dims.iw+2) throw new Error('final: horizontal overflow '+dims.scroll+' > '+dims.iw);
+            });
+            await context.close();
+          }
+
           async function mobileTouch(){
             const context=await browser.newContext({...devices['Pixel 7'],locale:'pt-BR'});
             const page=await context.newPage();
             await collect(page,'mobile-touch',async()=>{
-              await page.goto(site+'?touch='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              await page.goto(old+'?touch='+Date.now(),{waitUntil:'networkidle',timeout:60000});
               await page.evaluate(()=>localStorage.clear()); await page.reload({waitUntil:'networkidle'}); await enter(page,'skip');
               await page.evaluate(()=>{CartografiaRizoma.revealAll();CartografiaRizoma.tick(5)});
               const info=await page.evaluate(()=>{
@@ -182,7 +227,7 @@ jobs:
             const context=await browser.newContext({...devices['Pixel 7'],locale:'pt-BR'});
             const page=await context.newPage();
             await collect(page,'intro-door',async()=>{
-              await page.goto(site+'?door='+Date.now(),{waitUntil:'networkidle',timeout:60000});
+              await page.goto(old+'?door='+Date.now(),{waitUntil:'networkidle',timeout:60000});
               await page.locator('[data-door="indicators"]').click();
               await page.waitForTimeout(140);
               if(!(await page.locator('#intro').evaluate(el=>el.classList.contains('hidden')))) throw new Error('door did not close intro');
@@ -217,6 +262,8 @@ jobs:
             await context.close();
           }
 
+          await finalFlow('mobile',{...devices['Pixel 7'],locale:'pt-BR'});
+          await finalFlow('desktop',{viewport:{width:1440,height:900},locale:'pt-BR'});
           await mainFlow('mobile',{...devices['Pixel 7'],locale:'pt-BR'});
           await mainFlow('desktop',{viewport:{width:1440,height:900},locale:'pt-BR'});
           await mobileTouch();

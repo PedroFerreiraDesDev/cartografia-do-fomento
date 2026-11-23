@@ -954,6 +954,78 @@ Conferido no navegador em 1280 px, com os vinte projetos e as ligações por mec
 
 ---
 
+## 3R. 22/11/2026: o Lab 08 vira o protótipo final
+
+### 3R.1 O pedido
+
+O autor decidiu que o Lab 08 é o protótipo final. Pediu: manter tudo do Lab 08; os labs continuam com o botão para passar de um a outro, mas o protótipo final não tem esse botão; no Descobrir, o mouse vira um spray, com rastro bem sutil; nos Indicadores, manter a história e tirar gráficos, numa direção só de rolagem, sem misturar horizontal com vertical; e ajustes por passo: só a régua no passo 6, só a fita no passo 7, só a teia no passo 8, e a barra do 1,3% mais bem ajustada e interativa.
+
+### 3R.2 Os arquivos
+
+| Arquivo | O que é agora |
+|---|---|
+| `index.html` | O protótipo final. Nasceu do Lab 08, com as mudanças desta seção. Não carrega `js/labs-nav.js` |
+| `lab-08-site.html` | O Lab 08, guardado como estava. Continua com o botão de labs |
+| `prototipo-anterior.html` | O site que ocupava `index.html` até esta data. Nada foi apagado |
+| `js/labs-nav.js` | A lista ganhou "Protótipo final" e "Protótipo anterior" |
+
+O protótipo final e o Lab 08 são dois arquivos separados de propósito: o lab é o registro do processo, e as próximas mudanças entram só no protótipo final. O roteiro que gerou o `index.html` a partir do Lab 08 fez as trocas uma a uma e parava se alguma marca não fosse encontrada.
+
+A página Sobre do protótipo final ganhou um bloco "Os labs", com um link de texto para o Lab 08. É por ali que se chega aos labs, sem botão fixo na tela.
+
+### 3R.3 Descobrir: o mouse é um spray
+
+- Sobre o mapa, o ponteiro some e dá lugar a um bico de lata: um anel com um ponto no meio. Sobre um projeto, o anel cresce.
+- Por onde o bico passa fica um rastro de grãos bem leve, que seca em poucos segundos.
+- Longe dos projetos o rastro é cinza claro. Sobre um projeto, leva a tinta do mecanismo dele, nos mesmos dois tons diluídos da seção 3Q.
+- O grão cai na mesma camada de tinta do mapa. Por isso seca junto com o resto e aparece no mapa baixado.
+- Fora do mapa, sobre botões e textos, o ponteiro comum volta.
+- Em tela de toque não há ponteiro, e nada muda. Com movimento reduzido o bico aparece, mas não solta tinta.
+
+### 3R.4 Indicadores: uma direção só
+
+O autor prefere a horizontal, mas aceitou a vertical se coubesse melhor. Ficou na **vertical**, por medida: cada passo tem título, texto, resposta, explicação e desenho, e passa da altura da tela. A peneira sozinha tem mais de 600 px de altura. Na horizontal, cada passo teria de rolar para baixo por dentro, e voltaria a mistura de direções que ele pediu para tirar. No celular a diferença é maior ainda.
+
+Da leitura horizontal da seção 3O ficaram o trilho numerado no alto, a frase de ponte como botão no fim de cada passo e o botão "Começar a leitura". Saíram as setas laterais e a faixa que andava para o lado.
+
+### 3R.5 Um desenho por passo
+
+| Passo | Fica | Sai |
+|---|---|---|
+| 5. Tempo | Colunas por ano | Antes e depois de 2022, mancha, cordas |
+| 6. Valor | Régua | Blocos, células |
+| 7. Repartição | Fita do dinheiro | Curva de Lorenz |
+| 8. Ligações | Teia | Tabela |
+
+Os passos 6, 7 e 8 foram pedidos pelo autor. O passo 5 seguiu a mesma regra por coerência, e é uma decisão minha que ele pode desfazer. Os botões "ver como" saíram da tela. Os desenhos retirados continuam no Lab 08.
+
+As explicações do botão "?" foram reescritas para falar só do desenho que ficou.
+
+### 3R.6 Passo 4: a barra que troca entre o total e o grafite
+
+Antes havia um número grande, 1,3%, e uma barra parada em que o grafite era um risco quase invisível.
+
+Agora a barra tem dois estados, e o número acompanha:
+
+- **Todo o dinheiro dos editais:** a barra inteira é R$ 77,28 milhões, o número mostra 100% e o grafite é uma faixa preta fina no começo.
+- **Só o grafite:** a faixa preta cresce até ocupar a barra inteira, ampliada 74 vezes, e mostra os 16 projetos que a formam, um pedaço por projeto, na tinta do mecanismo. O número desce de 100% até 1,3%.
+- Troca-se pelos dois botões ou tocando na barra. Ao chegar no passo, a barra amplia uma vez sozinha.
+- Passar a mão num pedaço acende o projeto nos outros gráficos, como no resto da tela.
+- A nota diz o que fica fora: os 4 projetos do LMIC 2023 - IF, porque esse edital não fixa valor.
+
+É visão geral primeiro e ampliação depois (SHNEIDERMAN, 1996), numa barra só. Tudo é calculado na página.
+
+### 3R.7 O teste automático
+
+O teste do site conferia a página inicial antiga. Ele foi dividido:
+
+- O fluxo completo antigo agora confere `prototipo-anterior.html`.
+- Um fluxo novo confere o protótipo final no celular e no computador: sem botão de labs, entrada, motor do mapa, ligação por ano, as cinco telas, o desenho do passo 1, a ausência dos botões "ver como", a troca do 1,3% e a falta de rolagem lateral na página.
+
+Conferido no navegador em 1280 px e 375 px: tudo o que o fluxo novo confere, mais o bico de spray com o rastro e os dois estados da barra do passo 4, sem erros no console. O protótipo anterior abre no endereço novo, com o botão de labs listando os dois protótipos. Não foi testado num Android real.
+
+---
+
 ## 4. O que fica para depois
 
 - **Escolher o gráfico do passo 8** entre as propostas A, B e C da seção 3M.2, e mandar as outras referências que o autor disse que enviaria.

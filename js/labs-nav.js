@@ -5,7 +5,8 @@
   const here = document.currentScript && document.currentScript.src ? new URL(".", document.currentScript.src) : new URL("js/", location.href);
   const root = new URL("..", here); // raiz do projeto
   const LABS = [
-    ["index.html", "Protótipo", "o site em uso"],
+    ["index.html", "Protótipo final", "o site, sem o botão de labs"], // desde 22/11/2026 o protótipo final é o Lab 08 ajustado; ele não carrega este seletor
+    ["prototipo-anterior.html", "Protótipo anterior", "o site até novembro de 2026"],
     ["lab-identidade.html", "Lab 01", "identidade · tipografia em tensão"],
     ["lab-outras-cartografias.html", "Lab 02", "outras cartografias"],
     ["lab-03-mescla.html", "Lab 03", "mescla"],

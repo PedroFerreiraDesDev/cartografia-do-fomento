@@ -4,11 +4,13 @@ Esta pasta guarda uma versão editável do protótipo do TCC **Cartografia do Fo
 
 ## Arquivos
 
-- `index.html` — estrutura principal da interface.
-- `css/style.css` — direção visual, responsividade e animações.
-- `js/data.js` — base dos projetos usada pelo protótipo.
+- `index.html` — **o protótipo final** (desde 22/11/2026). É o Lab 08 ajustado, num arquivo só, com CSS e script próprios. Não tem o botão de labs. Detalhes na seção 3R de `rizoma/PROPOSTAS-LAB07.md`.
+- `prototipo-anterior.html` — o site que estava em `index.html` até 22/11/2026. Usa `css/style.css` e `js/app.js`.
+- `lab-08-site.html` — o Lab 08, guardado como estava antes de virar o protótipo final. Os labs têm o botão lateral para passar de um a outro.
+- `css/style.css` — direção visual, responsividade e animações do protótipo anterior.
+- `js/data.js` — base dos projetos usada por todos.
 - `js/rizoma.js` — motor do campo rizomático em p5.js (modo instância), compartilhado com `rizoma/prototipo-p5/`.
-- `js/app.js` — navegação, ligação com o rizoma, páginas de projeto, comentários e indicadores.
+- `js/app.js` — navegação, ligação com o rizoma, páginas de projeto, comentários e indicadores do protótipo anterior.
 - `assets/README.txt` — orientação para inserir fotografias e outros arquivos reais.
 
 ## Como testar

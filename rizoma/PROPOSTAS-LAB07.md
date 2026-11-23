@@ -1091,6 +1091,36 @@ Conferido no navegador em 375 px: o botão aparece ao selecionar um ano, fica a 
 
 ---
 
+## 3U. 22/11/2026: bolinhas do passo 3 no celular; passo 4 com duas leituras
+
+Arquivo: `index.html`, tela Indicadores.
+
+### 3U.1 Passo 3: bolinhas cortadas na borda
+
+O autor relatou que, no celular, havia círculos cortados por ficarem muito na borda. Conferido em 375 px: a bolinha do LMIC 2017 - IF passava cerca de 10 px da borda esquerda, e a do LMIC 2024 - Fundo, cerca de 5 px da direita. O arranjo de tela estreita tinha margens pequenas demais para o tamanho das bolinhas.
+
+Correção, só no arranjo de tela estreita:
+
+- As margens laterais cresceram (de 44 para 62 à esquerda, de 34 para 48 à direita).
+- A bolinha maior encolheu um pouco (raio máximo de 34 para 30). A área continua proporcional ao valor do edital.
+- Uma trava garante que a bolinha inteira fique dentro do desenho, em qualquer tamanho de tela.
+- O rótulo também não sai pela borda, e um rótulo não cobre mais o outro: quando dois se encontram, o segundo troca de lado ou desce. Antes "2021 Fundo" ficava atrás de "Desc. 2021".
+
+No computador o desenho fica igual, só ganha a regra dos rótulos.
+
+### 3U.2 Passo 4: o grafite e todos os outros
+
+O autor pediu que o passo 4 mostre só duas leituras, e que "todo o resto" passe a se chamar "todos os outros".
+
+- O estado "A fita inteira" saiu. Ficam dois botões: "O grafite" e "Todos os outros".
+- O passo já abre em "O grafite", com 1,3% e a faixa ampliada embaixo. Não há mais a troca automática ao chegar.
+- "Todos os outros" mostra 98,7%, R$ 76,24 milhões.
+- A fita continua a mesma: de 0% a 100%, com a faixa do grafite no tamanho certo.
+
+Conferido no navegador em 375 px e 1280 px: todas as bolinhas inteiras dentro do desenho, rótulos sem sobreposição, os dois botões do passo 4 com os números certos, sem erros de script. Não foi testado num Android real.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir se a página Sobre deve dizer "orientação" para as duas professoras, como está, ou "orientadora e coorientadora", como na folha de rosto do TCC.

@@ -452,7 +452,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
       <section class="chart cap" data-chart="pedaco" data-cap="O pedaço do grafite"><div class="kicker"><i></i>PASSO 4 DE 9 · O PEDAÇO DO GRAFITE</div><h2>O grafite é um pedaço pequeno</h2>
         <p class="lead">A fita é todo o dinheiro que os editais ofereceram, de 0% a 100%. A faixa preta no começo dela é o que foi aprovado para os projetos de grafite deste trabalho, no tamanho certo. Toque nas partes da fita para ver quanto cada uma vale.</p>
         <div class="pz" id="pz" data-state="total">
-          <div class="metric" role="group" aria-label="O que a barra mostra"><span>MOSTRAR</span><button type="button" data-pz="total" class="active">A fita inteira</button><button type="button" data-pz="graf">O grafite</button><button type="button" data-pz="resto">Todo o resto</button></div>
+          <div class="metric" role="group" aria-label="O que a barra mostra"><span>MOSTRAR</span><button type="button" data-pz="graf" class="active">O grafite</button><button type="button" data-pz="resto">Todos os outros</button></div>
           <div class="bignum"><b id="pedacoNum"></b><span id="pedacoLab"></span></div>
           <div id="pedacoChart"></div>
           <p class="pznota" id="pzNota"></p>
@@ -1548,9 +1548,9 @@ mountSketch("peneira", "peneiraChart", (bw, sm) => { const seen = new Set(), row
     p.fill(119, 119, 119, a); p.text(r.d.junto ? milhoes(r.keys.reduce((s, e) => s + (EDITAL_VALOR[e].total || 0), 0)) + " nas duas modalidades" : r.d.total ? milhoes(r.d.total) + " no edital" : "o edital não fixa valor", x0, yb + 13); }); },
 (L, mx, my) => { const r = L.rows.find(r => mx >= r.x && mx <= r.x + L.cw && my >= r.y && my <= r.y + L.ch); return r ? r.keys[0] : null; });
 /* passo 3: bolinhas. x = ano, y = parte dos inscritos aprovada, área = valor do edital; dentro, os projetos do corpus */
-mountSketch("bolhas", "bolhasChart", (bw, sm) => { const H = sm ? 470 : 500, Lm = sm ? 44 : 104, Rm = sm ? 34 : 70, T = 24, Bm = 96, ymax = 0.35, rmax = sm ? 34 : 54, vmax = Math.max(...ED8.map(d => d.total || d.est || 0), 1), f = sm ? .62 : 1;
+mountSketch("bolhas", "bolhasChart", (bw, sm) => { const H = sm ? 470 : 500, Lm = sm ? 62 : 104, Rm = sm ? 48 : 70, T = 24, Bm = 96, ymax = 0.35, rmax = sm ? 30 : 54, /* rodada 23: no celular as margens cresceram e a bolinha maior encolheu, para nenhuma ficar cortada na borda */ vmax = Math.max(...ED8.map(d => d.total || d.est || 0), 1), f = sm ? .62 : 1;
   const X = y => Lm + (y - 2017) / 7 * (bw - Lm - Rm), Y = r => T + (1 - r / ymax) * (H - T - Bm), rad = v => rmax * Math.sqrt(v / vmax);
-  return { bw, sm, H, Lm, Rm, T, Bm, X, Y, rad, nodes: ED8.map(d => ({ d, x: X(d.year) + f * (d.junto ? (d.mi === 0 ? -40 : 34) : d.mi === 1 ? 20 : d.mi === 2 ? -32 : 0), y: d.rate != null ? Y(d.rate) : H - 46, r: rad(d.total || d.est || 0), dash: !d.total || d.junto || d.rate == null })) }; },
+  return { bw, sm, H, Lm, Rm, T, Bm, X, Y, rad, nodes: ED8.map(d => ({ d, x: X(d.year) + f * (d.junto ? (d.mi === 0 ? -40 : 34) : d.mi === 1 ? 20 : d.mi === 2 ? -32 : 0), y: d.rate != null ? Y(d.rate) : H - 46, r: rad(d.total || d.est || 0), dash: !d.total || d.junto || d.rate == null })).map(n => { n.x = Math.max(n.r + 5, Math.min(bw - n.r - 5, n.x)); n.y = Math.max(n.r + 5, n.y); return n; }) }; }, // trava: a bolinha inteira fica dentro do desenho
 (p, L, hot, on, t) => { p.textStyle(p.NORMAL); p.textSize(10);
   [0.1, 0.2, 0.3].forEach(v => { p.stroke(212, 209, 200); p.strokeWeight(1); p.line(L.Lm, L.Y(v), L.bw - L.Rm, L.Y(v)); p.noStroke(); p.fill(119); p.textAlign(p.RIGHT, p.CENTER); p.text(Math.round(v * 100) + "%", L.Lm - 7, L.Y(v)); });
   p.noStroke(); p.fill(119); p.textAlign(p.LEFT, p.BASELINE); p.text("parte dos inscritos que foi aprovada", L.Lm, 14);
@@ -1560,8 +1560,11 @@ mountSketch("bolhas", "bolhasChart", (bw, sm) => { const H = sm ? 470 : 500, Lm 
     if (!n.dash) { p.noStroke(); fl(p, mixInk(ink, .45), on(n.d) ? 210 : 40); p.circle(n.x + r * .16, n.y + r * .2, r * 2); }
     sk(p, PRETO, a); p.strokeWeight(hot === n.d.e ? 2.8 : 1.4); if (n.dash) p.drawingContext.setLineDash([4, 4]); if (n.d.total) fl(p, mixInk(ink, .2), a); else p.noFill(); p.circle(n.x, n.y, r * 2); p.drawingContext.setLineDash([]);
     if (t < 1) return; const rs = n.d.ps.map(pr => L.rad(pr.value)), ws = rs.reduce((s, x) => s + x * 2 + 2, -2); let px = n.x - ws / 2; n.d.ps.forEach((pr, i) => { sk(p, PRETO, a); p.strokeWeight(1); fl(p, ink, a); p.circle(px + rs[i], n.y, Math.max(3, rs[i] * 2)); px += rs[i] * 2 + 2; }); });
-  if (t < 1) return; L.nodes.forEach(n => { const a = on(n.d) ? 255 : 70, tx = n.d.e.replace("LMIC ", "").replace(/ - /, " ").replace("Descentra", L.sm ? "Desc." : "Descentra"); p.textAlign(p.CENTER, p.BASELINE); p.textStyle(p.BOLD); p.textSize(L.sm ? 8.5 : 9.5); const ty = n.r < 20 ? n.y + n.r + 13 : n.y - n.r - 5, tw = p.textWidth(tx);
-    p.noStroke(); p.fill(247, 246, 241, 215); p.rect(n.x - tw / 2 - 3, ty - 10, tw + 6, 13); fl(p, PRETO, a); p.text(tx, n.x, ty); p.textStyle(p.NORMAL); }); },
+  if (t < 1) return; const postos = []; L.nodes.forEach(n => { const a = on(n.d) ? 255 : 70, tx = n.d.e.replace("LMIC ", "").replace(/ - /, " ").replace("Descentra", L.sm ? "Desc." : "Descentra"); p.textAlign(p.CENTER, p.BASELINE); p.textStyle(p.BOLD); p.textSize(L.sm ? 8.5 : 9.5); let ty = n.r < 20 ? n.y + n.r + 13 : n.y - n.r - 5; const tw = p.textWidth(tx);
+    const lx = Math.max(tw / 2 + 5, Math.min(L.bw - tw / 2 - 5, n.x)); // o rótulo também não sai pela borda
+    const bate = () => postos.some(q => Math.abs(q[0] - lx) < (q[2] + tw) / 2 + 3 && Math.abs(q[1] - ty) < 13); // um rótulo não cobre o outro: troca de lado e, se preciso, desce
+    if (bate()) ty = ty > n.y ? n.y - n.r - 5 : n.y + n.r + 13; for (let g = 0; bate() && g < 4; g++) ty += 13; postos.push([lx, ty, tw]);
+    p.noStroke(); p.fill(247, 246, 241, 215); p.rect(lx - tw / 2 - 3, ty - 10, tw + 6, 13); fl(p, PRETO, a); p.text(tx, lx, ty); p.textStyle(p.NORMAL); }); },
 (L, mx, my) => { const hit = L.nodes.filter(n => Math.hypot(mx - n.x, my - n.y) <= Math.max(14, n.r)).sort((a, b) => a.r - b.r)[0]; return hit ? hit.d.e : null; });
 /* ---------- rodada 12: passo 8, a teia dos dois circuitos ----------
    Pedido do autor: o gráfico das ligações não se entendia nem atraía, e o título falava em dois grupos enquanto a tabela mostrava
@@ -1683,7 +1686,7 @@ teiaUi();
    barra inteira e mostra os projetos que a formam, um pedaço por projeto, na tinta do mecanismo. O número grande acompanha:
    conta de 100% até a parte do grafite e volta. Tocar na barra troca de estado. É a mesma ideia de dar a visão geral e depois
    ampliar (Shneiderman, 1996), aplicada a uma barra só. */
-const PZ = { st: "total", built: false, auto: false, v: 1, run: 0, share: 0, soma: 0, corp: 0, nota: "" };
+const PZ = { st: "graf", built: false, auto: true, v: null, run: 0, share: 0, soma: 0, corp: 0, nota: "" }; // rodada 23: o passo mostra só duas leituras, o grafite e todos os outros; a fita inteira deixou de ser um estado
 const pzPct = v => { const x = v * 100; return (x >= 99.95 ? "100" : x.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })) + "%"; };
 /* rodada 20 (22/11/2026): o autor apontou que a barra anterior errava ao crescer até ocupar tudo. Agora é uma FITA DE PORCENTAGEM:
    vai de 0% a 100%, com régua, e a faixa do grafite tem sempre o tamanho certo. A ampliação não mexe na fita: aparece embaixo,
@@ -1693,17 +1696,17 @@ function renderPedaco(share, soma, corp, com) { const box = $("#pedacoChart"); i
   PZ.nota = fora > 0 ? `Ficam fora desta conta ${fora} projetos do ${sem.join(", ")}, porque esse edital não fixa valor.` : "";
   if (!PZ.built) { PZ.built = true; const w = (share * 100).toFixed(3);
     box.innerHTML = `<div class="pzrule" aria-hidden="true">${[0, 25, 50, 75, 100].map(v => `<span style="left:${v}%">${v}%</span>`).join("")}</div>
-<div class="pzbar" id="pzBar"><button type="button" class="pzg" data-pzp="graf" style="width:${w}%" aria-label="A parte do grafite deste trabalho"></button><button type="button" class="pzr" data-pzp="resto" aria-label="Todo o resto do dinheiro dos editais"></button></div>
+<div class="pzbar" id="pzBar"><button type="button" class="pzg" data-pzp="graf" style="width:${w}%" aria-label="A parte do grafite deste trabalho"></button><button type="button" class="pzr" data-pzp="resto" aria-label="Todos os outros: o resto do dinheiro dos editais"></button></div>
 <div class="pzzoom" id="pzZoom"><div class="pzfun" style="clip-path:polygon(0 0,${w}% 0,100% 100%,0 100%)"></div><div class="pzin">${ps.map(p => `<button type="button" class="pzseg" style="flex:${Math.round(p.value)} 1 0;--c:${MECH[p.mechanism]}" data-ct="project" data-ck="${p.id}" data-label="${esc(Rizoma.shortTitle(p.title))}" title="${esc(p.title)} · ${money(p.value)}" aria-label="${esc(p.title)}, ${money(p.value)}"></button>`).join("")}</div><div class="pzleg"><span>a faixa do grafite, ampliada ${Math.round(1 / Math.max(share, 0.0001))} vezes</span><span>cada pedaço é um projeto</span></div></div>`;
-    $$("#pedacoChart [data-pzp]").forEach(b => b.onclick = () => pzSet(PZ.st === b.dataset.pzp ? "total" : b.dataset.pzp));
+    $$("#pedacoChart [data-pzp]").forEach(b => b.onclick = () => pzSet(b.dataset.pzp));
     $$("[data-pz]").forEach(b => b.onclick = () => pzSet(b.dataset.pz)); bindCharts(); }
   pzPaint(false); }
 function pzSet(st) { PZ.auto = true; if (st === PZ.st) return; PZ.st = st; pzPaint(true); }
 function pzAuto() { if (PZ.auto || reduced || !PZ.built) return; PZ.auto = true; setTimeout(() => { if (PZ.st === "total" && page === "indicators") { PZ.st = "graf"; pzPaint(true); } }, 1500); } // ao chegar no passo, a fita mostra uma vez sozinha a parte do grafite
 function pzPaint(anim) { const st = PZ.st, box = $("#pz"), num = $("#pedacoNum"); if (!box || !PZ.built) return; box.dataset.state = st; $$("[data-pz]").forEach(b => b.classList.toggle("active", b.dataset.pz === st));
-  $("#pedacoLab").textContent = st === "graf" ? `${milhoes(PZ.corp)}: os projetos de grafite deste trabalho` : st === "resto" ? `${milhoes(PZ.soma - PZ.corp)}: todo o resto` : `${milhoes(PZ.soma)}: todo o dinheiro dos editais`;
+  $("#pedacoLab").textContent = st === "graf" ? `${milhoes(PZ.corp)}: os projetos de grafite deste trabalho` : st === "resto" ? `${milhoes(PZ.soma - PZ.corp)}: todos os outros` : `${milhoes(PZ.soma)}: todo o dinheiro dos editais`;
   $("#pzNota").textContent = st === "graf" ? `A faixa preta, no começo da fita, é o grafite. Ela está no tamanho certo: ${pzPct(PZ.share)} da fita. Embaixo, a mesma faixa ampliada, com um pedaço para cada projeto. ${PZ.nota}`.trim()
-    : st === "resto" ? "A parte clara é todo o resto do dinheiro dos editais: música, teatro, dança e as outras áreas da cultura, mais os projetos de arte urbana que ficaram fora deste recorte."
+    : st === "resto" ? "A parte clara são todos os outros: os projetos de música, teatro, dança e das outras áreas da cultura, mais os de arte urbana que ficaram fora deste recorte."
     : "A fita inteira é todo o dinheiro que os editais ofereceram. Toque em “O grafite” para achar a parte dele.";
   const alvo = st === "graf" ? PZ.share : st === "resto" ? 1 - PZ.share : 1, de = PZ.v, id = ++PZ.run, fim = () => { PZ.v = alvo; num.textContent = pzPct(alvo); };
   if (!anim || reduced) { fim(); return; }

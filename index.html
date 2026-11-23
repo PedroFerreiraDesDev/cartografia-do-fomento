@@ -270,15 +270,27 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .hstrip .chart>p.ponte{cursor:pointer}.hstrip .chart>p.ponte:hover{text-decoration:underline;text-underline-offset:4px}
 .prog .dots{position:relative}.prog .dots::before{content:"";position:absolute;left:8px;right:8px;top:50%;border-top:1.5px solid var(--ink);z-index:0}.prog .dots button{position:relative;z-index:1}
 /* passo 4: a barra que troca entre todo o dinheiro e a parte do grafite */
-.pz{margin:6px 0 14px}.pz .bignum span{max-width:300px}
-.pzbar{position:relative;height:58px;border:1.5px solid var(--ink);background:#fff;cursor:pointer;overflow:hidden}
-.pzin{position:absolute;left:0;top:0;bottom:0;display:flex;min-width:5px;background:var(--ink);transition:width .95s cubic-bezier(.2,.7,.2,1)}
-.pzseg{flex:1 1 0;min-width:0;border:0;border-right:1px solid #fff;padding:0;background:var(--c);opacity:0;transition:opacity .45s ease .5s;cursor:pointer}.pzseg:last-child{border-right:0}
-.pz[data-state=graf] .pzseg{opacity:1}.pz[data-state=total] .pzseg{pointer-events:none;transition-delay:0s}
-.pz[data-state=graf] .pzseg:hover,.pzseg.on{box-shadow:inset 0 0 0 2.5px var(--ink)}.pz[data-state=graf] .pzseg.dim{opacity:.3}
+.pz{margin:6px 0 14px}.pz .bignum span{max-width:340px}
+.pzrule{position:relative;height:21px;font-size:9.5px;color:#777}.pzrule span{position:absolute;top:0;transform:translateX(-50%)}.pzrule span::before{content:"";position:absolute;left:50%;top:14px;height:6px;border-left:1px solid #999}
+.pzrule span:first-child{transform:none}.pzrule span:first-child::before{left:0}.pzrule span:last-child{transform:translateX(-100%)}.pzrule span:last-child::before{left:100%}
+.pzbar{display:flex;height:54px;border:1.5px solid var(--ink);background:#fff}.pzbar button{border:0;padding:0;height:100%;cursor:pointer;transition:background-color .35s ease,opacity .35s ease}
+.pzg{flex:none;min-width:3px;background:var(--ink)}.pzr{flex:1;background:repeating-linear-gradient(135deg,#fff 0 7px,#efede6 7px 8px)}
+.pz[data-state=resto] .pzr{background:#d6d3c8}.pz[data-state=resto] .pzg{opacity:.3}.pz[data-state=graf] .pzr{opacity:.5}
+.pzzoom{overflow:hidden;max-height:0;opacity:0;transition:max-height .7s ease,opacity .5s ease}.pz[data-state=graf] .pzzoom{max-height:190px;opacity:1}
+.pzfun{height:36px;background:#dedbd1}
+.pzin{display:flex;height:46px;border:1.5px solid var(--ink);background:#fff}
+.pzseg{flex:1 1 0;min-width:0;border:0;border-right:1px solid #fff;padding:0;background:var(--c);cursor:pointer}.pzseg:last-child{border-right:0}
+.pzseg:hover,.pzseg.on{box-shadow:inset 0 0 0 2.5px var(--ink)}.pzseg.dim{opacity:.3}
 .pzleg{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font-size:10.5px;color:#666}.pzleg span:first-child{font-size:9.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
-.chart p.pznota{margin:8px 0 0;max-width:660px;font-size:11.5px;line-height:1.5;color:#666}
-@media(prefers-reduced-motion:reduce){.pzin,.pzseg{transition:none}}
+.chart p.pznota{margin:10px 0 0;max-width:660px;font-size:11.5px;line-height:1.5;color:#666}
+@media(prefers-reduced-motion:reduce){.pzzoom,.pzbar button{transition:none}}
+/* página Sobre: a pesquisa, os achados e o glossário */
+.block .met{margin:0;padding-left:18px;font-size:12.5px;line-height:1.7;color:#555}.block .met li{margin:0 0 9px}.block .met b{color:var(--ink)}
+.ach{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.ach div{border:1px dashed #bbb;padding:12px 14px}.ach h4{margin:0 0 5px;font-size:14px;line-height:1.2}.ach p{margin:0}
+.gloss{margin:0;display:grid;grid-template-columns:minmax(120px,170px) minmax(0,1fr);column-gap:16px}.gloss dt{padding:9px 0;border-top:1px solid var(--line);font-size:12px;font-weight:900}.gloss dd{margin:0;padding:9px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.6;color:#555}.gloss small{display:block;margin-top:2px;font-size:10px;color:#888}
+.sobdiv{margin:36px 0 0;padding:14px 0 4px;border-top:2px solid var(--ink);font-size:9.5px;font-weight:900;letter-spacing:.14em;color:#777}
+.block p.cita{font-size:11.5px;color:#444;border-left:3px solid var(--ink);padding-left:10px}
+@media(max-width:780px){.ach{grid-template-columns:1fr}.gloss{grid-template-columns:1fr}.gloss dd{border-top:0;padding-top:0}}
 /* Descobrir: o mouse é um spray. O ponteiro some sobre o mapa e dá lugar ao bico da lata; o rastro fica na camada de tinta. */
 @media(pointer:fine){#discover canvas{cursor:none!important}}
 #sprayCur{position:fixed;left:0;top:0;z-index:90;width:0;height:0;pointer-events:none}#sprayCur[hidden]{display:none}
@@ -431,9 +443,9 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
       </section>
 
       <section class="chart cap" data-chart="pedaco" data-cap="O pedaço do grafite"><div class="kicker"><i></i>PASSO 4 DE 9 · O PEDAÇO DO GRAFITE</div><h2>O grafite é um pedaço pequeno</h2>
-        <p class="lead">A barra é todo o dinheiro que os editais ofereceram. A faixa preta no começo dela, quase invisível, é o que foi aprovado para os projetos de grafite deste trabalho. Troque entre o total e o grafite para sentir a diferença de tamanho.</p>
+        <p class="lead">A fita é todo o dinheiro que os editais ofereceram, de 0% a 100%. A faixa preta no começo dela é o que foi aprovado para os projetos de grafite deste trabalho, no tamanho certo. Toque nas partes da fita para ver quanto cada uma vale.</p>
         <div class="pz" id="pz" data-state="total">
-          <div class="metric" role="group" aria-label="O que a barra mostra"><span>MOSTRAR</span><button type="button" data-pz="total" class="active">Todo o dinheiro dos editais</button><button type="button" data-pz="graf">Só o grafite</button></div>
+          <div class="metric" role="group" aria-label="O que a barra mostra"><span>MOSTRAR</span><button type="button" data-pz="total" class="active">A fita inteira</button><button type="button" data-pz="graf">O grafite</button><button type="button" data-pz="resto">Todo o resto</button></div>
           <div class="bignum"><b id="pedacoNum"></b><span id="pedacoLab"></span></div>
           <div id="pedacoChart"></div>
           <p class="pznota" id="pzNota"></p>
@@ -522,8 +534,55 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 <!-- 05 Sobre -->
 <section id="about" class="view hidden" aria-label="Sobre">
   <div class="content narrow">
-    <div class="hero"><span class="mark"></span><div class="kicker">05 / PROJETO ACADÊMICO</div><h1 class="sec">Sobre</h1><p>O território continua nos dados e relatos, mas a experiência pode começar pelo muro, pelo valor, pelo ano ou pelo edital. O modelo conceitual é o rizoma de Deleuze e Guattari: conexões heterogêneas, sem raiz nem centro. O movimento do spray segue o modelo de Jones (2010) para as redes do <em>Physarum polycephalum</em>.</p></div>
+    <div class="hero"><span class="mark"></span><div class="kicker">05 / PROJETO ACADÊMICO</div><h1 class="sec">Sobre</h1><p>Este site é o protótipo de um Trabalho de Conclusão de Curso de Design, da Escola de Arquitetura da UFMG. Ele reúne vinte projetos de grafite e muralismo aprovados em editais de fomento de Belo Horizonte, de 2017 a 2024, e testa um jeito de ler essas informações: pelas ligações entre os projetos, em vez de por uma lista.</p></div>
     <div style="height:30px"></div>
+    <article class="block"><div><span class="kicker">A PERGUNTA</span><h2>Por que este trabalho existe</h2></div><div><p>Os projetos de grafite e muralismo pagos com dinheiro público em Belo Horizonte estão registrados. Só que cada registro está num lugar: um edital aqui, uma lista de aprovados ali, um resultado no Diário Oficial. Quem quer entender o conjunto precisa abrir dezenas de arquivos e montar o quebra-cabeça sozinho.</p><p>A pesquisa parte dessa dificuldade. A pergunta é de design: como organizar e mostrar essas informações para que uma pessoa consiga ler o conjunto, e também enxergar o que falta nele?</p></div></article>
+
+    <article class="block"><div><span class="kicker">O MÉTODO</span><h2>Como a pesquisa foi feita</h2></div><div><ol class="met">
+      <li><b>Entender os caminhos do dinheiro.</b> Primeiro vieram os mecanismos de fomento do município e os editais abertos de 2017 a 2024.</li>
+      <li><b>Achar os documentos.</b> Para cada edital, a busca foi pelos resultados, pelas listas de homologação e pelas relações de aprovados, nas páginas da Prefeitura, no Diário Oficial do Município e nos PDFs dos órgãos de cultura.</li>
+      <li><b>Peneirar.</b> Grafite quase nunca aparece com esse nome nas listas. A triagem usou vários termos: grafite, graffiti, mural, muralismo, arte urbana, culturas urbanas, artes visuais. E também o nome de cada projeto.</li>
+      <li><b>Conferir.</b> Quando o documento não deixava claro do que o projeto tratava, a conferência seguiu por sites dos projetos, perfis públicos, notícias, mapas e, em alguns casos, pela ida ao lugar. O que não se confirmou saiu da base.</li>
+      <li><b>Organizar sem inventar.</b> Os dados foram para uma planilha: título, ano, edital, mecanismo e valor aprovado. O que não tinha comprovação ficou em branco ou como "A verificar". Gênero, raça, classe e endereço da obra não foram deduzidos.</li>
+      <li><b>Desenhar e testar.</b> O site nasceu de ciclos de desenho e programação. Cada ciclo testava uma forma de mostrar o conjunto. Algumas ficaram, outras foram descartadas. Esse percurso está nos labs.</li>
+    </ol></div></article>
+
+    <article class="block"><div><span class="kicker">OS ACHADOS</span><h2>O que a pesquisa encontrou</h2></div><div><div class="ach">
+      <div><h4>O dado existe, mas está espalhado</h4><p>O problema central não é falta de informação pública. É que ela foi produzida em formatos, anos e finalidades diferentes, e não conversa entre si.</p></div>
+      <div><h4>Aprovado não é realizado</h4><p>Passar num edital não prova que a obra foi feita. Por isso cada projeto precisou de uma segunda conferência antes de entrar.</p></div>
+      <div><h4>Dois tamanhos de projeto</h4><p>Nos vinte casos, os do Incentivo Fiscal vão de R$ 95 mil a R$ 165 mil. Os do Fundo e do Descentra, de R$ 19,7 mil a R$ 90 mil. Daí os nomes monumental e capilar.</p></div>
+      <div><h4>O bairro no título não é endereço</h4><p>Projetos com "Na Quebrada" ou "em Venda Nova" no nome dizem muito sobre a cultura, mas não comprovam onde a obra foi feita.</p></div>
+      <div><h4>De mapa de ruas a mapa de ligações</h4><p>A ideia inicial era um mapa da cidade. No caminho, virou um campo de projetos ligados entre si, porque as relações que importam não são só de lugar.</p></div>
+      <div><h4>O que falta também é informação</h4><p>Regional, proponente e fotos não aparecem do mesmo jeito em todos os documentos. O site deixa essas faltas à vista em vez de escondê-las.</p></div>
+    </div></div></article>
+
+    <article class="block"><div><span class="kicker">OS LIMITES</span><h2>Até onde isto vai</h2></div><div><p>Os vinte projetos são a base de trabalho desta etapa. Não são todos os projetos de grafite e muralismo financiados na cidade, e a revisão dos documentos continua aberta. Os valores são os aprovados, não os recebidos. O site ainda não passou por avaliação formal com usuários. Tudo o que se conclui aqui vale para esses vinte casos.</p></div></article>
+
+    <article class="block"><div><span class="kicker">PALAVRAS DIFÍCEIS</span><h2>Pequeno glossário</h2></div><div><dl class="gloss">
+      <dt>Fomento</dt><dd>Dinheiro público que apoia uma atividade, aqui a cultura. A Prefeitura não faz a obra: financia quem faz.</dd>
+      <dt>Edital</dt><dd>Chamada pública em que a Prefeitura diz quanto dinheiro existe, quem pode pedir e como os projetos serão escolhidos.</dd>
+      <dt>Mecanismo</dt><dd>O caminho pelo qual o dinheiro chega ao projeto. Aqui são três: Incentivo Fiscal, Fundo Municipal e Descentra.</dd>
+      <dt>LMIC</dt><dd>Lei Municipal de Incentivo à Cultura. É dela que saem os editais do Incentivo Fiscal e do Fundo.<small>Fonte: editais da Prefeitura de Belo Horizonte.</small></dd>
+      <dt>Incentivo Fiscal</dt><dd>O projeto aprovado ganha autorização para buscar o dinheiro com empresas, e a Prefeitura abre mão do imposto correspondente.<small>Fonte: editais da Prefeitura de Belo Horizonte.</small></dd>
+      <dt>Renúncia fiscal</dt><dd>O imposto que o poder público deixa de cobrar para que o dinheiro vá a um projeto.</dd>
+      <dt>Captar</dt><dd>Conseguir com empresas o dinheiro que o edital autorizou. Aprovado não quer dizer captado.</dd>
+      <dt>Fundo Municipal de Cultura</dt><dd>Dinheiro do orçamento da Prefeitura, pago direto ao projeto selecionado, sem empresa patrocinadora.<small>Fonte: editais da Prefeitura de Belo Horizonte.</small></dd>
+      <dt>Descentra</dt><dd>Edital do Fundo Municipal com valores menores e pontos a mais para quem atua fora da região central.<small>Fonte: editais da Prefeitura de Belo Horizonte.</small></dd>
+      <dt>Diário Oficial do Município</dt><dd>A publicação oficial da Prefeitura. É onde saem os resultados dos editais. Também aparece como DOM.</dd>
+      <dt>Homologação</dt><dd>O ato que confirma oficialmente o resultado de um edital. A lista de homologação traz os projetos aprovados.</dd>
+      <dt>Valor aprovado e teto</dt><dd>Valor aprovado é o que o edital autorizou para o projeto. Teto é o máximo que um projeto pode pedir naquele edital. Nenhum dos dois é o valor recebido.</dd>
+      <dt>Proponente</dt><dd>A pessoa ou organização que inscreve o projeto no edital.</dd>
+      <dt>Corpus</dt><dd>O conjunto de casos estudados numa pesquisa. Aqui, os vinte projetos.</dd>
+      <dt>Monumental e capilar</dt><dd>Nomes criados nesta pesquisa para comparar os projetos. Monumental: os do Incentivo Fiscal, de valores mais altos. Capilar: os do Fundo e do Descentra, de valores menores. Não são categorias oficiais.</dd>
+      <dt>Cartografia</dt><dd>A prática de fazer mapas. Neste site o mapa não mostra ruas: mostra ligações entre projetos, editais e valores.</dd>
+      <dt>Rizoma</dt><dd>Imagem de um conjunto sem centro e sem ordem de importância, em que qualquer ponto pode se ligar a outro. É o modelo do mapa deste site.<small>Fonte: Deleuze e Guattari (1995).</small></dd>
+      <dt>Design da informação</dt><dd>A área do design que organiza dados para que possam ser compreendidos.<small>Fontes: Tufte (2001); Cairo (2012).</small></dd>
+      <dt>Proveniência</dt><dd>De onde vem cada dado: qual documento, de que órgão, de que data.</dd>
+    </dl><p style="margin-top:12px">As explicações sem fonte indicada são do autor da pesquisa, com base nos documentos consultados e no texto do TCC.</p></div></article>
+
+    <article class="block"><div><span class="kicker">QUEM FEZ</span><h2>Autoria</h2></div><div><p>Pesquisa, texto e desenho: Pedro Henrique Ferreira Moreira, estudante de Design da Escola de Arquitetura da Universidade Federal de Minas Gerais. Belo Horizonte, 2026.</p><p>A base teórica vem de Milton Santos, sobre território; Néstor García Canclini, sobre culturas urbanas; David Sperling e Cristina Kiminami, sobre cartografias críticas; Edward Tufte e Alberto Cairo, sobre visualização da informação; e Gilles Deleuze e Félix Guattari, sobre o rizoma. O movimento do spray segue o modelo de Jones (2010) para as redes do <em>Physarum polycephalum</em>.</p><p class="cita">Como citar: MOREIRA, Pedro Henrique Ferreira. <b>Cartografia do Fomento</b>: mapeamento de projetos de grafite e muralismo em Belo Horizonte (2017–2024). Trabalho de Conclusão de Curso (Bacharelado em Design) – Escola de Arquitetura, Universidade Federal de Minas Gerais, Belo Horizonte, 2026. Em desenvolvimento.</p></div></article>
+
+    <div class="sobdiv">COMO O SITE FOI DESENHADO</div>
     <article class="block"><div><span class="kicker">COR</span><h2>O muro, o pixo e três tintas</h2></div><div><p>O fundo claro é o cimento do muro. O preto é o pixo, que é escrita de uma cor só: texto, número e contorno. A cor entra só onde carrega informação, e são três tintas tiradas do muro de Belo Horizonte: magenta de spray para o Incentivo Fiscal, azul de azulejo para o Fundo Municipal e ocre de minério para o Descentra. No spray elas não se misturam: no encontro, os pontos ficam lado a lado. As ligações têm cor e traço próprios, para não se confundirem com as tintas: verde contínua para ano, violeta tracejada para edital, ferrugem pontilhada para escala e preta grossa para curadoria. Verde, violeta e ferrugem são as misturas das tintas duas a duas, escurecidas. A ligação por mecanismo leva a tinta do próprio mecanismo. A defesa está em <code>rizoma/PROPOSTAS-LAB07.md</code>.</p><div class="legend" id="aboutLegend"></div></div></article>
     <article class="block"><div><span class="kicker">LETRA</span><h2>Várias mãos</h2></div><p>O site tem um título só, Cartografia do Fomento. Ele e o nome de cada projeto são escritos com letras de placa, de muro e de pixo fotografadas em cidades brasileiras (Tipografia Vernacular 0800, de Gi Favetta). No título, cada letra tem uma mão, e de tempos em tempos algumas letras são repintadas por outra mão. Quando a linha não cabe, as últimas letras se apertam, como quem pinta e fica sem muro (ideia do Brasilêro, de Crystian Cruz). O nome das telas, os dados, as fichas e os textos de leitura ficam sempre parados, em Arial.</p></article>
     <article class="block"><div><span class="kicker">O PROJETO</span><h2>Uma bolinha</h2></div><div><p>Cada projeto é uma bolinha com a fórmula do grapixo: contorno preto, cor por dentro, sombra na mesma tinta. A cor é o mecanismo. Nos indicadores, nos editais e nas listas, o tamanho é o valor e o contorno grosso marca o circuito monumental. No mapa é diferente: o tamanho de cada bolinha muda o tempo todo e o contorno é igual para todas, porque o mapa mostra ligações, não uma ordem de importância.</p><div id="aboutWalls" style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap"></div></div></article>
@@ -1618,26 +1677,30 @@ teiaUi();
    conta de 100% até a parte do grafite e volta. Tocar na barra troca de estado. É a mesma ideia de dar a visão geral e depois
    ampliar (Shneiderman, 1996), aplicada a uma barra só. */
 const PZ = { st: "total", built: false, auto: false, v: 1, run: 0, share: 0, soma: 0, corp: 0, nota: "" };
+const pzPct = v => { const x = v * 100; return (x >= 99.95 ? "100" : x.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })) + "%"; };
+/* rodada 20 (22/11/2026): o autor apontou que a barra anterior errava ao crescer até ocupar tudo. Agora é uma FITA DE PORCENTAGEM:
+   vai de 0% a 100%, com régua, e a faixa do grafite tem sempre o tamanho certo. A ampliação não mexe na fita: aparece embaixo,
+   ligada à faixa por um funil, com um pedaço para cada projeto. O número grande troca entre a fita inteira, o grafite e o resto. */
 function renderPedaco(share, soma, corp, com) { const box = $("#pedacoChart"); if (!box) return; PZ.share = share; PZ.soma = soma; PZ.corp = corp;
   const ps = com.flatMap(d => d.ps).sort((a, b) => MECHS.indexOf(a.mechanism) - MECHS.indexOf(b.mechanism) || b.value - a.value), fora = DATA.filter(p => p.value).length - ps.length, sem = ED8.filter(d => !d.total).map(d => d.e);
   PZ.nota = fora > 0 ? `Ficam fora desta conta ${fora} projetos do ${sem.join(", ")}, porque esse edital não fixa valor.` : "";
-  if (!PZ.built) { PZ.built = true;
-    box.innerHTML = `<div class="pzbar" id="pzBar" role="button" tabindex="0" aria-label="Trocar entre todo o dinheiro dos editais e a parte do grafite"><div class="pzin" id="pzIn">${ps.map(p => `<button type="button" class="pzseg" style="flex:${Math.round(p.value)} 1 0;--c:${MECH[p.mechanism]}" data-ct="project" data-ck="${p.id}" data-label="${esc(Rizoma.shortTitle(p.title))}" title="${esc(p.title)} · ${money(p.value)}" aria-label="${esc(p.title)}, ${money(p.value)}"></button>`).join("")}</div></div><div class="pzleg"><span id="pzL"></span><span id="pzR"></span></div>`;
-    const troca = () => pzSet(PZ.st === "total" ? "graf" : "total");
-    $("#pzBar").addEventListener("click", e => { if (PZ.st === "graf" && e.target.closest(".pzseg")) return; troca(); });
-    $("#pzBar").addEventListener("keydown", e => { if (e.target.id === "pzBar" && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); troca(); } });
+  if (!PZ.built) { PZ.built = true; const w = (share * 100).toFixed(3);
+    box.innerHTML = `<div class="pzrule" aria-hidden="true">${[0, 25, 50, 75, 100].map(v => `<span style="left:${v}%">${v}%</span>`).join("")}</div>
+<div class="pzbar" id="pzBar"><button type="button" class="pzg" data-pzp="graf" style="width:${w}%" aria-label="A parte do grafite deste trabalho"></button><button type="button" class="pzr" data-pzp="resto" aria-label="Todo o resto do dinheiro dos editais"></button></div>
+<div class="pzzoom" id="pzZoom"><div class="pzfun" style="clip-path:polygon(0 0,${w}% 0,100% 100%,0 100%)"></div><div class="pzin">${ps.map(p => `<button type="button" class="pzseg" style="flex:${Math.round(p.value)} 1 0;--c:${MECH[p.mechanism]}" data-ct="project" data-ck="${p.id}" data-label="${esc(Rizoma.shortTitle(p.title))}" title="${esc(p.title)} · ${money(p.value)}" aria-label="${esc(p.title)}, ${money(p.value)}"></button>`).join("")}</div><div class="pzleg"><span>a faixa do grafite, ampliada ${Math.round(1 / Math.max(share, 0.0001))} vezes</span><span>cada pedaço é um projeto</span></div></div>`;
+    $$("#pedacoChart [data-pzp]").forEach(b => b.onclick = () => pzSet(PZ.st === b.dataset.pzp ? "total" : b.dataset.pzp));
     $$("[data-pz]").forEach(b => b.onclick = () => pzSet(b.dataset.pz)); bindCharts(); }
   pzPaint(false); }
 function pzSet(st) { PZ.auto = true; if (st === PZ.st) return; PZ.st = st; pzPaint(true); }
-function pzAuto() { if (PZ.auto || reduced || !PZ.built) return; PZ.auto = true; setTimeout(() => { if (PZ.st === "total" && page === "indicators") { PZ.st = "graf"; pzPaint(true); } }, 1500); } // ao chegar no passo, a barra amplia uma vez sozinha
-function pzPaint(anim) { const g = PZ.st === "graf", box = $("#pz"), num = $("#pedacoNum"); if (!box || !PZ.built) return; box.dataset.state = PZ.st; $$("[data-pz]").forEach(b => b.classList.toggle("active", b.dataset.pz === PZ.st));
-  $("#pzIn").style.width = g ? "100%" : Math.max(0.9, PZ.share * 100) + "%";
-  $("#pedacoLab").textContent = g ? `${milhoes(PZ.corp)}: os projetos de grafite deste trabalho` : `${milhoes(PZ.soma)}: todo o dinheiro dos editais`;
-  $("#pzL").textContent = g ? "cada pedaço é um projeto de grafite" : `faixa preta: o grafite, ${pct1(PZ.share)}`; $("#pzR").textContent = g ? `a faixa preta, ampliada ${Math.round(1 / Math.max(PZ.share, 0.0001))} vezes` : "a barra inteira: 100%";
-  $("#pzNota").textContent = g ? `${PZ.nota} Passe a mão num pedaço para ver o projeto. Toque fora dos pedaços, ou em “Todo o dinheiro dos editais”, para voltar.`.trim() : "Toque na barra, ou em “Só o grafite”, para ampliar a faixa preta.";
-  const alvo = g ? PZ.share : 1, de = PZ.v, id = ++PZ.run, fim = () => { PZ.v = alvo; num.textContent = pct1(alvo); };
+function pzAuto() { if (PZ.auto || reduced || !PZ.built) return; PZ.auto = true; setTimeout(() => { if (PZ.st === "total" && page === "indicators") { PZ.st = "graf"; pzPaint(true); } }, 1500); } // ao chegar no passo, a fita mostra uma vez sozinha a parte do grafite
+function pzPaint(anim) { const st = PZ.st, box = $("#pz"), num = $("#pedacoNum"); if (!box || !PZ.built) return; box.dataset.state = st; $$("[data-pz]").forEach(b => b.classList.toggle("active", b.dataset.pz === st));
+  $("#pedacoLab").textContent = st === "graf" ? `${milhoes(PZ.corp)}: os projetos de grafite deste trabalho` : st === "resto" ? `${milhoes(PZ.soma - PZ.corp)}: todo o resto` : `${milhoes(PZ.soma)}: todo o dinheiro dos editais`;
+  $("#pzNota").textContent = st === "graf" ? `A faixa preta, no começo da fita, é o grafite. Ela está no tamanho certo: ${pzPct(PZ.share)} da fita. Embaixo, a mesma faixa ampliada, com um pedaço para cada projeto. ${PZ.nota}`.trim()
+    : st === "resto" ? "A parte clara é todo o resto do dinheiro dos editais: música, teatro, dança e as outras áreas da cultura, mais os projetos de arte urbana que ficaram fora deste recorte."
+    : "A fita inteira é todo o dinheiro que os editais ofereceram. Toque em “O grafite” para achar a parte dele.";
+  const alvo = st === "graf" ? PZ.share : st === "resto" ? 1 - PZ.share : 1, de = PZ.v, id = ++PZ.run, fim = () => { PZ.v = alvo; num.textContent = pzPct(alvo); };
   if (!anim || reduced) { fim(); return; }
-  const t0 = performance.now(), passo = () => { if (id !== PZ.run) return; const t = Math.min(1, (performance.now() - t0) / 950), e = easeO(t); PZ.v = de + (alvo - de) * e; num.textContent = pct1(PZ.v); if (t < 1) requestAnimationFrame(passo); else fim(); }; requestAnimationFrame(passo);
+  const t0 = performance.now(), passo = () => { if (id !== PZ.run) return; const t = Math.min(1, (performance.now() - t0) / 950), e = easeO(t); PZ.v = de + (alvo - de) * e; num.textContent = pzPct(PZ.v); if (t < 1) requestAnimationFrame(passo); else fim(); }; requestAnimationFrame(passo);
   setTimeout(() => { if (id === PZ.run) fim(); }, 1500); } // se o navegador segurar a animação, o número chega ao valor final
 function renderStoryAnswers() {
   const com = ED8.filter(d => d.total), soma = com.reduce((a, d) => a + d.total, 0) || 1, corp = com.reduce((a, d) => a + d.corpus, 0), maior = com.slice().sort((a, b) => b.total - a.total)[0], sem = ED8.filter(d => !d.total).map(d => d.e);
@@ -1662,7 +1725,7 @@ function renderStoryAnswers() {
   ].filter(x => x[1]);
   $("#fimLista").innerHTML = itens.map(([k, t]) => `<li><span>${t}</span><button type="button" data-q="${k}">VER ESTE PASSO ↑</button></li>`).join("");
   $$("#fimLista [data-q]").forEach(b => b.onclick = () => irPasso(b.dataset.q));
-  $("#fimLeitura").textContent = `O mesmo fomento público sustenta dois circuitos de grafite que correm lado a lado. Um concentra valores altos em poucos projetos, pelo ${teiaMechs(0)}. O outro espalha valores menores por mais projetos, pelo ${teiaMechs(1).replace(/ e do /g, " e pelo ")}. O TCC chama isso de dicotomia entre o monumental e o capilar. Os números desta história sustentam essa leitura.`;
+  $("#fimLeitura").textContent = `O mesmo fomento público sustenta dois circuitos de grafite que correm lado a lado. Um concentra valores altos em poucos projetos, pelo ${teiaMechs(0)}. O outro espalha valores menores por mais projetos, pelo ${teiaMechs(1).replace(/ e do /g, " e pelo ")}. O TCC chama os dois de monumental e capilar. São nomes de análise, criados para comparar os projetos, e a diferença aparece nos números dos vinte casos estudados.`;
 }
 function renderFontes() { $("#muroFontes").innerHTML = EDS.map(e => { const v = EDITAL_VALOR[e] || {}; return `<li><b>${esc(e)}</b>: ${v.total ? money(v.total) : "sem valor fixado"} (${esc(v.tipo || "")}). ${v.obs ? esc(v.obs) + " " : ""}${v.fonte ? `<a href="${v.fonte}" target="_blank" rel="noopener">Edital em PDF ↗</a>` : ""}</li>`; }).join(""); }
 /* progresso da história: a barra do topo diz em que passo a leitura está; cada desenho em p5 entra em cena quando o passo aparece */

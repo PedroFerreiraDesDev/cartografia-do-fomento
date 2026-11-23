@@ -5,6 +5,7 @@ Esta pasta guarda uma versão editável do protótipo do TCC **Cartografia do Fo
 ## Arquivos
 
 - `index.html` — **o protótipo final** (desde 22/11/2026). É o Lab 08 ajustado, num arquivo só, com CSS e script próprios. Não tem o botão de labs. Detalhes na seção 3R de `rizoma/PROPOSTAS-LAB07.md`.
+  - Em 22/11 (seção 3S): o passo 4 dos Indicadores virou uma **fita de porcentagem** de 0% a 100%, em que o grafite mede sempre 1,3%, com a ampliação desenhada embaixo; e a página **Sobre** passou a contar a pesquisa do TCC (a pergunta, o método, os achados, os limites, um glossário de 19 termos e a autoria).
 - `prototipo-anterior.html` — o site que estava em `index.html` até 22/11/2026. Usa `css/style.css` e `js/app.js`.
 - `lab-08-site.html` — o Lab 08, guardado como estava antes de virar o protótipo final. Os labs têm o botão lateral para passar de um a outro.
 - `css/style.css` — direção visual, responsividade e animações do protótipo anterior.

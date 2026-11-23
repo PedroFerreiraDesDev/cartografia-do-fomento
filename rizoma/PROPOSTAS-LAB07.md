@@ -1026,7 +1026,58 @@ Conferido no navegador em 1280 px e 375 px: tudo o que o fluxo novo confere, mai
 
 ---
 
+## 3S. 22/11/2026: a fita de porcentagem do passo 4 e a pesquisa na página Sobre
+
+Arquivo: `index.html`, o protótipo final.
+
+### 3S.1 Passo 4: o erro e a correção
+
+O autor apontou que a barra do 1,3% estava errada: tem de ser uma fita de porcentagem, e o 1,3% tem de ser 1,3%. Ele tinha razão. Na versão da seção 3R.6, ao tocar em "Só o grafite", a faixa crescia até ocupar a barra inteira. Durante esse estado a barra deixava de mostrar proporção, e quem chegasse naquele momento lia o grafite como o todo.
+
+Agora:
+
+- **A fita vai de 0% a 100%**, com régua em cima (0, 25, 50, 75, 100%). Ela nunca muda de proporção.
+- **A faixa do grafite mede sempre 1,3% da fita.** Numa tela de computador são cerca de 12 px em 880. No celular, cerca de 5 px.
+- **A ampliação saiu de dentro da fita.** Aparece embaixo, ligada à faixa por um funil, com um pedaço para cada um dos 16 projetos. A legenda diz "ampliada 74 vezes".
+- **Três estados**, pelos botões ou tocando nas partes da fita: a fita inteira (100%, R$ 77,28 milhões), o grafite (1,3%, R$ 1,04 milhão) e todo o resto (98,7%, R$ 76,24 milhões). O número grande conta de um valor ao outro.
+- Ao chegar no passo, a fita mostra uma vez sozinha a parte do grafite.
+
+Separar a proporção verdadeira do detalhe ampliado, com a ligação desenhada entre os dois, é o cuidado que Tufte (2001) pede: a representação dos números deve ser proporcional às quantidades.
+
+### 3S.2 Página Sobre: a pesquisa contada
+
+O autor pediu que a página Sobre fale do projeto como TCC: como foi a pesquisa e o que ela encontrou, em texto curto e interessante, com as palavras difíceis explicadas. Onde não houver outra fonte, a fonte é ele, o pesquisador. Mandou o documento do TCC.
+
+**O que li do documento:** a versão no Google Docs "20261002_TCC", lida pelo conector do Drive em 22/11/2026. Li o resumo, a metodologia (seção 5 inteira), os resultados (seção 6), as considerações finais (seção 10) e a lista de referências. Não li as seções 1 a 4, 7 a 9 nem os fichamentos das outras abas.
+
+Blocos novos, no alto da página, antes dos blocos sobre o desenho do site:
+
+| Bloco | Conteúdo | De onde vem |
+|---|---|---|
+| A pergunta | Os registros existem, mas estão espalhados; a pergunta é de design | Resumo e seção 10 |
+| O método | Seis passos: entender os mecanismos, achar os documentos, peneirar por termos, conferir, organizar sem inventar, desenhar e testar | Seções 5.2 a 5.6 |
+| Os achados | Seis cartões: dado espalhado; aprovado não é realizado; dois tamanhos; bairro no título não é endereço; de mapa de ruas a mapa de ligações; o que falta também é informação | Seções 5.3, 5.7, 6 e 10 |
+| Os limites | Vinte projetos, não um censo; valores aprovados; sem avaliação com usuários | Seções 5.4, 5.7 e 10 |
+| Pequeno glossário | 19 termos, cada um em uma ou duas frases | Editais da PBH, onde indicado; Deleuze e Guattari (1995); Tufte (2001); Cairo (2012); o resto é do autor |
+| Autoria | Autor, curso, base teórica e como citar | Folha de rosto e seção 5.5 |
+
+Os números dos achados (R$ 95 mil a R$ 165 mil; R$ 19,7 mil a R$ 90 mil) são os da seção 6 do TCC e batem com `js/data.js`.
+
+### 3S.3 Diferenças entre o site e a versão atual do TCC
+
+A versão lida é mais cuidadosa que a de outubro, que tinha servido de base para o site. Três pontos:
+
+1. **A palavra "dicotomia" saiu do TCC.** O texto atual diz que monumental e capilar são "construções analíticas" e que as faixas de valor são "próximas em seus limites". A frase de fecho do passo 9 dizia que "o TCC chama isso de dicotomia". Foi trocada por: "O TCC chama os dois de monumental e capilar. São nomes de análise, criados para comparar os projetos, e a diferença aparece nos números dos vinte casos estudados."
+2. **O TCC evita generalizar.** Ele diz que as observações "descrevem o conjunto analisado" e não permitem afirmar concentração territorial. Os títulos dos passos dos Indicadores ("Poucos projetos ficam com quase metade", "Dois grupos que quase não se tocam") falam do corpus, e a tela avisa isso, mas convém o autor reler se o tom está de acordo com o texto.
+3. **Orientação.** A folha de rosto traz "Orientadora: Victoria, Co-orientadora: Maria Luiza Viana". O nome da orientadora está incompleto, por isso a página Sobre ainda não traz a orientação.
+
+Conferido no navegador em 1280 px e 375 px: os três estados da fita com os números certos, a faixa do grafite medindo 1,3% da fita nos dois tamanhos, os seis blocos novos do Sobre com 19 termos no glossário, sem erros no console e sem rolagem lateral.
+
+---
+
 ## 4. O que fica para depois
+
+- **Informar o nome completo da orientadora**, para a página Sobre trazer a orientação.
 
 - **Escolher o gráfico do passo 8** entre as propostas A, B e C da seção 3M.2, e mandar as outras referências que o autor disse que enviaria.
 
@@ -1051,6 +1102,8 @@ BRASIL. **Lei nº 9.610, de 19 de fevereiro de 1998**. Altera, atualiza e consol
 BRASIL. **Lei nº 10.406, de 10 de janeiro de 2002**. Institui o Código Civil. Brasília, DF: Presidência da República, 2002.
 
 BRASIL. **Lei nº 13.709, de 14 de agosto de 2018**. Lei Geral de Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.
+
+CAIRO, Alberto. **The functional art**: an introduction to information graphics and visualization. Berkeley: New Riders, 2012.
 
 CARD, Stuart K.; MACKINLAY, Jock D.; SHNEIDERMAN, Ben (ed.). **Readings in information visualization**: using vision to think. San Francisco: Morgan Kaufmann, 1999.
 
@@ -1082,6 +1135,8 @@ ROSENBERG, Daniel; GRAFTON, Anthony. **Cartographies of time**: a history of the
 
 SCHMIDT, Mario. The Sankey diagram in energy and material flow management: part I: history. **Journal of Industrial Ecology**, v. 12, n. 1, p. 82-94, 2008.
 
+MOREIRA, Pedro Henrique Ferreira. **Cartografia do Fomento**: mapeamento de projetos de grafite e muralismo em Belo Horizonte (2017–2024). Trabalho de Conclusão de Curso (Bacharelado em Design) – Escola de Arquitetura, Universidade Federal de Minas Gerais, Belo Horizonte, 2026. Em desenvolvimento; versão lida em 22 nov. 2026.
+
 NEURATH, Otto. **International picture language**: the first rules of Isotype. London: Kegan Paul, Trench, Trubner & Co., 1936.
 
 OTTOSSON, Björn. **A perceptual color space for image processing** (OKLab). 2020. Disponível em: https://bottosson.github.io/posts/oklab/. Acesso em: 12 nov. 2026.
@@ -1091,5 +1146,7 @@ SEGEL, Edward; HEER, Jeffrey. Narrative visualization: telling stories with data
 SHNEIDERMAN, Ben. The eyes have it: a task by data type taxonomy for information visualizations. In: IEEE SYMPOSIUM ON VISUAL LANGUAGES, 1996, Boulder. **Proceedings** [...]. Los Alamitos: IEEE, 1996. p. 336-343.
 
 TUFTE, Edward R. **Envisioning information**. Cheshire: Graphics Press, 1990.
+
+TUFTE, Edward R. **The visual display of quantitative information**. 2. ed. Cheshire: Graphics Press, 2001.
 
 WATTENBERG, Martin. Arc diagrams: visualizing structure in strings. In: IEEE SYMPOSIUM ON INFORMATION VISUALIZATION, 2002, Boston. **Proceedings** [...]. Los Alamitos: IEEE, 2002. p. 110-116.

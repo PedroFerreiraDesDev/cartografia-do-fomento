@@ -1069,7 +1069,7 @@ A versão lida é mais cuidadosa que a de outubro, que tinha servido de base par
 
 1. **A palavra "dicotomia" saiu do TCC.** O texto atual diz que monumental e capilar são "construções analíticas" e que as faixas de valor são "próximas em seus limites". A frase de fecho do passo 9 dizia que "o TCC chama isso de dicotomia". Foi trocada por: "O TCC chama os dois de monumental e capilar. São nomes de análise, criados para comparar os projetos, e a diferença aparece nos números dos vinte casos estudados."
 2. **O TCC evita generalizar.** Ele diz que as observações "descrevem o conjunto analisado" e não permitem afirmar concentração territorial. Os títulos dos passos dos Indicadores ("Poucos projetos ficam com quase metade", "Dois grupos que quase não se tocam") falam do corpus, e a tela avisa isso, mas convém o autor reler se o tom está de acordo com o texto.
-3. **Orientação.** A folha de rosto traz "Orientadora: Victoria, Co-orientadora: Maria Luiza Viana". O nome da orientadora está incompleto, por isso a página Sobre ainda não traz a orientação.
+3. **Orientação.** A folha de rosto traz "Orientadora: Victoria, Co-orientadora: Maria Luiza Viana". O nome da orientadora estava incompleto. No mesmo dia o autor informou os dois nomes, Victoria Lopes Dias e Maria Luiza Viana, e a página Sobre passou a trazer "Orientação: Victoria Lopes Dias e Maria Luiza Viana". O autor apresentou as duas como orientadoras; a folha de rosto do documento ainda diz orientadora e coorientadora, e vale ele conferir qual forma fica.
 
 Conferido no navegador em 1280 px e 375 px: os três estados da fita com os números certos, a faixa do grafite medindo 1,3% da fita nos dois tamanhos, os seis blocos novos do Sobre com 19 termos no glossário, sem erros no console e sem rolagem lateral.
 
@@ -1077,7 +1077,7 @@ Conferido no navegador em 1280 px e 375 px: os três estados da fita com os núm
 
 ## 4. O que fica para depois
 
-- **Informar o nome completo da orientadora**, para a página Sobre trazer a orientação.
+- Conferir se a página Sobre deve dizer "orientação" para as duas professoras, como está, ou "orientadora e coorientadora", como na folha de rosto do TCC.
 
 - **Escolher o gráfico do passo 8** entre as propostas A, B e C da seção 3M.2, e mandar as outras referências que o autor disse que enviaria.
 

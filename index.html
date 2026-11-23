@@ -264,6 +264,12 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 .mleg{display:flex;align-items:center;gap:5px;margin-top:10px;font-size:9.5px;color:#777}.mleg span{font-size:8.5px;font-weight:900;letter-spacing:.12em;margin-right:6px}.mleg i{display:inline-block;width:14px;height:14px;border:1px solid var(--line);background:rgba(22,22,22,var(--a));margin-left:6px}
 /* rodada 18: o fundo do mapa fica mais claro que o papel do resto do site, para o rastro leve e as linhas se lerem melhor */
 #discover.stage{background:#FCFCFA}
+/* rodada 22: no celular, limpar a seleção dos Indicadores fica sempre à mão, num botão preso no pé da tela */
+.selpill{display:none}
+@media(max-width:780px){.selpill:not([hidden]){display:flex;align-items:center;justify-content:space-between;gap:12px;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:10px 12px 10px 14px;text-align:left;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+  .selpill span{min-width:0;font-size:12.5px;font-weight:700;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.selpill small{display:block;font-size:8.5px;font-weight:900;letter-spacing:.12em;opacity:.7}
+  .selpill b{flex:none;border:1.5px solid var(--paper);padding:8px 10px;font-size:10.5px;font-weight:900;letter-spacing:.06em}
+  #indicators.hl .ind-main{padding-bottom:110px}}
 /* protótipo final: a história dos Indicadores corre numa direção só, de cima para baixo. Não há mais rolagem para o lado. */
 .hstrip{display:block}.hgo{margin:18px 0 8px;padding:15px 20px;font-size:11px;font-weight:900;letter-spacing:.06em}
 .hnav,#sumList,.sidex,.hdica{display:none!important}
@@ -405,6 +411,7 @@ body.card-open .tools{right:calc(min(380px,100%) + 18px)}body.card-open .copy{op
 
 <!-- 02 Indicadores -->
 <section id="indicators" class="view hidden" aria-label="Indicadores">
+  <button type="button" id="selPill" class="selpill" hidden aria-label="Limpar a seleção"></button>
   <div class="ind">
     <div class="ind-main">
       <div class="summary" id="summary"><div><span class="kicker" id="sumKicker">CORPUS DO TCC</span><b id="sumTitle">Todos os projetos</b></div><div><button id="sumList" class="ghost">VER PROJETOS</button><button id="sumClear" class="ghost" hidden>LIMPAR SELEÇÃO</button></div><div class="prog" id="storyProg"><span id="progTxt"></span><span class="dots" id="progDots"></span></div></div>
@@ -1899,13 +1906,14 @@ function highlightMancha(ids) { MAN.hl = ids ? new Set(DATA.filter(p => ids.has(
 function renderSide() {
   const sel = hoverSel || selection, list = selectedProjects(sel), focus = R ? R.state().focus : null;
   const kicker = sel ? (hoverSel ? "PRÉ-VISUALIZAÇÃO" : "RECORTE FIXADO") : "CORPUS DO TCC", title = sel ? (sel.label || sel.key) : "Todos os projetos";
+  { const pill = $("#selPill"); if (pill) { pill.hidden = !selection; if (selection) { const n = selectedProjects(selection).length; pill.innerHTML = `<span><small>SELEÇÃO FIXADA</small>${esc(selection.label || selection.key)} · ${n} ${n === 1 ? "projeto" : "projetos"}</span><b>✕ LIMPAR</b>`; } } } // no celular a barra do alto some ao rolar: este botão fica preso no pé da tela
   $("#sideKicker").textContent = kicker; $("#sideTitle").textContent = title; $("#sumKicker").textContent = kicker; $("#sumTitle").textContent = `${title} · ${list.length} projeto(s)`; $("#sumClear").hidden = !selection; $("#sideClear").hidden = !selection;
   $("#sideText").textContent = sel ? `${list.length} projeto(s) neste recorte. Toque num projeto para abrir a ficha.` : "Passe a mão em qualquer gráfico para ver os projetos que formam aquele resultado. Toque num projeto para abrir a ficha.";
   $("#sideList").innerHTML = list.map(p => `<div class="sp ${focus === p.id ? "current" : ""}"><button data-side="${p.id}">${wallIcon(p, 40)}<div><small>${p.year} · ${esc(p.mechanism)} · ${esc(p.circuit)}</small><b>${esc(p.title)}</b><strong>${money(p.value)} · FICHA ↗</strong></div></button></div>`).join("");
   $$("[data-side]").forEach(b => b.onclick = () => openPreview(b.dataset.side, "indicators"));
   applyHighlight();
 }
-$("#sumClear").onclick = $("#sideClear").onclick = () => { selection = null; renderIndicators(); };
+$("#sumClear").onclick = $("#sideClear").onclick = $("#selPill").onclick = () => { selection = null; hoverSel = null; renderIndicators(); };
 /* ---------- seleção compartilhada: brushing and linking (Becker e Cleveland, 1987) ----------
    Uma só seleção (hoverSel ao passar, selection ao clicar) vale para todos os gráficos: o conjunto de projetos que ela
    define acende em cada um e o resto esmaece, na lista lateral e na ficha. Cada elemento declara o que representa em

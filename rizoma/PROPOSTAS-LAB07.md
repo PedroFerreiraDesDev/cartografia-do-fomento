@@ -1075,6 +1075,22 @@ Conferido no navegador em 1280 px e 375 px: os três estados da fita com os núm
 
 ---
 
+## 3T. 22/11/2026: tirar a seleção no celular
+
+Arquivo: `index.html`, tela Indicadores.
+
+O autor relatou que, no celular, depois de selecionar um item nos Indicadores, não conseguia tirar a seleção com facilidade.
+
+Causa, medida no navegador em 375 px: o botão "Limpar seleção" mora na barra do alto da tela. No computador essa barra fica presa enquanto se rola. No celular ela não fica, porque quem rola é a tela inteira e não a coluna dos gráficos. Depois de selecionar um ano no passo 5, o botão estava a mais de 5.000 px acima do que se via.
+
+Correção: no celular, sempre que há uma seleção fixada, aparece um botão preso no pé da tela com o nome da seleção, quantos projetos ela tem e "Limpar". Um toque limpa. O botão some quando não há seleção e não aparece em telas largas, onde a barra do alto já resolve. Tocar de novo no mesmo item continua desfazendo a seleção, como antes.
+
+Dar sempre uma saída visível para desfazer uma ação é a terceira das dez heurísticas de usabilidade de Nielsen, controle e liberdade do usuário (NIELSEN, 1994).
+
+Conferido no navegador em 375 px: o botão aparece ao selecionar um ano, fica a 10 px do pé da tela, limpa a seleção com um toque e não aparece nas outras telas. Não foi testado num Android real.
+
+---
+
 ## 4. O que fica para depois
 
 - Conferir se a página Sobre deve dizer "orientação" para as duas professoras, como está, ou "orientadora e coorientadora", como na folha de rosto do TCC.
@@ -1138,6 +1154,8 @@ SCHMIDT, Mario. The Sankey diagram in energy and material flow management: part 
 MOREIRA, Pedro Henrique Ferreira. **Cartografia do Fomento**: mapeamento de projetos de grafite e muralismo em Belo Horizonte (2017–2024). Trabalho de Conclusão de Curso (Bacharelado em Design) – Escola de Arquitetura, Universidade Federal de Minas Gerais, Belo Horizonte, 2026. Em desenvolvimento; versão lida em 22 nov. 2026.
 
 NEURATH, Otto. **International picture language**: the first rules of Isotype. London: Kegan Paul, Trench, Trubner & Co., 1936.
+
+NIELSEN, Jakob. Enhancing the explanatory power of usability heuristics. In: SIGCHI CONFERENCE ON HUMAN FACTORS IN COMPUTING SYSTEMS, 1994, Boston. **Proceedings** [...]. New York: ACM, 1994. p. 152-158.
 
 OTTOSSON, Björn. **A perceptual color space for image processing** (OKLab). 2020. Disponível em: https://bottosson.github.io/posts/oklab/. Acesso em: 12 nov. 2026.
 
